@@ -1,0 +1,432 @@
+﻿@model eInvoicing.DTO.DocumentVM
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                        @Model.documentType | @Model.internalID
+                    </h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">
+                                Documents
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">
+                                Draft
+                            </a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-line">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_1">Summary</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">More Details</a>
+        </li>
+    </ul>
+    <div class="tab-content mt-5" id="myTabContent">
+        <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+            <div class="row">
+                <div class="col-lg-6 draggable-zone">
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_2">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-user text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Issuer (From)</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Registration Number</label>
+                                        @Html.TextBoxFor(model => model.issuer.id, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Type</label>
+                                        @Html.TextBoxFor(model => model.issuer.type, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Name</label>
+                                        @Html.TextBoxFor(model => model.issuer.name, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label>Branch Address</label>
+                                        @Html.TextAreaFor(model => model.IssuerFullAddress, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label>Tax Activity Code</label>
+                                        @Html.TextAreaFor(model => model.taxpayerActivityCode, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 draggable-zone">
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_3">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-user text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Receiver (To)</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body" kt-hidden-height="357" style="">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Registration Number</label>
+                                        @Html.TextBoxFor(model => model.receiver.id, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Type</label>
+                                        @Html.TextBoxFor(model => model.receiver.type, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Name</label>
+                                        @Html.TextBoxFor(model => model.receiver.name, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>Address</label>
+                                        @Html.TextAreaFor(model => model.ReceiverFullAddress, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 draggable-zone">
+                    <!--begin::Example-->
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_6">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon-squares text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Line Items</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body" kt-hidden-height="357" style="">
+                            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable">
+                            </div>
+                        </div>
+                        <!--end::Card-->
+                        <!--end::Example-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+            <div class="row">
+                <div class="col-lg-12 draggable-zone">
+                    <!--begin::Example-->
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_4">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-file text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Order Details</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3 draggable-zone">
+                                        <label>Purchase Order Reference</label>
+                                        @Html.TextBoxFor(model => model.purchaseOrderReference, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Purchase Order Description</label>
+                                        @Html.TextBoxFor(model => model.purchaseOrderDescription, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Internal ID:</label>
+                                        @Html.TextBoxFor(model => model.internalID, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Sales Order Reference</label>
+                                        @Html.TextBoxFor(model => model.salesOrderReference, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Sales Order Description</label>
+                                        @Html.TextBoxFor(model => model.salesOrderDescription, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Proforma Invoice Number</label>
+                                        @Html.TextBoxFor(model => model.proformaInvoiceNumber, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                    <!--end::Example-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 draggable-zone">
+                    <!--begin::Example-->
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_6">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-browser-1 text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Payment</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <label>Bank Name</label>
+                                        @Html.TextBoxFor(model => model.payment.bankName, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Bank Account No.</label>
+                                        @Html.TextBoxFor(model => model.payment.bankAccountNo, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Swift Code</label>
+                                        @Html.TextBoxFor(model => model.payment.swiftCode, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label>Bank Account IBAN</label>
+                                        @Html.TextBoxFor(model => model.payment.bankAccountIBAN, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Bank Address</label>
+                                        @Html.TextBoxFor(model => model.payment.bankAddress, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Payment Terms</label>
+                                        @Html.TextBoxFor(model => model.payment.terms, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                    <!--end::Example-->
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 draggable-zone">
+                    <!--begin::Example-->
+                    <!--begin::Card-->
+                    <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_5">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <span class="card-icon">
+                                    <i class="flaticon2-delivery-truck text-primary"></i>
+                                </span>
+                                <h3 class="card-label">Delivery Information</h3>
+                            </div>
+                            <div class="card-toolbar">
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary mr-1" data-card-tool="toggle" data-toggle="tooltip" data-placement="top" title="" data-original-title="Toggle Card">
+                                    <i class="ki ki-arrow-down icon-nm"></i>
+                                </a>
+                                <a href="#" class="btn btn-icon btn-sm btn-hover-light-primary draggable-handle">
+                                    <i class="ki ki-menu "></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body" kt-hidden-height="357" style="">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Delivery Method</label>
+                                        @Html.TextBoxFor(model => model.delivery.approach, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label>Packaging</label>
+                                        @Html.TextBoxFor(model => model.delivery.packaging, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col">
+                                        <label>Validity Date</label>
+                                        @Html.TextBoxFor(model => model.delivery.dateValidity, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col">
+                                        <label>Export Port</label>
+                                        @Html.TextBoxFor(model => model.delivery.exportPort, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col">
+                                        <label>Country Of Origin</label>
+                                        @Html.TextBoxFor(model => model.delivery.countryOfOrigin, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col">
+                                        <label>Gross Weight</label>
+                                        @Html.TextBoxFor(model => model.delivery.grossWeight, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                    <div class="col">
+                                        <label>Net Weight</label>
+                                        @Html.TextBoxFor(model => model.delivery.netWeight, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+
+                                    <div class="col-md-6">
+                                        <label>Delivery Terms</label>
+                                        @Html.TextBoxFor(model => model.delivery.terms, new { @class = "form-control", @readonly = "readonly" })
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Card-->
+                    <!--end::Example-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--begin::Modal-->
+<div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content" style="min-height: 350px;">
+            <div class="modal-header py-5">
+                <h5 class="modal-title">
+                    Taxable Items
+                    <span class="d-block text-muted font-size-sm">Taxes applied for each item</span>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!--begin: Search Form-->
+                <!--begin::Search Form-->
+                <div class="mb-5">
+                    <div class="row align-items-center">
+                        <div class="col-lg-9 col-xl-8">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 my-2 my-md-0">
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query_2" />
+                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end::Search Form-->
+                <!--end: Search Form-->
+                <!--begin: Datatable-->
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
+                <!--end: Datatable-->
+            </div>
+        </div>
+    </div>
+</div>
+<!--end::Modal-->
+<script src="~/Content/assets/js/pages/crud/ktdatatable/base/html-table.js"></script>
+<script src="~/Content/assets/js/pages/features/cards/tools.js"></script>
+<script src="~/Content/assets/plugins/custom/draggable/draggable.bundle.js"></script>
+<script src="~/Content/assets/js/pages/features/cards/draggable.js"></script>

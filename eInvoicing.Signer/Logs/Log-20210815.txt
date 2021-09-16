@@ -1,0 +1,8 @@
+2021-08-15T14:48:28.7046807+02:00 80000078-0004-fa00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T15:02:20.2841497+02:00 80000031-0002-fe00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T15:05:11.0208197+02:00 80000014-0003-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T15:05:48.3196923+02:00 8000000a-0002-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T15:21:48.9308896+02:00 8000001c-0003-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T16:11:43.6305265+02:00 8000000a-0002-fc00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T16:18:01.5111181+02:00 80000259-0001-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2021-08-15T16:28:49.4330070+02:00 80000023-0000-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)

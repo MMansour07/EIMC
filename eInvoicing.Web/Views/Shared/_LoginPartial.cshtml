@@ -1,0 +1,37 @@
+﻿@using Microsoft.AspNet.Identity
+@using System.Security.Claims;
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="navbar-nav navbar-nav-right">
+            <li class="nav-item nav-profile dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                    @Html.DisplayName(((ClaimsIdentity)User.Identity).FindFirst("FullName").Value)
+                </a>
+                <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                    <a class="dropdown-item" href="@Url.Action("Index","Manage")">
+                        <i class="mdi mdi-settings text-primary"></i>
+                        Settings
+                    </a>
+
+                    <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                        <i class="mdi mdi-logout text-primary"></i>
+                        Log Out
+                    </a>
+
+                </div>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li class="mr-lg-4">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}
+

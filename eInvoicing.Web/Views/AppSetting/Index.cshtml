@@ -1,0 +1,394 @@
+﻿@model eInvoicing.Web.Models.SettingViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .input-group-append {
+        margin-left: 0 !important;
+    }
+</style>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<div class="container">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                        Draft
+                    </h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">
+                                Documents
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="" class="text-muted">
+                                Draft
+                            </a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <div class="row mb-1">
+        <div class="col-md-12">
+            <a type="button" class="btn btn-secondary" href="@Url.Action("Index","Master")" style="float:right !important">Cancel</a>
+            <button type="button" id="btnsubmit" class="btn btn-primary mr-2" style="float:right !important">Save</button>
+        </div>
+    </div>
+    <ul class="nav nav-tabs nav-tabs-line">
+        <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_11">Pre Production</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_22">Production</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_33">General</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_44">License</a>
+        </li>
+    </ul>
+    @using (Html.BeginForm("update", "appsetting", FormMethod.Post, new { @class = "", role = "form", @id = "_frm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="tab-content mt-5" id="myTabContent50">
+            <div class="tab-pane fade show active" id="kt_tab_pane_11" role="tabpanel" aria-labelledby="kt_tab_pane_11">
+                <div class="row">
+                    <div class="col-lg-12 draggable-zone">
+                        <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_50">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <label>Login Base Address</label>
+                                            @Html.TextBoxFor(m => m.PreProductionLoginURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>APIs Base Address</label>
+                                            @Html.TextBoxFor(model => model.PreProductionApiURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Client Id</label>
+                                            @Html.TextBoxFor(model => model.PreProductionClientId, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Client Secret</label>
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.PreProductionClientSecret, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text editBtn1">
+                                                        <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_22" role="tabpanel" aria-labelledby="kt_tab_pane_22">
+                <div class="row">
+                    <div class="col-lg-12 draggable-zone">
+                        <!--begin::Example-->
+                        <!--begin::Card-->
+                        <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_22">
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Login Base Address</label>
+                                            @Html.TextBoxFor(model => model.ProductionLoginURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>APIs Base Address</label>
+                                            @Html.TextBoxFor(model => model.ProductionApiURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Client Id</label>
+                                            @Html.TextBoxFor(model => model.ProductionClientId, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Client Secret</label>
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.ProductionClientSecret, new { @class = "form-control form-control-solid disable11", @readonly = "readonly" })
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text editBtn11">
+                                                        <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_33" role="tabpanel" aria-labelledby="kt_tab_pane_33">
+                <div class="row">
+                    <div class="col-lg-12 draggable-zone">
+                        <!--begin::Example-->
+                        <!--begin::Card-->
+                        <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_33">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="col-form-label text-left col-lg-3 col-sm-12">APIs Environment:</label>
+                                    <div class="col-lg-9 col-md-9 col-sm-12">
+                                        @Html.CheckBoxFor(m => m.APIsEnvironment, new { data_switch = "true", @type = "checkbox", data_on_text = "Prod", data_handle_width = "70", data_off_text = "UAT", data_on_color = "primary" })
+                                    </div>
+                                </div>
+                                @*<div class="form-group row">
+                                        <label class="col-form-label text-left col-lg-3 col-sm-12">Environment:</label>
+                                        <div class="col-lg-9 col-md-9 col-sm-12">
+                                            @Html.CheckBoxFor(m => m.Environment, new { data_switch = "true", @type = "checkbox", data_on_text = "Prod", data_handle_width = "70", data_off_text = "UAT", data_on_color = "primary" })
+                                        </div>
+                                    </div>*@
+                                <div class="form-group row">
+                                    <label class="col-form-label text-left col-lg-3 col-sm-12">Type Version:</label>
+                                    <div class="col-lg-9 col-md-9 col-sm-12">
+                                        @Html.CheckBoxFor(m => m.TypeVersion, new { data_switch = "true", @type = "checkbox", data_on_text = "1.0", data_handle_width = "70", data_off_text = "0.9", data_on_color = "primary" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+            <div class="tab-pane fade" id="kt_tab_pane_44" role="tabpanel" aria-labelledby="kt_tab_pane_44">
+                <div class="row">
+                    <div class="col-lg-12 draggable-zone">
+                        <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_44">
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <label class="col-lg-3 col-form-label text-lg-right"></label>
+                                    <div class="uppy col-6" id="kt_uppy_1">
+                                        <div class="uppy-dashboard"></div>
+                                        <div class="uppy-progress"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--end::Card-->
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<script>
+    jQuery(document).ready(function () {
+        $("#btnsubmit").click(function (e) {
+            KTApp.blockPage();
+            var valdata = $("#_frm").serialize();
+            //to get alert popup
+            $.ajax({
+                url: "/EInvoicing//v0/appsetting/update",
+                type: "POST",
+                dataType: 'json',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: valdata,
+                success: function (response) {
+                    KTApp.unblockPage();
+                    if (!response) {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": true,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.error("Something went wrong!");
+                    }
+                    else {
+                        toastr.options = {
+                            "closeButton": false,
+                            "debug": false,
+                            "newestOnTop": true,
+                            "progressBar": false,
+                            "positionClass": "toast-top-center",
+                            "preventDuplicates": false,
+                            "onclick": null,
+                            "showDuration": "300",
+                            "hideDuration": "1000",
+                            "timeOut": "5000",
+                            "extendedTimeOut": "1000",
+                            "showEasing": "swing",
+                            "hideEasing": "linear",
+                            "showMethod": "fadeIn",
+                            "hideMethod": "fadeOut"
+                        };
+                        toastr.success("Data has been saved successfully!");
+                    }
+                }
+            });
+        });
+
+        $('input[name=License]').change(function (ev) {
+            if ($('input[name=License]')[0].files.length == 0) {
+                $("#_import").css("display", "none");
+            }
+            else {
+                $("#_import").css("display", "");
+            }
+        });
+        $("#del").on("click", function () {
+            $("#_import").css("display", "none");
+            $('input[name=License]').val("");
+        });
+
+        $('.editBtn1').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable1').attr('readonly')) {
+                $('.disable1').removeAttr('readonly');
+                $('.disable1').removeClass('form-control-solid');
+
+            } else {
+                $('.disable1').attr('readonly', 'readonly');
+                $('.disable1').addClass('form-control-solid');
+
+            }
+        });
+        $('.editBtn2').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable2').attr('readonly')) {
+                $('.disable2').removeAttr('readonly');
+                $('.disable2').removeClass('form-control-solid');
+
+            } else {
+                $('.disable2').attr('readonly', 'readonly');
+                $('.disable2').addClass('form-control-solid');
+
+            }
+        });
+        $('.editBtn3').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable3').attr('readonly')) {
+                $('.disable3').removeAttr('readonly');
+                $('.disable3').removeClass('form-control-solid');
+
+            } else {
+                $('.disable3').attr('readonly', 'readonly');
+                $('.disable3').addClass('form-control-solid');
+
+            }
+        });
+        $('.editBtn11').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable11').attr('readonly')) {
+                $('.disable11').removeAttr('readonly');
+                $('.disable11').removeClass('form-control-solid');
+
+            } else {
+                $('.disable11').attr('readonly', 'readonly');
+                $('.disable11').addClass('form-control-solid');
+
+            }
+        });
+        $('.editBtn22').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable22').attr('readonly')) {
+                $('.disable22').removeAttr('readonly');
+                $('.disable22').removeClass('form-control-solid');
+
+            } else {
+                $('.disable22').attr('readonly', 'readonly');
+                $('.disable22').addClass('form-control-solid');
+
+            }
+        });
+        $('.editBtn33').on('click', function (event) {
+            event.preventDefault();
+
+            if ($('.disable33').attr('readonly')) {
+                $('.disable33').removeAttr('readonly');
+                $('.disable33').removeClass('form-control-solid');
+
+            } else {
+                $('.disable33').attr('readonly', 'readonly');
+                $('.disable33').addClass('form-control-solid');
+
+            }
+        });
+        KTBootstrapSwitch.init();
+    });
+    var KTBootstrapSwitch = function () {
+
+        // Private functions
+        var demos = function () {
+            // minimum setup
+            $('[data-switch=true]').bootstrapSwitch();
+        };
+        return {
+            // public functions
+            init: function () {
+                demos();
+            },
+        };
+    }();
+</script>

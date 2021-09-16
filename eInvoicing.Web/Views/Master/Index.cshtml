@@ -1,0 +1,295 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                        Dashboard
+                    </h5>
+                    <!--end::Page Title-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <div class="form-group row mb-4">
+        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #0BB783 !important;"><b>Activity Overview:</b></label>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="input-group date">
+                <input type="text" class="form-control" id="kt_datepicker_2" readonly="readonly" placeholder="Select date">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-calendar"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom card-stretch gutter-b" id="Card5">
+                        <!--begin::Header-->
+                        <div class="card-header border-0 pt-5">
+                            <h3 class="card-title align-items-start flex-column">
+                                <span class="card-label font-weight-bolder text-dark">Submitted Valid Documents</span>
+                                <span class="text-muted mt-3 font-weight-bold font-size-sm" id="ReceivedValidDocumentsCount1"></span>
+                            </h3>
+                        </div>
+                        <!--end::Header-->
+                        <!--begin::Body-->
+                        <div class="card-body pt-3 pb-0">
+                            <!--begin::Table-->
+                            <div class="table-responsive">
+                                <table class="table table-borderless table-vertical-center">
+                                    <thead>
+                                        <tr>
+                                            <th class="p-0" style="width: 50px"></th>
+                                            <th class="p-0" style="min-width: 200px"></th>
+                                            <th class="p-0" style="min-width: 100px"></th>
+                                            <th class="p-0" style="min-width: 125px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="pl-0 py-4">
+                                                <div class="symbol symbol-50 symbol-light mr-1">
+                                                    <span class="symbol-label">
+                                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Shopping\Sale2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <polygon fill="#000000" opacity="0.3" points="12 20.0218549 8.47346039 21.7286168 6.86905972 18.1543453 3.07048824 17.1949849 4.13894342 13.4256452 1.84573388 10.2490577 5.08710286 8.04836581 5.3722735 4.14091196 9.2698837 4.53859595 12 1.72861679 14.7301163 4.53859595 18.6277265 4.14091196 18.9128971 8.04836581 22.1542661 10.2490577 19.8610566 13.4256452 20.9295118 17.1949849 17.1309403 18.1543453 15.5265396 21.7286168" />
+                                                                    <polygon fill="#000000" points="14.0890818 8.60255815 8.36079737 14.7014391 9.70868621 16.049328 15.4369707 9.950447" />
+                                                                    <path d="M10.8543431,9.1753866 C10.8543431,10.1252593 10.085524,10.8938719 9.13585777,10.8938719 C8.18793881,10.8938719 7.41737243,10.1252593 7.41737243,9.1753866 C7.41737243,8.22551387 8.18793881,7.45690126 9.13585777,7.45690126 C10.085524,7.45690126 10.8543431,8.22551387 10.8543431,9.1753866" fill="#000000" opacity="0.3" />
+                                                                    <path d="M14.8641422,16.6221564 C13.9162233,16.6221564 13.1456569,15.8535438 13.1456569,14.9036711 C13.1456569,13.9520555 13.9162233,13.1851857 14.8641422,13.1851857 C15.8138085,13.1851857 16.5826276,13.9520555 16.5826276,14.9036711 C16.5826276,15.8535438 15.8138085,16.6221564 14.8641422,16.6221564 Z" fill="#000000" opacity="0.3" />
+                                                                </g>
+                                                            </svg><!--end::Svg Icon-->
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="pl-0">
+                                                <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Invoice <span id="ReceivedInvoiceCount" style="font-family: cursive !important;"></span></a>
+                                                <span class="text-muted font-weight-bold d-block">Valid</span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Amount
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedInvoiceTotalAmount">
+                                                </span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Tax
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedInvoiceTotalTax">
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0 py-4">
+                                                <div class="symbol symbol-50 symbol-light mr-1">
+                                                    <span class="symbol-label">
+                                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Minus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                                    <rect fill="#000000" x="6" y="11" width="12" height="2" rx="1" />
+                                                                </g>
+                                                            </svg><!--end::Svg Icon-->
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="pl-0">
+                                                <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Credit Notes <span id="ReceivedCreditCount" style="font-family: cursive !important;"></span></a>
+                                                <span class="text-muted font-weight-bold d-block">Valid</span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Amount
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedCreditTotalAmount">
+                                                </span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Tax
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedCreditTotalTax">
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pl-0 py-4">
+                                                <div class="symbol symbol-50 symbol-light mr-1">
+                                                    <span class="symbol-label">
+                                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                                    <path d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z" fill="#000000" />
+                                                                </g>
+                                                            </svg><!--end::Svg Icon-->
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td class="pl-0">
+                                                <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Debit Notes <span id="ReceivedDebitCount" style="font-family: cursive !important;"></span></a>
+                                                <span class="text-muted font-weight-bold d-block">Valid</span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Amount
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedDebitTotalAmount">
+                                                </span>
+                                            </td>
+                                            <td class="text-left">
+                                                <span class="text-muted font-weight-bold">
+                                                    Total Tax
+                                                </span>
+                                                <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedDebitTotalTax">
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--end::Table-->
+                        </div>
+                        <!--end::Body-->
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card card-custom card-stretch gutter-b" id="Card6">
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex align-items-center justify-content-between flex-grow-1">
+                                <div class="mr-2">
+                                    <h3 class="font-weight-bolder">States Statistics</h3>
+                                    <div class="text-muted font-size-lg mt-2">
+                                        States Statistics for month - July 2021
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pt-8">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="text-muted font-weight-bold mr-2">Valid</div>
+                                    <div class="text-muted font-weight-bold" id="ReceivedValidDocumentsCount2"></div>
+                                </div>
+                                <div class="progress bg-light-warning progress-xs">
+                                    <div class="progress-bar bg-success" role="progressbar" id="ReceivedValidDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="pt-8">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="text-muted font-weight-bold mr-2">Invalid</div>
+                                    <div class="text-muted font-weight-bold" id="ReceivedInValidDocumentsCount"></div>
+                                </div>
+                                <div class="progress bg-light-warning progress-xs">
+                                    <div class="progress-bar bg-warning" role="progressbar" id="ReceivedInValidDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="pt-8">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="text-muted font-weight-bold mr-2">Cancelled</div>
+                                    <div class="text-muted font-weight-bold" id="ReceivedCanceledDocumentsCount"></div>
+                                </div>
+                                <div class="progress bg-light-warning progress-xs">
+                                    <div class="progress-bar bg-light-danger" role="progressbar" id="ReceivedCanceledDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="pt-8">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="text-muted font-weight-bold mr-2">Rejected</div>
+                                    <div class="text-muted font-weight-bold" id="ReceivedRejectedDocumentsCount"></div>
+                                </div>
+                                <div class="progress bg-light-warning progress-xs">
+                                    <div class="progress-bar bg-danger" role="progressbar" id="ReceivedRejectedDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="pt-8">
+                                <div class="d-flex align-items-center justify-content-between mb-3">
+                                    <div class="text-muted font-weight-bold mr-2">Submitted</div>
+                                    <div class="text-muted font-weight-bold" id="ReceivedSubmittedDocumentsCount"></div>
+                                </div>
+                                <div class="progress bg-light-warning progress-xs">
+                                    <div class="progress-bar bg-light-info" role="progressbar" id="ReceivedSubmittedDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        @*end::Body*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card card-custom card-stretch gutter-b" id="Card4" style=" height: 96.8% !important;">
+                <div class="card-header">
+                    <div class="card-title">
+                        <span class="card-icon"><i class="flaticon2-arrow-up text-primary"></i></span>
+                        <h3 class="card-label">Top Goods & Services Codes usage</h3>
+                    </div>
+                </div>
+                <div class="card-toolbar">
+                </div>
+                <div class="card-body">
+                    <!--begin: Datatable-->
+                    <table class="table  table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Count</th>
+                                <th>Amount</th>
+                                <th>Tax</th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <!--end: Datatable-->
+                </div>
+                <!--end::Card-->
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+<script src="~/Content/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/Renderer.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        $('input[name=License]').change(function (ev) {
+            if ($('input[name=License]')[0].files.length == 0) {
+                $("#_import").css("display", "none");
+            }
+            else {
+                $("#_import").css("display", "");
+            }
+        });
+        $("#del").on("click", function () {
+            $("#_import").css("display", "none");
+            $('input[name=License]').val("");
+        })
+    });
+</script>
+

@@ -1,0 +1,894 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<!--begin::Head-->
+<head>
+    <base href="">
+    <meta charset="utf-8" />
+    <title>ETA Hub</title>
+    <meta name="description" content="Updates and statistics" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!--begin::Fonts-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />        <!--end::Fonts-->
+    <!--begin::Page Vendors Styles(used by this page)-->
+    <link href="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <!--end::Page Vendors Styles-->
+    <!--begin::Global Theme Styles(used by all pages)-->
+    <link href="~/Content/assets/plugins/global/plugins.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <link href="~/Content/assets/css/style.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
+    <!--end::Global Theme Styles-->
+    <!--begin::Layout Themes(used by all pages)-->
+    <!--end::Layout Themes-->
+    <link rel="shortcut icon" href="~/Content/images/favicon.ico" />
+
+    @RenderSection("scripts", required: false)
+    <style>
+        .label.label-rounded {
+            width: 30px !important;
+            height: 30px !important;
+        }
+        #cover-spin {
+            position: fixed;
+            width: 100%;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.7);
+            z-index: 9999;
+            display: none;
+        }
+        .no-hover:hover {
+            text-decoration: underline !important;
+        }
+
+        @@-webkit-keyframes spin {
+            from {
+                -webkit-transform: rotate(0deg);
+            }
+
+            to {
+                -webkit-transform: rotate(360deg);
+            }
+        }
+
+        @@keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #cover-spin::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 48%;
+            top: 40%;
+            width: 40px;
+            height: 40px;
+            border-style: solid;
+            border-color: #0bb783;
+            border-top-color: transparent;
+            border-width: 4px;
+            border-radius: 50%;
+            -webkit-animation: spin .8s linear infinite;
+            animation: spin .8s linear infinite;
+        }
+    </style>
+</head>
+<!--end::Head-->
+<!--begin::Body-->
+<body id="kt_body" class="header-fixed header-mobile-fixed page-loading">
+    <div class="d-flex flex-column flex-root">
+        <!--begin::Page-->
+        <div class="d-flex flex-row flex-column-fluid page">
+            <!--begin::Wrapper-->
+            <div class="d-flex flex-column flex-row-fluid wrapper" id="kt_wrapper">
+                <!--begin::Header-->
+                <div id="kt_header" class="header flex-column  header-fixed ">
+                    <!--begin::Top-->
+                    <div class="header-top">
+                        <!--begin::Container-->
+                        <div class=" container ">
+                            <!--begin::Left-->
+                            <div class="d-none d-lg-flex align-items-center mr-3">
+                                <!--begin::Logo-->
+                                <a href="@Url.Action("Index","Master")" class="mr-20">
+                                    <img alt="Logo" src="~/Content/images/LAZURDE_LOGO (1).png" class="max-h-75px" />
+                                </a>
+                                <!--end::Logo-->
+
+                            </div>
+                            <!--end::Left-->
+                            <!--begin::Topbar-->
+                            <div class="topbar">
+                                @if (Request.IsAuthenticated && User.IsInRole("SuperAdmin"))
+                                {
+                                    <!--begin::Management-->
+                                    <div class="dropdown">
+                                        <!--begin::Toggle-->
+                                        <div class="topbar-item" data-toggle="dropdown" data-offset="10px,0px">
+                                            <div class="btn btn-icon btn-hover-transparent-white btn-dropdown btn-lg mr-1 pulse pulse-white">
+                                                <span class="svg-icon svg-icon-xl">
+                                                    <!--begin::Svg Icon | path:assets/media/svg/icons/Code/Compiling.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24" />
+                                                            <path d="M2.56066017,10.6819805 L4.68198052,8.56066017 C5.26776695,7.97487373 6.21751442,7.97487373 6.80330086,8.56066017 L8.9246212,10.6819805 C9.51040764,11.267767 9.51040764,12.2175144 8.9246212,12.8033009 L6.80330086,14.9246212 C6.21751442,15.5104076 5.26776695,15.5104076 4.68198052,14.9246212 L2.56066017,12.8033009 C1.97487373,12.2175144 1.97487373,11.267767 2.56066017,10.6819805 Z M14.5606602,10.6819805 L16.6819805,8.56066017 C17.267767,7.97487373 18.2175144,7.97487373 18.8033009,8.56066017 L20.9246212,10.6819805 C21.5104076,11.267767 21.5104076,12.2175144 20.9246212,12.8033009 L18.8033009,14.9246212 C18.2175144,15.5104076 17.267767,15.5104076 16.6819805,14.9246212 L14.5606602,12.8033009 C13.9748737,12.2175144 13.9748737,11.267767 14.5606602,10.6819805 Z" fill="#000000" opacity="0.3" />
+                                                            <path d="M8.56066017,16.6819805 L10.6819805,14.5606602 C11.267767,13.9748737 12.2175144,13.9748737 12.8033009,14.5606602 L14.9246212,16.6819805 C15.5104076,17.267767 15.5104076,18.2175144 14.9246212,18.8033009 L12.8033009,20.9246212 C12.2175144,21.5104076 11.267767,21.5104076 10.6819805,20.9246212 L8.56066017,18.8033009 C7.97487373,18.2175144 7.97487373,17.267767 8.56066017,16.6819805 Z M8.56066017,4.68198052 L10.6819805,2.56066017 C11.267767,1.97487373 12.2175144,1.97487373 12.8033009,2.56066017 L14.9246212,4.68198052 C15.5104076,5.26776695 15.5104076,6.21751442 14.9246212,6.80330086 L12.8033009,8.9246212 C12.2175144,9.51040764 11.267767,9.51040764 10.6819805,8.9246212 L8.56066017,6.80330086 C7.97487373,6.21751442 7.97487373,5.26776695 8.56066017,4.68198052 Z" fill="#000000" />
+                                                        </g>
+                                                    </svg><!--end::Svg Icon-->
+                                                </span><span class="pulse-ring"></span>
+                                            </div>
+                                        </div>
+                                        <!--end::Toggle-->
+                                        <!--begin::Dropdown-->
+                                        <div class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg">
+                                            <form>
+                                                <!--begin::Header-->
+                                                <div class="d-flex flex-column pt-12 bg-dark-o-5 rounded-top">
+                                                    <!--begin::Title-->
+                                                    <h4 class="d-flex flex-center">
+                                                        <span class="text-dark">User Management</span>
+                                                    </h4>
+                                                    <!--end::Title-->
+                                                </div>
+                                                <!--end::Header-->
+                                                <!--begin::Content-->
+                                                <div class="tab-content">
+                                                    <!--begin::Tabpane-->
+                                                    <div class="tab-pane active show p-8" id="topbar_notifications_notifications" role="tabpanel">
+                                                        <!--begin::Scroll-->
+                                                        <div class="scroll pr-7 mr-n7" data-scroll="true" data-height="120" data-mobile-height="50">
+                                                            <!--begin::Item-->
+                                                            <div class="d-flex align-items-center mb-6">
+                                                                <!--begin::Symbol-->
+                                                                <div class="symbol symbol-40 symbol-light-primary mr-5">
+                                                                    <span class="symbol-label">
+                                                                        <span class="svg-icon svg-icon-lg svg-icon-primary">
+                                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Home/Library.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                                    <path d="M6,2 L18,2 C19.6568542,2 21,3.34314575 21,5 L21,19 C21,20.6568542 19.6568542,22 18,22 L6,22 C4.34314575,22 3,20.6568542 3,19 L3,5 C3,3.34314575 4.34314575,2 6,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000" />
+                                                                                </g>
+                                                                            </svg><!--end::Svg Icon-->
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                                <!--end::Symbol-->
+                                                                <!--begin::Text-->
+                                                                <div class="d-flex flex-column font-weight-bold">
+
+                                                                    <a href="@Url.Action("index", "user")" class="text-dark text-hover-primary mb-1 font-size-lg">Users</a>
+                                                                    <span class="text-muted">User Management</span>
+                                                                </div>
+                                                                <!--end::Text-->
+                                                            </div>
+                                                            <!--end::Item-->
+                                                            <!--begin::Item-->
+                                                            <div class="d-flex align-items-center mb-6">
+                                                                <!--begin::Symbol-->
+                                                                <div class="symbol symbol-40 symbol-light-warning mr-5">
+                                                                    <span class="symbol-label">
+                                                                        <span class="svg-icon svg-icon-lg svg-icon-warning">
+                                                                            <!--begin::Svg Icon | path:assets/media/svg/icons/Communication/Write.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                                    <rect x="0" y="0" width="24" height="24" />
+                                                                                    <path d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z" fill="#000000" />
+                                                                                    <path d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z" fill="#000000" opacity="0.3" />
+                                                                                </g>
+                                                                            </svg><!--end::Svg Icon-->
+                                                                        </span>
+                                                                    </span>
+                                                                </div>
+                                                                <!--end::Symbol-->
+                                                                <!--begin::Text-->
+                                                                <div class="d-flex flex-column font-weight-bold">
+                                                                    <a href="@Url.Action("index", "role")" class="text-dark-75 text-hover-primary mb-1 font-size-lg">Roles</a>
+                                                                    <span class="text-muted">Roles Management</span>
+                                                                </div>
+                                                                <!--end::Text-->
+                                                            </div>
+                                                            <!--end::Item-->
+
+                                                        </div>
+                                                        <!--end::Scroll-->
+
+                                                    </div>
+                                                    <!--end::Tabpane-->
+
+                                                </div>
+                                                <!--end::Content-->
+                                            </form>
+                                        </div>
+                                        <!--end::Dropdown-->
+                                    </div>
+                                    <div class="topbar-item mr-1">
+                                        <a href="@Url.Action("index","appsetting")">
+                                            <div class="btn btn-icon btn-hover-transparent-white btn-clean btn-lg" data-toggle="modal" data-target="#kt_chat_modal">
+                                                <span class="svg-icon svg-icon-light svg-icon-2x">
+                                                    <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/General/Settings-2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                            <rect x="0" y="0" width="24" height="24" />
+                                                            <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000" />
+                                                        </g>
+                                                    </svg><!--end::Svg Icon-->
+                                                </span>
+                                            </div>
+                                        </a>
+                                    </div>
+                                }
+                                <!--end::Management-->
+                                <!--begin::User-->
+                                <div class="topbar-item">
+                                    @using System.Security.Claims;
+                                    @using Microsoft.AspNet.Identity;
+                                    @if (Request.IsAuthenticated)
+                                    {
+                                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <a class="btn btn-icon btn-hover-transparent-white w-auto d-flex align-items-center btn-lg px-2 dropdown-toggle" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                                                <div class="d-flex flex-column text-right pr-3">
+                                                    <span class="text-white opacity-50 font-weight-bold font-size-sm d-none d-md-inline">@User.Identity.GetUserName()</span>
+                                                    <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline">@Html.DisplayName(((ClaimsIdentity)User.Identity).FindFirst("Title").Value)</span>
+                                                </div>
+                                                <span class="symbol symbol-35">
+                                                    <span class="symbol-label font-size-h5 font-weight-bold text-white bg-white-o-30">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
+                                                </span>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 12% !important; top: 3px !important;">
+                                                <a class="dropdown-item" href="@Url.Action("edit","user",new { id = @User.Identity.GetUserId() })">
+                                                    <span class="svg-icon svg-icon-secondary svg-icon-2x" style="padding-right:inherit">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/General/User.svg-->
+                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <polygon points="0 0 24 0 24 24 0 24" />
+                                                                <path d="M12,11 C9.790861,11 8,9.209139 8,7 C8,4.790861 9.790861,3 12,3 C14.209139,3 16,4.790861 16,7 C16,9.209139 14.209139,11 12,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                                <path d="M3.00065168,20.1992055 C3.38825852,15.4265159 7.26191235,13 11.9833413,13 C16.7712164,13 20.7048837,15.2931929 20.9979143,20.2 C21.0095879,20.3954741 20.9979143,21 20.2466999,21 C16.541124,21 11.0347247,21 3.72750223,21 C3.47671215,21 2.97953825,20.45918 3.00065168,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <span class="nav-item" style="padding-top: 4px;">Profile</span>
+                                                </a>
+                                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                                                    <span class="svg-icon svg-icon-secondary svg-icon-2x" style="padding-right:inherit">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
+                                                                <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
+                                                                <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
+                                                            </g>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="menu-text" style="padding-top: 4px;">Log Out</span>
+                                                    @*<i class="la la-sign-out-alt" style="padding-right:inherit"></i>
+                                                        Log Out*@
+                                                </a>
+                                                <a class="dropdown-item" href="@Url.Action("index","appsetting")">
+                                                    <span class="svg-icon svg-icon-primary svg-icon-2x" style="padding-right:inherit">
+                                                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/General/Settings-2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <rect x="0" y="0" width="24" height="24" />
+                                                                <path d="M5,8.6862915 L5,5 L8.6862915,5 L11.5857864,2.10050506 L14.4852814,5 L19,5 L19,9.51471863 L21.4852814,12 L19,14.4852814 L19,19 L14.4852814,19 L11.5857864,21.8994949 L8.6862915,19 L5,19 L5,15.3137085 L1.6862915,12 L5,8.6862915 Z M12,15 C13.6568542,15 15,13.6568542 15,12 C15,10.3431458 13.6568542,9 12,9 C10.3431458,9 9,10.3431458 9,12 C9,13.6568542 10.3431458,15 12,15 Z" fill="#000000" />
+                                                            </g>
+                                                        </svg><!--end::Svg Icon-->
+                                                    </span>
+                                                    <span class="menu-text" style="padding-top: 4px;">Settings</span>
+                                                </a>
+                                            </div>
+                                        }
+
+                                    }
+                                </div>
+                                <!--end::User-->
+                            </div>
+                            <!--end::Topbar-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Top-->
+                    <!--begin::Bottom-->
+                    <div class="header-bottom">
+                        <!--begin::Container-->
+                        <div class=" container ">
+                            <!--begin::Header Menu Wrapper-->
+                            <div class="header-menu-wrapper header-menu-wrapper-left" id="kt_header_menu_wrapper">
+                                <!--begin::Header Menu-->
+                                <div id="kt_header_menu" class="header-menu header-menu-left header-menu-mobile  header-menu-layout-default ">
+                                    <!--begin::Header Nav-->
+                                    <ul class="menu-nav ">
+                                        <li class="menu-item  menu-item-open menu-item-here menu-item-submenu menu-item-rel menu-item-open menu-item-here" data-menu-toggle="" aria-haspopup="true"><a href="@Url.Action("index","master")" class="menu-link"><span class="menu-text">Dashboard</span><span class="menu-desc">Recent Updates & Reports</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-left"><ul class="menu-subnav"><li class="menu-item  menu-item-active " aria-haspopup="true"><a href="index.html" class="menu-link "><span class="menu-text">Latest Updated</span><span class="menu-desc"></span></a></li><li class="menu-item " aria-haspopup="true"><a target="_blank" href="https://preview.keenthemes.com/metronic/preview/demo9/builder.html" class="menu-link "><span class="menu-text">Layout Builder</span><span class="menu-desc"></span></a></li></ul></div></li>
+                                        <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="hover" aria-haspopup="true">
+                                            <a href="javascript:;" class="menu-link menu-toggle"><span class="menu-text">Documents</span><span class="menu-desc">Invoices & Notes</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                                <ul class="menu-subnav">
+                                                    <li class="menu-item " aria-haspopup="true">
+                                                        <a href="@Url.Action("pending","document")" class="menu-link ">
+                                                            <span class="svg-icon menu-icon">
+                                                                <!--begin::Svg Icon | path:/metronic/theme/html/demo10/dist/assets/media/svg/icons/Design/PenAndRuller.svg-->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                                                        <path d="M3,16 L5,16 C5.55228475,16 6,15.5522847 6,15 C6,14.4477153 5.55228475,14 5,14 L3,14 L3,12 L5,12 C5.55228475,12 6,11.5522847 6,11 C6,10.4477153 5.55228475,10 5,10 L3,10 L3,8 L5,8 C5.55228475,8 6,7.55228475 6,7 C6,6.44771525 5.55228475,6 5,6 L3,6 L3,4 C3,3.44771525 3.44771525,3 4,3 L10,3 C10.5522847,3 11,3.44771525 11,4 L11,19 C11,19.5522847 10.5522847,20 10,20 L4,20 C3.44771525,20 3,19.5522847 3,19 L3,16 Z" fill="#000000" opacity="0.3"></path>
+                                                                        <path d="M16,3 L19,3 C20.1045695,3 21,3.8954305 21,5 L21,15.2485298 C21,15.7329761 20.8241635,16.200956 20.5051534,16.565539 L17.8762883,19.5699562 C17.6944473,19.7777745 17.378566,19.7988332 17.1707477,19.6169922 C17.1540423,19.602375 17.1383289,19.5866616 17.1237117,19.5699562 L14.4948466,16.565539 C14.1758365,16.200956 14,15.7329761 14,15.2485298 L14,5 C14,3.8954305 14.8954305,3 16,3 Z" fill="#000000"></path>
+                                                                    </g>
+                                                                </svg>
+                                                                <!--end::Svg Icon-->
+                                                            </span>
+                                                            <span class="menu-text">Draft</span>
+                                                            <span class="navi-label">
+                                                                <span class="label label-rounded label-primary font-weight-bolder" id="_draft"></span>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+
+                                                    <li class="menu-item " aria-haspopup="true">
+                                                        <a href="@Url.Action("submitted","document")" class="menu-link ">
+                                                            <span class="svg-icon menu-icon">
+                                                                <!--begin::Svg Icon | path:/metronic/theme/html/demo10/dist/assets/media/svg/icons/Communication/Sending.svg-->
+                                                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                                                        <path d="M8,13.1668961 L20.4470385,11.9999863 L8,10.8330764 L8,5.77181995 C8,5.70108058 8.01501031,5.63114635 8.04403925,5.56663761 C8.15735832,5.31481744 8.45336217,5.20254012 8.70518234,5.31585919 L22.545552,11.5440255 C22.6569791,11.5941677 22.7461882,11.6833768 22.7963304,11.794804 C22.9096495,12.0466241 22.7973722,12.342628 22.545552,12.455947 L8.70518234,18.6841134 C8.64067359,18.7131423 8.57073936,18.7281526 8.5,18.7281526 C8.22385763,18.7281526 8,18.504295 8,18.2281526 L8,13.1668961 Z" fill="#000000"></path>
+                                                                        <path d="M4,16 L5,16 C5.55228475,16 6,16.4477153 6,17 C6,17.5522847 5.55228475,18 5,18 L4,18 C3.44771525,18 3,17.5522847 3,17 C3,16.4477153 3.44771525,16 4,16 Z M1,11 L5,11 C5.55228475,11 6,11.4477153 6,12 C6,12.5522847 5.55228475,13 5,13 L1,13 C0.44771525,13 6.76353751e-17,12.5522847 0,12 C-6.76353751e-17,11.4477153 0.44771525,11 1,11 Z M4,6 L5,6 C5.55228475,6 6,6.44771525 6,7 C6,7.55228475 5.55228475,8 5,8 L4,8 C3.44771525,8 3,7.55228475 3,7 C3,6.44771525 3.44771525,6 4,6 Z" fill="#000000" opacity="0.3"></path>
+                                                                    </g>
+                                                                </svg>
+                                                                <!--end::Svg Icon-->
+                                                            </span>
+                                                            <span class="menu-text">Sent</span>
+                                                            <span class="navi-label">
+                                                                <span class="label label-rounded label-secondary font-weight-bolder" id="_sent"></span>
+                                                            </span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="hover" aria-haspopup="true">
+                                            <a href="javascript:;" class="menu-link menu-toggle"><span class="menu-text">Codes</span><span class="menu-desc">Usage & Registration</span><i class="menu-arrow"></i></a>
+                                            <!--<div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                                <ul class="menu-subnav">
+                                                    <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                                            <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Shopping/Box2.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z" fill="#000000" />
+                                                    <path d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z" fill="#000000" opacity="0.3" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Forms & Controls</span><i class="menu-arrow"></i>
+                                                </a>
+                                                <div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Controls</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/base.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Base Inputs</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/input-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Input Groups</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/checkbox.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Checkbox</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/radio.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Radio</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/switch.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Switch</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/option.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Mega Options</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-datetimepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Datetimepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-datepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Datepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-timepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Timepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-daterangepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Daterangepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/tagify.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Tagify</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-touchspin.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Touchspin</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-maxlength.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Maxlength</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-switch.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Switch</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-multipleselectsplitter.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Multiple Select Splitter</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-select.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Bootstrap Select</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/select2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Select2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/typeahead.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Typeahead</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets 2</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/nouislider.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">noUiSlider</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/form-repeater.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Repeater</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/ion-range-slider.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Ion Range Slider</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/input-mask.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Input Masks</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/autosize.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Autosize</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/clipboard.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Clipboard</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/recaptcha.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Google reCaptcha</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Text Editors</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/tinymce.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">TinyMCE</span></a></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">CKEditor</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-classic.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Classic</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-inline.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Inline</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-balloon.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Balloon</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-balloon-block.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Balloon Block</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-document.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Document</span></a></li></ul></div></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/quill.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Quill Text Editor</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/summernote.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Summernote WYSIWYG</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/bootstrap-markdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Markdown Editor</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Layouts</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/default-forms.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Default Forms</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/multi-column-forms.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Multi Column Forms</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/action-bars.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Basic Action Bars</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/sticky-action-bar.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Sticky Action Bar</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Validation</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/states.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Validation States</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/form-controls.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Controls</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/form-widgets.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets</span></a></li></ul></div></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/General/Thunder-move.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M16.3740377,19.9389434 L22.2226499,11.1660251 C22.4524142,10.8213786 22.3592838,10.3557266 22.0146373,10.1259623 C21.8914367,10.0438285 21.7466809,10 21.5986122,10 L17,10 L17,4.47708173 C17,4.06286817 16.6642136,3.72708173 16.25,3.72708173 C15.9992351,3.72708173 15.7650616,3.85240758 15.6259623,4.06105658 L9.7773501,12.8339749 C9.54758575,13.1786214 9.64071616,13.6442734 9.98536267,13.8740377 C10.1085633,13.9561715 10.2533191,14 10.4013878,14 L15,14 L15,19.5229183 C15,19.9371318 15.3357864,20.2729183 15.75,20.2729183 C16.0007649,20.2729183 16.2349384,20.1475924 16.3740377,19.9389434 Z" fill="#000000" />
+                                                    <path d="M4.5,5 L9.5,5 C10.3284271,5 11,5.67157288 11,6.5 C11,7.32842712 10.3284271,8 9.5,8 L4.5,8 C3.67157288,8 3,7.32842712 3,6.5 C3,5.67157288 3.67157288,5 4.5,5 Z M4.5,17 L9.5,17 C10.3284271,17 11,17.6715729 11,18.5 C11,19.3284271 10.3284271,20 9.5,20 L4.5,20 C3.67157288,20 3,19.3284271 3,18.5 C3,17.6715729 3.67157288,17 4.5,17 Z M2.5,11 L6.5,11 C7.32842712,11 8,11.6715729 8,12.5 C8,13.3284271 7.32842712,14 6.5,14 L2.5,14 C1.67157288,14 1,13.3284271 1,12.5 C1,11.6715729 1.67157288,11 2.5,11 Z" fill="#000000" opacity="0.3" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span>
+                                                    <span class="menu-text">KTDatatable</span><i class="menu-arrow"></i>
+                                                </a>
+                                                <div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Base</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/data-local.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Local Data</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/data-json.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">JSON Data</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/data-ajax.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Ajax Data</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/html-table.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">HTML Table</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/local-sort.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Local Sort</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/base/translation.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Translation</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Advanced</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/record-selection.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Record Selection</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/row-details.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Row Details</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/modal.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Modal Examples</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/column-rendering.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Column Rendering</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/column-width.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Column Width</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/advanced/vertical.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Vertical Scrolling</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Child Datatables</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/child/data-local.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Local Data</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/child/data-ajax.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Remote Data</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">API</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/api/methods.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">API Methods</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/ktdatatable/api/events.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Events</span></a></li></ul></div></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Shopping/Gift.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,6 L20,6 C20.5522847,6 21,6.44771525 21,7 L21,8 C21,8.55228475 20.5522847,9 20,9 L4,9 C3.44771525,9 3,8.55228475 3,8 L3,7 C3,6.44771525 3.44771525,6 4,6 Z M5,11 L10,11 C10.5522847,11 11,11.4477153 11,12 L11,19 C11,19.5522847 10.5522847,20 10,20 L5,20 C4.44771525,20 4,19.5522847 4,19 L4,12 C4,11.4477153 4.44771525,11 5,11 Z M14,11 L19,11 C19.5522847,11 20,11.4477153 20,12 L20,19 C20,19.5522847 19.5522847,20 19,20 L14,20 C13.4477153,20 13,19.5522847 13,19 L13,12 C13,11.4477153 13.4477153,11 14,11 Z" fill="#000000" />
+                                                    <path d="M14.4452998,2.16794971 C14.9048285,1.86159725 15.5256978,1.98577112 15.8320503,2.4452998 C16.1384028,2.90482849 16.0142289,3.52569784 15.5547002,3.83205029 L12,6.20185043 L8.4452998,3.83205029 C7.98577112,3.52569784 7.86159725,2.90482849 8.16794971,2.4452998 C8.47430216,1.98577112 9.09517151,1.86159725 9.5547002,2.16794971 L12,3.79814957 L14.4452998,2.16794971 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Datatables.net</span><i class="menu-arrow"></i>
+                                                </a>
+                                                <div class="menu-submenu menu-submenu-classic menu-submenu-right">
+                                                    <ul class="menu-subnav">
+                                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                            <a href="javascript:;" class="menu-link menu-toggle">
+                                                                <i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Basic</span><i class="menu-arrow"></i>
+                                                            </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/basic/basic.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Basic Tables</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/basic/scrollable.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Scrollable Tables</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/basic/headers.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Complex Headers</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/basic/paginations.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Pagination Options</span></a></li></ul></div>
+                                                        </li>
+                                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Advanced</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/column-rendering.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Column Rendering</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/multiple-controls.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Multiple Controls</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/column-visibility.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Column Visibility</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/row-callback.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Row Callback</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/row-grouping.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Row Grouping</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/advanced/footer-callback.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Footer Callback</span></a></li></ul></div></li>
+                                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Data sources</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/data-sources/html.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">HTML</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/data-sources/javascript.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Javascript</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/data-sources/ajax-client-side.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Ajax Client-side</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/data-sources/ajax-server-side.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Ajax Server-side</span></a></li></ul></div></li>
+                                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Search Options</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/search-options/column-search.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Column Search</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/search-options/advanced-search.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Advanced Search</span></a></li></ul></div></li>
+                                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Extensions</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/buttons.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Buttons</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/colreorder.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">ColReorder</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/keytable.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">KeyTable</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/responsive.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Responsive</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/rowgroup.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">RowGroup</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/rowreorder.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">RowReorder</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/scroller.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Scroller</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/datatables/extensions/select.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Select</span></a></li></ul></div></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Shopping/Gift.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,6 L20,6 C20.5522847,6 21,6.44771525 21,7 L21,8 C21,8.55228475 20.5522847,9 20,9 L4,9 C3.44771525,9 3,8.55228475 3,8 L3,7 C3,6.44771525 3.44771525,6 4,6 Z M5,11 L10,11 C10.5522847,11 11,11.4477153 11,12 L11,19 C11,19.5522847 10.5522847,20 10,20 L5,20 C4.44771525,20 4,19.5522847 4,19 L4,12 C4,11.4477153 4.44771525,11 5,11 Z M14,11 L19,11 C19.5522847,11 20,11.4477153 20,12 L20,19 C20,19.5522847 19.5522847,20 19,20 L14,20 C13.4477153,20 13,19.5522847 13,19 L13,12 C13,11.4477153 13.4477153,11 14,11 Z" fill="#000000" />
+                                                    <path d="M14.4452998,2.16794971 C14.9048285,1.86159725 15.5256978,1.98577112 15.8320503,2.4452998 C16.1384028,2.90482849 16.0142289,3.52569784 15.5547002,3.83205029 L12,6.20185043 L8.4452998,3.83205029 C7.98577112,3.52569784 7.86159725,2.90482849 8.16794971,2.4452998 C8.47430216,1.98577112 9.09517151,1.86159725 9.5547002,2.16794971 L12,3.79814957 L14.4452998,2.16794971 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">File Upload</span><i class="menu-arrow"></i>
+                                                        </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/file-upload/image-input.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Image Input</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/file-upload/dropzonejs.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">DropzoneJS</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/file-upload/uppy.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Uppy</span></a></li></ul></div>
+                                                    </li>
+                                                </ul>
+                                            </div>-->
+                                        </li>
+                                        <li class="menu-item  menu-item-submenu menu-item-rel" data-menu-toggle="hover" aria-haspopup="true">
+                                            <a href="javascript:;" class="menu-link menu-toggle"><span class="menu-text">Packages</span><span class="menu-desc">Requests & Tracking</span><i class="menu-arrow"></i></a>
+                                            <!--<div class="menu-submenu menu-submenu-classic menu-submenu-left">
+                                                <ul class="menu-subnav">
+                                                    <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                        <a href="javascript:;" class="menu-link menu-toggle">
+                                                            <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Address-card.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M6,2 L18,2 C19.6568542,2 21,3.34314575 21,5 L21,19 C21,20.6568542 19.6568542,22 18,22 L6,22 C4.34314575,22 3,20.6568542 3,19 L3,5 C3,3.34314575 4.34314575,2 6,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Users</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/list-default.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Default</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/list-datatable.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Datatable</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/list-columns-1.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 1</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/list-columns-2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/add-user.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Add User</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/user/edit-user.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Edit User</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Address-card.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M6,2 L18,2 C19.6568542,2 21,3.34314575 21,5 L21,19 C21,20.6568542 19.6568542,22 18,22 L6,22 C4.34314575,22 3,20.6568542 3,19 L3,5 C3,3.34314575 4.34314575,2 6,2 Z M12,11 C13.1045695,11 14,10.1045695 14,9 C14,7.8954305 13.1045695,7 12,7 C10.8954305,7 10,7.8954305 10,9 C10,10.1045695 10.8954305,11 12,11 Z M7.00036205,16.4995035 C6.98863236,16.6619875 7.26484009,17 7.4041679,17 C11.463736,17 14.5228466,17 16.5815,17 C16.9988413,17 17.0053266,16.6221713 16.9988413,16.5 C16.8360465,13.4332455 14.6506758,12 11.9907452,12 C9.36772908,12 7.21569918,13.5165724 7.00036205,16.4995035 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Profile</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Profile 1</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-1/overview.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Overview</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-1/personal-information.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Personal Information</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-1/account-information.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Account Information</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-1/change-password.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Change Password</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-1/email-settings.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Email Settings</span></a></li></ul></div></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Profile 2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-3.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Profile 3</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/profile/profile-4.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Profile 4</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Adress-book1.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M17,2 L19,2 C20.6568542,2 22,3.34314575 22,5 L22,19 C22,20.6568542 20.6568542,22 19,22 L17,22 L17,2 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M4,2 L16,2 C17.6568542,2 19,3.34314575 19,5 L19,19 C19,20.6568542 17.6568542,22 16,22 L4,22 C3.44771525,22 3,21.5522847 3,21 L3,3 C3,2.44771525 3.44771525,2 4,2 Z M11.1176481,13.709585 C10.6725287,14.1547043 9.99251947,14.2650547 9.42948307,13.9835365 C8.86644666,13.7020183 8.18643739,13.8123686 7.74131803,14.2574879 L6.2303083,15.7684977 C6.17542087,15.8233851 6.13406645,15.8902979 6.10952004,15.9639372 C6.02219616,16.2259088 6.16377615,16.5090688 6.42574781,16.5963927 L7.77956724,17.0476658 C9.07965249,17.4810276 10.5130001,17.1426601 11.4820264,16.1736338 L15.4812434,12.1744168 C16.3714821,11.2841781 16.5921828,9.92415954 16.0291464,8.79808673 L15.3965752,7.53294436 C15.3725414,7.48487691 15.3409156,7.44099843 15.302915,7.40299777 C15.1076528,7.20773562 14.7910703,7.20773562 14.5958082,7.40299777 L13.0032662,8.99553978 C12.5581468,9.44065914 12.4477965,10.1206684 12.7293147,10.6837048 C13.0108329,11.2467412 12.9004826,11.9267505 12.4553632,12.3718698 L11.1176481,13.709585 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Contacts</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/contacts/list-columns.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/contacts/list-datatable.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Datatable</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/contacts/view-contact.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">View Contact</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/contacts/add-contact.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Add Contact</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/contacts/edit-contact.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Edit Contact</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Mail-opened.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M6,2 L18,2 C18.5522847,2 19,2.44771525 19,3 L19,12 C19,12.5522847 18.5522847,13 18,13 L6,13 C5.44771525,13 5,12.5522847 5,12 L5,3 C5,2.44771525 5.44771525,2 6,2 Z M7.5,5 C7.22385763,5 7,5.22385763 7,5.5 C7,5.77614237 7.22385763,6 7.5,6 L13.5,6 C13.7761424,6 14,5.77614237 14,5.5 C14,5.22385763 13.7761424,5 13.5,5 L7.5,5 Z M7.5,7 C7.22385763,7 7,7.22385763 7,7.5 C7,7.77614237 7.22385763,8 7.5,8 L10.5,8 C10.7761424,8 11,7.77614237 11,7.5 C11,7.22385763 10.7761424,7 10.5,7 L7.5,7 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M3.79274528,6.57253826 L12,12.5 L20.2072547,6.57253826 C20.4311176,6.4108595 20.7436609,6.46126971 20.9053396,6.68513259 C20.9668779,6.77033951 21,6.87277228 21,6.97787787 L21,17 C21,18.1045695 20.1045695,19 19,19 L5,19 C3.8954305,19 3,18.1045695 3,17 L3,6.97787787 C3,6.70173549 3.22385763,6.47787787 3.5,6.47787787 C3.60510559,6.47787787 3.70753836,6.51099993 3.79274528,6.57253826 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Chat</span><i class="menu-arrow"></i>
+                                                </a>
+                                                <div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/chat/private.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Private</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/chat/group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Group</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/chat/popup.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Popup</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Shopping/Box2.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,9.67471899 L10.880262,13.6470401 C10.9543486,13.689814 11.0320333,13.7207107 11.1111111,13.740321 L11.1111111,21.4444444 L4.49070127,17.526473 C4.18655139,17.3464765 4,17.0193034 4,16.6658832 L4,9.67471899 Z M20,9.56911707 L20,16.6658832 C20,17.0193034 19.8134486,17.3464765 19.5092987,17.526473 L12.8888889,21.4444444 L12.8888889,13.6728275 C12.9050191,13.6647696 12.9210067,13.6561758 12.9368301,13.6470401 L20,9.56911707 Z" fill="#000000" />
+                                                    <path d="M4.21611835,7.74669402 C4.30015839,7.64056877 4.40623188,7.55087574 4.5299008,7.48500698 L11.5299008,3.75665466 C11.8237589,3.60013944 12.1762411,3.60013944 12.4700992,3.75665466 L19.4700992,7.48500698 C19.5654307,7.53578262 19.6503066,7.60071528 19.7226939,7.67641889 L12.0479413,12.1074394 C11.9974761,12.1365754 11.9509488,12.1699127 11.9085461,12.2067543 C11.8661433,12.1699127 11.819616,12.1365754 11.7691509,12.1074394 L4.21611835,7.74669402 Z" fill="#000000" opacity="0.3" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Projects</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/list-columns-1.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 1</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/list-columns-2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/list-columns-3.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 3</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/list-columns-4.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Columns 4</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/list-datatable.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">List - Datatable</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/view-project.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">View Project</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/add-project.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Add Project</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/projects/edit-project.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Edit Project</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/General/Shield-check.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M11.1750002,14.75 C10.9354169,14.75 10.6958335,14.6541667 10.5041669,14.4625 L8.58750019,12.5458333 C8.20416686,12.1625 8.20416686,11.5875 8.58750019,11.2041667 C8.97083352,10.8208333 9.59375019,10.8208333 9.92916686,11.2041667 L11.1750002,12.45 L14.3375002,9.2875 C14.7208335,8.90416667 15.2958335,8.90416667 15.6791669,9.2875 C16.0625002,9.67083333 16.0625002,10.2458333 15.6791669,10.6291667 L11.8458335,14.4625 C11.6541669,14.6541667 11.4145835,14.75 11.1750002,14.75 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Support Center</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/home-1.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Home 1</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/home-2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Home 2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/faq-1.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">FAQ 1</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/faq-2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">FAQ 2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/faq-3.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">FAQ 3</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/feedback.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Feedback</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/support-center/license.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">License</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Clipboard-list.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="9" width="7" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="9" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="13" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="13" width="7" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="17" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="17" width="7" height="2" rx="1" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Todo</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/todo/tasks.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Tasks</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/todo/docs.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Docs</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/todo/files.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Files</span></a></li></ul></div>
+                                            </li>
+                                            <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true">
+                                                <a href="javascript:;" class="menu-link menu-toggle">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/Communication/Clipboard-list.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M8,3 L8,3.5 C8,4.32842712 8.67157288,5 9.5,5 L14.5,5 C15.3284271,5 16,4.32842712 16,3.5 L16,3 L18,3 C19.1045695,3 20,3.8954305 20,5 L20,21 C20,22.1045695 19.1045695,23 18,23 L6,23 C4.8954305,23 4,22.1045695 4,21 L4,5 C4,3.8954305 4.8954305,3 6,3 L8,3 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M11,2 C11,1.44771525 11.4477153,1 12,1 C12.5522847,1 13,1.44771525 13,2 L14.5,2 C14.7761424,2 15,2.22385763 15,2.5 L15,3.5 C15,3.77614237 14.7761424,4 14.5,4 L9.5,4 C9.22385763,4 9,3.77614237 9,3.5 L9,2.5 C9,2.22385763 9.22385763,2 9.5,2 L11,2 Z" fill="#000000" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="9" width="7" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="9" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="13" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="13" width="7" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="7" y="17" width="2" height="2" rx="1" />
+                                                    <rect fill="#000000" opacity="0.3" x="10" y="17" width="7" height="2" rx="1" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Education</span><i class="menu-arrow"></i>
+                                                </a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">School</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/dashboard.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Dashboard</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/statistics.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Statistics</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/calendar.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Calendar</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/library.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Library</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/teachers.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Teachers</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/school/students.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Students</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Student</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/student/dashboard.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Dashboard</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/student/profile.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Profile</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/student/calendar.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Calendar</span></a></li><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/student/classmates.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Classmates</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Class</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="custom/apps/education/class/dashboard.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">Dashboard</span></a></li></ul></div></li></ul></div>
+                                            </li>
+                                            <li class="menu-item " aria-haspopup="true">
+                                                <a href="custom/apps/inbox.html" class="menu-link ">
+                                                    <span class="svg-icon menu-icon">-->
+                                            <!--begin::Svg Icon | path:~/Content/assets/media/svg/icons/General/Shield-check.svg-->
+                                            <!--<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <rect x="0" y="0" width="24" height="24" />
+                                                    <path d="M4,4 L11.6314229,2.5691082 C11.8750185,2.52343403 12.1249815,2.52343403 12.3685771,2.5691082 L20,4 L20,13.2830094 C20,16.2173861 18.4883464,18.9447835 16,20.5 L12.5299989,22.6687507 C12.2057287,22.8714196 11.7942713,22.8714196 11.4700011,22.6687507 L8,20.5 C5.51165358,18.9447835 4,16.2173861 4,13.2830094 L4,4 Z" fill="#000000" opacity="0.3" />
+                                                    <path d="M11.1750002,14.75 C10.9354169,14.75 10.6958335,14.6541667 10.5041669,14.4625 L8.58750019,12.5458333 C8.20416686,12.1625 8.20416686,11.5875 8.58750019,11.2041667 C8.97083352,10.8208333 9.59375019,10.8208333 9.92916686,11.2041667 L11.1750002,12.45 L14.3375002,9.2875 C14.7208335,8.90416667 15.2958335,8.90416667 15.6791669,9.2875 C16.0625002,9.67083333 16.0625002,10.2458333 15.6791669,10.6291667 L11.8458335,14.4625 C11.6541669,14.6541667 11.4145835,14.75 11.1750002,14.75 Z" fill="#000000" />
+                                                </g>
+                                            </svg>-->
+                                            <!--end::Svg Icon-->
+                                            <!--</span><span class="menu-text">Inbox</span><span class="menu-label"><span class="label label-danger label-inline">new</span></span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>-->
+                                        </li>
+                                        <li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><span class="menu-text">Notifications</span><span class="menu-desc">Requests & Tracking</span><i class="menu-arrow"></i></a></li>
+                                    </ul>
+                                    <!--end::Header Nav-->
+                                </div>
+                                <!--end::Header Menu-->
+                            </div>
+                            <!--end::Header Menu Wrapper-->
+                        </div>
+                        <!--end::Container-->
+                    </div>
+                    <!--end::Bottom-->
+                </div>
+                <!--end::Header-->
+                <!--begin::Content-->
+                <div class="content  d-flex flex-column flex-column-fluid" id="kt_content">
+
+                    <!--begin::Entry-->
+                    <div class="d-flex flex-column-fluid">
+                        @RenderBody()
+                    </div>
+                    <!--end::Entry-->
+                </div>
+                <!--end::Content-->
+                <!--begin::Footer-->
+                <div class="footer bg-white py-4 d-flex flex-lg-column " id="kt_footer">
+                    <!--begin::Container-->
+                    <div class=" container  d-flex flex-column flex-md-row align-items-center justify-content-between">
+                        <!--begin::Copyright-->
+                        <div class="text-dark order-2 order-md-1">
+                            <span class="text-muted font-weight-bold mr-2">2021&copy;</span>
+                            <a href="http://www.com/ultimus" target="_blank" class="text-dark-75 text-hover-primary">Ultimus</a>
+                        </div>
+                        <!--end::Copyright-->
+                        <!--begin::Nav-->
+                        <!--<div class="nav nav-dark order-1 order-md-2">
+                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pr-3 pl-0">About</a>
+                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link px-3">Team</a>
+                            <a href="http://keenthemes.com/metronic" target="_blank" class="nav-link pl-3 pr-0">Contact</a>
+                        </div>-->
+                        <!--end::Nav-->
+                    </div>
+                    <!--end::Container-->
+                </div>
+                <!--end::Footer-->
+            </div>
+            <!--end::Wrapper-->
+        </div>
+        <!--end::Page-->
+    </div>
+    <!--end::Main-->
+    <!--begin::Global Config(global config for global JS scripts)-->
+    <script>
+        var KTAppSettings = {
+            "breakpoints": {
+                "sm": 576,
+                "md": 768,
+                "lg": 992,
+                "xl": 1200,
+                "xxl": 1200
+            },
+            "colors": {
+                "theme": {
+                    "base": {
+                        "white": "#ffffff",
+                        "primary": "#0BB783",
+                        "secondary": "#E5EAEE",
+                        "success": "#1BC5BD",
+                        "info": "#8950FC",
+                        "warning": "#FFA800",
+                        "danger": "#F64E60",
+                        "light": "#F3F6F9",
+                        "dark": "#212121"
+                    },
+                    "light": {
+                        "white": "#ffffff",
+                        "primary": "#D7F9EF",
+                        "secondary": "#ECF0F3",
+                        "success": "#C9F7F5",
+                        "info": "#EEE5FF",
+                        "warning": "#FFF4DE",
+                        "danger": "#FFE2E5",
+                        "light": "#F3F6F9",
+                        "dark": "#D6D6E0"
+                    },
+                    "inverse": {
+                        "white": "#ffffff",
+                        "primary": "#ffffff",
+                        "secondary": "#212121",
+                        "success": "#ffffff",
+                        "info": "#ffffff",
+                        "warning": "#ffffff",
+                        "danger": "#ffffff",
+                        "light": "#464E5F",
+                        "dark": "#ffffff"
+                    }
+                },
+                "gray": {
+                    "gray-100": "#F3F6F9",
+                    "gray-200": "#ECF0F3",
+                    "gray-300": "#E5EAEE",
+                    "gray-400": "#D6D6E0",
+                    "gray-500": "#B5B5C3",
+                    "gray-600": "#80808F",
+                    "gray-700": "#464E5F",
+                    "gray-800": "#1B283F",
+                    "gray-900": "#212121"
+                }
+            },
+            "font-family": "Poppins"
+        };
+    </script>
+    <!--end::Global Config-->
+    <!--begin::Global Theme Bundle(used by all pages)-->
+    <script src="~/Content/assets/plugins/global/plugins.bundle.js?v=7.0.6"></script>
+    <script src="~/Content/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.6"></script>
+    <script src="~/Content/assets/js/scripts.bundle.js?v=7.0.6"></script>
+    <!--end::Global Theme Bundle-->
+    <!--begin::Page Vendors(used by this page)-->
+    <script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+    <!--end::Page Vendors-->
+    <!--begin::Page Scripts(used by this page)-->
+    <!--end::Page Scripts-->
+    <script src="~/Content/assets/js/pages/widgets.js"></script>
+    <script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+    <script src="~/Content/assets/js/pages/features/charts/apexcharts.js"></script>
+    <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+    <script>
+        jQuery(document).ready(function () {
+            LoadDraft();
+            LoadSent();
+            $("#btnsubmit").click(function (e) {
+                KTApp.blockPage();
+                var btn = KTUtil.getById("btnsubmit");
+                KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Saving...");
+                //Serialize the form datas.
+                var valdata = $("#_frm").serialize();
+                //to get alert popup
+                $.ajax({
+                    url: "/EInvoicing/v0/appsetting/update",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (!response) {
+                            Swal.fire({
+                                text: "Sorry, something went wrong, please try again.",
+                                icon: "error",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                KTUtil.scrollTop();
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                text: "Process has been saved successfully!",
+                                icon: "success",
+                                buttonsStyling: false,
+                                confirmButtonText: "Ok, got it!",
+                                customClass: {
+                                    confirmButton: "btn font-weight-bold btn-light-primary"
+                                }
+                            }).then(function () {
+                                window.location.href = "/EInvoicing/v0"
+                                KTUtil.scrollTop();
+                            });
+                        }
+                        KTUtil.btnRelease(btn);
+                    }
+                });
+            });
+
+            $('.editBtn1').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable1').attr('readonly')) {
+                    $('.disable1').removeAttr('readonly');
+                    $('.disable1').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable1').attr('readonly', 'readonly');
+                    $('.disable1').addClass('form-control-solid');
+
+                }
+            });
+            $('.editBtn2').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable2').attr('readonly')) {
+                    $('.disable2').removeAttr('readonly');
+                    $('.disable2').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable2').attr('readonly', 'readonly');
+                    $('.disable2').addClass('form-control-solid');
+
+                }
+            });
+            $('.editBtn3').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable3').attr('readonly')) {
+                    $('.disable3').removeAttr('readonly');
+                    $('.disable3').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable3').attr('readonly', 'readonly');
+                    $('.disable3').addClass('form-control-solid');
+
+                }
+            });
+
+            $('.editBtn11').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable11').attr('readonly')) {
+                    $('.disable11').removeAttr('readonly');
+                    $('.disable11').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable11').attr('readonly', 'readonly');
+                    $('.disable11').addClass('form-control-solid');
+
+                }
+            });
+            $('.editBtn22').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable22').attr('readonly')) {
+                    $('.disable22').removeAttr('readonly');
+                    $('.disable22').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable22').attr('readonly', 'readonly');
+                    $('.disable22').addClass('form-control-solid');
+
+                }
+            });
+            $('.editBtn33').on('click', function (event) {
+                event.preventDefault();
+
+                if ($('.disable33').attr('readonly')) {
+                    $('.disable33').removeAttr('readonly');
+                    $('.disable33').removeClass('form-control-solid');
+
+                } else {
+                    $('.disable33').attr('readonly', 'readonly');
+                    $('.disable33').addClass('form-control-solid');
+
+                }
+            });
+            KTBootstrapSwitch.init();
+        });
+
+        function LoadDraft() {
+            $.ajax({
+                url: "/EInvoicing/v0/master/DraftCount",
+                type: "get", //send it through get method
+                data: {},
+                success: function (response) {
+                    $("#_draft").text(response.allDraftedDocumentsCount);
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+        function LoadSent() {
+            $.ajax({
+                url: "/EInvoicing/v0/master/SentCount",
+                type: "get", //send it through get method
+                data: {},
+                success: function (response) {
+                    $("#_sent").text(response.allSubmittedDocumentsCount);
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+
+        var KTBootstrapSwitch = function () {
+
+            // Private functions
+            var demos = function () {
+                // minimum setup
+                $('[data-switch=true]').bootstrapSwitch();
+
+            };
+
+            return {
+                // public functions
+                init: function () {
+                    demos();
+                },
+            };
+        }();
+    </script>
+
+</body>
+<!--end::Body-->
+</html>

@@ -1,0 +1,555 @@
+﻿@model eInvoicing.DTO.DashboardResponseDTO
+<!--begin::Dashboard-->
+<!--begin::Card-->
+<div class="row">
+    <div class="col-xl-7">
+        <div class="card card-custom card-stretch gutter-b" id="Card1">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark">Submitted Valid Documents</span>
+                    <span class="text-muted mt-3 font-weight-bold font-size-sm">Monthly Submitted Valid Documents: @Model.Data.SubmittedValidDocumentsCount</span>
+                </h3>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body pt-3 pb-0 mb-3">
+                <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table table-borderless table-vertical-center">
+                        <thead>
+                            <tr>
+                                <th class="p-0" style="width: 50px"></th>
+                                <th class="p-0" style="min-width: 200px"></th>
+                                <th class="p-0" style="min-width: 100px"></th>
+                                <th class="p-0" style="min-width: 125px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Shopping\Sale2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <polygon fill="#000000" opacity="0.3" points="12 20.0218549 8.47346039 21.7286168 6.86905972 18.1543453 3.07048824 17.1949849 4.13894342 13.4256452 1.84573388 10.2490577 5.08710286 8.04836581 5.3722735 4.14091196 9.2698837 4.53859595 12 1.72861679 14.7301163 4.53859595 18.6277265 4.14091196 18.9128971 8.04836581 22.1542661 10.2490577 19.8610566 13.4256452 20.9295118 17.1949849 17.1309403 18.1543453 15.5265396 21.7286168" />
+                                                        <polygon fill="#000000" points="14.0890818 8.60255815 8.36079737 14.7014391 9.70868621 16.049328 15.4369707 9.950447" />
+                                                        <path d="M10.8543431,9.1753866 C10.8543431,10.1252593 10.085524,10.8938719 9.13585777,10.8938719 C8.18793881,10.8938719 7.41737243,10.1252593 7.41737243,9.1753866 C7.41737243,8.22551387 8.18793881,7.45690126 9.13585777,7.45690126 C10.085524,7.45690126 10.8543431,8.22551387 10.8543431,9.1753866" fill="#000000" opacity="0.3" />
+                                                        <path d="M14.8641422,16.6221564 C13.9162233,16.6221564 13.1456569,15.8535438 13.1456569,14.9036711 C13.1456569,13.9520555 13.9162233,13.1851857 14.8641422,13.1851857 C15.8138085,13.1851857 16.5826276,13.9520555 16.5826276,14.9036711 C16.5826276,15.8535438 15.8138085,16.6221564 14.8641422,16.6221564 Z" fill="#000000" opacity="0.3" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Invoices <span style="font-family: cursive !important;">(@Model.Data.SubmittedInvoiceCount)</span></a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedInvoiceTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td hidden>
+                                    <span class="text-muted font-weight-bold">
+                                        Count
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;" id="SubmittedInvoiceCount">
+                                        @Model.Data.SubmittedInvoiceCount
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedInvoiceTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Minus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                        <rect fill="#000000" x="6" y="11" width="12" height="2" rx="1" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Credit Notes <span style="font-family: cursive !important;">(@Model.Data.SubmittedCreditCount)</span></a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedCreditTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td hidden>
+                                    <span class="text-muted font-weight-bold">
+                                        Count
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;" id="SubmittedCreditCount">
+                                        @Model.Data.SubmittedCreditCount
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedCreditTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                        <path d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z" fill="#000000" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Debit Notes <sapn style="font-family: cursive !important;">(@Model.Data.SubmittedDebitCount)</sapn></a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedDebitTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td hidden>
+                                    <span class="text-muted font-weight-bold">
+                                        Count
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;" id="SubmittedDebitCount">
+                                        @Model.Data.SubmittedDebitCount
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg" style="font-family: cursive !important;">
+                                        @Model.Data.SubmittedDebitTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::Table-->
+            </div>
+            <!--end::Body-->
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b" id="Card2">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Submitted Valid Documents - Analytics
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="chart_12" class="d-flex justify-content-center"></div>
+                <!--end::Chart-->
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-6">
+        <!--begin::Mixed Widget 19-->
+        <div class="card card-custom gutter-b" id="Card3">
+            <!--begin::Body-->
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between flex-grow-1">
+                    <div class="mr-2">
+                        <h3 class="font-weight-bolder">States Statistics</h3>
+                        <div class="text-muted font-size-lg mt-2">
+                            States Statistics for month - June 2021
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Valid</div>
+                        <div class="text-muted font-weight-bold" id="SubmittedValidDocumentsCount">@Model.Data.SubmittedValidDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:@Model.Data.SubmittedValidDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Invalid</div>
+                        <div class="text-muted font-weight-bold" id="SubmittedInValidDocumentsCount">@Model.Data.SubmittedInValidDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: @Model.Data.SubmittedInValidDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Cancelled</div>
+                        <div class="text-muted font-weight-bold" id="SubmittedCanceledDocumentsCount">@Model.Data.SubmittedCanceledDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-light-danger" role="progressbar" style="width: @Model.Data.SubmittedCanceledDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Rejected</div>
+                        <div class="text-muted font-weight-bold" id="SubmittedRejectedDocumentsCount">@Model.Data.SubmittedRejectedDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Model.Data.SubmittedRejectedDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Submitted</div>
+                        <div class="text-muted font-weight-bold" id="SubmittedDocumentsCount">@Model.Data.SubmittedDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-light-info" role="progressbar" style="width: @Model.Data.SubmittedDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Mixed Widget 19-->
+    </div>
+
+    <!--<div class="col-lg-6">-->
+        <!--begin::Card-->
+        <!--<div class="card card-custom gutter-b" id="Card4">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        States Statistics - Analytics
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">-->
+                <!--begin::Chart-->
+                <!--<div id="chart_13"></div>-->
+                <!--end::Chart-->
+            <!--</div>
+        </div>-->
+        <!--end::Card-->
+    <!--</div>-->
+
+</div>
+<div class="row">
+    <div class="col-xl-7">
+        <div class="card card-custom card-stretch gutter-b" id="Card5">
+            <!--begin::Header-->
+            <div class="card-header border-0 pt-5">
+                <h3 class="card-title align-items-start flex-column">
+                    <span class="card-label font-weight-bolder text-dark">Received Valid Documents</span>
+                    <span class="text-muted mt-3 font-weight-bold font-size-sm">Monthly Received Valid Documents: @Model.Data.ReceivedValidDocumentsCount</span>
+                </h3>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body pt-3 pb-0">
+                <!--begin::Table-->
+                <div class="table-responsive">
+                    <table class="table table-borderless table-vertical-center">
+                        <thead>
+                            <tr>
+                                <th class="p-0" style="width: 50px"></th>
+                                <th class="p-0" style="min-width: 200px"></th>
+                                <th class="p-0" style="min-width: 100px"></th>
+                                <th class="p-0" style="min-width: 125px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Shopping\Sale2.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <polygon fill="#000000" opacity="0.3" points="12 20.0218549 8.47346039 21.7286168 6.86905972 18.1543453 3.07048824 17.1949849 4.13894342 13.4256452 1.84573388 10.2490577 5.08710286 8.04836581 5.3722735 4.14091196 9.2698837 4.53859595 12 1.72861679 14.7301163 4.53859595 18.6277265 4.14091196 18.9128971 8.04836581 22.1542661 10.2490577 19.8610566 13.4256452 20.9295118 17.1949849 17.1309403 18.1543453 15.5265396 21.7286168" />
+                                                        <polygon fill="#000000" points="14.0890818 8.60255815 8.36079737 14.7014391 9.70868621 16.049328 15.4369707 9.950447" />
+                                                        <path d="M10.8543431,9.1753866 C10.8543431,10.1252593 10.085524,10.8938719 9.13585777,10.8938719 C8.18793881,10.8938719 7.41737243,10.1252593 7.41737243,9.1753866 C7.41737243,8.22551387 8.18793881,7.45690126 9.13585777,7.45690126 C10.085524,7.45690126 10.8543431,8.22551387 10.8543431,9.1753866" fill="#000000" opacity="0.3" />
+                                                        <path d="M14.8641422,16.6221564 C13.9162233,16.6221564 13.1456569,15.8535438 13.1456569,14.9036711 C13.1456569,13.9520555 13.9162233,13.1851857 14.8641422,13.1851857 C15.8138085,13.1851857 16.5826276,13.9520555 16.5826276,14.9036711 C16.5826276,15.8535438 15.8138085,16.6221564 14.8641422,16.6221564 Z" fill="#000000" opacity="0.3" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Invoices ( @Model.Data.ReceivedInvoiceCount)</a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedInvoiceTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedInvoiceTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Minus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                        <rect fill="#000000" x="6" y="11" width="12" height="2" rx="1" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Credit Notes (@Model.Data.ReceivedCreditCount)</a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedCreditTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedCreditTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="pl-0 py-4">
+                                    <div class="symbol symbol-50 symbol-light mr-1">
+                                        <span class="symbol-label">
+                                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo9\dist/../src/media/svg/icons\Code\Plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                        <path d="M11,11 L11,7 C11,6.44771525 11.4477153,6 12,6 C12.5522847,6 13,6.44771525 13,7 L13,11 L17,11 C17.5522847,11 18,11.4477153 18,12 C18,12.5522847 17.5522847,13 17,13 L13,13 L13,17 C13,17.5522847 12.5522847,18 12,18 C11.4477153,18 11,17.5522847 11,17 L11,13 L7,13 C6.44771525,13 6,12.5522847 6,12 C6,11.4477153 6.44771525,11 7,11 L11,11 Z" fill="#000000" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="pl-0">
+                                    <a href="#" class="text-dark font-weight-bolder text-hover-primary mb-1 font-size-lg">Debit Notes (@Model.Data.ReceivedDebitCount)</a>
+                                    <span class="text-muted font-weight-bold d-block">Valid</span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Amount
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedDebitTotalAmount EGP
+                                    </span>
+                                </td>
+                                <td class="text-left">
+                                    <span class="text-muted font-weight-bold">
+                                        Total Tax
+                                    </span>
+                                    <span class="text-dark-75 font-weight-bolder d-block font-size-lg">
+                                        @Model.Data.ReceivedDebitTotalTax EGP
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!--end::Table-->
+            </div>
+            <!--end::Body-->
+        </div>
+    </div>
+    <div class="col-lg-5">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b" id="Card8">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Received Valid Documents - Analytics
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="chart_21" class="d-flex justify-content-center"></div>
+                <!--end::Chart-->
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-xl-6">
+        <!--begin::Mixed Widget 19-->
+        <div class="card card-custom gutter-b" id="Card6">
+            <!--begin::Body-->
+            <div class="card-body d-flex flex-column">
+                <div class="d-flex align-items-center justify-content-between flex-grow-1">
+                    <div class="mr-2">
+                        <h3 class="font-weight-bolder">States Statistics</h3>
+                        <div class="text-muted font-size-lg mt-2">
+                            States Statistics for month - June 2021
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Valid</div>
+                        <div class="text-muted font-weight-bold" id="ReceivedValidDocumentsCount">@Model.Data.ReceivedValidDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-success" role="progressbar" style="width:@Model.Data.ReceivedValidDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Invalid</div>
+                        <div class="text-muted font-weight-bold" id="ReceivedInValidDocumentsCount">@Model.Data.ReceivedInValidDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-warning" role="progressbar" style="width: @Model.Data.ReceivedInValidDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Cancelled</div>
+                        <div class="text-muted font-weight-bold" id="ReceivedCanceledDocumentsCount">@Model.Data.ReceivedCanceledDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-light-danger" role="progressbar" style="width: @Model.Data.ReceivedCanceledDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Rejected</div>
+                        <div class="text-muted font-weight-bold" id="ReceivedRejectedDocumentsCount">@Model.Data.ReceivedRejectedDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-danger" role="progressbar" style="width: @Model.Data.ReceivedRejectedDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <div class="pt-8">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                        <div class="text-muted font-weight-bold mr-2">Received</div>
+                        <div class="text-muted font-weight-bold" id="ReceivedSubmittedDocumentsCount">@Model.Data.ReceivedSubmittedDocumentsCount</div>
+                    </div>
+                    <div class="progress bg-light-warning progress-xs">
+                        <div class="progress-bar bg-light-info" role="progressbar" style="width: @Model.Data.ReceivedSubmittedDocumentsCountPercentage%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+            </div>
+            <!--end::Body-->
+        </div>
+        <!--end::Mixed Widget 19-->
+    </div>
+    <div class="col-lg-6">
+        <!--begin::Card-->
+        <div class="card card-custom gutter-b" id="Card7">
+            <div class="card-header">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        States Statistics - Analytics
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <!--begin::Chart-->
+                <div id="chart_31"></div>
+                <!--end::Chart-->
+            </div>
+        </div>
+        <!--end::Card-->
+    </div>
+
+</div>
+<script src="~/Scripts/jquery-3.6.0.js"></script>
+@if (Model.Message != "Success")
+{
+    <script>
+        jQuery(document).ready(function () {
+            Swal.fire({
+                title: "Ooops!",
+                text: "Something went wrong. Please check connection and try again later.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Try Again",
+                showCancelButton: true,
+                cancelButtonText: "Settings",
+                customClass: {
+                    confirmButton: "btn btn-danger",
+                    cancelButton: "btn btn-default"
+                }
+            }).then(function (result) {
+                if (result.value) {
+                    window.location.href = "/EInvoicing//v0";
+                    KTUtil.scrollTop();
+                } else if (result.dismiss === "cancel") {
+                    window.location.href = "/EInvoicing//v0/appsetting";
+                }
+            });
+        });
+    </script>
+}

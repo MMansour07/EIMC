@@ -1,0 +1,39 @@
+﻿@model eInvoicing.DTO.RoleDTO
+
+<!--begin::Form-->
+<!--begin::Wizard Form-->
+@using (Html.BeginForm("edit", "role", FormMethod.Post, new { @class = "", role = "form", id = "_editRoleFrm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="card-body">
+        <!--end::Group-->
+        <div class="form-group row">
+            @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
+        </div>
+        <!--begin::Group-->
+        <div class="form-group row">
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name" })
+            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5" })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.ListBoxFor(model => model.Privileges, ViewBag.Privileges as SelectList, new { @class = "form-control select2", @id = "kt_select2_2", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
+            @Html.ValidationMessageFor(model => model.Privileges, "", new { @class = "text-danger" })
+        </div>
+        <div class="form-group row">
+            @Html.ListBoxFor(model => model.Permissions, ViewBag.Permissions as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
+            @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <!--end::Group-->
+}
+<!--end::Form-->
+<script src="~/Scripts/modernizr-2.8.3.js"></script>
+<script src="~/Scripts/jquery.validate.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+

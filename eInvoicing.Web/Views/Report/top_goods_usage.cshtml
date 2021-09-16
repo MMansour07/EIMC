@@ -6,7 +6,7 @@
 <title>EInvoicing|Documents</title>
 <div class=" container ">
     <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-6  subheader-transparent" >
+    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
         <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
@@ -15,7 +15,7 @@
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
                     <h5 class="text-dark font-weight-bold my-1 mr-5">
-                        Monthly LowestSeller Item
+                        Top Goods Usage
                     </h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
@@ -42,7 +42,17 @@
     <div class="form-group row mb-4">
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="input-group date">
-                <input type="text" class="form-control" id="LowestspecificDate" readonly="readonly" placeholder="Select Year">
+                <input type="text" class="form-control" id="fromDate" readonly="readonly" placeholder="From Date">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i class="la la-calendar"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+            <div class="input-group date">
+                <input type="text" class="form-control" id="toDate" readonly="readonly" placeholder="To Date">
                 <div class="input-group-append">
                     <span class="input-group-text">
                         <i class="la la-calendar"></i>
@@ -56,19 +66,12 @@
         </a>
     </div>
     <hr />
-    <div class="card card-custom  gutter-b" id="GetMonthlyLowestSeller_crd">
-        @*<div class="card-header">
-                <div class="card-title">
-                    <span class="card-icon"><i class="flaticon2-layers text-primary"></i></span>
-                    <h3 class="card-label">Submitted Documents Analytics & Stats</h3>
-                </div>
-            </div>*@
+    <div class="card card-custom  gutter-b" id="SubmittedDocumentsStats_crd">
         <div class="card-body">
             <!--begin: Datatable-->
-            <table class="table table-hover table-checkable" id="GetMonthlyLowestSeller">
+            <table class="table table-hover table-checkable" id="kt_datatable10">
                 <thead>
                     <tr>
-                        <th>Month</th>
                         <th>Code</th>
                         <th>Description</th>
                         <th>Count</th>
@@ -82,6 +85,6 @@
     </div>
 </div>
 <script src="~/Content/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/datatables/search-options/GetMonthlyLowestSeller.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/datatables/search-options/TopGoods.js?v=7.0.6"></script>
 <script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

@@ -16,6 +16,11 @@ namespace eInvoicing.DTO
         public Meta meta { get; set; }
         public PagedList<SubmittedDocumentsDTO> data { get; set; }
     }
+    public class GoodsModelVM
+    {
+        public Meta meta { get; set; }
+        public PagedList<GoodsModel> data { get; set; }
+    }
     public class GetMonthlyBestSellerResponse
     {
         public Meta meta { get; set; }

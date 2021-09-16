@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using eInvoicing.DTO;
 using System.Security.Claims;
 using System.Collections.Generic;
+using System.Net;
 
 namespace eInvoicing.Web.Controllers
 {
@@ -112,6 +113,12 @@ namespace eInvoicing.Web.Controllers
                         var identity = new ClaimsIdentity(claims, "ApplicationCookie");
                         Request.GetOwinContext().Authentication.SignIn(options, identity);
                         return RedirectToLocal(returnUrl);
+                    }
+                    else if (postTask.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        ModelState.AddModelError("", "Oops, License has been expired!");
+                        return View(model);
+
                     }
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);

@@ -14,5 +14,6 @@ namespace eInvoicing.Service.AppService.Contract.Base
         PagedList<SubmittedDocumentsDTO> GetSubmittedDocumentsStats(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
         IEnumerable<GoodsModel> GetMonthlyBestSeller(int SpecificDate);
         IEnumerable<GoodsModel> GetMonthlyLowestSeller(int SpecificDate);
+        PagedList<GoodsModel> GetTopGoodsUsage(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
     }
 }

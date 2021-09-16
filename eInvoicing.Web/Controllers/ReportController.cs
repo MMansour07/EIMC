@@ -28,17 +28,22 @@ namespace eInvoicing.Web.Controllers
             _userSession = userSession;
         }
         [HttpGet]
-        public ActionResult GetSubmittedDocumentsStats()
+        public ActionResult documents_stats()
         {
             return View();
         }
         [HttpGet]
-        public ActionResult MonthlyBestSeller()
+        public ActionResult top_goods_usage()
         {
             return View();
         }
         [HttpGet]
-        public ActionResult MonthlyLowestSeller()
+        public ActionResult monthly_bestseller()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult monthly_lowestseller()
         {
             return View();
         }
@@ -83,6 +88,49 @@ namespace eInvoicing.Web.Controllers
             catch (Exception ex)
             {
                 return Json(new SubmittedDocumentResponse(), JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        [ActionName("AjaxTopGoodsUsage")]
+        public ActionResult AjaxTopGoodsUsage()
+        {
+            try
+            {
+                int start = Convert.ToInt32(Request["start"]);
+                int length = Convert.ToInt32(Request["length"]);
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                string searchValue = Request["search[value]"];
+                string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string sortDirection = Request["order[0][dir]"];
+
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : Convert.ToDateTime(toDate);
+                if (start == 0)
+                    start = 1;
+                else
+                    start = (start / length) + 1;
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    var url = _userSession.URL + "api/report/TopGoodsUsage?pageNumber=" + Convert.ToInt32(start) + 
+                        "&pageSize=" + Convert.ToInt32(length) + "&fromdate=" + _fromDate + "&todate=" + _toDate + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection;
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<GoodsModelVM>(postTask.Content.ReadAsStringAsync().Result);
+                        return Json(new { recordsTotal = response.meta.total, recordsFiltered = response.meta.totalFiltered, data = response.data }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new GoodsModelVM(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(new GoodsModelVM(), JsonRequestBehavior.AllowGet);
             }
         }
 

@@ -10,11 +10,11 @@ var KTUppy = function () {
     // Private functions
     var initUppy1 = function () {
         var id = '#kt_uppy_1';
-        if ($(id).length) {
+        /*if ($(id).length) {*/
             var options = {
                 proudlyDisplayPoweredByUppy: false,
-                target: id,
-                inline: true,
+                target: id + ' .uppy-dashboard',
+                inline: false,
                 replaceTargetContent: true,
                 showProgressDetails: true,
                 note: 'Max file size is 1MB and max number of files is 1.',
@@ -24,6 +24,7 @@ var KTUppy = function () {
                     { id: 'caption', name: 'Caption', placeholder: 'describe what the image is about' }
                 ],
                 browserBackButtonClose: true,
+                trigger: id + ' .uppy-btn'
             }
             var uppyDashboard = Uppy.Core({
                 autoProceed: true,
@@ -54,7 +55,7 @@ var KTUppy = function () {
                         });
                         // Adding one more key to FormData object  
                         fileData.append('username', 'sa');
-                        //$(".uppy-Dashboard-close").click();
+                        $(".uppy-Dashboard-close").click();
                         $.ajax({
                             url: '/EInvoicing//v0/master/UploadLicense',
                             type: "POST",
@@ -105,7 +106,7 @@ var KTUppy = function () {
             uppyDashboard.use(GoogleDrive, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
             uppyDashboard.use(Dropbox, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
             uppyDashboard.use(Webcam, { target: Dashboard });
-        }
+        //}
     }
     var initUppy6 = function () {
         var id = '#kt_uppy_6';

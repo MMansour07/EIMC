@@ -1,30 +1,11 @@
 ﻿using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
-using System.Net.Http;
-using Newtonsoft.Json;
-using eInvoicing.Repository.Contract.Base;
-using eInvoicing.DomainEntities.Entities;
-using Ninject;
 using eInvoicing.Repository.Contract;
-using System.Reflection;
-using eInvoicing.Repository.Implementation;
-using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
-using eInvoicing.Service.Helper.Extension;
-using System.Net;
-using System.IO;
-using System.Web;
-using System.Globalization;
-using Microsoft.Practices.ObjectBuilder2;
-using System.Data.Entity.SqlServer;
 using System.Linq.Dynamic;
+using System.Data.Entity.SqlServer;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -83,6 +64,7 @@ namespace eInvoicing.Service.AppService.Implementation
         public IEnumerable<GoodsModel> GetMonthlyLowestSeller(int SpecificDate)
         {
 
+
             var docs = repository.Get(i => i.DateTimeIssued.Year == SpecificDate, m => m.OrderByDescending(x => x.DateTimeIssued), null).ToList();
             return docs.GroupBy(o => o.DateTimeIssued.Month).Select(i => i.SelectMany(o => o.InvoiceLines).GroupBy(o => o.ItemCode).Select(x => new GoodsModel()
             {
@@ -93,6 +75,27 @@ namespace eInvoicing.Service.AppService.Implementation
                 totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0"),
                 month = i.Select(t => t.DateTimeIssued.Month).FirstOrDefault()
             }).OrderBy(x => x.count).FirstOrDefault());
+        }
+        public PagedList<GoodsModel> GetTopGoodsUsage(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            toDate = toDate.AddDays(1);
+            var Response = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" &&
+             i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date, null, null);
+            var goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode)
+             .Select(x => new GoodsModel() { totalAmount = SqlFunctions.StringConvert(x.Sum(y => y.Total)), count = x.Sum(p => p.Quantity),
+                 itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = SqlFunctions.StringConvert(x.Sum(c => c.TaxableItems.Sum(u => u.Amount)))});
+            int totalCount = goodsModel.Count();
+            if (!string.IsNullOrEmpty(searchValue))//filter
+            {
+                goodsModel = goodsModel.Where(x => x.itemCode.ToString().ToLower().Contains(searchValue.ToLower()) || x.itemDesc.ToString().ToLower().Contains(searchValue.ToLower()) ||
+                                x.totalAmount.ToString().ToLower().Contains(searchValue.ToLower()) || x.totalTax.ToString().ToLower().Contains(searchValue.ToLower()) 
+                                || x.count.ToString().ToLower().Contains(searchValue.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(sortColumnName))
+            {
+                goodsModel = goodsModel.OrderBy(sortColumnName + " " + sortDirection);
+            }
+            return PagedList<GoodsModel>.Create(goodsModel, pageNumber, pageSize, totalCount);
         }
     }
 }

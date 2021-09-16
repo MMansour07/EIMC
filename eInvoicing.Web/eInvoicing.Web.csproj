@@ -363,6 +363,7 @@
     <Content Include="Content\assets\js\pages\crud\datatables\extensions\select.min.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.min.js" />
+    <Content Include="Content\assets\js\pages\crud\datatables\search-options\TopGoods.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\GetMonthlyLowestSeller.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\GetMonthlyBestSeller.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\column-search.js" />
@@ -2551,12 +2552,13 @@
     <Content Include="Views\Master\ErrorHandler.cshtml" />
     <Content Include="Views\ErrorHandler\Index.cshtml" />
     <Content Include="Views\AppSetting\Index.cshtml" />
-    <Content Include="Views\Report\GetSubmittedDocumentsStats.cshtml" />
-    <Content Include="Views\Report\MonthlyBestSeller.cshtml" />
-    <Content Include="Views\Report\MonthlyLowestSeller.cshtml" />
+    <Content Include="Views\Report\documents_stats.cshtml" />
+    <Content Include="Views\Report\monthly_bestseller.cshtml" />
+    <Content Include="Views\Report\monthly_lowestseller.cshtml" />
     <Content Include="Views\User\View.cshtml" />
     <Content Include="Views\User\EditPartial.cshtml" />
     <Content Include="Views\Role\EditPartial.cshtml" />
+    <Content Include="Views\Report\top_goods_usage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

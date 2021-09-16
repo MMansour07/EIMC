@@ -30,7 +30,8 @@ namespace eInvoicing.API.Controllers
             try
             {
                 var response = _reportService.GetSubmittedDocumentsStats(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
-                return Ok(new SubmittedDocumentResponse() { meta = new Meta() { page = response.CurrentPage, pages = response.TotalPages, perpage = response.PageSize, total = response.TotalCount, totalFiltered = response.TotalFiltered }, data = response });
+                return Ok(new SubmittedDocumentResponse() { meta = new Meta() { page = response.CurrentPage, pages = response.TotalPages, perpage = response.PageSize, 
+                    total = response.TotalCount, totalFiltered = response.TotalFiltered }, data = response });
             }
             catch (Exception ex)
             {
@@ -38,6 +39,21 @@ namespace eInvoicing.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/report/TopGoodsUsage")]
+        public IHttpActionResult GetTopGoodsUsage(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            try
+            {
+                var response = _reportService.GetTopGoodsUsage(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
+                return Ok(new GoodsModelVM() { meta = new Meta() { page = response.CurrentPage, pages = response.TotalPages, perpage = response.PageSize,
+                    total = response.TotalCount, totalFiltered = response.TotalFiltered }, data = response });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
         [HttpGet]
         [Route("api/report/MonthlyBestSeller")]
         public IHttpActionResult GetMonthlyBestSeller(int SpecificDate)

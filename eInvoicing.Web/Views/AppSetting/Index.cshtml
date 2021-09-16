@@ -44,8 +44,9 @@
     <!--end::Subheader-->
     <div class="row mb-1">
         <div class="col-md-12">
-            <a type="button" class="btn btn-secondary" href="@Url.Action("Index","Master")" style="float:right !important">Cancel</a>
-            <button type="button" id="btnsubmit" class="btn btn-primary mr-2" style="float:right !important">Save</button>
+            <button type="button" id="editBtn1" class="btn btn-primary mr-2" style="float:right !important"><i class="fa fa-edit"></i> Edit</button>
+            <a type="button" class="btn btn-secondary save_changes" href="@Url.Action("Index","Master")" style="float:right !important">Cancel</a>
+            <button type="button" id="btnsubmit" class="save_changes btn btn-primary mr-2" style="float:right !important">Save</button>
         </div>
     </div>
     <ul class="nav nav-tabs nav-tabs-line">
@@ -74,7 +75,7 @@
                                         <div class="col-md-12">
 
                                             <label>Login Base Address</label>
-                                            @Html.TextBoxFor(m => m.PreProductionLoginURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(m => m.PreProductionLoginURL, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -82,7 +83,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>APIs Base Address</label>
-                                            @Html.TextBoxFor(model => model.PreProductionApiURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.PreProductionApiURL, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +91,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>Client Id</label>
-                                            @Html.TextBoxFor(model => model.PreProductionClientId, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.PreProductionClientId, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -100,11 +101,11 @@
                                             <label>Client Secret</label>
                                             <div class="input-group">
                                                 @Html.TextBoxFor(model => model.PreProductionClientSecret, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
-                                                <div class="input-group-append">
+                                                @*<div class="input-group-append">
                                                     <span class="input-group-text editBtn1">
                                                         <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
                                                     </span>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -125,7 +126,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>Login Base Address</label>
-                                            @Html.TextBoxFor(model => model.ProductionLoginURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.ProductionLoginURL, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +134,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>APIs Base Address</label>
-                                            @Html.TextBoxFor(model => model.ProductionApiURL, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.ProductionApiURL, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -141,7 +142,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <label>Client Id</label>
-                                            @Html.TextBoxFor(model => model.ProductionClientId, new { @class = "form-control form-control-solid", @readonly = "readonly" })
+                                            @Html.TextBoxFor(model => model.ProductionClientId, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                         </div>
                                     </div>
                                 </div>
@@ -150,12 +151,12 @@
                                         <div class="col-md-12">
                                             <label>Client Secret</label>
                                             <div class="input-group">
-                                                @Html.TextBoxFor(model => model.ProductionClientSecret, new { @class = "form-control form-control-solid disable11", @readonly = "readonly" })
-                                                <div class="input-group-append">
+                                                @Html.TextBoxFor(model => model.ProductionClientSecret, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
+                                                @*<div class="input-group-append">
                                                     <span class="input-group-text editBtn11">
                                                         <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
                                                     </span>
-                                                </div>
+                                                </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -178,7 +179,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label text-left col-lg-3 col-sm-12">APIs Environment:</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
-                                        @Html.CheckBoxFor(m => m.APIsEnvironment, new { data_switch = "true", @type = "checkbox", data_on_text = "Prod", data_handle_width = "70", data_off_text = "UAT", data_on_color = "primary" })
+                                        @Html.CheckBoxFor(m => m.APIsEnvironment, new { data_switch = "true", @type = "checkbox", data_on_text = "Prod", @class= "form-control-solid disable1", data_handle_width = "70", data_off_text = "UAT", data_on_color = "primary" })
                                     </div>
                                 </div>
                                 @*<div class="form-group row">
@@ -190,7 +191,7 @@
                                 <div class="form-group row">
                                     <label class="col-form-label text-left col-lg-3 col-sm-12">Type Version:</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
-                                        @Html.CheckBoxFor(m => m.TypeVersion, new { data_switch = "true", @type = "checkbox", data_on_text = "1.0", data_handle_width = "70", data_off_text = "0.9", data_on_color = "primary" })
+                                        @Html.CheckBoxFor(m => m.TypeVersion, new { data_switch = "true", @type = "checkbox", data_on_text = "1.0", @class = "form-control-solid disable1", data_handle_width = "70", data_off_text = "0.9", data_on_color = "primary" })
                                     </div>
                                 </div>
                             </div>
@@ -225,6 +226,7 @@
 </div>
 <script>
     jQuery(document).ready(function () {
+        $('.save_changes').hide();
         $("#btnsubmit").click(function (e) {
             KTApp.blockPage();
             var valdata = $("#_frm").serialize();
@@ -236,6 +238,10 @@
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 data: valdata,
                 success: function (response) {
+                    $('.save_changes').hide();
+                    $('#editBtn1').show();
+                    $('.disable1').attr('readonly', 'readonly');
+                    $('.disable1').addClass('form-control-solid');
                     KTApp.unblockPage();
                     if (!response) {
                         toastr.options = {
@@ -294,83 +300,12 @@
             $('input[name=License]').val("");
         });
 
-        $('.editBtn1').on('click', function (event) {
+        $('#editBtn1').on('click', function (event) {
             event.preventDefault();
-
-            if ($('.disable1').attr('readonly')) {
                 $('.disable1').removeAttr('readonly');
                 $('.disable1').removeClass('form-control-solid');
-
-            } else {
-                $('.disable1').attr('readonly', 'readonly');
-                $('.disable1').addClass('form-control-solid');
-
-            }
-        });
-        $('.editBtn2').on('click', function (event) {
-            event.preventDefault();
-
-            if ($('.disable2').attr('readonly')) {
-                $('.disable2').removeAttr('readonly');
-                $('.disable2').removeClass('form-control-solid');
-
-            } else {
-                $('.disable2').attr('readonly', 'readonly');
-                $('.disable2').addClass('form-control-solid');
-
-            }
-        });
-        $('.editBtn3').on('click', function (event) {
-            event.preventDefault();
-
-            if ($('.disable3').attr('readonly')) {
-                $('.disable3').removeAttr('readonly');
-                $('.disable3').removeClass('form-control-solid');
-
-            } else {
-                $('.disable3').attr('readonly', 'readonly');
-                $('.disable3').addClass('form-control-solid');
-
-            }
-        });
-        $('.editBtn11').on('click', function (event) {
-            event.preventDefault();
-
-            if ($('.disable11').attr('readonly')) {
-                $('.disable11').removeAttr('readonly');
-                $('.disable11').removeClass('form-control-solid');
-
-            } else {
-                $('.disable11').attr('readonly', 'readonly');
-                $('.disable11').addClass('form-control-solid');
-
-            }
-        });
-        $('.editBtn22').on('click', function (event) {
-            event.preventDefault();
-
-            if ($('.disable22').attr('readonly')) {
-                $('.disable22').removeAttr('readonly');
-                $('.disable22').removeClass('form-control-solid');
-
-            } else {
-                $('.disable22').attr('readonly', 'readonly');
-                $('.disable22').addClass('form-control-solid');
-
-            }
-        });
-        $('.editBtn33').on('click', function (event) {
-            event.preventDefault();
-
-            if ($('.disable33').attr('readonly')) {
-                $('.disable33').removeAttr('readonly');
-                $('.disable33').removeClass('form-control-solid');
-
-            } else {
-                $('.disable33').attr('readonly', 'readonly');
-                $('.disable33').addClass('form-control-solid');
-
-            }
+                $('#editBtn1').hide();
+                $('.save_changes').show();
         });
         KTBootstrapSwitch.init();
     });

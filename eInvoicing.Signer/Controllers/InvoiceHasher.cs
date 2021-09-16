@@ -162,7 +162,7 @@ namespace eInvoicing.Signer.Controllers
                 signatures.Add(new SIGNATURESDTO
                 {
                     signatureType = "I",
-                    value = signatureString
+                    value = "NA"
                 });
                 document.Add("signatures", JArray.FromObject(signatures));
                 inputDocuments.Add(document);

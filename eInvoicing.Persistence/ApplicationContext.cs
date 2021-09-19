@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using eInvoicing.DomainEntities.Entities;
 using System.Data.Entity;
+using eInvoicing.Persistence.Seeder;
 
 namespace eInvoicing.Persistence
 {
     public class ApplicationContext : DbContext
     {
         public ApplicationContext(): base("name=eInvoicing_CS")
-        { }
+        {
+            Database.SetInitializer(new DBContextSeeder());
+        }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // configures one-to-many relationship

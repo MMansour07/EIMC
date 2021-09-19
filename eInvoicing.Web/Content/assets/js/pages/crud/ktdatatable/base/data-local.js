@@ -156,7 +156,7 @@ var KTDatatableDataLocalDemo = function() {
                 field: 'ShipDate',
                 title: 'Ship Date',
                 type: 'date',
-                format: 'MM/DD/YYYY',
+                format: 'dd-MMM-yyyy',
             }, {
                 field: 'CompanyName',
                 title: 'Company Name',

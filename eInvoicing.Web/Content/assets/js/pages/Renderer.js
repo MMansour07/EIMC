@@ -149,147 +149,17 @@ jQuery(document).ready(function () {
     });
 });
 function ModifyDate(date) {
-    var day = date.getDate();       // yields date
-    var month = date.getMonth() + 1;    // yields month (add one as '.getMonth()' is zero indexed)
-    var year = date.getFullYear();  // yields year
+    var day = date.getDate();       
+    var month = date.getMonth() + 1;  
+    var year = date.getFullYear();
 
     // After this construct a string with the above results as below
     return year + "-" + month + "-" + day;
 }
 var KTApexChartsDemo = function (data) {
-
-
-	//var _demo12 = function (data) {
-	//	const apexChart = "#chart_12";
-	//	var options = {
-	//		series: [data?.SubmittedInvoiceCount, data?.SubmittedCreditCount, data?.SubmittedDebitCount],
-	//		chart: {
-	//			width: 380,
-	//			type: 'pie',
-	//		},
-	//		labels: ['Invoice', 'Credit Note', 'Debit Note'],
-	//		responsive: [{
-	//			breakpoint: 480,
-	//			options: {
-	//				chart: {
-	//					width: 200
-	//				},
-	//				legend: {
-	//					position: 'bottom'
-	//				}
-	//			}
-	//		}],
-	//		colors: [primary, success, danger]
-	//	};
-	//	var chart = new ApexCharts(document.querySelector(apexChart), options);
-	//	chart.render();
-	//}
-	//var _demo13 = function (data) {
-	//	const apexChart = "#chart_13";
-	//	var options = {
-	//		series: [data?.SubmittedValidDocumentsCountPercentage, data?.SubmittedInValidDocumentsCountPercentage, data?.SubmittedCanceledDocumentsCountPercentage, data?.SubmittedRejectedDocumentsCountPercentage, data?.SubmittedDocumentsCountPercentage],
-	//		chart: {
-	//			height: 287,
-	//			type: 'radialBar',
-	//		},
-	//		plotOptions: {
-	//			radialBar: {
-	//				dataLabels: {
-	//					name: {
-	//						fontSize: '22px',
-	//					},
-	//					value: {
-	//						fontSize: '16px',
-	//					},
-	//					total: {
-	//						show: true,
-	//						label: 'Total',
-	//						formatter: function (w) {
-	//							// By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-	//							return data?.SubmittedValidDocumentsCount + data?.SubmittedInValidDocumentsCount + data?.SubmittedCanceledDocumentsCount + data?.SubmittedRejectedDocumentsCount + data?.SubmittedDocumentsCount;
-	//						}
-	//					}
-	//				}
-	//			}
-	//		},
-	//		labels: ['Valid', 'Invalid', 'Cancelled', 'Rejeted', 'Submitted'],
-	//		colors: [success, warning, info, danger, primary]
-	//	};
-
-	//	var chart = new ApexCharts(document.querySelector(apexChart), options);
-	//	chart.render();
-	//}
-
-	//var _demo21 = function (data) {
-	//	const apexChart = "#chart_21";
-	//	var options = {
-	//		series: [data?.ReceivedInvoiceCount, data?.ReceivedCreditCount, data?.ReceivedDebitCount],
-	//		chart: {
-	//			width: 380,
-	//			type: 'pie',
-	//		},
-	//		labels: ['Invoice', 'Credit Note', 'Debit Note'],
-	//		responsive: [{
-	//			breakpoint: 480,
-	//			options: {
-	//				chart: {
-	//					width: 200
-	//				},
-	//				legend: {
-	//					position: 'bottom'
-	//				}
-	//			}
-	//		}],
-	//		colors: [primary, success, danger]
-	//	};
-
-	//	var chart = new ApexCharts(document.querySelector(apexChart), options);
-	//	chart.render();
-	//}
-
-	//var _demo31 = function (data) {
-	//	const apexChart = "#chart_31";
-	//	var options = {
-	//		series: [data?.ReceivedValidDocumentsCountPercentage, data?.ReceivedInValidDocumentsCountPercentage, data?.ReceivedCanceledDocumentsCountPercentage, data?.ReceivedRejectedDocumentsCountPercentage, data?.ReceivedSubmittedDocumentsCountPercentage],
-	//		chart: {
-	//			height: 287,
-	//			type: 'radialBar',
-	//		},
-	//		plotOptions: {
-	//			radialBar: {
-	//				dataLabels: {
-	//					name: {
-	//						fontSize: '22px',
-	//					},
-	//					value: {
-	//						fontSize: '16px',
-	//					},
-	//					total: {
-	//						show: true,
-	//						label: 'Total',
-	//						formatter: function (w) {
-	//							// By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-	//							return data?.ReceivedValidDocumentsCount + data?.ReceivedInValidDocumentsCount + data?.ReceivedCanceledDocumentsCount + data?.ReceivedRejectedDocumentsCount + data?.ReceivedSubmittedDocumentsCount;
-	//						}
-	//					}
-	//				}
-	//			}
-	//		},
-	//		labels: ['Valid', 'Invalid', 'Cancelled', 'Rejeted', 'Received'],
-	//		colors: [success, warning, info, danger, primary]
-	//	};
-
-	//	var chart = new ApexCharts(document.querySelector(apexChart), options);
-	//	chart.render();
-	//}
-
 	return {
 		// public functions
 		init: function (data) {
-			//_demo12(data);
-			//_demo13(data);
-			//_demo21(data);
-			//_demo31(data);
 		}
 	};
 }();

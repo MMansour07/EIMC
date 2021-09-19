@@ -371,7 +371,7 @@ var KTDatatableModal = function() {
                 field: 'hire_date',
                 title: 'Hire Date',
                 type: 'date',
-                format: 'MM/DD/YYYY',
+                format: 'dd-MMM-yyyy',
             }, {
                 field: 'gender',
                 title: 'Gender',
@@ -653,7 +653,7 @@ var KTDatatableModal = function() {
                 field: 'ShipDate',
                 title: 'Ship Date',
                 type: 'date',
-                format: 'MM/DD/YYYY',
+                format: 'dd-MMM-yyyy',
             }, {
                 field: 'ShipCountry',
                 title: 'Ship Country',

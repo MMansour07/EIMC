@@ -195,8 +195,8 @@ namespace eInvoicing.Web.Controllers
                 GetDocumentResponse document = result;
                 if (document != null)
                 {
-                    document.dateTimeIssued = DateTime.Parse(document.dateTimeIssued).ToString("MM/dd/yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                    document.dateTimeReceived = DateTime.Parse(document.dateTimeReceived).ToString("MM/dd/yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                    document.dateTimeIssued = DateTime.Parse(document.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                    document.dateTimeReceived = DateTime.Parse(document.dateTimeReceived).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
                     var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },

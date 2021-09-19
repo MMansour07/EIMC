@@ -48,9 +48,12 @@ var initTable1 = function () {
 		}
 	});
 };
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
 jQuery(document).ready(function () {
-	$("#fromDate").val(((fromDate.getMonth() > 8) ? (fromDate.getMonth() + 1) : ('0' + (fromDate.getMonth() + 1))) + '/' + ((fromDate.getDate() > 9) ? fromDate.getDate() : ('0' + fromDate.getDate())) + '/' + fromDate.getFullYear());
-	$("#toDate").val(((toDate.getMonth() > 8) ? (toDate.getMonth() + 1) : ('0' + (toDate.getMonth() + 1))) + '/' + ((toDate.getDate() > 9) ? toDate.getDate() : ('0' + toDate.getDate())) + '/' + toDate.getFullYear());
+	$("#fromDate").val(((fromDate.getDate() > 9) ? fromDate.getDate() : ('0' + fromDate.getDate())) + '-' + monthNames[((fromDate.getMonth() > 8) ? (fromDate.getMonth()) : ((fromDate.getMonth())))] + '-' + fromDate.getFullYear());
+	$("#toDate").val(((toDate.getDate() > 9) ? toDate.getDate() : ('0' + toDate.getDate())) + '-' + monthNames[((toDate.getMonth() > 8) ? (toDate.getMonth()) : ((toDate.getMonth())))] + '-' + toDate.getFullYear());
 	fromDate = ($("#fromDate").val()) ? $("#fromDate").val() : '';
 	toDate = ($("#toDate").val()) ? $("#toDate").val() : '';
 	initTable1();
@@ -71,7 +74,7 @@ function convertToJavaScriptDate(value) {
 }
 function ModifyDate(date) {
 	if (date) {
-		date = date.toString().split("/");
+		date = date.toString().split("-");
 		// After this construct a string with the above results as below
 		return date[2] + "-" + date[0] + "-" + date[1];
 	}

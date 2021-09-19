@@ -63,7 +63,7 @@ var KTDatatableLocalSortDemo = function() {
                 field: 'ShipDate',
                 title: 'Ship Date',
                 type: 'date',
-                format: 'MM/DD/YYYY',
+                format: 'dd-MMM-yyyy',
             }, {
                 field: 'TotalPayment',
                 title: 'Payment',

@@ -80,7 +80,7 @@ var KTAppsEducationSchoolLibrary = function() {
 					title: 'Issued',
 					type: 'date',
 					width: 100,
-					format: 'MM/DD/YYYY',
+					format: 'dd-MMM-yyyy',
 					template: function(row) {
 						var output = '';
 

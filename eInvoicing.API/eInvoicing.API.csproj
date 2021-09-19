@@ -304,6 +304,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\CustomDelegatingHandler.cs" />
+    <Compile Include="Helper\DBContextSeeder.cs" />
     <Compile Include="Helper\HangfireManager.cs" />
     <Compile Include="Infrastructure\NinjectResolver.cs" />
     <Compile Include="Models\IUserSession.cs" />

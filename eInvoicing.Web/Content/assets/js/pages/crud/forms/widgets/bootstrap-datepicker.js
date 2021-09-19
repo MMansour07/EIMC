@@ -65,6 +65,7 @@ var KTBootstrapDatepicker = function () {
             orientation: "bottom left",
             templates: arrows,
             todayBtn: "linked",
+            format: "dd-M-yyyy",
             clearBtn: true,
             todayHighlight: true,
             autoclose: true
@@ -76,6 +77,7 @@ var KTBootstrapDatepicker = function () {
             orientation: "bottom left",
             templates: arrows,
             todayBtn: "linked",
+            format: "dd-M-yyyy",
             clearBtn: true,
             todayHighlight: true,
             autoclose: true

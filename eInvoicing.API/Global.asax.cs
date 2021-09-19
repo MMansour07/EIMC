@@ -1,5 +1,6 @@
 ﻿using eInvoicing.API.Helper;
 using eInvoicing.API.Infrastructure;
+using eInvoicing.Persistence;
 using eInvoicing.Service.AppService.Contract.Base;
 using eInvoicing.Service.AppService.Implementation;
 using eInvoicing.Service.Helper;
@@ -7,6 +8,7 @@ using Hangfire;
 using Hangfire.SqlServer;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -21,6 +23,10 @@ namespace eInvoicing.API
     {
         protected void Application_Start()
         {
+            //Database.SetInitializer(new DBContextSeeder());
+            //ApplicationContext db = new ApplicationContext();
+            //db.Database.Initialize(true);
+
             AreaRegistration.RegisterAllAreas();
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             AutoMapperConfiguration.Init();

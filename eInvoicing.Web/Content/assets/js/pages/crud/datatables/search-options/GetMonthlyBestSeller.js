@@ -71,7 +71,7 @@ function convertToJavaScriptDate(value) {
 	hours = hours ? hours : 12; // the hour '0' should be '12'
 	minutes = minutes < 10 ? '0' + minutes : minutes;
 	var strTime = hours + ':' + minutes + ' ' + ampm;
-	return (dt.getMonth() + 1) + "/" + dt.getDate() + "/" + dt.getFullYear() + " " + strTime;
+	return dt.getDate() + "-" + monthNames[(dt.getMonth())] + "-" + dt.getFullYear() + " " + strTime;
 }
 function ModifyDate(date) {
 	if (date) {

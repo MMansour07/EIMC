@@ -7,13 +7,13 @@ namespace eInvoicing.Persistence.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Roles : IMigrationMetadata
+    public sealed partial class seedingDB : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Roles));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(seedingDB));
         
         string IMigrationMetadata.Id
         {
-            get { return "202109061436112_Roles"; }
+            get { return "202109191218270_seedingDB"; }
         }
         
         string IMigrationMetadata.Source

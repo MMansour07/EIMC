@@ -637,6 +637,9 @@ jQuery(document).ready(function () {
     KTDatatableRecordSelectionDemo.init();
     //$('._do').on('click', function () { alert('11') });
 });
+const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+];
 function convertToJavaScriptDate(value) {
     var dt = value;
     var hours = dt.getHours();
@@ -646,7 +649,7 @@ function convertToJavaScriptDate(value) {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
-    return (dt.getMonth() + 1)+ "/" + dt.getDate() + "/" + dt.getFullYear() + " "+ strTime;
+    return dt.getDate() + "-" + monthNames[(dt.getMonth())] + "-" + dt.getFullYear() + " "+ strTime;
 }
 var func = function (input)
 {

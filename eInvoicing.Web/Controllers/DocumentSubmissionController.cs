@@ -22,7 +22,7 @@ namespace eInvoicing.Web.Controllers
 {
     // to avoid sending token client side 
     // Seeking for optimal solution
-    //[Authorize]
+    [Authorize]
     public class DocumentSubmissionController : Controller
     {
         private readonly IUserSession _userSession;

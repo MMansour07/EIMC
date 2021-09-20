@@ -21,7 +21,7 @@ namespace eInvoicing.Service.AppService.Implementation
             toDate = toDate.AddDays(1);
             var docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" && 
             i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date, null, null);
-            var result = docs.GroupBy(o => o.DateTimeReceived.Day).Select(x => new SubmittedDocumentsDTO()
+            var result = docs.GroupBy(o => new { DateTimeReceived= o.DateTimeReceived.Day, DateTimeIssued = o.DateTimeIssued.Day}).Select(x => new SubmittedDocumentsDTO()
             {
                 validCount = x.Where(p => p.Status.ToLower() == "valid").Count(),
                 invalidCount = x.Where(p => p.Status.ToLower() == "invalid").Count(),

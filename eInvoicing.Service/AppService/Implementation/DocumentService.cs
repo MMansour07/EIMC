@@ -397,7 +397,7 @@ namespace eInvoicing.Service.AppService.Implementation
             foreach (var item in obj.result)
             {
                 var entity = repository.Get(item.internalId);
-                if (entity != null)
+                if (entity != null && entity.Status.ToLower() != "valid")
                 {
                     entity.Status = item.status;
                     entity.uuid = item.uuid;

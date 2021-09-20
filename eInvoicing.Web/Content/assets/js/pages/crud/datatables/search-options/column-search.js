@@ -12,11 +12,43 @@ var initTable1 = function () {
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
 		buttons: [
-			'print',
+			{
+				orientation: 'portrait',
+				extend: 'print',
+				footer: true,
+				title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]"
+			},
 			'copyHtml5',
-			'excelHtml5',
-			'csvHtml5',
-			'pdfHtml5',
+			{
+				orientation: 'portrait',
+				pageSize: 'LEGAL',
+				extend: 'excel',
+				footer: true,
+				title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]"
+			},
+			//{
+			//	orientation: 'portrait',
+			//	pageSize: 'LEGAL',
+			//	extend: 'csv',
+			//	footer: true,
+			//	title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]",
+			//	//customize: function (win) {
+			//	//	$body = $(win.document.body);
+			//	//	$body.find('h1').css('text-align', 'center');
+			//	//}
+			//},
+			{
+				orientation: 'portrait',
+				pageSize: 'LEGAL',
+				extend: 'pdfHtml5',
+				footer: true,
+				title: "Submitted Document from [ " + $("#fromDate").val() + " ] to [ " + $("#toDate").val() + " ]",
+				customize: function (doc) {
+					doc.content[1].layout = "Borders";
+					//$body = $(win.document.body);
+					//$body.find('h1').css('text-align', 'center');
+				}
+			}
 		],
 		lengthMenu: [5, 10, 25, 50],
 		pageLength: 10,
@@ -51,17 +83,90 @@ var initTable1 = function () {
 		"fnDrawCallback": function () {
 			KTApp.unblock('#SubmittedDocumentsStats_crd');
 		},
-		//columns: [
-		//	{ data: 'issuedOn' },
-		//	{ data: 'totalCount' },
-		//	{ data: 'validCount' },
-		//	{ data: 'invalidCount' },
-		//	{ data: 'submittedCount' },
-		//	{ data: 'cancelledCount' },
-		//	{ data: 'rejectedCount' },
-		//	{ data: 'submittedOn' },
-		//	{ data: 'submittedBy' }
-		//],
+		"footerCallback": function (row, data, start, end, display) {
+			var api = this.api(), data;
+
+			// Remove the formatting to get integer data for summation
+			var intVal = function (i) {
+				return typeof i === 'string' ?
+					i.replace(/[\$,]/g, '') * 1 :
+					typeof i === 'number' ?
+						i : 0;
+			};
+
+			// Total over all pages
+			var total = api
+				.column(1)
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+
+			// Total over this page
+			var pageTotal1 = api
+				.column(1, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+
+			var pageTotal2 = api
+				.column(2, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+			var pageTotal3 = api
+				.column(3, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+			var pageTotal4 = api
+				.column(4, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+			var pageTotal5 = api
+				.column(5, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+			var pageTotal6 = api
+				.column(6, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+
+			// Update footer
+			$(api.column(1).footer()).html(
+				'[' + pageTotal1 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+			$(api.column(2).footer()).html(
+				'[' + pageTotal2 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+			$(api.column(3).footer()).html(
+				'[' + pageTotal3 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+			$(api.column(4).footer()).html(
+				'[' + pageTotal4 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+			$(api.column(5).footer()).html(
+				'[' + pageTotal5 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+			$(api.column(6).footer()).html(
+				'[' + pageTotal6 + ']'
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
+		},
 		columnDefs: [
 			{
 				targets: -9,

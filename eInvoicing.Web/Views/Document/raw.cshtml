@@ -176,7 +176,7 @@
             <a class="nav-link" data-toggle="tab" href="#kt_tab_pane_2">More Details</a>
         </li>
     </ul>
-    @if (Model.status.ToLower() == "invalid")
+    @if (Model.status.ToLower() == "invalid" && Model.validationResults != null)
     {
         <div class="card card-custom bg-light-danger mt-2">
             <div class="card-body text-red">

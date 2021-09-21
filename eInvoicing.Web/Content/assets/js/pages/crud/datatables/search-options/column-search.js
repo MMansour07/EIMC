@@ -16,7 +16,7 @@ var initTable1 = function () {
 				orientation: 'portrait',
 				extend: 'print',
 				footer: true,
-				title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]"
+				title: "Documents Statistics from " + $("#fromDate").val() + " to " + $("#toDate").val()+ ""
 			},
 			'copyHtml5',
 			{
@@ -24,14 +24,14 @@ var initTable1 = function () {
 				pageSize: 'LEGAL',
 				extend: 'excel',
 				footer: true,
-				title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]"
+				title: "Documents Statistics from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
 			},
 			//{
 			//	orientation: 'portrait',
 			//	pageSize: 'LEGAL',
 			//	extend: 'csv',
 			//	footer: true,
-			//	title: "Submitted Document Stats from date [ " + $("#fromDate").val() + " ] to date [ " + $("#toDate").val() + " ]",
+			//	title: "Documents Statistics from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
 			//	//customize: function (win) {
 			//	//	$body = $(win.document.body);
 			//	//	$body.find('h1').css('text-align', 'center');
@@ -42,11 +42,14 @@ var initTable1 = function () {
 				pageSize: 'LEGAL',
 				extend: 'pdfHtml5',
 				footer: true,
-				title: "Submitted Document from [ " + $("#fromDate").val() + " ] to [ " + $("#toDate").val() + " ]",
+				title: "Documents Statistics from " + $("#fromDate").val() + " to " + $("#toDate").val() + "",
 				customize: function (doc) {
 					doc.content[1].layout = "Borders";
-					//$body = $(win.document.body);
-					//$body.find('h1').css('text-align', 'center');
+					doc.content.splice(0, 0, {
+						margin: [0, 0, 0, 50],
+						alignment: 'left',
+						image: 'data:image/png;base64,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'
+					});
 				}
 			}
 		],
@@ -143,27 +146,27 @@ var initTable1 = function () {
 
 			// Update footer
 			$(api.column(1).footer()).html(
-				'[' + pageTotal1 + ']'
+				pageTotal1 
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 			$(api.column(2).footer()).html(
-				'[' + pageTotal2 + ']'
+				pageTotal2
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 			$(api.column(3).footer()).html(
-				'[' + pageTotal3 + ']'
+				pageTotal3
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 			$(api.column(4).footer()).html(
-				'[' + pageTotal4 + ']'
+				pageTotal4
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 			$(api.column(5).footer()).html(
-				'[' + pageTotal5 + ']'
+				pageTotal5
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 			$(api.column(6).footer()).html(
-				'[' + pageTotal6 + ']'
+				pageTotal6
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
 		},

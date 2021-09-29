@@ -250,7 +250,8 @@ namespace eInvoicing.Service.AppService.Implementation
             IQueryable<Document> docs; 
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {
-                 docs = repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" || i.Status.ToLower() == "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
+                 docs = repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" 
+                 || i.Status.ToLower() == "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
             }
             else
             {
@@ -260,7 +261,8 @@ namespace eInvoicing.Service.AppService.Implementation
             {
                 searchValue = searchValue.ToLower().Replace("/", "");
                 docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) ||
-                DbFunctions.TruncateTime(x.DateTimeIssued).ToString().Replace("-","").Contains(searchValue) || searchValue.Contains(x.DocumentType.ToLower()) || x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
+                DbFunctions.TruncateTime(x.DateTimeIssued).ToString().Replace("-","").Contains(searchValue) || searchValue.Contains(x.DocumentType.ToLower()) || 
+                x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
                 x.TotalItemsDiscountAmount.ToString().ToLower().Contains(searchValue) || x.TotalAmount.ToString().ToLower().Contains(searchValue) ||
                 x.ReceiverName.ToLower().Contains(searchValue) || x.ReceiverType.ToLower().Contains(searchValue));
             }
@@ -294,16 +296,16 @@ namespace eInvoicing.Service.AppService.Implementation
                 var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d");
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N0"), count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
+                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"), count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
                     ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedInvoiceCount = ReceivedInvoices.Count(),
-                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N0"),
+                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
                     ReceivedCreditTotalAmount = ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedCreditCount = ReceivedCredits.Count(),
-                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N0"),
+                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
                     ReceivedDebitTotalAmount = Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedDebitCount = Receiveddebits.Count(),
-                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N0"),
+                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
                     ReceivedValidDocumentsCount = _Receivedvaliddocs.Count(),
                     ReceivedCanceledDocumentsCount = _Receivedcancelleddocs.Count(),
                     ReceivedRejectedDocumentsCount = _Receivedrejecteddocs.Count(),

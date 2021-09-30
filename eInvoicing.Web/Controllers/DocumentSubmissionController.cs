@@ -66,7 +66,7 @@ namespace eInvoicing.Web.Controllers
         }
 
         [HttpPost]
-        [ActionName("_autosubmit")]
+        [ActionName("auto_submit")]
         public ActionResult AutoSubmitDocuments()
         {
             try

@@ -11,17 +11,14 @@ namespace eInvoicing.DTO
     public class RoleDTO: BaseDTO
     {
         public string Id { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
 
+        [Required(ErrorMessage = "Required Field.")]
         public string Name { get; set; }
+        
         [Required(ErrorMessage = "Required Field.")]
-
         public string Description { get; set; }
+        
         [Required(ErrorMessage = "Required Field.")]
-
-        public List<string> Privileges { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
-
         public List<string> Permissions { get; set; }
     }
 }

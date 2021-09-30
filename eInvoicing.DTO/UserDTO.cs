@@ -38,18 +38,11 @@ namespace eInvoicing.DTO
                 return this.Roles.Select(x => x.Name).ToList();
             }
         }
-        public List<string> stringfiedPrivileges
-        {
-            get
-            {
-                return this.Privileges.Select(x => x.Controller).ToList();
-            }
-        }
         public List<string> stringfiedPermissions
         {
             get
             {
-                return this.Permissions.Select(x => x.Id).ToList();
+                return this.Permissions.Select(x => x.Action).ToList();
             }
         }
     }
@@ -65,10 +58,9 @@ namespace eInvoicing.DTO
     public class PermissionDTO : BaseDTO
     {
         [JsonProperty("Id")]
-
         public string Id { get; set; }
-        [JsonProperty("Action")]
 
+        [JsonProperty("Action")]
         public string Action { get; set; }
     }
 }

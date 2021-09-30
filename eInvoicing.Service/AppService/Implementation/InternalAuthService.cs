@@ -15,15 +15,13 @@ namespace eInvoicing.Service.AppService.Implementation
     {
         private readonly IAuthRepository repository;
         private readonly IUserRoleRepository _userRole;
-        private readonly IPrivilegeRepository _privilegeRepo;
         private readonly IPermissionRepository _permissionRepo;
 
-        public InternalAuthService(IAuthRepository _repository, IUserRoleRepository userRole, IPrivilegeRepository privilegeRepo, IPermissionRepository permissionRepo)
+        public InternalAuthService(IAuthRepository _repository, IUserRoleRepository userRole, IPermissionRepository permissionRepo)
         {
             this.repository = _repository;
             this._userRole = userRole;
             this._permissionRepo = permissionRepo;
-            this._privilegeRepo = privilegeRepo;
         }
         public UserDTO Login(string UserName, string Password)
         {
@@ -109,25 +107,12 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                var users = repository.GetAllIncluding(null, null, "UserRoles.Role.RolePrivileges.Privilege, UserRoles.Role.RolePrivileges.RolePrivilegePermissions.Permission").Select(i => i.ToUserDTO()).ToList();
+                var users = repository.GetAllIncluding(null, null, "UserRoles.Role.RolePermissions.Permission").Select(i => i.ToUserDTO()).ToList();
                 return users;
             }
             catch (Exception ex)
             {
                 return new List<UserDTO>();
-            }
-        }
-        public List<PrivilegeDTO> GetPrivileges()
-        {
-            try
-            {
-
-                return AutoMapperConfiguration.Mapper.Map<List<PrivilegeDTO>>(_privilegeRepo.GetAllIncluding().ToList());
-            }
-            catch (Exception ex)
-            {
-                return new List<PrivilegeDTO>();
-
             }
         }
         public List<PermissionDTO> GetPermissions()

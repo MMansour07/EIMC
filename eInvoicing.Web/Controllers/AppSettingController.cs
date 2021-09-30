@@ -24,6 +24,7 @@ namespace eInvoicing.Web.Controllers
             _httpClient = httpClient;
             _userSession = userSession;
         }
+        [AllowAnonymous]
         public ActionResult Index()
         {
             try

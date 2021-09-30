@@ -112,7 +112,8 @@
                     @using System.Security.Claims;
                     @using Microsoft.AspNet.Identity;
                     @if (Request.IsAuthenticated &&
-                    ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Page").Select(i => i.Value.ToLower()).ToList().Contains("documentsubmission"))
+                    ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Permission")
+                    .Select(i => i.Value.ToLower()).Where(x => x == "submit" || x == "auto_submit").Count() > 0)
                     {
                         <button class="btn btn-sm btn-bg-light mr-2" type="button" id="kt_datatable_send">
                             Send <i class="far fa-arrow-alt-circle-right"></i>

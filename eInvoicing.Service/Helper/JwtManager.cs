@@ -23,7 +23,6 @@ namespace eInvoicing.Service.Helper
         public static string GenerateToken(UserDTO obj, int expireMinutes = 60)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Client_Id"]));
-            //var symmetricKey = Convert.FromBase64String("db3OIsj+BXE9NZDy0t8W3TcNekrF+2d/1sFnWG4HnV8TZY30iTOdtVWJG8abWvB1GlOgJuQZdcF2Luqm/hccMw==");
             var tokenHandler = new JwtSecurityTokenHandler();
             var now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -58,9 +57,9 @@ namespace eInvoicing.Service.Helper
                 return principal;
             }
 
-            catch (Exception excep)
+            catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
 
@@ -76,10 +75,6 @@ namespace eInvoicing.Service.Helper
                 foreach (var item in obj.stringfiedRoles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, item));
-                }
-                foreach (var item in obj.stringfiedPrivileges)
-                {
-                    claims.Add(new Claim("Page", item));
                 }
                 foreach (var item in obj.stringfiedPermissions)
                 {

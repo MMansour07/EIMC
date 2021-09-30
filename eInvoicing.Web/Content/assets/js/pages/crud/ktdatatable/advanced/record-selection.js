@@ -460,7 +460,7 @@ var KTDatatableRecordSelectionDemo = function () {
             var btn = KTUtil.getById("kt_datatable_sendAll");
             KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
             // Ajax Call to Submit documnets Web Contoller
-            $.post('/EInvoicing//v0/documentsubmission/_autosubmit',
+            $.post('/EInvoicing/v0/documentsubmission/auto_submit',
                 function (returnedData) {
                     KTUtil.btnRelease(btn);
                     $('#kt_datatable_group_action_form').collapse('hide');

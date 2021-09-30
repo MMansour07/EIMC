@@ -24,6 +24,7 @@ namespace eInvoicing.Web.Controllers
         {
             _userSession = userSession;
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
         {
@@ -34,14 +35,14 @@ namespace eInvoicing.Web.Controllers
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
                     client.Timeout = TimeSpan.FromMinutes(60);
-                    var url = _userSession.URL + "api/auth/getPrivileges";
+                    var url = _userSession.URL + "api/auth/getPerimssions";
                     client.BaseAddress = new Uri(url);
                     var postTask = Task.Run(() => client.GetAsync(url)).Result;
                     if (postTask.IsSuccessStatusCode)
                     {
                         var result = JsonConvert.DeserializeObject<PrivilegeViewModel>(postTask.Content.ReadAsStringAsync().Result);
-                        TempData["Privileges"] = ViewBag.Privileges = result.Privileges.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Controller }).ToList();
-                        TempData["Permissions"] = ViewBag.Permissions = result.Permissions.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Action }).ToList();
+                        //TempData["Privileges"] = ViewBag.Privileges = result.Privileges.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Controller }).ToList();
+                        TempData["Permissions"] = ViewBag.Permissions = result.Permissions.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Id }).ToList();
                         return View();
                     }
                     return View();
@@ -53,7 +54,7 @@ namespace eInvoicing.Web.Controllers
             }
         }
         [HttpGet]
-        [ActionName("all")]
+        [ActionName("GetRoles")]
         public ActionResult GetRoles()
         {
             try
@@ -83,7 +84,9 @@ namespace eInvoicing.Web.Controllers
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
+        
         [HttpGet]
+        //[ActionName("CreateRole")]
         public ActionResult Create(string message = "")
         {
             using (HttpClient client = new HttpClient())
@@ -104,8 +107,9 @@ namespace eInvoicing.Web.Controllers
             }
             return View();
         }
-
+        
         [HttpPost]
+        [ActionName("CreateRole")]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Models.RoleViewModel model)
         {
@@ -139,6 +143,7 @@ namespace eInvoicing.Web.Controllers
 
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult editpartial(string Id)
         {
@@ -159,8 +164,8 @@ namespace eInvoicing.Web.Controllers
                     if (postTask.IsSuccessStatusCode)
                     {
                         var result = JsonConvert.DeserializeObject<EditRoleModel>(postTask.Content.ReadAsStringAsync().Result);
-                        ViewBag.Privileges = result.Privileges.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Controller, Selected = result.Role.Privileges.Contains(x.Id.ToString()) }).ToList();
-                        ViewBag.Permissions = result.Permissions.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Action, Selected = result.Role.Privileges.Contains(x.Id.ToString()) }).ToList();
+                        //ViewBag.Privileges = result.Privileges.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Controller, Selected = result.Role.Privileges.Contains(x.Id.ToString()) }).ToList();
+                        ViewBag.Permissions = result.Permissions.Select(x => new SelectListItem { Value = x.Id.ToString(), Text = x.Id, Selected = result.Role.Permissions.Contains(x.Id.ToString()) }).ToList();
                         return PartialView(result.Role);
                     }
                     return PartialView(new RoleDTO());
@@ -172,6 +177,7 @@ namespace eInvoicing.Web.Controllers
             }
         }
         [HttpPost]
+        [ActionName("EditRole")]
         public ActionResult Edit(RoleDTO model)
         {
             try
@@ -199,7 +205,7 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
         }
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteRole")]
         public ActionResult DeleteConfirmed(string Id)
         {
             try

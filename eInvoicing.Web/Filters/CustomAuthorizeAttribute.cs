@@ -12,31 +12,37 @@ namespace eInvoicing.Web.Filters
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
+            try
+            {
+                var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                var identity = simplePrinciple?.Identity as ClaimsIdentity;
 
-            var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
-            var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                if (identity == null)
+                    return false;
 
-            if (identity == null)
+                if (!identity.IsAuthenticated)
+                    return false;
+
+                var claims = identity?.Claims.ToArray();
+
+                var usernameClaim = identity?.FindFirst(ClaimTypes.Name);
+                var username = usernameClaim?.Value;
+
+                if (string.IsNullOrEmpty(username))
+                    return false;
+
+                var permissions = identity?.FindAll("Permission").Select(i => i.Value).ToList();
+                if (httpContext.Request.RequestContext.RouteData.Values["action"].ToString().ToLower() != "index" && 
+                    !permissions.Contains(httpContext.Request.RequestContext.RouteData.Values["action"].ToString().ToLower()))
+                    return false;
+
+                return true;
+            }
+            catch
+            {
                 return false;
-
-            if (!identity.IsAuthenticated)
-                return false;
-
-            var claims = identity?.Claims.ToArray();
-
-            var usernameClaim = identity?.FindFirst(ClaimTypes.Name);
-            var username = usernameClaim?.Value;
-
-            if (string.IsNullOrEmpty(username))
-                return false;
-            //if ((httpContext.Request.Url.Segments.Length > 3) && httpContext.Request.Url.Segments[3]?.Replace("/", "") != "documentsubmission")
-            //{
-            var pages = identity?.FindAll("Page").Select(i => i.Value.ToLower()).ToList();
-            var permissions = identity?.FindAll("Permission").Select(i => i.Value).ToList();
-            if (!permissions.Contains(httpContext.Request.HttpMethod.ToString()) || ((httpContext.Request.Url.Segments.Length > 3) ? !pages.Contains(httpContext.Request.Url.Segments[3]?.Replace("/", "")) : false))
-                return false;
-            //}
-            return true;
+            }
+            
         }
 
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)

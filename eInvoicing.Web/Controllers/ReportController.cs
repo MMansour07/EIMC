@@ -27,21 +27,25 @@ namespace eInvoicing.Web.Controllers
         {
             _userSession = userSession;
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult documents_stats()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult top_goods_usage()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult monthly_bestseller()
         {
             return View();
         }
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult monthly_lowestseller()
         {

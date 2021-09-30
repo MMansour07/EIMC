@@ -24,24 +24,23 @@ namespace eInvoicing.Service.AppService.Implementation
     {
         private readonly IRoleRepository repository;
         private readonly IUserRoleRepository _userRole;
-        private readonly IRolePrivilegePermissionRepository _RolePrivilegePermission;
-        private readonly IRolePrivilegeRepository _RolePrivilege;
-        public RoleService(IRoleRepository _repository, IUserRoleRepository userRole, IRolePrivilegePermissionRepository RolePrivilegePermission, IRolePrivilegeRepository RolePrivilege)
+        private readonly IRolePermissionRepository rolePermission;
+        public RoleService(IRoleRepository _repository, IUserRoleRepository userRole, IRolePermissionRepository RolePermission)
         {
             this.repository = _repository;
             this._userRole = userRole;
-            this._RolePrivilegePermission = RolePrivilegePermission;
-            this._RolePrivilege = RolePrivilege;
+            this.rolePermission = RolePermission;
         }
         public bool CreateRole(RoleDTO model)
         {
             try
             {
-                var Role = new Role() {Id = Guid.NewGuid().ToString(), Name = model.Name, Description = model.Description};
+                var Role = new Role() {Id = Guid.NewGuid().ToString(), Name = model.Name, Description = model.Description, 
+                    RolePermissions = model.Permissions.Select(x => new RolePermission() { Id = Guid.NewGuid().ToString(), PermissionId = x}).ToList()};
                 Role.Id = Guid.NewGuid().ToString();
                 var _role = repository.Add(Role);
-                var _rolePrivileges = AddPrivilegesToRole(_role.Id, model.Privileges);
-                AddPermissionsToRole(_rolePrivileges.ToList(), model.Permissions);
+                //var _rolePrivileges = AddPrivilegesToRole(_role.Id, model.Privileges);
+                //AddPermissionsToRole(_rolePrivileges.ToList(), model.Permissions);
                 if (_role != null)
                     return true;
                 else
@@ -56,7 +55,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                var Roles = repository.GetAllIncluding(null, null, "RolePrivileges.Privilege, RolePrivileges.RolePrivilegePermissions.Permission").Select(i => i.ToRoleViewModel());
+                var Roles = repository.GetAllIncluding(null, null, "RolePermissions.Permission").Select(i => i.ToRoleViewModel());
                 return Roles;
             }
             catch (Exception ex)
@@ -68,7 +67,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-              return repository.GetAllIncluding(i => i.Id == Id, null, "RolePrivileges.Privilege, RolePrivileges.RolePrivilegePermissions.Permission")?.Select(i => i.ToRoleDTO()).FirstOrDefault();
+              return repository.GetAllIncluding(i => i.Id == Id, null, "RolePermissions.Permission")?.Select(i => i.ToRoleDTO()).FirstOrDefault();
             }
             catch
             {
@@ -85,9 +84,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 res.ModifiedOn = DateTime.Now;
                 var Role = repository.Update(res);
                 RemovePermissionFromRole(Role.Id);
-                RemovePriviligeFromRole(Role.Id);
-                var _rolePrivileges = AddPrivilegesToRole(Role.Id, obj.Privileges);
-                AddPermissionsToRole(_rolePrivileges.ToList(), obj.Permissions);
+                AddPermissionsToRole(Role.Id, obj.Permissions);
                 if (Role != null)
                     return true;
                 else
@@ -123,54 +120,30 @@ namespace eInvoicing.Service.AppService.Implementation
                 return false;
             }
         }
-
-        public IEnumerable<RolePrivilege> AddPrivilegesToRole(string RoleId, List<string> Privileges)
+        public void AddPermissionsToRole(string RoleId, List<string> Permissions)
         {
             try
             {
-                var data = Privileges.Select(i => new RolePrivilege { RoleId = RoleId, PrivilegeId = i, Id = Guid.NewGuid().ToString() }).ToList();
-                return _RolePrivilege.AddRange(data);
-            }
-            catch (Exception ex)
-            {
-                return new List<RolePrivilege>();
-            }
-        }
-        public void AddPermissionsToRole(List<RolePrivilege> RolePrivilege, List<string> Permissions)
-        {
-            try
-            {
-                var input = new List<RolePrivilegePermission>() { };
-                var response = Permissions.Select(o => new RolePrivilegePermission { Id = Guid.NewGuid().ToString(), PermissionId = o }).ToList();
-                for (int i = 0; i < RolePrivilege.Count(); i++)
+                try
                 {
-                    for (int j = 0; j < Permissions.Count(); j++)
-                    {
-                        response[j].RolePrivilegeId = RolePrivilege[i].Id;
-                    }
+                    var data = Permissions.Select(i => new RolePermission 
+                    { RoleId = RoleId, PermissionId = i, Id = Guid.NewGuid().ToString() }).ToList();
+                    rolePermission.AddRange(data);
                 }
-                _RolePrivilegePermission.AddRange(response);
+                catch (Exception ex)
+                {
+                }
             }
             catch (Exception ex)
             {
             }
         }
 
-        public void RemovePriviligeFromRole(string RoleId)
-        {
-            try
-            {
-                _RolePrivilege.DeleteRange(RoleId);
-            }
-            catch (Exception ex)
-            {
-            }
-        }
         public void RemovePermissionFromRole(string RoleId)
         {
             try
             {
-                _RolePrivilegePermission.DeleteRange(RoleId+RoleId);
+                rolePermission.DeleteRange(RoleId);
             }
             catch (Exception ex)
             {

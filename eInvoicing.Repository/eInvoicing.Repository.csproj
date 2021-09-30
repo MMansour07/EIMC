@@ -55,9 +55,7 @@
     <Compile Include="Contract\Base\IRepository.cs" />
     <Compile Include="Contract\Base\IUnitOfWork.cs" />
     <Compile Include="Contract\IPermissionRepository.cs" />
-    <Compile Include="Contract\IRolePrivilegeRepository.cs" />
-    <Compile Include="Contract\IRolePrivilegePermissionRepository.cs" />
-    <Compile Include="Contract\IPrivilegeRepository.cs" />
+    <Compile Include="Contract\IRolePermissionRepository.cs" />
     <Compile Include="Contract\IUserRoleRepository.cs" />
     <Compile Include="Contract\IRoleRepository.cs" />
     <Compile Include="Contract\IAuthRepository.cs" />
@@ -66,10 +64,8 @@
     <Compile Include="Contract\ITaxableItemRepository.cs" />
     <Compile Include="Contract\IInvoiceLineRepository.cs" />
     <Compile Include="Contract\IDocumentRepository.cs" />
-    <Compile Include="Implementation\RolePrivilegePermissionRepository.cs" />
     <Compile Include="Implementation\PermissionRepository.cs" />
-    <Compile Include="Implementation\PrivilegeRepository.cs" />
-    <Compile Include="Implementation\RolePrivilegeRepository.cs" />
+    <Compile Include="Implementation\RolePermissionRepository.cs" />
     <Compile Include="Implementation\UserRoleRepository.cs" />
     <Compile Include="Implementation\RoleRepository.cs" />
     <Compile Include="Implementation\Base\Repository.cs" />

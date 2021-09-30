@@ -22,7 +22,7 @@ namespace eInvoicing.Repository.Implementation
         {
             try
             {
-                return _context.AppUsers.Include("UserRoles.Role.RolePrivileges.Privilege").Include("UserRoles.Role.RolePrivileges.RolePrivilegePermissions.Permission").AsNoTracking().FirstOrDefault(x => x.UserName == UserName);
+                return _context.AppUsers.Include("UserRoles.Role.RolePermissions.Permission").AsNoTracking().FirstOrDefault(x => x.UserName == UserName);
             }
             catch (Exception ex)
             {

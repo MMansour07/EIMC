@@ -11,6 +11,6 @@ namespace eInvoicing.DomainEntities.Entities
     public class Permission: BaseEntity
     {
         public string Action { get; set; }
-        public virtual ICollection<RolePrivilegePermission> RolePrivilegePermissions { get; set; }
+        public virtual ICollection<RolePermission> RolePermission { get; set; }
     }
 }

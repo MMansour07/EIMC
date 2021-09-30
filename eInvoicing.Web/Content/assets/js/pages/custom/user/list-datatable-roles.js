@@ -13,7 +13,7 @@ var KTAppsUsersListDatatable = function() {
 				source: {
 					read: {
 						method : "GET",
-						url: "/EInvoicing//v0/role/all"
+						url: "/EInvoicing/v0/role/getroles"
 					},
 				},
 				pageSize: 10 // display 10 records per page
@@ -56,26 +56,13 @@ var KTAppsUsersListDatatable = function() {
 					},
                 },
                 {
-                    field: 'Privileges',
-                    title: 'Privileges',
-                    template: function (row) {
-                        var output = '';
-                        if (row.Privileges.length > 0) {
-                            for (var i = 0; i < row.Privileges.length; i++) {
-                                output += '<span class=" mr-1 mb-1 label label-md font-weight-bold label-inline">' + row.Privileges[i].Controller+'</span>';
-                            }
-                        }
-                        return output;
-                    }
-                },
-                {
                     field: 'Permissions',
                     title: 'Permissions',
                     template: function (row) {
                         var output = '';
                         if (row.Permissions.length > 0) {
                             for (var i = 0; i < row.Permissions.length; i++) {
-                                output += '<span class=" mr-1 mb-1 label label-md font-weight-bold label-inline">' + row.Permissions[i].Action + '</span>';
+                                output += '<span class=" mr-1 mb-1 label label-md font-weight-bold label-inline">' + row.Permissions[i].Id + '</span>';
                             }
                         }
                         return output;
@@ -148,7 +135,7 @@ function deleteRole(id, name) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/EInvoicing//v0/role/delete?id=" + id,
+                url: "/EInvoicing//v0/role/deleterole?id=" + id,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -228,7 +215,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_roleFrm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/role/create",
+                url: "/EInvoicing//v0/role/createrole",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -291,7 +278,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_editRoleFrm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/role/edit",
+                url: "/EInvoicing//v0/role/editrole",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

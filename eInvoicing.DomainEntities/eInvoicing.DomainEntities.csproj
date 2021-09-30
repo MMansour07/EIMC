@@ -61,9 +61,7 @@
     <Compile Include="Entities\InvoiceLine.cs" />
     <Compile Include="Entities\Lookup.cs" />
     <Compile Include="Entities\Permission.cs" />
-    <Compile Include="Entities\Privilege.cs" />
-    <Compile Include="Entities\RolePrivilegePermission.cs" />
-    <Compile Include="Entities\RolePrivilege.cs" />
+    <Compile Include="Entities\RolePermission.cs" />
     <Compile Include="Entities\UserRole.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\TaxableItem.cs" />

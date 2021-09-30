@@ -41,34 +41,22 @@ namespace eInvoicing.Persistence
                 .WithMany(g => g.UserRoles)
                 .HasForeignKey<string>(s => s.RoleId).WillCascadeOnDelete(true);
 
-            modelBuilder.Entity<RolePrivilege>()
+            modelBuilder.Entity<RolePermission>()
                 .HasRequired<Role>(s => s.Role)
-                .WithMany(g => g.RolePrivileges)
+                .WithMany(g => g.RolePermissions)
                 .HasForeignKey<string>(s => s.RoleId).WillCascadeOnDelete(true);
 
-           modelBuilder.Entity<RolePrivilege>()
-                .HasRequired<Privilege>(s => s.Privilege)
-                .WithMany(g => g.RolePrivileges)
-                .HasForeignKey<string>(s => s.PrivilegeId).WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<RolePrivilegePermission>()
-                .HasRequired<RolePrivilege>(s => s.RolePrivilege)
-                .WithMany(g => g.RolePrivilegePermissions)
-                .HasForeignKey<string>(s => s.RolePrivilegeId).WillCascadeOnDelete(true);
-
-            modelBuilder.Entity<RolePrivilegePermission>()
+            modelBuilder.Entity<RolePermission>()
                 .HasRequired<Permission>(s => s.Permission)
-                .WithMany(g => g.RolePrivilegePermissions)
+                .WithMany(g => g.RolePermission)
                 .HasForeignKey<string>(s => s.PermissionId).WillCascadeOnDelete(true);
         }
         public DbSet<Error> Errors { get; set; }
         public DbSet<User> AppUsers { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<Privilege> Privileges { get; set; }
         public DbSet<Permission> Permission { get; set; }
-        public DbSet<RolePrivilege> RolePrivileges { get; set; }
-        public DbSet<RolePrivilegePermission> RolePrivilegePermissions { get; set; }
+        public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<InvoiceLine> InvoiceLines { get; set; }
         public DbSet<TaxableItem> TaxableItems { get; set; }

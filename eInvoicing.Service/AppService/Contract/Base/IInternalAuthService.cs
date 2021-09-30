@@ -14,7 +14,6 @@ namespace eInvoicing.Service.AppService.Contract.Base
         EditModelDTO GetUser(string Id);
         bool Edit(EditModelDTO obj);
         bool Delete(string id);
-        List<PrivilegeDTO> GetPrivileges();
         List<PermissionDTO> GetPermissions();
     }
 }

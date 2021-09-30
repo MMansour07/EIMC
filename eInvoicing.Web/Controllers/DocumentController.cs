@@ -1,23 +1,14 @@
 ﻿using eInvoicing.DTO;
-using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation;
-using eInvoicing.Service.Helper;
 using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Services.Description;
 
 namespace eInvoicing.Web.Controllers
 {
@@ -31,6 +22,7 @@ namespace eInvoicing.Web.Controllers
             _httpClient = httpClient;
             _userSession = userSession;
         }
+        [AllowAnonymous]
         [HttpGet]
         [ActionName("pending")]
         public ActionResult GetPendingDocuments()
@@ -143,7 +135,7 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
-        [ActionName("submitteditems")]
+        [ActionName("submitted_items")]
         public ActionResult GetItemsLineByuuid(string uuid)
         {
             try
@@ -156,6 +148,7 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
+        [AllowAnonymous]
         [HttpGet]
         [ActionName("submitted")]
         public ActionResult GetSubmittedDocuments()

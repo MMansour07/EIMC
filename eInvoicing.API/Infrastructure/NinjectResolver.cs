@@ -67,10 +67,8 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IDocumentRepository>().To<DocumentRepository>().InThreadScope();
             kernel.Bind<IAuthRepository>().To<AuthRepository>().InThreadScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InThreadScope();
-            kernel.Bind<IPrivilegeRepository>().To<PrivilegeRepository>().InThreadScope();
             kernel.Bind<IPermissionRepository>().To<PermissionRepository>().InThreadScope();
-            kernel.Bind<IRolePrivilegePermissionRepository>().To<RolePrivilegePermissionRepository>().InThreadScope();
-            kernel.Bind<IRolePrivilegeRepository>().To<RolePrivilegeRepository>().InThreadScope();
+            kernel.Bind<IRolePermissionRepository>().To<RolePermissionRepository>().InThreadScope();
             kernel.Bind<IUserRoleRepository>().To<UserRoleRepository>().InThreadScope();
             kernel.Bind<IInvoiceLineRepository>().To<InvoiceLineRepository>().InThreadScope();
             kernel.Bind<ITaxableItemRepository>().To<TaxableItemRepository>().InThreadScope();

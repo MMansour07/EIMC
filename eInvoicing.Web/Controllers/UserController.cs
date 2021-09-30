@@ -27,7 +27,7 @@ namespace eInvoicing.Web.Controllers
         {
             _userSession = userSession;
         }
-
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
         {
@@ -49,7 +49,7 @@ namespace eInvoicing.Web.Controllers
             return View();
         }
         [HttpGet]
-        [ActionName("all")]
+        [ActionName("GetUsers")]
         public ActionResult GetUsers()
         {
             try
@@ -81,6 +81,7 @@ namespace eInvoicing.Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ActionName("CreateUser")]
         public ActionResult Create(RegisterViewModel model)
         {
             try
@@ -112,7 +113,9 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { success = ex.Message.ToString() }, JsonRequestBehavior.AllowGet);
             }
         }
+        [AllowAnonymous]
         [HttpGet]
+        //[ActionName("EditUser")]
         public ActionResult EditPartial(string Id)
         {
             try
@@ -145,6 +148,7 @@ namespace eInvoicing.Web.Controllers
             }
         }
         [HttpPost]
+        [ActionName("EditUser")]
         public ActionResult Edit(EditModelDTO model)
         {
             try
@@ -173,7 +177,7 @@ namespace eInvoicing.Web.Controllers
             }
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("DeleteUser")]
         public ActionResult DeleteConfirmed(string Id)
         {
             try

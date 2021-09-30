@@ -66,12 +66,12 @@ namespace eInvoicing.API.Controllers
         }
         [JwtAuthentication]
         [HttpGet]
-        [Route("api/auth/getPrivileges")]
+        [Route("api/auth/getPerimssions")]
         public IHttpActionResult getPrivileges()
         {
             try
             {
-                return Ok(new PrivilegeViewModel() { Privileges = _auth.GetPrivileges(), Permissions = _auth.GetPermissions()});;
+                return Ok(new PrivilegeViewModel() {Permissions = _auth.GetPermissions()});;
             }
             catch
             {
@@ -184,7 +184,7 @@ namespace eInvoicing.API.Controllers
             try
             {
                 var Role = _roleService.GetRole(Id);
-                return Ok(new EditRoleModel() { Role = Role, Privileges = _auth.GetPrivileges(), Permissions = _auth.GetPermissions() });
+                return Ok(new EditRoleModel() { Role = Role, Permissions = _auth.GetPermissions() });
             }
             catch (Exception ex)
             {

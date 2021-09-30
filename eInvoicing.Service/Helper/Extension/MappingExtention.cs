@@ -251,8 +251,7 @@ namespace eInvoicing.Service.Helper.Extension
                 UserName = obj.UserName,
                 Title = obj.Title,
                 Roles = obj.UserRoles.Select(i => new RoleDTO { Id = i.Role.Id, Name = i.Role.Name, Description = i.Role.Description }).ToList(),
-                Privileges = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePrivileges).Select(p => new PrivilegeDTO { Id = p.Privilege.Id, Controller = p.Privilege.Controller}).ToList(),
-                Permissions = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePrivileges).SelectMany(o => o.RolePrivilegePermissions).Select(p => new PermissionDTO { Id = p.Permission.Id, Action = p.Permission.Action}).ToList()
+                Permissions = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePermissions).Select(p => new PermissionDTO { Id = p.Permission.Id, Action = p.Permission.Action}).ToList()
             };
         }
         internal static EditModelDTO ToEditModelDTO(this User obj)
@@ -276,8 +275,7 @@ namespace eInvoicing.Service.Helper.Extension
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                Privileges  = obj.RolePrivileges.Select(o => o.Privilege.Id).ToList(),
-                Permissions = obj.RolePrivileges.SelectMany(o => o.RolePrivilegePermissions).Select(p => p.Permission.Id).ToList(),
+                Permissions = obj.RolePermissions.Select(p => p.Permission.Id).ToList(),
             };
         }
         internal static RoleViewModel ToRoleViewModel(this Role obj)
@@ -287,8 +285,7 @@ namespace eInvoicing.Service.Helper.Extension
                 Id = obj.Id,
                 Name = obj.Name,
                 Description = obj.Description,
-                Privileges = AutoMapperConfiguration.Mapper.Map <List<PrivilegeDTO>> (obj.RolePrivileges.Select(o => o.Privilege).ToList()),
-                Permissions = AutoMapperConfiguration.Mapper.Map <List<PermissionDTO>> (obj.RolePrivileges.SelectMany(o => o.RolePrivilegePermissions).Select(p => p.Permission).ToList())
+                Permissions = AutoMapperConfiguration.Mapper.Map <List<PermissionDTO>> (obj.RolePermissions.Select(p => p.Permission).ToList())
             };
         }
     }

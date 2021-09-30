@@ -100,11 +100,7 @@ namespace eInvoicing.Web.Controllers
                         claims.Add(new Claim("FullName", response?.FullName));
                         foreach (var item in response?.stringfiedRoles)
                         {
-                            claims.Add(new Claim(ClaimTypes.Role, item));
-                        }
-                        foreach (var item in response?.stringfiedPrivileges)
-                        {
-                            claims.Add(new Claim("Page", item));
+                            claims.Add(new Claim("Role", item));
                         }
                         foreach (var item in response?.stringfiedPermissions)
                         {
@@ -128,6 +124,14 @@ namespace eInvoicing.Web.Controllers
             {
                 return View(model);
             }
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public ActionResult LogOff()
+        {
+            Request.GetOwinContext().Authentication.SignOut("ApplicationCookie");
+            return RedirectToAction("login", "account");
         }
 
         //
@@ -431,15 +435,7 @@ namespace eInvoicing.Web.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
-        [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-            Request.GetOwinContext().Authentication.SignOut("ApplicationCookie");
-            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            return RedirectToAction("login", "account");
-        }
+        
 
         //
         // GET: /Account/ExternalLoginFailure

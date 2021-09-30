@@ -184,8 +184,7 @@ namespace eInvoicing.Web.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Required Field.")]
         public string Description { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
-        public List<string> Privileges { get; set; }
+
         [Required(ErrorMessage = "Required Field.")]
         public List<string> Permissions { get; set; }
     }

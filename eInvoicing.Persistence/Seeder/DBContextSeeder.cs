@@ -15,213 +15,227 @@ namespace eInvoicing.Persistence.Seeder
         {
             Permission permission1 = new Permission()
             {
-                Id = "GET",
-                Action = "GET",
+                Id = "Can Submit",
+                Action = "submit",
                 CreatedOn = DateTime.Now
             };
             Permission permission2 = new Permission()
             {
-                Id = "POST",
-                Action = "POST",
+                Id = "Can Submit All",
+                Action = "auto_submit",
                 CreatedOn = DateTime.Now
             };
             Permission permission3 = new Permission()
             {
-                Id = "PUT",
-                Action = "PUT",
+                Id = "Change Settings",
+                Action = "update",
                 CreatedOn = DateTime.Now
             };
             Permission permission4 = new Permission()
             {
-                Id = "DELETE",
-                Action = "DELETE",
+                Id = "Create Role",
+                Action = "createrole",
                 CreatedOn = DateTime.Now
             };
+            Permission permission26 = new Permission()
+            {
+                Id = "Create User",
+                Action = "createuser",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission5 = new Permission()
+            {
+                Id = "Delete Role",
+                Action = "deleterole",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission6 = new Permission()
+            {
+                Id = "Delete User",
+                Action = "deleteuser",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission7 = new Permission()
+            {
+                Id = "Edit Role",
+                Action = "editrole",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission8 = new Permission()
+            {
+                Id = "Edit User",
+                Action = "edituser",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission9 = new Permission()
+            {
+                Id = "License Renewal",
+                Action = "uploadlicense",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission10 = new Permission()
+            {
+                Id = "Upload Document From External Sheet",
+                Action = "uploadfile",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission11 = new Permission()
+            {
+                Id = "View All Pending Documents",
+                Action = "ajax_pending",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission12 = new Permission()
+            {
+                Id = "View All Pending Invoice Lines",
+                Action = "items",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission13 = new Permission()
+            {
+                Id = "View All Roles",
+                Action = "getroles",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission14 = new Permission()
+            {
+                Id = "View All Submitted Documents",
+                Action = "ajax_submitted",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission15 = new Permission()
+            {
+                Id = "View All Submitted Invoice Lines",
+                Action = "submitted_items",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission16 = new Permission()
+            {
+                Id = "View All Users",
+                Action = "getusers",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission17 = new Permission()
+            {
+                Id = "View Dashboard",
+                Action = "renderer",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission18 = new Permission()
+            {
+                Id = "View Document Statistics Report",
+                Action = "ajaxgetsubmitteddocumentsstats",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission19 = new Permission()
+            {
+                Id = "View Monthly Bestseller Report",
+                Action = "ajaxgetmonthlybestseller",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission20 = new Permission()
+            {
+                Id = "View Monthly Lowestseller Report",
+                Action = "ajaxgetmonthlylowestseller",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission21 = new Permission()
+            {
+                Id = "View Pending Document Details",
+                Action = "details",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission22 = new Permission()
+            {
+                Id = "View Pending Documents Count",
+                Action = "draftcount",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission23 = new Permission()
+            {
+                Id = "View Submitted Document Details",
+                Action = "raw",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission24 = new Permission()
+            {
+                Id = "View Submitted Documents Count",
+                Action = "sentcount",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission25 = new Permission()
+            {
+                Id = "View Top Goods Report",
+                Action = "ajaxtopgoodsusage",
+                CreatedOn = DateTime.Now
+            };
+           
             context.Permission.AddRange(new List<Permission>() { permission1, permission2, permission3, permission4 });
-            //Pages
-           Privilege privilege1 = new Privilege()
-           {
-               Id = Guid.NewGuid().ToString(),
-               Controller = "Auth",
-               CreatedOn = DateTime.Now
-           };
-            Privilege privilege2 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "Master",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege3 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "Document",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege4 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "DocumentSubmission",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege5 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "User",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege9 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "Role",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege6 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "lookup",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege7 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "report",
-                CreatedOn = DateTime.Now
-            };
-            Privilege privilege8 = new Privilege()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Controller = "AppSettings",
-                CreatedOn = DateTime.Now
-            };
-            context.Privileges.AddRange(new List<Privilege>() { privilege1, privilege2, privilege3, privilege4, privilege5, privilege6, privilege7, privilege8, privilege9 });
-
-            RolePrivilegePermission RolePrivilegePermission1 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission2 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission3 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission4 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission11 = new List<RolePrivilegePermission>();
-            rolePrivilegePermission11.Add(RolePrivilegePermission1);
-            rolePrivilegePermission11.Add(RolePrivilegePermission2);
-            rolePrivilegePermission11.Add(RolePrivilegePermission3);
-            rolePrivilegePermission11.Add(RolePrivilegePermission4);
-
-            RolePrivilegePermission RolePrivilegePermission5 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission6 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission7 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission8 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission22 = new List<RolePrivilegePermission>();
-            rolePrivilegePermission22.Add(RolePrivilegePermission5);
-            rolePrivilegePermission22.Add(RolePrivilegePermission6);
-            rolePrivilegePermission22.Add(RolePrivilegePermission7);
-            rolePrivilegePermission22.Add(RolePrivilegePermission8);
-
-            RolePrivilegePermission RolePrivilegePermission9 = new RolePrivilegePermission()  { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission10 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission11 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission12 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission33 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission33.Add(RolePrivilegePermission9);
-            rolePrivilegePermission33.Add(RolePrivilegePermission10);
-            rolePrivilegePermission33.Add(RolePrivilegePermission11);
-            rolePrivilegePermission33.Add(RolePrivilegePermission12);
-
-            RolePrivilegePermission RolePrivilegePermission13 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission14 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission15 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission16 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission44 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission44.Add(RolePrivilegePermission13);
-            rolePrivilegePermission44.Add(RolePrivilegePermission14);
-            rolePrivilegePermission44.Add(RolePrivilegePermission15);
-            rolePrivilegePermission44.Add(RolePrivilegePermission16);
-
-            RolePrivilegePermission RolePrivilegePermission17 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission18 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission19 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission20 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission55 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission55.Add(RolePrivilegePermission17);
-            rolePrivilegePermission55.Add(RolePrivilegePermission18);
-            rolePrivilegePermission55.Add(RolePrivilegePermission19);
-            rolePrivilegePermission55.Add(RolePrivilegePermission20);
-
-            RolePrivilegePermission RolePrivilegePermission21 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission22 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission23 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission24 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission66 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission66.Add(RolePrivilegePermission21);
-            rolePrivilegePermission66.Add(RolePrivilegePermission22);
-            rolePrivilegePermission66.Add(RolePrivilegePermission23);
-            rolePrivilegePermission66.Add(RolePrivilegePermission24);
-
-            RolePrivilegePermission RolePrivilegePermission25 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission26 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission27 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission28 = new RolePrivilegePermission() {Id = Guid.NewGuid().ToString(), Permission = permission4 };
-
-            List<RolePrivilegePermission> rolePrivilegePermission77 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission77.Add(RolePrivilegePermission25);
-            rolePrivilegePermission77.Add(RolePrivilegePermission26);
-            rolePrivilegePermission77.Add(RolePrivilegePermission27);
-            rolePrivilegePermission77.Add(RolePrivilegePermission28);
-
-            RolePrivilegePermission RolePrivilegePermission29 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission30 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission31 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission32 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-            List<RolePrivilegePermission> rolePrivilegePermission88 = new List<RolePrivilegePermission>();
 
 
-            rolePrivilegePermission88.Add(RolePrivilegePermission29);
-            rolePrivilegePermission88.Add(RolePrivilegePermission30);
-            rolePrivilegePermission88.Add(RolePrivilegePermission31);
-            rolePrivilegePermission88.Add(RolePrivilegePermission32);
+            RolePermission RolePrivilegePermission1 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
+            RolePermission RolePrivilegePermission2 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
+            RolePermission RolePrivilegePermission3 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
+            RolePermission RolePrivilegePermission4 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
+            RolePermission RolePrivilegePermission5 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission5 };
+            RolePermission RolePrivilegePermission6 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission6 };
+            RolePermission RolePrivilegePermission7 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission7 };
+            RolePermission RolePrivilegePermission8 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission8 };
+            RolePermission RolePrivilegePermission9 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission9 };
+            RolePermission RolePrivilegePermission10 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission10 };
+            RolePermission RolePrivilegePermission11 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission11 };
+            RolePermission RolePrivilegePermission12 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission12 };
+            RolePermission RolePrivilegePermission13 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission13 };
+            RolePermission RolePrivilegePermission14 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission14 };
+            RolePermission RolePrivilegePermission15 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission15 };
+            RolePermission RolePrivilegePermission16 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission16 };
+            RolePermission RolePrivilegePermission17 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission17 };
+            RolePermission RolePrivilegePermission18 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission18 };
+            RolePermission RolePrivilegePermission19 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission19 };
+            RolePermission RolePrivilegePermission20 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission20 };
+            RolePermission RolePrivilegePermission21 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission21 };
+            RolePermission RolePrivilegePermission22 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission22 };
+            RolePermission RolePrivilegePermission23 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission23 };
+            RolePermission RolePrivilegePermission24 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission24 };
+            RolePermission RolePrivilegePermission25 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission25 };
+            RolePermission RolePrivilegePermission26 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission26 };
 
-            RolePrivilegePermission RolePrivilegePermission33 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
-            RolePrivilegePermission RolePrivilegePermission34 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
-            RolePrivilegePermission RolePrivilegePermission35 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
-            RolePrivilegePermission RolePrivilegePermission36 = new RolePrivilegePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
-
-            List<RolePrivilegePermission> rolePrivilegePermission99 = new List<RolePrivilegePermission>();
-
-            rolePrivilegePermission99.Add(RolePrivilegePermission33);
-            rolePrivilegePermission99.Add(RolePrivilegePermission34);
-            rolePrivilegePermission99.Add(RolePrivilegePermission35);
-            rolePrivilegePermission99.Add(RolePrivilegePermission36);
 
 
-            RolePrivilege rolePrivilege1 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege1, RolePrivilegePermissions = rolePrivilegePermission11 };
-            RolePrivilege rolePrivilege2 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege2, RolePrivilegePermissions = rolePrivilegePermission22 };
-            RolePrivilege rolePrivilege3 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege3, RolePrivilegePermissions = rolePrivilegePermission33 };
-            RolePrivilege rolePrivilege4 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege4, RolePrivilegePermissions = rolePrivilegePermission44 };
-            RolePrivilege rolePrivilege5 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege5, RolePrivilegePermissions = rolePrivilegePermission55 };
-            RolePrivilege rolePrivilege6 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege6, RolePrivilegePermissions = rolePrivilegePermission66 };
-            RolePrivilege rolePrivilege7 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege7, RolePrivilegePermissions = rolePrivilegePermission77 };
-            RolePrivilege rolePrivilege8 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege8, RolePrivilegePermissions = rolePrivilegePermission88 };
-            RolePrivilege rolePrivilege9 = new RolePrivilege() { Id = Guid.NewGuid().ToString(), Privilege = privilege9, RolePrivilegePermissions = rolePrivilegePermission99 };
-            List<RolePrivilege> rolePrivilege = new List<RolePrivilege>();
+            List<RolePermission> rolePermissions = new List<RolePermission>();
+            rolePermissions.Add(RolePrivilegePermission1);
+            rolePermissions.Add(RolePrivilegePermission2);
+            rolePermissions.Add(RolePrivilegePermission3);
+            rolePermissions.Add(RolePrivilegePermission4);
+            rolePermissions.Add(RolePrivilegePermission5);
+            rolePermissions.Add(RolePrivilegePermission6);
+            rolePermissions.Add(RolePrivilegePermission7);
+            rolePermissions.Add(RolePrivilegePermission8);
+            rolePermissions.Add(RolePrivilegePermission9);
+            rolePermissions.Add(RolePrivilegePermission10);
+            rolePermissions.Add(RolePrivilegePermission11);
+            rolePermissions.Add(RolePrivilegePermission12);
+            rolePermissions.Add(RolePrivilegePermission13);
+            rolePermissions.Add(RolePrivilegePermission14);
+            rolePermissions.Add(RolePrivilegePermission15);
+            rolePermissions.Add(RolePrivilegePermission16);
+            rolePermissions.Add(RolePrivilegePermission17);
+            rolePermissions.Add(RolePrivilegePermission18);
+            rolePermissions.Add(RolePrivilegePermission19);
+            rolePermissions.Add(RolePrivilegePermission20);
+            rolePermissions.Add(RolePrivilegePermission21);
+            rolePermissions.Add(RolePrivilegePermission22);
+            rolePermissions.Add(RolePrivilegePermission23);
+            rolePermissions.Add(RolePrivilegePermission24);
+            rolePermissions.Add(RolePrivilegePermission25);
+            rolePermissions.Add(RolePrivilegePermission26);
 
-            rolePrivilege.Add(rolePrivilege1);
-            rolePrivilege.Add(rolePrivilege2);
-            rolePrivilege.Add(rolePrivilege3);
-            rolePrivilege.Add(rolePrivilege4);
-            rolePrivilege.Add(rolePrivilege5);
-            rolePrivilege.Add(rolePrivilege6);
-            rolePrivilege.Add(rolePrivilege7);
-            rolePrivilege.Add(rolePrivilege8);
-            rolePrivilege.Add(rolePrivilege9);
             Role Role1 = new Role()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "SuperAdmin",
                 Description = "The shop worker on the insertion team will be stationed at the insertion table. This is an 8-hour team shift (6:30am-4:00pm). The job requires inserting fixed and variable metal and plastic pieces with wood glue and a hammer into shelve units for closets. It is a continuous action and a vital role in our shop. This station collaborates with the production of our other customized materials.",
-                RolePrivileges = rolePrivilege
+                RolePermissions = rolePermissions
             };
             context.Roles.Add(Role1);
             UserRole userRole = new UserRole()

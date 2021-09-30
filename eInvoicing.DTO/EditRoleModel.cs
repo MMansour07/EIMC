@@ -10,7 +10,6 @@ namespace eInvoicing.DTO
     public class EditRoleModel: BaseDTO
     {
         public RoleDTO Role { get; set; }
-        public List<PrivilegeDTO> Privileges { get; set; }
         public List<PermissionDTO> Permissions { get; set; }
     }
 }

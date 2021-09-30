@@ -2,7 +2,7 @@
 
 <!--begin::Form-->
 <!--begin::Wizard Form-->
-@using (Html.BeginForm("edit", "role", FormMethod.Post, new { @class = "", role = "form", id = "_editRoleFrm" }))
+@using (Html.BeginForm("editrole", "role", FormMethod.Post, new { @class = "", role = "form", id = "_editRoleFrm" }))
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -20,10 +20,10 @@
             @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5" })
             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
+        @*<div class="form-group row">
             @Html.ListBoxFor(model => model.Privileges, ViewBag.Privileges as SelectList, new { @class = "form-control select2", @id = "kt_select2_2", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
             @Html.ValidationMessageFor(model => model.Privileges, "", new { @class = "text-danger" })
-        </div>
+        </div>*@
         <div class="form-group row">
             @Html.ListBoxFor(model => model.Permissions, ViewBag.Permissions as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
             @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })

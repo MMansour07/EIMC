@@ -13,7 +13,7 @@ namespace eInvoicing.Web
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationType = "ApplicationCookie",
-                LoginPath = new PathString("//EInvoicing//v0/account/login"),
+                LoginPath = new PathString("//EInvoicing/v0/account/login"),
             });
         }
     }

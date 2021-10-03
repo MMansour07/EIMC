@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 source: {
                     read: {
                         method: 'POST',
-                        url: '/EInvoicing//v0/document/ajax_submitted',
+                        url: '/EInvoicing/v0/document/ajax_submitted',
                         map: function (raw) {
                             // 
                             // sample data mapping
@@ -64,7 +64,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     title: 'ID/Internal ID',
                     width:220,
                     template: function (row) {
-                        return '<a class="btn btn-link no-hover" href="/EInvoicing//v0/document/raw?uuid=' + row.uuid +'" style="padding-left: 0;text-decoration: underline;">' + row.uuid +'</a>\
+                        return '<a class="btn btn-link no-hover" href="/EInvoicing/v0/document/raw?uuid=' + row.uuid +'" style="padding-left: 0;text-decoration: underline;">' + row.uuid +'</a>\
                                 <span class="navi-text" style= "float:left; clear:left;">' + row.internalID + '</span>';
                     }
                 },
@@ -167,37 +167,37 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
                             <ul class="navi flex-column navi-hover py-2">\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-file-excel"></i></span>\
                                         <span class="navi-text">Cancel</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-link"></i></span>\
                                         <span class="navi-text">Get Public Link</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-print"></i></span>\
                                         <span class="navi-text">Print</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-plus-circle"></i></span>\
                                         <span class="navi-text">Debit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-minus-circle"></i></span>\
                                         <span class="navi-text">Credit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-download"></i></span>\
                                         <span class="navi-text">Download</span>\
                                     </a>\

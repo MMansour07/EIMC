@@ -57,7 +57,7 @@ var KTUppy = function () {
                         fileData.append('username', 'sa');
                         $(".uppy-Dashboard-close").click();
                         $.ajax({
-                            url: '/EInvoicing//v0/master/UploadLicense',
+                            url: '/EInvoicing/v0/master/UploadLicense',
                             type: "POST",
                             contentType: false, // Not to set any content header  
                             processData: false, // Not to process data  
@@ -156,7 +156,7 @@ var KTUppy = function () {
                     fileData.append('username', 'sa');
                     $(".uppy-Dashboard-close").click();
                     $.ajax({
-                        url: '/EInvoicing//v0/document/UploadFile',
+                        url: '/EInvoicing/v0/document/UploadFile',
                         type: "POST",
                         contentType: false, // Not to set any content header  
                         processData: false, // Not to process data  

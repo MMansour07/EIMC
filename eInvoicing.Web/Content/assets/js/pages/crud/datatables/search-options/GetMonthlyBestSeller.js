@@ -28,7 +28,7 @@ var initTable1 = function () {
 		searchDelay: 500,
 		serverSide: true,
 		ajax: {
-			url: '/EInvoicing//v0/report/AjaxgetMonthlyBestSeller',
+			url: '/EInvoicing/v0/report/AjaxgetMonthlyBestSeller',
 			type: 'POST',
 			data: function (post) {
 				post.specificDate = specificDate;

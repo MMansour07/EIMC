@@ -10,7 +10,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/EInvoicing//v0/document/submitted_items?uuid=' + getParameterByName("uuid")
+                    url: '/EInvoicing/v0/document/submitted_items?uuid=' + getParameterByName("uuid")
                 },
             },
             pageSize: 10,

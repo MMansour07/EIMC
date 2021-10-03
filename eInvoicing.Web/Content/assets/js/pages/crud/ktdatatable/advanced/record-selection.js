@@ -11,7 +11,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                     method: 'POST',
-                    url: '/EInvoicing//v0/document/ajax_pending',
+                    url: '/EInvoicing/v0/document/ajax_pending',
                     map: function (raw) {
                         // 
                         // sample data mapping
@@ -71,7 +71,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 sortable: false,
                 width: 120,
                 template: function (row) {
-                    return '<a class="btn btn-link no-hover" href="/EInvoicing//v0/document/details?id=' + row.internalID + '" style="padding-left: 0;text-decoration: underline;">' + row.internalID + '</a>';
+                    return '<a class="btn btn-link no-hover" href="/EInvoicing/v0/document/details?id=' + row.internalID + '" style="padding-left: 0;text-decoration: underline;">' + row.internalID + '</a>';
             },
             },
             {
@@ -174,7 +174,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/details/'+ row.internalID + '" class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/details/'+ row.internalID + '" class="navi-link">\
                                         <span class="navi-icon"><i class="la la-eye"></i></span>\
                                         <span class="navi-text">View</span>\
                                     </a>\
@@ -212,7 +212,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/EInvoicing//v0/document/details/'+ row.internalID + '" class="navi-link">\
+                                    <a href="/EInvoicing/v0/document/details/'+ row.internalID + '" class="navi-link">\
                                         <span class="navi-icon"><i class="la la-eye"></i></span>\
                                         <span class="navi-text">View</span>\
                                     </a>\
@@ -298,7 +298,7 @@ var KTDatatableRecordSelectionDemo = function () {
             Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString()}));
             // Ajax Call to Submit documnets Web Contoller
             var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-            $.post('/EInvoicing//v0/documentsubmission/submit', { obj: FilteredDocuments },
+            $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },
                     function (returnedData) {
                         KTUtil.btnRelease(btn);
                         $('#kt_datatable_group_action_form').collapse('hide');
@@ -382,7 +382,7 @@ var KTDatatableRecordSelectionDemo = function () {
             Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
             // Ajax Call to Submit documnets Web Contoller
             var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-            $.post('/EInvoicing//v0/documentsubmission/submit', { obj: FilteredDocuments },function (returnedData) {
+            $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },function (returnedData) {
                     KTUtil.btnRelease(btn);
                     $('#kt_datatable_group_action_form').collapse('hide');
                     KTApp.unblockPage();
@@ -627,7 +627,8 @@ var KTDatatableRecordSelectionDemo = function () {
     };
     return {
         // public functions
-        init: function() {
+        init: function () {
+            localStorage.clear();
             localSelectorDemo();
         },
     };
@@ -658,7 +659,7 @@ var func = function (input)
     Result = datatable.rows().data().KTDatatable.dataSet.where(p => p.internalID == id).map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     // Ajax Call to Submit documnets Web Contoller
     var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-    $.post('/EInvoicing//v0/documentsubmission/submit', { obj: FilteredDocuments },
+    $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },
         function (returnedData) {
             datatable.reload();
             $('#cover-spin').hide(0);

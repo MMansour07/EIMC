@@ -135,7 +135,7 @@ function deleteRole(id, name) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/EInvoicing//v0/role/deleterole?id=" + id,
+                url: "/EInvoicing/v0/role/deleterole?id=" + id,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -193,7 +193,7 @@ function deleteRole(id, name) {
 
 function editRole(id) {
     $.ajax({
-        url: "/EInvoicing//v0/role/editpartial?id=" + id,
+        url: "/EInvoicing/v0/role/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -215,7 +215,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_roleFrm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/role/createrole",
+                url: "/EInvoicing/v0/role/createrole",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -278,7 +278,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_editRoleFrm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/role/editrole",
+                url: "/EInvoicing/v0/role/editrole",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

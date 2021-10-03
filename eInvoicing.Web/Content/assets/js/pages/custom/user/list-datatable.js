@@ -172,7 +172,7 @@ function deleteUser(id, username) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/EInvoicing//v0/user/deleteuser?id=" + id,
+                url: "/EInvoicing/v0/user/deleteuser?id=" + id,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -228,7 +228,7 @@ function deleteUser(id, username) {
 
 function editUser(id) {
     $.ajax({
-        url: "/EInvoicing//v0/user/editpartial?id=" + id,
+        url: "/EInvoicing/v0/user/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -250,7 +250,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_frm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/user/createuser",
+                url: "/EInvoicing/v0/user/createuser",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -315,7 +315,7 @@ jQuery(document).ready(function () {
             KTApp.blockPage();
             var valdata = $("#_editFrm").serialize();
             $.ajax({
-                url: "/EInvoicing//v0/user/edituser",
+                url: "/EInvoicing/v0/user/edituser",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

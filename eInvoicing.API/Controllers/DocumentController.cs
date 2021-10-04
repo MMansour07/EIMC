@@ -218,7 +218,7 @@ namespace eInvoicing.API.Controllers
         }
         private void connection()
         {
-            sqlconn = "Data Source=.;Initial Catalog=Lazurdi_DB;User Id=sa;Password=123";
+            sqlconn = "Data Source=.;Initial Catalog=EIMC;User Id=smohamed;Password=P@ssw0rd";
             con = new SqlConnection(sqlconn);
 
         }
@@ -227,7 +227,7 @@ namespace eInvoicing.API.Controllers
         {
             Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
                                     "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernate]," +
-                                    " [IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], [NetWeight], [InternalDocumentStatus] FROM [{0}]", "Document$");
+                                    " [IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], [NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus] FROM [{0}]", "Document$");
             string SQLQuery = "SELECT [Id] FROM DOCUMENTS ";
             List<string> InternalDocumentIds = new List<string>();
 
@@ -284,7 +284,8 @@ namespace eInvoicing.API.Controllers
             objbulk.ColumnMappings.Add("ReceiverCountry", "ReceiverCountry");
             objbulk.ColumnMappings.Add("GrossWeight", "GrossWeight");
             objbulk.ColumnMappings.Add("NetWeight", "NetWeight");
-            objbulk.ColumnMappings.Add("InternalDocumentStatus", "Status");
+            objbulk.ColumnMappings.Add("NewStatus", "Status");
+            
 
             //inserting Datatable Records to DataBase  
             //con.Open();
@@ -300,8 +301,8 @@ namespace eInvoicing.API.Controllers
         {
             Query = string.Format("Select [InternalInvoiceLineId],[ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
                 "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
-                " [NetTotal], [Total], [Description], [DocumentId] FROM [{0}]", "Lines$");
-            string SQLQuery = "SELECT [InternalInvoiceLineId] FROM INVOICELINES";
+                " [NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Lines$");
+            string SQLQuery = "SELECT [Id] FROM INVOICELINES";
             List<string> InternalInvoiceLinesIds = new List<string>();
 
             SqlCommand command = new SqlCommand(SQLQuery, con);
@@ -329,7 +330,7 @@ namespace eInvoicing.API.Controllers
             //assigning Destination table name  
             objbulk.DestinationTableName = "INVOICELINES";
             //Mapping Table column  
-            objbulk.ColumnMappings.Add("InternalInvoiceLineId", "InternalInvoiceLineId");
+            objbulk.ColumnMappings.Add("InternalInvoiceLineId", "Id");
             objbulk.ColumnMappings.Add("ItemType", "ItemType");
             objbulk.ColumnMappings.Add("ItemCode", "ItemCode");
             objbulk.ColumnMappings.Add("UnitType", "UnitType");
@@ -348,7 +349,7 @@ namespace eInvoicing.API.Controllers
             objbulk.ColumnMappings.Add("NetTotal", "NetTotal");
             objbulk.ColumnMappings.Add("Total", "Total");
             objbulk.ColumnMappings.Add("Description", "Description");
-            objbulk.ColumnMappings.Add("DocumentId", "DocumentId");
+            objbulk.ColumnMappings.Add("InternalDocumentId", "DocumentId");
             if (Exceldt != null)
             {
                 objbulk.WriteToServer(Exceldt);

@@ -686,7 +686,7 @@ var func = function (input)
     return true;
 }
 function ModifyDate(date) {
-    debugger;
+  
     if (date) {
         date = date.toString().split("-");
         // After this construct a string with the above results as below

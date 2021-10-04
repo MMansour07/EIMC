@@ -78,7 +78,8 @@ namespace eInvoicing.Web.Controllers
                 {
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
-                    var url = _userSession.URL + "api/report/submitteddocumentsstats?pageNumber="+Convert.ToInt32(start)+"&pageSize="+ Convert.ToInt32(length)+"&fromdate="+ _fromDate +"&todate="+ _toDate + "&searchValue="+searchValue+ "&sortColumnName="+sortColumnName+ "&sortDirection="+sortDirection;
+                    var url = _userSession.URL + "api/report/submitteddocumentsstats?pageNumber="+Convert.ToInt32(start)+"&pageSize="+ Convert.ToInt32(length)+
+                        "&fromdate="+ _fromDate +"&todate="+ _toDate + "&searchValue="+searchValue+ "&sortColumnName="+sortColumnName+ "&sortDirection="+sortDirection;
                     client.BaseAddress = new Uri(url);
                     var postTask = Task.Run(() => client.GetAsync(url)).Result;
                     if (postTask.IsSuccessStatusCode)

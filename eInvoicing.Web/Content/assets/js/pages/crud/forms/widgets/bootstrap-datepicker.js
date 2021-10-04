@@ -58,6 +58,7 @@ var KTBootstrapDatepicker = function () {
             templates: arrows
         });
 
+        
 
         // input group layout 
         $('#fromDate, #fromDate_validate').datepicker({
@@ -81,6 +82,31 @@ var KTBootstrapDatepicker = function () {
             clearBtn: true,
             todayHighlight: true,
             autoclose: true
+        });
+
+        $('#pending_fromDate, #fromDate_validate').datepicker({
+            rtl: KTUtil.isRTL(),
+            orientation: "bottom left",
+            templates: arrows,
+            todayBtn: "linked",
+            format: "dd-M-yyyy",
+            clearBtn: true,
+            todayHighlight: true,
+            autoclose: true,
+            endDate: new Date($('#pending_toDate').val())
+        });
+
+        // input group layout 
+        $('#pending_toDate, #toDate_validate').datepicker({
+            rtl: KTUtil.isRTL(),
+            orientation: "bottom left",
+            templates: arrows,
+            todayBtn: "linked",
+            format: "dd-M-yyyy",
+            clearBtn: true,
+            todayHighlight: true,
+            autoclose: true,
+            startDate: new Date($("#pending_fromDate").val())
         });
 
         $('#specificDate, #specificDate_validate').datepicker({

@@ -40,11 +40,11 @@ namespace eInvoicing.API.Controllers
         }
         [HttpGet]
         [Route("api/document/pending")]
-        public IHttpActionResult Pending(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status)
+        public IHttpActionResult Pending(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             try
             {
-                var docs = _documentService.GetPendingDocuments(pageNumber, pageSize, searchValue, sortColumnName, sortDirection, status);
+                var docs = _documentService.GetPendingDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
                 return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
             }
             catch (Exception ex)

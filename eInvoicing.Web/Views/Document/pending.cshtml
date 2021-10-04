@@ -53,25 +53,41 @@
             <!--begin: Search Form-->
             <!--begin::Search Form-->
             <div class="mb-7">
+                <div class="row align-items-center mb-4">
+                    <div class="col-lg-10">
+                        <label>Issued On:</label>
+                        <div class="input-daterange input-group">
+                            <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
+                            <div class="input-group-append">
+                                <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
+                            </div>
+                            <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
+                        </div>
+                    </div>
+                    <div class="col-lg-2">
+                        <a href="#" id="_find" class="mt-8 btn btn-light-primary btn-shadow">
+                            <i class="flaticon2-search"></i>
+                            Find
+                        </a>
+                    </div>
+                </div>
+
                 <div class="row align-items-center">
-                    <div class="col-lg-9 col-xl-8">
-                        <div class="row align-items-center">
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
-                                    <span><i class="flaticon2-search-1 text-muted"></i></span>
-                                </div>
-                            </div>
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="d-flex align-items-center">
-                                    <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
-                                    <select class="form-control" id="kt_datatable_search_status">
-                                        <option value="">All</option>
-                                        <option value="New">New</option>
-                                        <option value="Failed">Failed</option>
-                                    </select>
-                                </div>
-                            </div>
+                    <div class="col-md-5">
+                        <label>General Search:</label>
+                        <div class="input-icon">
+                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                            <span><i class="flaticon2-search-1 text-muted"></i></span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label>Status:</label>
+                        <div class="d-flex align-items-center">
+                            <select class="form-control" id="kt_datatable_search_status">
+                                <option value="">All</option>
+                                <option value="New">New</option>
+                                <option value="Failed">Failed</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -141,7 +157,7 @@
                 <div class="modal-header py-5">
                     <h5 class="modal-title">
                         Errors
-                        <span class="d-block text-muted font-size-sm">The reasons why this document is failed to send.</span>
+                        <span class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
@@ -160,19 +176,5 @@
 
 <script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/record-selection.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>
-<script>
-    jQuery(document).ready(function () {
-        $('input[name=postedFile]').change(function (ev) {
-            if ($('input[name=postedFile]')[0].files.length == 0) {
-                $("#_import").css("display", "none");
-            }
-            else {
-                $("#_import").css("display", "");
-            }
-        });
-        $("#del").on("click", function () {
-            $("#_import").css("display", "none");
-            $('input[name=postedFile]').val("");
-        })
-    });
-</script>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

@@ -37,12 +37,19 @@ namespace eInvoicing.Web.Controllers
             {
                 var pageNumber = Request["pagination[page]"];
                 var pageSize = Request["pagination[perpage]"];
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
                 var sortDirection = Request["sort[sort]"];
                 var sortColumnName = Request["sort[field]"];
                 var searchValue = Request["query[generalSearch]"];
                 var status = Request["query[status]"];
-                string url = "api/document/pending?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" +
-                    Convert.ToInt32(pageSize) + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : Convert.ToDateTime(toDate);
+
+                string url = "api/document/pending?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" + Convert.ToInt32(pageSize) + "&fromdate=" + _fromDate + "&todate=" + _toDate + 
+                    "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
                 var response = _httpClient.GET(url);
                 return Json(JsonConvert.DeserializeObject<DocumentResponse>(response.Info), JsonRequestBehavior.AllowGet);
             }

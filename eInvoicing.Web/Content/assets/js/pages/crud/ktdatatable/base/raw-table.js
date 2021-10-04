@@ -145,6 +145,7 @@ var KTDatatableRecordSelectionDemo = function () {
     return {
         // public functions
         init: function () {
+            localStorage.clear();
             localSelectorDemo();
             //serverSelectorDemo();
         },

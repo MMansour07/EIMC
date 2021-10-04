@@ -222,7 +222,8 @@ var KTDatatableRecordSelectionDemo = function() {
     };
     return {
         // public functions
-        init: function() {
+        init: function () {
+            localStorage.clear();
             localSelectorDemo();
         },
     };

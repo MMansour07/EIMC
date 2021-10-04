@@ -245,13 +245,13 @@ namespace eInvoicing.Service.AppService.Implementation
             return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "updated", m => m.OrderBy(x => x.DateTimeIssued), "InvoiceLines").ToList().Select(x => x.ToDocumentVM());
         }
 
-        public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status)
+        public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             IQueryable<Document> docs; 
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {
-                 docs = repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" 
-                 || i.Status.ToLower() == "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
+                 docs = repository.Get(i => (i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" 
+                 || i.Status.ToLower() == "updated") && (i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
             }
             else
             {
@@ -260,8 +260,7 @@ namespace eInvoicing.Service.AppService.Implementation
             if (!string.IsNullOrEmpty(searchValue))//filter
             {
                 searchValue = searchValue.ToLower().Replace("/", "");
-                docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) ||
-                DbFunctions.TruncateTime(x.DateTimeIssued).ToString().Replace("-","").Contains(searchValue) || searchValue.Contains(x.DocumentType.ToLower()) || 
+                docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) || searchValue.Contains(x.DocumentType.ToLower()) || 
                 x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
                 x.TotalItemsDiscountAmount.ToString().ToLower().Contains(searchValue) || x.TotalAmount.ToString().ToLower().Contains(searchValue) ||
                 x.ReceiverName.ToLower().Contains(searchValue) || x.ReceiverType.ToLower().Contains(searchValue));

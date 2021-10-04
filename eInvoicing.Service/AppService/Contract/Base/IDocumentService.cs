@@ -19,7 +19,7 @@ namespace eInvoicing.Service.AppService.Contract.Base
         int RejectDocument(string URL, string Key, string uuid, string reason);
         int DeclineDocumentCancellation(string URL, string Key, string uuid);
         int DeclineDocumentRejection(string URL, string Key, string uuid);
-        PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status);
+        PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status);
         PagedList<DocumentVM> GetSubmittedDocuments(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status);
         IEnumerable<DocumentVM> GetAllDocumentsToSubmit();
         int GetPendingCount();

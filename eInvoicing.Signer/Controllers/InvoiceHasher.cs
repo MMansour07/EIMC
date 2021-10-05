@@ -156,13 +156,13 @@ namespace eInvoicing.Signer.Controllers
             for (int i = 0; i < documents.Count; i++)
             {
                 var document = documents[i].ToObject<JObject>();
-                var serializedString = Serialize(document);
-                var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString));
+                //var serializedString = Serialize(document);
+                //var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString));
                 var signatures = new List<SIGNATURESDTO>();
                 signatures.Add(new SIGNATURESDTO
                 {
                     signatureType = "I",
-                    value = signatureString
+                    value = "NA"
                 });
                 document.Add("signatures", JArray.FromObject(signatures));
                 inputDocuments.Add(document);

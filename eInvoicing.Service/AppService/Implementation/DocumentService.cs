@@ -126,14 +126,19 @@ namespace eInvoicing.Service.AppService.Implementation
                         GetDocumentResponseJSON.Properties().Where(attr => attr.Name.Equals("document")).ToList().ForEach(attr => attr.Remove());
                         var documentJsonStr = JsonConvert.SerializeObject(new JObject(documentProps));
                         GetDocumentResponseJSON.Add("document", JObject.Parse(documentJsonStr));
-                        return JsonConvert.DeserializeObject<GetDocumentResponse>(GetDocumentResponseJSON.ToString());
+                        var response = JsonConvert.DeserializeObject<GetDocumentResponse>(GetDocumentResponseJSON.ToString());
+                        response.StatusCode = System.Net.HttpStatusCode.OK;
+                        return response;
                     }
-                    return null;
+                    else 
+                    {
+                        return new GetDocumentResponse() { StatusCode = result.StatusCode};
+                    }
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return null;
+                throw ex;
             }
         }
         public int CancelDocument(string URL, string Key, string uuid,string reason)
@@ -245,7 +250,8 @@ namespace eInvoicing.Service.AppService.Implementation
             return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "updated", m => m.OrderBy(x => x.DateTimeIssued), "InvoiceLines").ToList().Select(x => x.ToDocumentVM());
         }
 
-        public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
+        public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, 
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             IQueryable<Document> docs; 
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
@@ -255,7 +261,7 @@ namespace eInvoicing.Service.AppService.Implementation
             }
             else
             {
-                 docs = repository.Get(i => i.Status.ToLower() == status.ToLower(), m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
+                 docs = repository.Get(i => i.Status.ToLower() == status.ToLower() && (i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
             }
             if (!string.IsNullOrEmpty(searchValue))//filter
             {
@@ -327,20 +333,19 @@ namespace eInvoicing.Service.AppService.Implementation
                 return new DashboardDTO();
             }
         }
-        public PagedList<DocumentVM> GetSubmittedDocuments(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status)
+        public PagedList<DocumentVM> GetSubmittedDocuments(int pageNumber, int pageSize, DateTime fromDate,
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
-            //var docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines,Errors");
-            //var temp = PagedList<Document>.Create(docs, pageNumber, pageSize, 0);
-            //return new PagedList<DocumentVM>(temp.Select(x => x.ToDocumentVM()).ToList(), docs.Count(), pageNumber, pageSize, 0);
-
             IQueryable<Document> docs;
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {
-                docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated", m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines,Errors");
+                docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" 
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines,Errors");
             }
             else
             {
-                docs = repository.Get(i => i.Status.ToLower() == status.ToLower(), m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines");
+                docs = repository.Get(i => i.Status.ToLower() == status.ToLower() 
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines");
             }
             if (!string.IsNullOrEmpty(searchValue))//filter
             {

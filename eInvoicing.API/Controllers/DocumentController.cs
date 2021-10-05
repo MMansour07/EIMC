@@ -80,11 +80,11 @@ namespace eInvoicing.API.Controllers
         }
         [HttpGet]
         [Route("api/document/submitted")]
-        public IHttpActionResult Submitted(int pageNumber, int pageSize, string searchValue, string sortColumnName, string sortDirection, string status)
+        public IHttpActionResult Submitted(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             try
             {
-                var docs = _documentService.GetSubmittedDocuments(pageNumber, pageSize, searchValue, sortColumnName, sortDirection, status);
+                var docs = _documentService.GetSubmittedDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
                 return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
             }
             catch (Exception ex)
@@ -218,7 +218,7 @@ namespace eInvoicing.API.Controllers
         }
         private void connection()
         {
-            sqlconn = "Data Source=.;Initial Catalog=EIMC;User Id=smohamed;Password=P@ssw0rd";
+            sqlconn = "Data Source=.;Initial Catalog=EIMC;User ID=sa;Password=123";
             con = new SqlConnection(sqlconn);
 
         }
@@ -226,8 +226,11 @@ namespace eInvoicing.API.Controllers
         private int InsertDocuments()
         {
             Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
-                                    "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernate]," +
-                                    " [IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], [NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus] FROM [{0}]", "Document$");
+                                         "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernate]," +
+                                         "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], " +
+                                         "[NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus] FROM [{0}], "+ DateTime.Now +" as [DateTimeReceived]", "Document$");
+
+            // select document by id
             string SQLQuery = "SELECT [Id] FROM DOCUMENTS ";
             List<string> InternalDocumentIds = new List<string>();
 
@@ -285,7 +288,8 @@ namespace eInvoicing.API.Controllers
             objbulk.ColumnMappings.Add("GrossWeight", "GrossWeight");
             objbulk.ColumnMappings.Add("NetWeight", "NetWeight");
             objbulk.ColumnMappings.Add("NewStatus", "Status");
-            
+            objbulk.ColumnMappings.Add("DateTimeReceived", "DateTimeReceived");
+
 
             //inserting Datatable Records to DataBase  
             //con.Open();

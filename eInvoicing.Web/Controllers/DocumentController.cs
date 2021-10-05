@@ -170,12 +170,19 @@ namespace eInvoicing.Web.Controllers
             {
                 var pageNumber = Request["pagination[page]"];
                 var pageSize = Request["pagination[perpage]"];
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
                 var sortDirection = Request["sort[sort]"];
                 var sortColumnName = Request["sort[field]"];
                 var searchValue = Request["query[generalSearch]"];
                 var status = Request["query[status]"];
-                string url = "api/document/submitted?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" +
-                    Convert.ToInt32(pageSize) + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : Convert.ToDateTime(toDate);
+
+                string url = "api/document/submitted?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" + Convert.ToInt32(pageSize) +"&fromdate=" + _fromDate + "&todate=" + _toDate +  
+                    "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
                 var response = _httpClient.GET(url);
                 return Json(JsonConvert.DeserializeObject<DocumentResponse>(response.Info), JsonRequestBehavior.AllowGet);
             }
@@ -190,10 +197,9 @@ namespace eInvoicing.Web.Controllers
         {
             try
             {
-
                 var result = JsonConvert.DeserializeObject<GetDocumentResponse>(_httpClient.GET("api/document/raw?uuid=" + uuid).Info);
                 GetDocumentResponse document = result;
-                if (document != null)
+                if (document.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     document.dateTimeIssued = DateTime.Parse(document.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
                     document.dateTimeReceived = DateTime.Parse(document.dateTimeReceived).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
@@ -211,7 +217,11 @@ namespace eInvoicing.Web.Controllers
                             };
                     document.typeName = docType.FirstOrDefault(i => i.Value == document.typeName.ToLower())?.Text;
                     document.statusClass = status.FirstOrDefault(i => i.Value == document.status.ToLower())?.Text;
+                    ViewBag.IsExist = true;
                 }
+                else
+                    ViewBag.IsExist = false;
+
                 return View(document);
             }
             catch (Exception ex)

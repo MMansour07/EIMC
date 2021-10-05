@@ -1,6 +1,11 @@
 "use strict";
 // Class definition
+
+var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+var fromDate = new Date(y, m, 1);
+var toDate = new Date();
 var Result;
+var datatable;
 var options;
 
 var KTDatatableRecordSelectionDemo = function() {
@@ -23,6 +28,7 @@ var KTDatatableRecordSelectionDemo = function() {
                             }
                             return dataSet;
                         },
+                        timeout: 1000000
                     },
                 },
                 pageSize: 10,
@@ -208,16 +214,23 @@ var KTDatatableRecordSelectionDemo = function() {
                     },
                 }],
         };
+        options.data.source.read.params =
+        {
+            fromDate: ModifyDate(fromDate),
+            toDate: ModifyDate(toDate)
+        }
         options.search = {
             
             input: $('#kt_datatable_search_query'),
             key: 'generalSearch'
            
         };
-        var datatable = $('#kt_datatable').KTDatatable(options);
-
+        datatable = $('#kt_datatable').KTDatatable(options);
         $('#kt_datatable_search_status').on('change', function () {
             datatable.search($(this).val().toLowerCase(), 'status');
+        });
+        $("#_find").on('click', function () {
+            searchData();
         });
     };
     return {
@@ -230,6 +243,10 @@ var KTDatatableRecordSelectionDemo = function() {
 }();
 
 jQuery(document).ready(function () {
+    $("#pending_fromDate").val(((fromDate.getDate() > 9) ? fromDate.getDate() : ('0' + fromDate.getDate())) + '-' + monthNames[((fromDate.getMonth() > 8) ? (fromDate.getMonth()) : ((fromDate.getMonth())))] + '-' + fromDate.getFullYear());
+    $("#pending_toDate").val(((toDate.getDate() > 9) ? toDate.getDate() : ('0' + toDate.getDate())) + '-' + monthNames[((toDate.getMonth() > 8) ? (toDate.getMonth()) : ((toDate.getMonth())))] + '-' + toDate.getFullYear());
+    fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
+    toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
     localStorage.clear();
     KTDatatableRecordSelectionDemo.init();
 });
@@ -324,3 +341,21 @@ var initSubDatatable = function (id) {
         datatable.redraw();
     });
 };
+function ModifyDate(date) {
+
+    if (date) {
+        date = date.toString().split("-");
+        // After this construct a string with the above results as below
+        return date[2] + "-" + (parseInt(monthNames.indexOf(date[1])) + 1) + "-" + date[0];
+    }
+    else
+        return null;
+
+}
+function searchData() {
+    fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
+    toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
+    datatable.destroy();
+    //localStorage.clear();
+    KTDatatableRecordSelectionDemo.init();
+}

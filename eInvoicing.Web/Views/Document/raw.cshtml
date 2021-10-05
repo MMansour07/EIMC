@@ -2,6 +2,8 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@if (Model != null)
+{
 <div class="container">
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
         <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -33,97 +35,8 @@
                 <!--end::Page Heading-->
             </div>
             <!--end::Info-->
-            <!--begin::Toolbar-->
-            <div class="d-flex align-items-center">
-                <!--begin::Actions-->
-                <a href="#" class="btn btn-light-primary font-weight-bolder btn-sm">
-                    Actions
-                </a>
-                <!--end::Actions-->
-                <!--begin::Dropdown-->
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Quick actions">
-                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="svg-icon svg-icon-success svg-icon-2x">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000"></path>
-                                </g>
-                            </svg><!--end::Svg Icon-->
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bold py-4">
-                                <span class="font-size-lg">Choose an action:</span>
-                                <i class="flaticon2-information icon-md text-muted" data-toggle="tooltip" data-placement="right" title="" data-original-title="Click to learn more..."></i>
-                            </li>
-                            <li class="navi-separator mb-3 opacity-70"></li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-success">Cancel</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-danger">Get Public Link</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="javascript:;" class="menu-link menu-toggle">
-                                    @*<span class="menu-text">Forms & Controls</span><i class="menu-arrow"></i>*@
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-warning">New</span><i class="menu-arrow"></i>
-                                    </span>
-                                </a>
-                                <div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Controls</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/base.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Base Inputs</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/input-group.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Input Groups</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/checkbox.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Checkbox</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/radio.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Radio</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/switch.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Switch</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/controls/option.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Mega Options</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-datetimepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Datetimepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-datepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Datepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-timepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Timepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-daterangepicker.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Daterangepicker</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/tagify.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Tagify</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-touchspin.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Touchspin</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-maxlength.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Maxlength</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-switch.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Switch</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-multipleselectsplitter.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Multiple Select Splitter</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/bootstrap-select.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Bootstrap Select</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/select2.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Select2</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/typeahead.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Typeahead</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets 2</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/nouislider.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">noUiSlider</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/form-repeater.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Repeater</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/ion-range-slider.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Ion Range Slider</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/input-mask.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Input Masks</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/autosize.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Autosize</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/clipboard.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Clipboard</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/widgets/recaptcha.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Google reCaptcha</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Text Editors</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/tinymce.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">TinyMCE</span></a></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">CKEditor</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-classic.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Classic</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-inline.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Inline</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-balloon.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Balloon</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-balloon-block.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Balloon Block</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/ckeditor-document.html" class="menu-link "><i class="menu-bullet menu-bullet-line"><span></span></i><span class="menu-text">CKEditor Document</span></a></li></ul></div></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/quill.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Quill Text Editor</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/summernote.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Summernote WYSIWYG</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/editors/bootstrap-markdown.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Markdown Editor</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Layouts</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/default-forms.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Default Forms</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/multi-column-forms.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Multi Column Forms</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/action-bars.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Basic Action Bars</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/layouts/sticky-action-bar.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Sticky Action Bar</span></a></li></ul></div></li><li class="menu-item  menu-item-submenu" data-menu-toggle="hover" aria-haspopup="true"><a href="javascript:;" class="menu-link menu-toggle"><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Validation</span><i class="menu-arrow"></i></a><div class="menu-submenu menu-submenu-classic menu-submenu-right"><ul class="menu-subnav"><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/states.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Validation States</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/form-controls.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Controls</span></a></li><li class="menu-item " aria-haspopup="true"><a href="crud/forms/validation/form-widgets.html" class="menu-link "><i class="menu-bullet menu-bullet-dot"><span></span></i><span class="menu-text">Form Widgets</span></a></li></ul></div></li></ul></div>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-primary">Print</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-text">
-                                        <span class="label label-xl label-inline label-light-dark">Download as</span>
-                                    </span>
-                                </a>
-                            </li>
-                            <li class="navi-separator mt-3 opacity-70"></li>
-                            <li class="navi-footer py-4">
-                                <a class="btn btn-clean font-weight-bold btn-sm" href="#">
-                                    <i class="ki ki-plus icon-sm"></i>
-                                    Add new
-                                </a>
-                            </li>
-                        </ul>
-                        <!--end::Navigation-->
-                    </div>
-                </div>
-                <!--end::Dropdown-->
-            </div>
-            <!--end::Toolbar-->
         </div>
     </div>
-    @*<div class="card card-custom">
-            <div class="card-header card-header-right ribbon ribbon-clip ribbon-left">
-                <div class="ribbon-target" style="top: 12px;">
-                    <span class="ribbon-inner bg-warning"></span>Ribbon
-                </div>
-                <h3 class="card-title">Clip Style</h3>
-            </div>
-            <div class="card-body">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Inceptos imperdiet magna! Sed fusce fames tempus litora venenatis ad: Ac aliquet leo hendrerit taciti viverra? Nisl suscipit potenti accumsan quis ipsum purus cursus. Suspendisse ultrices morbi in purus lectus dictum porta; Commodo penatibus nec.</div>
-        </div>*@
-
     <div class="card card-custom">
         <div class="card-header card-header-right ribbon ribbon-clip ribbon-left">
             <div class="ribbon-target" style="top: 12px;">
@@ -136,17 +49,6 @@
         <!--begin::Form-->
         <form>
             <div class="card-body">
-                @*<div class="form-group mb-0">
-                        <div class="alert alert-custom alert-default" role="alert">
-                            <div class="alert-icon">
-                                <span class="@Model.statusClass">@Model.status</span>
-                            </div>
-                            <div class="alert-text">
-                                @Model.typeName
-                                <code>@Model.typeVersionName</code>
-                            </div>
-                        </div>
-                    </div>*@
                 <div class="form-group row mb-0">
                     <label class="col-2 col-form-label">Internal Id:</label>
                     <label class="col-4 col-form-label">@Model.document.internalID</label>
@@ -569,7 +471,40 @@
         </div>
     </div>
 </div>
-    <script src="~/Content/assets/js/pages/crud/ktdatatable/base/raw-table.js"></script>
-    <script src="~/Content/assets/js/pages/features/cards/tools.js"></script>
-    <script src="~/Content/assets/plugins/custom/draggable/draggable.bundle.js"></script>
-    <script src="~/Content/assets/js/pages/features/cards/draggable.js"></script>
+}
+
+else if (Model.StatusCode == HttpStatusCode.NotFound)
+{
+<div class="d-flex flex-column flex-root">
+    <!--begin::Error-->
+    <div class="d-flex flex-row-fluid flex-column bgi-size-cover bgi-position-center bgi-no-repeat p-10 p-sm-30" style="background-image: url(~/Content/assets/media/error/bg1.jpg);">
+        <!--begin::Content-->
+        <h1 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 10rem">404</h1>
+        <p class="font-size-h3 text-muted font-weight-normal">
+            OOPS! This document not found, please check with ETA
+        </p>
+        <!--end::Content-->
+    </div>
+    <!--end::Error-->
+</div>
+}
+else
+{
+<div class="d-flex flex-column flex-root">
+    <!--begin::Error-->
+    <div class="d-flex flex-row-fluid flex-column bgi-size-cover bgi-position-center bgi-no-repeat p-10 p-sm-30" style="background-image: url(~/Content/assets/media/error/bg1.jpg);">
+        <!--begin::Content-->
+        <h1 class="font-weight-boldest text-dark-75 mt-15" style="font-size: 10rem">404</h1>
+        <p class="font-size-h3 text-muted font-weight-normal">
+            OOPS! Something went wrong, please check logs
+        </p>
+        <!--end::Content-->
+    </div>
+    <!--end::Error-->
+</div>
+}
+
+<script src="~/Content/assets/js/pages/crud/ktdatatable/base/raw-table.js"></script>
+<script src="~/Content/assets/js/pages/features/cards/tools.js"></script>
+<script src="~/Content/assets/plugins/custom/draggable/draggable.bundle.js"></script>
+<script src="~/Content/assets/js/pages/features/cards/draggable.js"></script>

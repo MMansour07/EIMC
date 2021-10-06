@@ -14,11 +14,17 @@ namespace eInvoicing.DomainEntities.Entities
         public string DocumentType { get; set; }
         public string DocumentTypeVersion { get; set; }
         public string ProformaInvoiceNumber { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal TotalDiscountAmount { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal TotalSalesAmount { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal NetAmount { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal TotalAmount { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal ExtraDiscountAmount { get; set; }
+        [DataType("decimal(18, 5)")]
         public decimal TotalItemsDiscountAmount { get; set; }
         public string TaxpayerActivityCode { get; set; }
         public string PurchaseOrderReference { get; set; }
@@ -30,7 +36,7 @@ namespace eInvoicing.DomainEntities.Entities
         public string IssuerType { get; set; }
         public string IssuerBranchId { get; set; }
         public string IssuerCountry { get; set; }
-        public string IssuerGovernate { get; set; }
+        public string IssuerGovernorate { get; set; }
         public string IssuerRegionCity { get; set; }
         public string IssuerStreet { get; set; }
         public string IssuerBuildingNumber { get; set; }
@@ -43,7 +49,7 @@ namespace eInvoicing.DomainEntities.Entities
         public string ReceiverName { get; set; }
         public string ReceiverType { get; set; }
         public string ReceiverCountry { get; set; }
-        public string ReceiverGovernate { get; set; }
+        public string ReceiverGovernorate { get; set; }
         public string ReceiverRegionCity { get; set; }
         public string ReceiverStreet { get; set; }
         public string ReceiverBuildingNumber { get; set; }

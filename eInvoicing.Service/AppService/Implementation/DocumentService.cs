@@ -253,6 +253,7 @@ namespace eInvoicing.Service.AppService.Implementation
         public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, 
             DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
+            toDate = toDate.AddDays(1);
             IQueryable<Document> docs; 
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {
@@ -301,7 +302,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d");
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"), count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
+                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
                     ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedInvoiceCount = ReceivedInvoices.Count(),
                     ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
@@ -336,6 +337,7 @@ namespace eInvoicing.Service.AppService.Implementation
         public PagedList<DocumentVM> GetSubmittedDocuments(int pageNumber, int pageSize, DateTime fromDate,
             DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
+            toDate = toDate.AddDays(1);
             IQueryable<Document> docs;
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {

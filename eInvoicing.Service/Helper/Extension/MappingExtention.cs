@@ -93,8 +93,8 @@ namespace eInvoicing.Service.Helper.Extension
                 salesOrderDescription = document.SalesOrderDescription,
                 salesOrderReference = document.SalesOrderReference,
                 taxpayerActivityCode = document.TaxpayerActivityCode,
-                IssuerFullAddress = document.IssuerBuildingNumber + " " + document.IssuerStreet + ", " + document.IssuerRegionCity + ", " + document.IssuerGovernate + ", " + document.IssuerCountry,
-                ReceiverFullAddress = document.ReceiverBuildingNumber + " " + document.ReceiverStreet + ", " + document.ReceiverRegionCity + ", " + document.ReceiverGovernate + ", " + document.ReceiverCountry,
+                IssuerFullAddress = document.IssuerBuildingNumber + " " + document.IssuerStreet + ", " + document.IssuerRegionCity + ", " + document.IssuerGovernorate + ", " + document.IssuerCountry,
+                ReceiverFullAddress = document.ReceiverBuildingNumber + " " + document.ReceiverStreet + ", " + document.ReceiverRegionCity + ", " + document.ReceiverGovernorate + ", " + document.ReceiverCountry,
                 delivery = new DELIVERIESDTO()
                 {
                     approach = document.Approach,
@@ -115,7 +115,7 @@ namespace eInvoicing.Service.Helper.Extension
                         buildingNumber = document.IssuerBuildingNumber,
                         country = document.IssuerCountry,
                         floor = document.IssuerFloor,
-                        governate = document.IssuerGovernate,
+                        governate = document.IssuerGovernorate,
                         landmark = document.IssuerLandmark,
                         postalCode = document.IssuerPostalCode,
                         regionCity = document.IssuerRegionCity,
@@ -158,8 +158,8 @@ namespace eInvoicing.Service.Helper.Extension
                         subType = x.SubType,
                         taxType = x.TaxType
                     }).ToList(),
-                    discount = new DISCOUNTSVM() { amount = i.DiscountAmount.ToString("N2"), rate = i.DiscountRate.ToString("N0") },
-                    unitValue = new UNITVALUESVM() { amountEGP = i.AmountEGP.ToString("N2"), amountSold = i.AmountSold.ToString("N2"), currencyExchangeRate = i.CurrencyExchangeRate.ToString("N2"), currencySold = i.CurrencySold }
+                    discount = new DISCOUNTSVM() { amount = i.DiscountAmount.ToString("N2"),rate = i.DiscountRate.ToString("N0") },
+                    unitValue = new UNITVALUESVM() { amountEGP = i.AmountEGP.ToString("N2"),amountSold = i.AmountSold.ToString("N2"),currencyExchangeRate = i.CurrencyExchangeRate.ToString("N2"),currencySold = i.CurrencySold }
                 }).ToList(),
                 taxTotals = document.InvoiceLines.SelectMany(b => b.TaxableItems)?.Distinct().GroupBy(o => o.TaxType).Select(x => new TAXTOTALSDTO() { amount = x.Sum(y => y.Amount), taxType = x.Select(e => e.TaxType).First() }).ToList(),
                 receiver = new RECEIVERSDTO()
@@ -170,7 +170,7 @@ namespace eInvoicing.Service.Helper.Extension
                         buildingNumber = document.ReceiverBuildingNumber,
                         country = document.ReceiverCountry,
                         floor = document.ReceiverFloor,
-                        governate = document.ReceiverGovernate,
+                        governate = document.ReceiverGovernorate,
                         landmark = document.ReceiverLandmark,
                         postalCode = document.ReceiverPostalCode,
                         regionCity = document.ReceiverRegionCity,

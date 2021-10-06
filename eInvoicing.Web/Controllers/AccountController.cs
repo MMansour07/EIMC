@@ -91,7 +91,7 @@ namespace eInvoicing.Web.Controllers
                         AuthenticationProperties options = new AuthenticationProperties();
                         options.AllowRefresh = true;
                         options.IsPersistent = true;
-                        options.ExpiresUtc = DateTime.UtcNow.AddMinutes(30);
+                        options.ExpiresUtc = DateTime.UtcNow.AddDays(1);
                         List<Claim> claims = new List<Claim>();
                         claims.Add(new Claim(ClaimTypes.Name, response?.UserName));
                         claims.Add(new Claim(ClaimTypes.NameIdentifier, response?.Id));

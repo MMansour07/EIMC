@@ -52,7 +52,7 @@ namespace eInvoicing.Service.AppService.Implementation
             var docs = repository.Get(i => i.DateTimeIssued.Year == SpecificDate, m => m.OrderByDescending(x => x.DateTimeIssued), null).ToList();
             return docs.GroupBy(o => o.DateTimeIssued.Month).Select(i => i.SelectMany(o => o.InvoiceLines).GroupBy(o => o.ItemCode).Select(x => new GoodsModel() 
             {
-                totalAmount = x.Sum(y => y.Total).ToString("N2"), 
+                totalAmount = x.Sum(y => y.Total).ToString("N2"),
                 count = x.Sum(y => y.Quantity), 
                 itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), 
                 itemDesc = x.Select(e => e.Description).FirstOrDefault(), 

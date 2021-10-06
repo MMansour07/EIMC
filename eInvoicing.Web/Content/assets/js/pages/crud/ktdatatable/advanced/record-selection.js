@@ -291,253 +291,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 }
             });
 
-        $('#kt_datatable_fetch_modal').on('click', function (e) {
-            KTApp.blockPage({
-                overlayColor: '#000000',
-                state: 'primary',
-                message: 'Please wait as this may take a few seconds'
-            });
-            var ids = datatable.rows('.datatable-row-active').
-                nodes().
-                find('.checkbox > [type="checkbox"]').
-                map(function (i, chk) {
-                    return $(chk).val();
-                }).toArray();
-            var btn = KTUtil.getById("kt_datatable_fetch_modal");
-            KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
-            Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString()}));
-            // Ajax Call to Submit documnets Web Contoller
-            var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-            $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },
-                    function (returnedData) {
-                        KTUtil.btnRelease(btn);
-                        $('#kt_datatable_group_action_form').collapse('hide');
-                        KTApp.unblockPage();
-                        if (returnedData.status == "1") {
-                            Swal.fire({
-                                title: 'Process has been executed successfully! with the below results.',
-                                html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                       <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
-                                icon: "success",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn font-weight-bold btn-light-primary"
-                                }
-                            }).then(function () {
-                                KTUtil.scrollTop();
-                            });
-                            datatable.reload();
-                            LoadDraft();
-                            LoadSent();
-                        }
-                        else if (returnedData.status == "2")
-                        {
-                            Swal.fire({
-                                title: "Sorry, something went wrong, please try again.",
-                                text: "ETA Integration Failed with Status Code: " + returnedData.message,
-                                icon: "error",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn font-weight-bold btn-light-primary"
-                                }
-                            }).then(function () {
-                                KTUtil.scrollTop();
-                            });
-                        }
-                        else {
-                            Swal.fire({
-                                title: "Sorry, something went wrong, please try again.",
-                                text: "Internal Integration Failed with Status Code: " + returnedData.message,
-                                icon: "error",
-                                buttonsStyling: false,
-                                confirmButtonText: "Ok, got it!",
-                                customClass: {
-                                    confirmButton: "btn font-weight-bold btn-light-primary"
-                                }
-                            }).then(function () {
-                                KTUtil.scrollTop();
-                            });
-                        }
-                    }).fail(function () {
-                        KTUtil.btnRelease(btn);
-                        KTApp.unblockPage();
-                        Swal.fire({
-                            title: "Sorry, something went wrong, please try again.",
-                            text: "Internal Server Error: " + returnedData.message,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                    });
-        });
-
-        $('#kt_datatable_send').on('click', function (e) {
-            KTApp.blockPage({
-                overlayColor: '#000000',
-                state: 'primary',
-                message: 'Please wait as this may take a few seconds'
-            });
-            var ids = datatable.rows('.datatable-row-active').nodes().find('.checkbox > [type="checkbox"]').map(function (i, chk) {
-                    return $(chk).val();
-                }).toArray();
-            var btn = KTUtil.getById("kt_datatable_send");
-            KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
-            Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-            // Ajax Call to Submit documnets Web Contoller
-            var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-            $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },function (returnedData) {
-                    KTUtil.btnRelease(btn);
-                    $('#kt_datatable_group_action_form').collapse('hide');
-                    KTApp.unblockPage();
-                    if (returnedData.status == "1") {
-                        Swal.fire({
-                            title: 'Process has been executed successfully! with the below results.',
-                            html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                        datatable.reload();
-                        LoadDraft();
-                        LoadSent();
-                    }
-                    else if (returnedData.status == "2") {
-                        Swal.fire({
-                            title: "Sorry, something went wrong, please try again.",
-                            text: "ETA Integration Failed with Status Code: " + returnedData.message,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                    else {
-                        Swal.fire({
-                            title: "Sorry, something went wrong, please try again.",
-                            text: "Internal Integration Failed with Status Code: " + returnedData.message,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                }).fail(function () {
-                    KTUtil.btnRelease(btn);
-                    KTApp.unblockPage();
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Internal Server Error: " + returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                });
-        });
-
-        // Send All Documents in one shot
-        $('#kt_datatable_sendAll').on('click', function (e) {
-            KTApp.blockPage({
-                overlayColor: '#000000',
-                state: 'primary',
-                message: 'Please wait as this may take a few seconds'
-            });
-            var btn = KTUtil.getById("kt_datatable_sendAll");
-            KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
-            // Ajax Call to Submit documnets Web Contoller
-            $.post('/EInvoicing/v0/documentsubmission/auto_submit',
-                function (returnedData) {
-                    KTUtil.btnRelease(btn);
-                    $('#kt_datatable_group_action_form').collapse('hide');
-                    KTApp.unblockPage();
-                    if (returnedData.status == "1") {
-                        Swal.fire({
-                            title: 'Process has been executed successfully! with the below results.',
-                            html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
-                            icon: "success",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                        datatable.reload();
-                        LoadDraft();
-                        LoadSent();
-                    }
-                    else if (returnedData.status == "2") {
-                        Swal.fire({
-                            title: "Sorry, something went wrong, please try again.",
-                            text: "ETA Integration Failed with Status Code: " + returnedData.message,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                    else {
-                        Swal.fire({
-                            title: "Sorry, something went wrong, please try again.",
-                            text: "Internal Integration Failed with Status Code: " + returnedData.message,
-                            icon: "error",
-                            buttonsStyling: false,
-                            confirmButtonText: "Ok, got it!",
-                            customClass: {
-                                confirmButton: "btn font-weight-bold btn-light-primary"
-                            }
-                        }).then(function () {
-                            KTUtil.scrollTop();
-                        });
-                    }
-                }).fail(function () {
-                    KTUtil.btnRelease(btn);
-                    KTApp.unblockPage();
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Internal Server Error: " + returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                });
-        });
+        
 
         datatable.on('click', '[data-record-id]', function () {
             Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
@@ -545,9 +299,7 @@ var KTDatatableRecordSelectionDemo = function () {
             $('#kt_datatable_modal').modal('show');
         });
 
-        $("#_find").on('click', function () {
-            searchData();
-        });
+        
     };
     var initSubDatatable = function (id) {
         var el = $('#kt_datatable_sub');
@@ -653,6 +405,258 @@ jQuery(document).ready(function () {
     fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
     toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
     KTDatatableRecordSelectionDemo.init();
+
+    $('#kt_datatable_fetch_modal').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+        var ids = datatable.rows('.datatable-row-active').
+            nodes().
+            find('.checkbox > [type="checkbox"]').
+            map(function (i, chk) {
+                return $(chk).val();
+            }).toArray();
+        var btn = KTUtil.getById("kt_datatable_fetch_modal");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
+        Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
+        // Ajax Call to Submit documnets Web Contoller
+        var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
+        $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments },
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData.status == "1") {
+                    Swal.fire({
+                        title: 'Process has been executed successfully! with the below results.',
+                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
+                                       <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadSent();
+                }
+                else if (returnedData.status == "2") {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "ETA Integration Failed with Status Code: " + returnedData.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "Internal Integration Failed with Status Code: " + returnedData.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "Internal Server Error: " + returnedData.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $('#kt_datatable_send').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+        var ids = datatable.rows('.datatable-row-active').nodes().find('.checkbox > [type="checkbox"]').map(function (i, chk) {
+            return $(chk).val();
+        }).toArray();
+        var btn = KTUtil.getById("kt_datatable_send");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
+        Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
+        // Ajax Call to Submit documnets Web Contoller
+        var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
+        $.post('/EInvoicing/v0/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
+            KTUtil.btnRelease(btn);
+            $('#kt_datatable_group_action_form').collapse('hide');
+            KTApp.unblockPage();
+            if (returnedData.status == "1") {
+                Swal.fire({
+                    title: 'Process has been executed successfully! with the below results.',
+                    html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
+                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+                datatable.reload();
+                LoadDraft();
+                LoadSent();
+            }
+            else if (returnedData.status == "2") {
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "ETA Integration Failed with Status Code: " + returnedData.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+            else {
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "Internal Integration Failed with Status Code: " + returnedData.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+        }).fail(function () {
+            KTUtil.btnRelease(btn);
+            KTApp.unblockPage();
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: "Internal Server Error: " + returnedData.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        });
+    });
+
+    // Send All Documents in one shot
+    $('#kt_datatable_sendAll').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+        var btn = KTUtil.getById("kt_datatable_sendAll");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
+        // Ajax Call to Submit documnets Web Contoller
+        $.post('/EInvoicing/v0/documentsubmission/auto_submit',
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData.status == "1") {
+                    Swal.fire({
+                        title: 'Process has been executed successfully! with the below results.',
+                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
+                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadSent();
+                }
+                else if (returnedData.status == "2") {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "ETA Integration Failed with Status Code: " + returnedData.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "Internal Integration Failed with Status Code: " + returnedData.message,
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "Internal Server Error: " + returnedData.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $("#_find").on('click', function () {
+        searchData();
+    });
+
     //$('._do').on('click', function () { alert('11') });
 });
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -699,7 +703,7 @@ function ModifyDate(date) {
 function searchData() {
     fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
     toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
-    datatable.destroy()
+    datatable.destroy();
     //localStorage.clear();
     KTDatatableRecordSelectionDemo.init();
 }

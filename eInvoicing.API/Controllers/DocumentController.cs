@@ -218,7 +218,8 @@ namespace eInvoicing.API.Controllers
         }
         private void connection()
         {
-            sqlconn = "Data Source=.;Initial Catalog=EIMC;User ID=sa;Password=123";
+            sqlconn = ConfigurationManager.AppSettings["eInvoicing_CS"];
+            //"Data Source=.;Initial Catalog=EIMC_PreProd;User ID=sa;Password=123";
             con = new SqlConnection(sqlconn);
 
         }
@@ -226,9 +227,10 @@ namespace eInvoicing.API.Controllers
         private int InsertDocuments()
         {
             Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
-                                         "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernate]," +
-                                         "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], " +
-                                         "[NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus] FROM [{0}], "+ DateTime.Now +" as [DateTimeReceived]", "Document$");
+                                         "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
+                                         "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
+                                         "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], " +
+                                         "[NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus], #"+ DateTime.Now +"# as [DateTimeReceived] FROM [{0}]", "Documents$");
 
             // select document by id
             string SQLQuery = "SELECT [Id] FROM DOCUMENTS ";
@@ -249,8 +251,10 @@ namespace eInvoicing.API.Controllers
             oda.Fill(ds);
             DataTable Exceldt = null;
 
+            //var xyz = ds.Tables[0].AsEnumerable().ToList();
+
             var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) && 
-            (row["InternalDocumentStatus"].ToString().ToLower() == "completed" || row["InternalDocumentStatus"].ToString().ToLower() == "updated"));
+            row["InternalDocumentStatus"].ToString().ToLower() == "completed"); //|| row["InternalDocumentStatus"].ToString().ToLower() == "updated"
             if (NewRows.Any())
             {
                 Exceldt = NewRows.CopyToDataTable();
@@ -278,10 +282,15 @@ namespace eInvoicing.API.Controllers
             objbulk.ColumnMappings.Add("IssuerType", "IssuerType");
             objbulk.ColumnMappings.Add("IssuerBranchId", "IssuerBranchId");
             objbulk.ColumnMappings.Add("IssuerCountry", "IssuerCountry");
-            objbulk.ColumnMappings.Add("IssuerGovernate", "IssuerGovernate");
+            objbulk.ColumnMappings.Add("IssuerGovernorate", "IssuerGovernorate");
             objbulk.ColumnMappings.Add("IssuerRegionCity", "IssuerRegionCity");
             objbulk.ColumnMappings.Add("IssuerStreet", "IssuerStreet");
             objbulk.ColumnMappings.Add("IssuerBuildingNumber", "IssuerBuildingNumber");
+            objbulk.ColumnMappings.Add("ReceiverId", "ReceiverId");
+            objbulk.ColumnMappings.Add("ReceiverGovernorate", "ReceiverGovernorate");
+            objbulk.ColumnMappings.Add("ReceiverStreet", "ReceiverStreet");
+            objbulk.ColumnMappings.Add("ReceiverRegionCity", "ReceiverRegionCity");
+            objbulk.ColumnMappings.Add("ReceiverBuildingNumber", "ReceiverBuildingNumber");
             objbulk.ColumnMappings.Add("ReceiverName", "ReceiverName");
             objbulk.ColumnMappings.Add("ReceiverType", "ReceiverType");
             objbulk.ColumnMappings.Add("ReceiverCountry", "ReceiverCountry");
@@ -305,10 +314,13 @@ namespace eInvoicing.API.Controllers
         {
             Query = string.Format("Select [InternalInvoiceLineId],[ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
                 "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
-                " [NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Lines$");
+                " [NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Invoice Lines$");
             string SQLQuery = "SELECT [Id] FROM INVOICELINES";
             List<string> InternalInvoiceLinesIds = new List<string>();
-
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
             SqlCommand command = new SqlCommand(SQLQuery, con);
             var output = command.ExecuteReader();
             while (output.Read())
@@ -365,9 +377,13 @@ namespace eInvoicing.API.Controllers
 
         private int InsertTaxableItems()
         {
-            Query = string.Format("Select [InternalId],[TaxType], [Rate], [Amount], [SubType], [InternalInvoiceLineId] FROM [{0}]", "Taxable items$");
+            Query = string.Format("Select [InternalId],[TaxType], [Rate], [Amount], [SubType], [InternalInvoiceLineId] FROM [{0}]", "Taxable Items$");
             string SQLQuery = "SELECT  CONCAT(InternalId,InvoiceLineId) AS 'UniqueTaxableItemKey'  FROM TAXABLEITEMS";
             List<string> UniqueTaxableItemKeys = new List<string>();
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
             SqlCommand command = new SqlCommand(SQLQuery, con);
             var output = command.ExecuteReader();
             while (output.Read())
@@ -410,13 +426,18 @@ namespace eInvoicing.API.Controllers
         }
         private int UpdateDocument()
         {
-            Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
-                "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernate]," +
-                " [IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverName], [ReceiverType], [ReceiverCountry], [GrossWeight], [NetWeight], [InternalDocumentStatus] FROM [{0}]", "Document$");
+            Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], " +
+                                  "[TotalItemsDiscountAmount], [ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
+                                  "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
+                                  "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], [NetWeight], [InternalDocumentStatus], " +
+                                  "'New' as [NewStatus], #" + DateTime.Now + "# as [DateTimeReceived] FROM [{0}]", "Documents$");
 
-            string SQLQuery = "SELECT [Id] FROM DOCUMENTS where Lower(Status) = 'updated'";
+            string SQLQuery = "SELECT [Id] FROM DOCUMENTS";
             List<string> InternalDocumentIds = new List<string>();
-
+            if (con.State == ConnectionState.Closed)
+            {
+                con.Open();
+            }
             SqlCommand command = new SqlCommand(SQLQuery, con);
             var output = command.ExecuteReader();
             while (output.Read())
@@ -427,7 +448,8 @@ namespace eInvoicing.API.Controllers
             DataSet ds = new DataSet();
             OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
             oda.Fill(ds);
-            var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString())  && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
+            var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) 
+            && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
             if (UpdatedRows.Any())
             {
                 UpdatedDocumentsIds = new List<string>();
@@ -439,10 +461,13 @@ namespace eInvoicing.API.Controllers
                                       , [TotalItemsDiscountAmount]  = @TotalItemsDiscountAmount ,[ExtraDiscountAmount]  = @ExtraDiscountAmount
                                       , [NetAmount]  = @NetAmount , [TotalAmount]  = @TotalAmount
                                       , [IssuerId]  = @IssuerId , [IssuerName]  = @IssuerName , [IssuerType]   = @IssuerType ,[ModifiedOn] = GETDATE()
-                                      , [IssuerBranchId]  = @IssuerBranchId , [IssuerCountry]  = @IssuerCountry , [IssuerGovernate]  = @IssuerGovernate
-                                      ,[IssuerRegionCity]  = @IssuerRegionCity , [IssuerStreet]  = @IssuerStreet , [IssuerBuildingNumber]  = @IssuerBuildingNumber
+                                      , [IssuerBranchId]  = @IssuerBranchId , [IssuerCountry]  = @IssuerCountry , [IssuerGovernorate]  = @IssuerGovernorate
+                                      , [IssuerRegionCity]  = @IssuerRegionCity , [IssuerStreet]  = @IssuerStreet , [IssuerBuildingNumber]  = @IssuerBuildingNumber
+                                      , [ReceiverId] = @ReceiverId, [ReceiverGovernorate] = @ReceiverGovernorate, [ReceiverRegionCity] = @ReceiverRegionCity
+                                      , [ReceiverStreet] = @ReceiverStreet, [ReceiverBuildingNumber] = @ReceiverBuildingNumber
                                       , [ReceiverName]  = @ReceiverName , [ReceiverType]  = @ReceiverType , [ReceiverCountry]  = @ReceiverCountry
-                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight , [Status]  = @InternalDocumentStatus WHERE Id = @InternalDocumentId";
+                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight WHERE Id = @InternalDocumentId";
+
                     SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                     SqlCommand.Parameters.AddWithValue("@DocumentType", UpdatedRows[i]["DocumentType"]);
                     SqlCommand.Parameters.AddWithValue("@DocumentTypeVersion", UpdatedRows[i]["DocumentTypeVersion"]);
@@ -453,21 +478,28 @@ namespace eInvoicing.API.Controllers
                     SqlCommand.Parameters.AddWithValue("@ExtraDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["ExtraDiscountAmount"]));
                     SqlCommand.Parameters.AddWithValue("@NetAmount", Convert.ToDecimal(UpdatedRows[i]["NetAmount"]));
                     SqlCommand.Parameters.AddWithValue("@TotalAmount", Convert.ToDecimal(UpdatedRows[i]["TotalAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@IssuerId", UpdatedRows[i]["IssuerId"]);
+                    SqlCommand.Parameters.AddWithValue("@IssuerId", UpdatedRows[i]["IssuerId"].ToString());
                     SqlCommand.Parameters.AddWithValue("@IssuerName", UpdatedRows[i]["IssuerName"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerType", UpdatedRows[i]["IssuerType"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerBranchId", UpdatedRows[i]["IssuerBranchId"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerCountry", UpdatedRows[i]["IssuerCountry"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerGovernate", UpdatedRows[i]["IssuerGovernate"]);
+                    SqlCommand.Parameters.AddWithValue("@IssuerGovernorate", UpdatedRows[i]["IssuerGovernorate"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerRegionCity", UpdatedRows[i]["IssuerRegionCity"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerStreet", UpdatedRows[i]["IssuerStreet"]);
                     SqlCommand.Parameters.AddWithValue("@IssuerBuildingNumber", UpdatedRows[i]["IssuerBuildingNumber"]);
+                    SqlCommand.Parameters.AddWithValue("@ReceiverId", UpdatedRows[i]["ReceiverId"].ToString());
+                    SqlCommand.Parameters.AddWithValue("@ReceiverGovernorate", UpdatedRows[i]["ReceiverGovernorate"]);
+                    SqlCommand.Parameters.AddWithValue("@ReceiverStreet", UpdatedRows[i]["ReceiverStreet"]);
+                    SqlCommand.Parameters.AddWithValue("@ReceiverRegionCity", UpdatedRows[i]["ReceiverRegionCity"]);
+                    SqlCommand.Parameters.AddWithValue("@ReceiverBuildingNumber", UpdatedRows[i]["ReceiverBuildingNumber"]);
+
                     SqlCommand.Parameters.AddWithValue("@ReceiverName", UpdatedRows[i]["ReceiverName"]);
                     SqlCommand.Parameters.AddWithValue("@ReceiverType", UpdatedRows[i]["ReceiverType"]);
                     SqlCommand.Parameters.AddWithValue("@ReceiverCountry", UpdatedRows[i]["ReceiverCountry"]);
                     SqlCommand.Parameters.AddWithValue("@GrossWeight", Convert.ToDecimal(UpdatedRows[i]["GrossWeight"]));
                     SqlCommand.Parameters.AddWithValue("@NetWeight", Convert.ToDecimal(UpdatedRows[i]["NetWeight"]));
-                    SqlCommand.Parameters.AddWithValue("@InternalDocumentStatus", UpdatedRows[i]["InternalDocumentStatus"]);
+                    SqlCommand.Parameters.AddWithValue("@Status", UpdatedRows[i]["NewStatus"]);
+                    SqlCommand.Parameters.AddWithValue("@DateTimeReceived", UpdatedRows[i]["DateTimeReceived"]);
                     SqlCommand.Parameters.AddWithValue("@InternalDocumentId", UpdatedRows[i]["InternalDocumentId"]);
                     SqlCommand.ExecuteNonQuery();
                 }
@@ -482,26 +514,28 @@ namespace eInvoicing.API.Controllers
         }
         private int UpdateInvoiceLines()
         {
-            Query = string.Format("Select [InternalInvoiceLineId],[ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
-                "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
-                " [NetTotal], [Total], [Description], [DocumentId] FROM [{0}]", "Lines$");
+            Query = string.Format("Select " +
+                                  "[InternalInvoiceLineId], [ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
+                                  "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
+                                  "[NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Invoice Lines$");
+            
             DataSet ds = new DataSet();
             OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
 
             oda.Fill(ds);
-            var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["DocumentId"].ToString())).ToList();
+            var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString())).ToList();
             if (UpdatedRows.Any())
             {
                 UpdatedInvoiceLinesIds = new List<string>();
-                UpdatedInvoiceLinesIds = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["DocumentId"].ToString())).Select(row => row["InternalInvoiceLineId"].ToString()).ToList();
+                UpdatedInvoiceLinesIds = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString())).Select(row => row["InternalInvoiceLineId"].ToString()).ToList();
                 for (int i = 0; i < UpdatedRows.Count; i++)
                 {
                     string SqlQuery = @"UPDATE INVOICELINES SET [ItemType] = @ItemType, [ItemCode] = @ItemCode
                                        , [UnitType] = @UnitType, [InternalCode] = @InternalCode , [Quantity] = @Quantity , [AmountEGP] = @AmountEGP, [AmountSold] = @AmountSold
                                        ,[CurrencySold] = @CurrencySold, [CurrencyExchangeRate] = @CurrencyExchangeRate, [SalesTotal] = @SalesTotal
-                                       , [DiscountRate] = @DiscountRate, [DiscountAmount] = @DiscountAmount, [ItemsDiscount] = @ItemsDiscount
-                                       , [TotalTaxableFees] = @TotalTaxableFees, [ValueDifference] = @ValueDifference , [ModifiedOn] = GETDATE()
-                                       ,[NetTotal] = @NetTotal, [Total] = @Total, [Description] = @Description, [DocumentId] = @DocumentId WHERE [InternalInvoiceLineId] = @InternalInvoiceLineId";
+                                       ,[DiscountRate] = @DiscountRate, [DiscountAmount] = @DiscountAmount, [ItemsDiscount] = @ItemsDiscount
+                                       ,[TotalTaxableFees] = @TotalTaxableFees, [ValueDifference] = @ValueDifference , [ModifiedOn] = GETDATE()
+                                       ,[NetTotal] = @NetTotal, [Total] = @Total, [Description] = @Description, [DocumentId] = @DocumentId WHERE Id = @InternalInvoiceLineId";
                     SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                     SqlCommand.Parameters.AddWithValue("@ItemType", UpdatedRows[i]["ItemType"]);
                     SqlCommand.Parameters.AddWithValue("@ItemCode", UpdatedRows[i]["ItemCode"]);
@@ -521,7 +555,7 @@ namespace eInvoicing.API.Controllers
                     SqlCommand.Parameters.AddWithValue("@NetTotal", Convert.ToDecimal(UpdatedRows[i]["NetTotal"]));
                     SqlCommand.Parameters.AddWithValue("@Total", Convert.ToDecimal(UpdatedRows[i]["Total"]));
                     SqlCommand.Parameters.AddWithValue("@Description", UpdatedRows[i]["Description"]);
-                    SqlCommand.Parameters.AddWithValue("@DocumentId", UpdatedRows[i]["DocumentId"]);
+                    SqlCommand.Parameters.AddWithValue("@DocumentId", UpdatedRows[i]["InternalDocumentId"]);
                     SqlCommand.Parameters.AddWithValue("@InternalInvoiceLineId", UpdatedRows[i]["InternalInvoiceLineId"]);
                     SqlCommand.ExecuteNonQuery();
 
@@ -532,7 +566,7 @@ namespace eInvoicing.API.Controllers
         }
         private int UpdateTaxableItems()
         {
-            Query = string.Format("Select [InternalId],[TaxType], [Rate], [Amount], [SubType], [InternalInvoiceLineId] FROM [{0}]", "Taxable items$");
+            Query = string.Format("Select [InternalId],[TaxType], [Rate], [Amount], [SubType], [InternalInvoiceLineId] FROM [{0}]", "Taxable Items$");
             DataSet ds = new DataSet();
             OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
 
@@ -542,8 +576,8 @@ namespace eInvoicing.API.Controllers
             {
                 for (int i = 0; i < UpdatedRows.Count; i++)
                 {
-                    string SqlQuery = @"UPDATE TAXABLEITEMS SET [TaxType] = @TaxType, [Rate] = @Rate, [Amount] = @Amount, [SubType] = @SubType, [InvoiceLineId] = @InternalInvoiceLineId
-                                        ,[ModifiedOn] = GETDATE() WHERE InternalId = @InternalId";
+                    string SqlQuery = @"UPDATE TAXABLEITEMS SET [TaxType] = cast(@TaxType as nvarchar(max)), [Rate] = cast(@Rate as float), [Amount] = cast(@Amount as float), [SubType] = cast (@SubType as nvarchar(max)) 
+                                       , [InvoiceLineId] = cast(@InternalInvoiceLineId as nvarchar(max)), [ModifiedOn] = GETDATE() WHERE InternalId = @InternalId";
                     SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                     SqlCommand.Parameters.AddWithValue("@TaxType", UpdatedRows[i]["TaxType"]);
                     SqlCommand.Parameters.AddWithValue("@Rate", UpdatedRows[i]["Rate"]);

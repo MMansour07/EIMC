@@ -76,7 +76,7 @@ namespace eInvoicing.Service.AppService.Implementation
                                 obj.IssuerBuildingNumber = oReader["IssuerBuildingNumber"].ToString();
                                 obj.IssuerCountry = oReader["IssuerCountry"].ToString();
                                 obj.IssuerFloor = oReader["IssuerFloor"].ToString();
-                                obj.IssuerGovernate = oReader["IssuerGovernate"].ToString();
+                                obj.IssuerGovernorate = oReader["IssuerGovernate"].ToString();
                                 obj.IssuerId = oReader["IssuerId"].ToString();
                                 obj.IssuerLandmark = oReader["IssuerLandmark"].ToString();
                                 obj.IssuerName = oReader["IssuerName"].ToString();
@@ -89,7 +89,7 @@ namespace eInvoicing.Service.AppService.Implementation
                                 obj.ReceiverBuildingNumber = oReader["ReceiverBuildingNumber"].ToString();
                                 obj.ReceiverCountry = oReader["ReceiverCountry"].ToString();
                                 obj.ReceiverFloor = oReader["ReceiverFloor"].ToString();
-                                obj.ReceiverGovernate = oReader["ReceiverGovernate"].ToString();
+                                obj.ReceiverGovernorate = oReader["ReceiverGovernate"].ToString();
                                 obj.ReceiverId = oReader["ReceiverId"].ToString();
                                 obj.ReceiverLandmark = oReader["ReceiverLandmark"].ToString();
                                 obj.ReceiverName = oReader["ReceiverName"].ToString();

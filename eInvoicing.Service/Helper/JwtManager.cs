@@ -24,11 +24,10 @@ namespace eInvoicing.Service.Helper
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Client_Id"]));
             var tokenHandler = new JwtSecurityTokenHandler();
-            var now = DateTime.UtcNow;
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = getClaimsIdentity(obj),
-                //Expires = now.AddMinutes(Convert.ToInt32(30)),
+                Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature)
             };
             SecurityToken securityToken = tokenHandler.CreateToken(tokenDescriptor);
@@ -48,6 +47,7 @@ namespace eInvoicing.Service.Helper
                 var hmac = new HMACSHA512(Encoding.UTF8.GetBytes(ConfigurationManager.AppSettings["Client_Id"]));
                 var validationParameters = new TokenValidationParameters()
                 {
+                    ClockSkew = TimeSpan.Zero,
                     RequireExpirationTime = true,
                     ValidateIssuer = false,
                     ValidateAudience = false,

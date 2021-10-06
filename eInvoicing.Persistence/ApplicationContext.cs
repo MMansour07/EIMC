@@ -50,6 +50,25 @@ namespace eInvoicing.Persistence
                 .HasRequired<Permission>(s => s.Permission)
                 .WithMany(g => g.RolePermission)
                 .HasForeignKey<string>(s => s.PermissionId).WillCascadeOnDelete(true);
+
+
+            modelBuilder.Entity<Document>().Property(x => x.TotalAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<Document>().Property(x => x.ExtraDiscountAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<Document>().Property(x => x.TotalDiscountAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<Document>().Property(x => x.TotalSalesAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<Document>().Property(x => x.NetAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<Document>().Property(x => x.TotalItemsDiscountAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.AmountEGP).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.AmountSold).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.DiscountAmount).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.ItemsDiscount).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.NetTotal).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.SalesTotal).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.Total).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.TotalTaxableFees).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.ValueDifference).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.Quantity).HasPrecision(18, 5);
+            modelBuilder.Entity<TaxableItem>().Property(x => x.Amount).HasPrecision(18, 5);
         }
         public DbSet<Error> Errors { get; set; }
         public DbSet<User> AppUsers { get; set; }

@@ -73,6 +73,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IInvoiceLineRepository>().To<InvoiceLineRepository>().InThreadScope();
             kernel.Bind<ITaxableItemRepository>().To<TaxableItemRepository>().InThreadScope();
             kernel.Bind<ILookupRepository>().To<LookupRepository>().InThreadScope();
+            kernel.Bind<ITaxpayerRepository>().To<TaxpayerRepository>().InThreadScope();
             kernel.Bind<IErrorReposistory>().To<ErrorRepository>().InThreadScope();
             kernel.Bind<IDocumentService>().To<DocumentService>().InThreadScope();
             kernel.Bind<IReportService>().To<ReportService>().InThreadScope();
@@ -84,6 +85,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IMapper>().To<Mapper>().InThreadScope();
             kernel.Bind<ISyncService>().To<SyncService>().InThreadScope();
             kernel.Bind<ILookupService>().To<LookupService>().InThreadScope();
+            kernel.Bind<ITaxpayerService>().To<TaxpayerService>().InThreadScope();
             return kernel;
         }
     }

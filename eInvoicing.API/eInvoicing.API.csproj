@@ -125,7 +125,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="ProductLicense">
+    <Reference Include="ProductLicense, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\ProductLicense.dll</HintPath>
     </Reference>
     <Reference Include="Swashbuckle.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cd1bb07a5ac7c7bc, processorArchitecture=MSIL">
@@ -289,6 +290,7 @@
     <Compile Include="Controllers\AppSettingController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="Controllers\TaxpayerController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\DocumentController.cs" />

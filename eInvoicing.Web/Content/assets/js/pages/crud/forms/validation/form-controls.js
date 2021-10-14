@@ -3,7 +3,7 @@ var KTFormControls = function () {
 	// Private functions
 	var _initDemo1 = function () {
 		FormValidation.formValidation(
-			document.getElementById('kt_form_1'),
+			document.getElementById('_frm'),
 			{
 				fields: {
 					email: {
@@ -135,6 +135,92 @@ var KTFormControls = function () {
 		);
 	}
 
+	var _frmvalidation = function () {
+		var form = KTUtil.getById('_frm');
+		FormValidation.formValidation(
+			document.getElementById('_frm'),
+			{
+				form,
+				fields: {
+					Email: {
+						validators: {
+							notEmpty: {
+								message: 'Email is required'
+							},
+							emailAddress: {
+								message: 'The value is not a valid email address'
+							}
+						}
+					},
+					FirstName: {
+						validators: {
+							notEmpty: {
+								message: 'First Name is required'
+							},
+						}
+					},
+					LastName: {
+						validators: {
+							notEmpty: {
+								message: 'Last Name is required'
+							}
+						}
+					},
+					Title: {
+						validators: {
+							notEmpty: {
+								message: 'Title is required'
+							},
+							
+						}
+					},
+					PhoneNumber: {
+						validators: {
+							notEmpty: {
+								message: 'PhoneNumber is required'
+							},
+
+						}
+					},
+					Roles: {
+						validators: {
+							choice: {
+								min: 1,
+								message: 'Please kindly select delivery type'
+							}
+						}
+					},
+					Password: {
+						validators: {
+							notEmpty: {
+								message: 'Password is required'
+							}
+						}
+					},
+					ConfirmPassword: {
+						//validators: {
+						//	identical: {
+						//		compare: function () {
+						//			debugger;
+						//			return form.querySelector('[name="Password"]').value;
+						//		},
+						//		message: 'The password and its confirm are not the same'
+						//	}
+						//}
+					}
+				},
+				plugins: { //Learn more: https://formvalidation.io/guide/plugins
+					trigger: new FormValidation.plugins.Trigger(),
+					// Bootstrap Framework Integration
+					bootstrap: new FormValidation.plugins.Bootstrap(),
+					// Validate fields when clicking the Submit button
+					//submitButton: new FormValidation.plugins.SubmitButton(),
+					// Submit the form when all fields are valid
+					//defaultSubmit: new FormValidation.plugins.DefaultSubmit(),
+				}
+			}
+		);
+	}
 	var _initDemo2 = function () {
 		FormValidation.formValidation(
 			document.getElementById('kt_form_2'),
@@ -252,8 +338,9 @@ var KTFormControls = function () {
 	return {
 		// public functions
 		init: function() {
-			_initDemo1();
-			_initDemo2();
+			//_initDemo1();
+			_frmvalidation();
+			//_initDemo2();
 		}
 	};
 }();

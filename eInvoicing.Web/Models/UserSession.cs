@@ -11,12 +11,12 @@ namespace eInvoicing.Web.Models
     {
         public string Username
         {
-            get { return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst(ClaimTypes.Name).Value; }
+            get { return ((ClaimsPrincipal)HttpContext.Current.User)?.FindFirst(ClaimTypes.Name)?.Value; }
         }
 
         public string BearerToken
         {
-            get { return ((ClaimsPrincipal)HttpContext.Current.User).FindFirst("AcessToken").Value; }
+            get { return ((ClaimsPrincipal)HttpContext.Current.User)?.FindFirst("AcessToken")?.Value; }
         }
         public string URL
         {

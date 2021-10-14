@@ -2,6 +2,7 @@
 
 // Class definition
 var datatable;
+var _frmvalidation;
 var KTAppsUsersListDatatable = function () {
     // Private functions
 
@@ -81,24 +82,7 @@ var KTAppsUsersListDatatable = function () {
                 {
                     field: 'Roles',
                     title: 'Roles',
-                    // callback function support for column rendering
                     template: function (row) {
-                        //var UserTypes = {
-
-                        //    'super admin': { 'title': 'super admin', 'class': ' label-light-danger' },
-                        //    'admin': { 'title': 'admin', 'class': ' label-light-primary' },
-                        //    'employee': { 'title': 'employee', 'class': ' label-light-primary' },
-                        //    'default user': { 'title': 'default user', 'class': ' label-light-info' },
-                        //    'role 01': { 'title': 'role 01', 'class': ' label-light-danger' },
-                        //    'role 02': { 'title': 'role 02', 'class': ' label-light-primary' },
-                        //    'role 03': { 'title': 'role 03', 'class': ' label-light-info' },
-                        //    'role 04': { 'title': 'role 04', 'class': ' label-light-danger' },
-                        //    'role 05': { 'title': 'role 05', 'class': ' label-light-primary' },
-                        //    'role 06': { 'title': 'role 06', 'class': ' label-light-info' },
-                        //    'role 07': { 'title': 'role 07', 'class': ' label-light-danger' },
-                        //    'role 08': { 'title': 'role 08', 'class': ' label-light-primary' },
-                        //    'role 09': { 'title': 'role 09', 'class': ' label-light-info' },
-                        //};
                         var output = '';
                         if (row.Roles.length > 0) {
                             for (var i = 0; i < row.Roles.length; i++) {
@@ -242,132 +226,240 @@ function editUser(id) {
 
 jQuery(document).ready(function () {
     KTAppsUsersListDatatable.init();
+    var form = KTUtil.getById('_frm');
+    _frmvalidation = FormValidation.formValidation(
+        document.getElementById('_frm'),
+        {
+            form,
+            fields: {
+                Email: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Email is required'
+                        },
+                        emailAddress: {
+                            message: 'The value is not a valid email address'
+                        }
+                    }
+                },
+                FirstName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'First Name is required'
+                        },
+                    }
+                },
+                LastName: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Last Name is required'
+                        }
+                    }
+                },
+                Title: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Title is required'
+                        },
+
+                    }
+                },
+                PhoneNumber: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Phone Number is required'
+                        },
+
+                    }
+                },
+                Roles: {
+                    validators: {
+                        choice: {
+                            min: 1,
+                            message: 'Please kindly select at least one role'
+                        }
+                    }
+                },
+                Password: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Password is required'
+                        }
+                    }
+                },
+                ConfirmPassword: {
+                    validators: {
+                        identical: {
+                            compare: function () {
+                                return form.querySelector('[name="Password"]').value;
+                            },
+                            message: 'The password and its confirm are not the same'
+                        }
+                    }
+                }
+
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+            }
+        }
+    );
+
     $("#userSubmission").click(function (e) {
-        var $form = $('#_frm');
-        if ($form.valid()) {
-            e.preventDefault();
-            $("#closeModal").click();
-            KTApp.blockPage();
-            var valdata = $("#_frm").serialize();
-            $.ajax({
-                url: "/EInvoicing/v0/user/createuser",
-                type: "POST",
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: valdata,
-                success: function (response) {
-                    KTApp.unblockPage();
-                    if (response.success) {
+        _frmvalidation.validate().then(function (status) {
+            if (status == 'Valid') {
+                e.preventDefault();
+                $("#closeModal").click();
+                KTApp.blockPage();
+                var valdata = $("#_frm").serialize();
+                $.ajax({
+                    url: "/EInvoicing/v0/user/createuser",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (response.success) {
 
-                        datatable.reload();
-                        KTUtil.scrollTop();
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.success("Data has been saved successfully!");
+                            datatable.reload();
+                            KTUtil.scrollTop();
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Data has been saved successfully!");
+                        }
+                        else {
+                            if (response.message == "400") {
+                                toastr.options = {
+                                    "closeButton": false,
+                                    "debug": false,
+                                    "newestOnTop": true,
+                                    "progressBar": false,
+                                    "positionClass": "toast-top-center",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr.error("That email is already registered!");
+                            }
+                            else {
+                                toastr.options = {
+                                    "closeButton": false,
+                                    "debug": false,
+                                    "newestOnTop": true,
+                                    "progressBar": false,
+                                    "positionClass": "toast-top-center",
+                                    "preventDuplicates": false,
+                                    "onclick": null,
+                                    "showDuration": "300",
+                                    "hideDuration": "1000",
+                                    "timeOut": "5000",
+                                    "extendedTimeOut": "1000",
+                                    "showEasing": "swing",
+                                    "hideEasing": "linear",
+                                    "showMethod": "fadeIn",
+                                    "hideMethod": "fadeOut"
+                                };
+                                toastr.error("Something went wrong!");
+                            }
+                        }
+
                     }
-                    else {
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.error("Something went wrong!");
-
-                    }
-
-                }
-            });
-        }
+                });
+            }
+            else {
+                return;
+            }
+        });
     });
-
     $("#userEdition").click(function (e) {
-        var $form = $('#_editFrm');
-        if ($form.valid()) {
-            e.preventDefault();
-            $("#closeModal2").click();
-            KTApp.blockPage();
-            var valdata = $("#_editFrm").serialize();
-            $.ajax({
-                url: "/EInvoicing/v0/user/edituser",
-                type: "POST",
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: valdata,
-                success: function (response) {
-                    KTApp.unblockPage();
-                    if (response.success) {
-                        datatable.reload();
-                        KTUtil.scrollTop();
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.success("Data has been saved successfully!");
-                    }
-                    else {
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
+        _editFrm.validate().then(function (status) {
+            if (status == 'Valid') {
+                e.preventDefault();
+                $("#closeModal2").click();
+                KTApp.blockPage();
+                var valdata = $("#_editFrm").serialize();
+                $.ajax({
+                    url: "/EInvoicing/v0/user/edituser",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (response.success) {
+                            datatable.reload();
+                            KTUtil.scrollTop();
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Data has been saved successfully!");
+                        }
+                        else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
 
-                        toastr.error("Something went wrong!");
-                    }
+                            toastr.error("Something went wrong!");
+                        }
 
-                }
-            });
-        }
+                    }
+                });
+            }
+            else {
+                return;
+            }
+        });
     });
 });

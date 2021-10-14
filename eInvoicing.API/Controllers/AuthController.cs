@@ -1,24 +1,14 @@
 ﻿using System;
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
-using System.Text;
 using System.Web.Http;
-using AutoMapper;
-using AutoMapper.Configuration;
 using DatingApp.API.Dtos;
 using eInvoicing.API.Filters;
-using eInvoicing.DomainEntities.Entities;
 using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.Helper;
-using Microsoft.IdentityModel.Tokens;
 using ProductLicense;
 
 namespace eInvoicing.API.Controllers
 {
-    
     public class AuthController : ApiController
     {
         private readonly IInternalAuthService _auth;

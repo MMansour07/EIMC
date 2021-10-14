@@ -23,14 +23,15 @@ namespace eInvoicing.API.Filters
             var authorization = request.Headers.Authorization;
 
             if (authorization == null || authorization.Scheme != "Bearer")
+            {
+                context.ErrorResult = new AuthenticationFailureResult("Missing Jwt Token", request);
                 return;
-
+            }
             if (string.IsNullOrEmpty(authorization.Parameter))
             {
                 context.ErrorResult = new AuthenticationFailureResult("Missing Jwt Token", request);
                 return;
             }
-
             var token = authorization.Parameter;
             var principal = await AuthenticateJwtToken(context, token);
 
@@ -60,13 +61,6 @@ namespace eInvoicing.API.Filters
 
             if (string.IsNullOrEmpty(username))
                 return false;
-
-            //var pages = identity?.FindAll("Page").Select(i => i.Value).ToList();
-            //var permissions = identity?.FindAll("Permission").Select(i => i.Value).ToList();
-            //if (!permissions.Contains(context.Request.Method.Method.ToString()) || !pages.Select(x => x.ToLower()).Contains(context.Request.RequestUri.Segments[2]?.Replace("/", "")))
-            //    return false;
-
-            // More validate to check whether username exists in system
 
             return true;
         }

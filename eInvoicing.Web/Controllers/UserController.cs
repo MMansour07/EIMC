@@ -101,6 +101,10 @@ namespace eInvoicing.Web.Controllers
                         {
                             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
                         }
+                        else if (postTask.StatusCode == HttpStatusCode.BadRequest)
+                        {
+                            return Json(new { success = false , message = "400" }, JsonRequestBehavior.AllowGet);
+                        }
 
                     }
                 }

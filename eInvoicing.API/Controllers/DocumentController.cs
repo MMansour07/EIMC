@@ -218,10 +218,10 @@ namespace eInvoicing.API.Controllers
         }
         private void connection()
         {
-            sqlconn = ConfigurationManager.AppSettings["eInvoicing_CS"];
-            //"Data Source=.;Initial Catalog=EIMC_PreProd;User ID=sa;Password=123";
+            Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+            var connectionStringsSection = (ConnectionStringsSection)objConfig.GetSection("connectionStrings");
+            sqlconn = connectionStringsSection.ConnectionStrings["eInvoicing_CS"].ConnectionString;
             con = new SqlConnection(sqlconn);
-
         }
 
         private int InsertDocuments()

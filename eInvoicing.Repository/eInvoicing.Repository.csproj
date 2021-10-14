@@ -54,6 +54,7 @@
   <ItemGroup>
     <Compile Include="Contract\Base\IRepository.cs" />
     <Compile Include="Contract\Base\IUnitOfWork.cs" />
+    <Compile Include="Contract\ITaxpayerRepository.cs" />
     <Compile Include="Contract\IPermissionRepository.cs" />
     <Compile Include="Contract\IRolePermissionRepository.cs" />
     <Compile Include="Contract\IUserRoleRepository.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Contract\ITaxableItemRepository.cs" />
     <Compile Include="Contract\IInvoiceLineRepository.cs" />
     <Compile Include="Contract\IDocumentRepository.cs" />
+    <Compile Include="Implementation\TaxpayerRepository.cs" />
     <Compile Include="Implementation\PermissionRepository.cs" />
     <Compile Include="Implementation\RolePermissionRepository.cs" />
     <Compile Include="Implementation\UserRoleRepository.cs" />

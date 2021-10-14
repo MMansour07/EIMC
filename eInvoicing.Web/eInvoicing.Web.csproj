@@ -200,11 +200,11 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\TaxpayerController.cs" />
     <Compile Include="Controllers\AppSettingController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\DocumentSubmissionController.cs" />
@@ -223,11 +223,6 @@
     <Compile Include="Helper\Global.cs" />
     <Compile Include="Helper\IHttpClientHandler.cs" />
     <Compile Include="Helper\HttpClientHandler.cs" />
-    <Compile Include="Migrations\202108241150195_1at.cs" />
-    <Compile Include="Migrations\202108241150195_1at.Designer.cs">
-      <DependentUpon>202108241150195_1at.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\IUserSession.cs" />
@@ -2559,6 +2554,7 @@
     <Content Include="Views\User\EditPartial.cshtml" />
     <Content Include="Views\Role\EditPartial.cshtml" />
     <Content Include="Views\Report\top_goods_usage.cshtml" />
+    <Content Include="Views\Taxpayer\taxpayer_details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2588,11 +2584,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202108241150195_1at.resx">
-      <DependentUpon>202108241150195_1at.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -80,5 +80,6 @@ namespace eInvoicing.Persistence
         public DbSet<InvoiceLine> InvoiceLines { get; set; }
         public DbSet<TaxableItem> TaxableItems { get; set; }
         public DbSet<Lookup> Lookups { get; set; }
+        public DbSet<TaxPayer> TaxPayers { get; set; }
     }
 }

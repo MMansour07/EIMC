@@ -23,23 +23,14 @@ namespace eInvoicing.API
     {
         protected void Application_Start()
         {
-            //Database.SetInitializer(new DBContextSeeder());
-            //ApplicationContext db = new ApplicationContext();
-            //db.Database.Initialize(true);
-
             AreaRegistration.RegisterAllAreas();
             System.Web.Http.GlobalConfiguration.Configure(WebApiConfig.Register);
             AutoMapperConfiguration.Init();
-            //GlobalConfiguration.Configuration.MessageHandlers.Add(new APIKeyMessageHandler());
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             HangfireAspNet.Use(GetHangfireServers);
 
-            //GlobalConfiguration.Configuration.Filters.Add(new AttributeClass);
-
-
-            // Let's also create a sample background job
             RecurringJob.AddOrUpdate(() => HangfireManager.Sync(), Cron.Daily);
             // update Documents with the status retreived from ETA
             RecurringJob.AddOrUpdate(() => HangfireManager.SyncFromETAToDB(), Cron.Daily);

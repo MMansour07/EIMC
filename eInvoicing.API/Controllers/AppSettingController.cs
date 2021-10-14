@@ -13,6 +13,7 @@ using eInvoicing.Service.AppService.Contract.Base;
 using eInvoicing.Service.Helper;
 using eInvoicing.API.Helper;
 using Newtonsoft.Json;
+using eInvoicing.DTO;
 
 namespace eInvoicing.API.Controllers
 {
@@ -24,7 +25,12 @@ namespace eInvoicing.API.Controllers
         private readonly string submissionurl = ConfigurationManager.AppSettings["apiBaseUrl"];
         private readonly string client_id = ConfigurationManager.AppSettings["client_id"];
         private readonly string client_secret = ConfigurationManager.AppSettings["client_secret"];
+        private readonly ITaxpayerService _taxpayerService;
 
+        public AppSettingController(ITaxpayerService taxpayerService)
+        {
+            _taxpayerService = taxpayerService;
+        }
 
         [HttpGet, ActionName("GetChannelManagerSettings")]
         public IHttpActionResult Settings()
@@ -62,6 +68,14 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                if (model.APIsEnvironment)
+                {
+                    _taxpayerService.updateTaxPayer(new TaxpayerDTO() { ClientId = model.ProductionClientId, ClientSecret = model.ProductionClientSecret });
+                }
+                else
+                {
+                    _taxpayerService.updateTaxPayer(new TaxpayerDTO() { ClientId = model.PreProductionClientId, ClientSecret = model.PreProductionClientSecret });
+                }
                 Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
                 AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
                 var connectionStringsSection = (ConnectionStringsSection)objConfig.GetSection("connectionStrings");
@@ -70,10 +84,10 @@ namespace eInvoicing.API.Controllers
                 {
                     objAppsettings.Settings["apiBaseUrl"].Value = model.PreProductionApiURL;
                     objAppsettings.Settings["idSrvBaseUrl"].Value = model.PreProductionLoginURL;
-                    objAppsettings.Settings["client_id"].Value = model.PreProductionClientId;
-                    objAppsettings.Settings["client_secret"].Value = model.PreProductionClientSecret;
-                    objAppsettings.Settings["Prod_client_id"].Value = model.ProductionClientId;
-                    objAppsettings.Settings["Prod_client_secret"].Value = model.ProductionClientSecret;
+                    //objAppsettings.Settings["client_id"].Value = model.PreProductionClientId;
+                    //objAppsettings.Settings["client_secret"].Value = model.PreProductionClientSecret;
+                    //objAppsettings.Settings["Prod_client_id"].Value = model.ProductionClientId;
+                    //objAppsettings.Settings["Prod_client_secret"].Value = model.ProductionClientSecret;
                     objAppsettings.Settings["ProdapiBaseUrl"].Value = model.ProductionApiURL;
                     objAppsettings.Settings["ProdidSrvBaseUrl"].Value = model.ProductionLoginURL;
                     objAppsettings.Settings["Environment"].Value = model.APIsEnvironment ? "Prod" : "PreProd";

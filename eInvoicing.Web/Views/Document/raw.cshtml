@@ -4,7 +4,7 @@
 }
 @if (Model != null)
 {
-<div class="container">
+<div class="container-fluid">
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
         <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -36,9 +36,45 @@
             </div>
             <!--end::Info-->
         </div>
+        <div class="topbar-item" style="margin-right:25px !important">
+            @using System.Security.Claims;
+            @using Microsoft.AspNet.Identity;
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <a class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                        <div class="d-flex flex-column text-right pr-3">
+                            <span class="text-primary font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-primary font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                        </div>
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary">
+                            <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
+                                        <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
+                                        <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
+                        </a>
+                    </div>
+                }
+
+            }
+        </div>
     </div>
     <div class="card card-custom">
-        <div class="card-header card-header-right ribbon ribbon-clip ribbon-left">
+        <div class="card-header bg-light card-header-right ribbon ribbon-clip ribbon-left">
             <div class="ribbon-target" style="top: 12px;">
                 <span class="ribbon-inner @Model.statusClass"></span>@Model.status
             </div>
@@ -96,7 +132,7 @@
             <div class="row">
                 <div class="col-lg-6 draggable-zone">
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_2">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon2-user text-primary"></i>
@@ -117,11 +153,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Registration Number</label>
-                                        @Html.TextBoxFor(model => model.document.issuer.id, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.issuer.id, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Type</label>
-                                        @Html.TextBoxFor(model => model.document.issuer.type, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.issuer.type, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +165,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Name</label>
-                                        @Html.TextBoxFor(model => model.document.issuer.name, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.issuer.name, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -137,11 +173,11 @@
                                 <div class="row">
                                     <div class="col-md-8">
                                         <label>Branch Address</label>
-                                        @Html.TextAreaFor(model => model.document.issuer.address.buildingNumber, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                        @Html.TextAreaFor(model => model.document.issuer.address.buildingNumber, new { @class = "form-control form-control-solid", @readonly = "readonly", @row = "8" })
                                     </div>
                                     <div class="col-md-4">
                                         <label>Tax Activity Code</label>
-                                        @Html.TextAreaFor(model => model.document.taxpayerActivityCode, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                        @Html.TextAreaFor(model => model.document.taxpayerActivityCode, new { @class = "form-control form-control-solid", @readonly = "readonly", @row = "8" })
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +186,7 @@
                 </div>
                 <div class="col-lg-6 draggable-zone">
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_3">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon2-user text-primary"></i>
@@ -171,11 +207,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Registration Number</label>
-                                        @Html.TextBoxFor(model => model.document.receiver.id, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.receiver.id, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Type</label>
-                                        @Html.TextBoxFor(model => model.document.receiver.type, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.receiver.type, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -183,7 +219,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Name</label>
-                                        @Html.TextBoxFor(model => model.document.receiver.name, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.receiver.name, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -191,7 +227,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label>Address</label>
-                                        @Html.TextAreaFor(model => model.document.receiver.address.buildingNumber, new { @class = "form-control", @readonly = "readonly", @row = "8" })
+                                        @Html.TextAreaFor(model => model.document.receiver.address.buildingNumber, new { @class = "form-control form-control-solid", @readonly = "readonly", @row = "8" })
                                     </div>
                                 </div>
                             </div>
@@ -204,7 +240,7 @@
                     <!--begin::Example-->
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_6">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon-squares text-primary"></i>
@@ -236,7 +272,7 @@
                     <!--begin::Example-->
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_4">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon2-file text-primary"></i>
@@ -257,15 +293,15 @@
                                 <div class="row">
                                     <div class="col-md-3 draggable-zone">
                                         <label>Purchase Order Reference</label>
-                                        @Html.TextBoxFor(model => model.document.purchaseOrderReference, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.purchaseOrderReference, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Purchase Order Description</label>
-                                        @Html.TextBoxFor(model => model.document.purchaseOrderDescription, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.purchaseOrderDescription, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-3">
                                         <label>Internal ID:</label>
-                                        @Html.TextBoxFor(model => model.document.internalID, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.internalID, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
 
                                 </div>
@@ -274,11 +310,11 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label>Sales Order Reference</label>
-                                        @Html.TextBoxFor(model => model.document.salesOrderReference, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.salesOrderReference, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Sales Order Description</label>
-                                        @Html.TextBoxFor(model => model.document.salesOrderDescription, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.salesOrderDescription, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -286,7 +322,7 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label>Proforma Invoice Number</label>
-                                        @Html.TextBoxFor(model => model.document.proformaInvoiceNumber, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.proformaInvoiceNumber, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -301,7 +337,7 @@
                     <!--begin::Example-->
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_6">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon2-browser-1 text-primary"></i>
@@ -322,19 +358,19 @@
                                 <div class="row">
                                     <div class="col-md-3">
                                         <label>Bank Name</label>
-                                        @Html.TextBoxFor(model => model.document.payment.bankName, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.bankName, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-3">
                                         <label>Bank Account No.</label>
-                                        @Html.TextBoxFor(model => model.document.payment.bankAccountNo, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.bankAccountNo, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-3">
                                         <label>Swift Code</label>
-                                        @Html.TextBoxFor(model => model.document.payment.swiftCode, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.swiftCode, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-3">
                                         <label>Bank Account IBAN</label>
-                                        @Html.TextBoxFor(model => model.document.payment.bankAccountIBAN, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.bankAccountIBAN, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -342,11 +378,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Bank Address</label>
-                                        @Html.TextBoxFor(model => model.document.payment.bankAddress, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.bankAddress, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Payment Terms</label>
-                                        @Html.TextBoxFor(model => model.document.payment.terms, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.payment.terms, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -361,7 +397,7 @@
                     <!--begin::Example-->
                     <!--begin::Card-->
                     <div class="card card-custom gutter-b draggable" data-card="true" id="kt_card_5">
-                        <div class="card-header">
+                        <div class="card-header bg-light">
                             <div class="card-title">
                                 <span class="card-icon">
                                     <i class="flaticon2-delivery-truck text-primary"></i>
@@ -382,11 +418,11 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <label>Delivery Method</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.approach, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.approach, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col-md-6">
                                         <label>Packaging</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.packaging, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.packaging, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -394,23 +430,23 @@
                                 <div class="row">
                                     <div class="col">
                                         <label>Validity Date</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.dateValidity, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.dateValidity, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col">
                                         <label>Export Port</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.exportPort, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.exportPort, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col">
                                         <label>Country Of Origin</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.countryOfOrigin, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.countryOfOrigin, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col">
                                         <label>Gross Weight</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.grossWeight, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.grossWeight, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                     <div class="col">
                                         <label>Net Weight</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.netWeight, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.netWeight, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
                                 </div>
                             </div>
@@ -419,7 +455,7 @@
 
                                     <div class="col-md-6">
                                         <label>Delivery Terms</label>
-                                        @Html.TextBoxFor(model => model.document.delivery.terms, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.TextBoxFor(model => model.document.delivery.terms, new { @class = "form-control form-control-solid", @readonly = "readonly" })
                                     </div>
 
                                 </div>
@@ -453,7 +489,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query_2" />
+                                            <input type="text" class="form-control form-control-solid" placeholder="Search..." id="kt_datatable_search_query_2" />
                                             <span><i class="flaticon2-search-1 text-muted"></i></span>
                                         </div>
                                     </div>

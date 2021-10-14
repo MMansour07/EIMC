@@ -53,15 +53,6 @@
   <ItemGroup>
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="Base\BaseEntityTypeConfiguration.cs" />
-    <Compile Include="Migrations\202109200928218_InitialCreate.cs" />
-    <Compile Include="Migrations\202109200928218_InitialCreate.Designer.cs">
-      <DependentUpon>202109200928218_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\202109301259077_Modifying_Authentication.cs" />
-    <Compile Include="Migrations\202109301259077_Modifying_Authentication.Designer.cs">
-      <DependentUpon>202109301259077_Modifying_Authentication.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeder\DBContextSeeder.cs" />
   </ItemGroup>
@@ -77,14 +68,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202109200928218_InitialCreate.resx">
-      <DependentUpon>202109200928218_InitialCreate.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\202109301259077_Modifying_Authentication.resx">
-      <DependentUpon>202109301259077_Modifying_Authentication.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

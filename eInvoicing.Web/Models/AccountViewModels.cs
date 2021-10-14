@@ -77,8 +77,8 @@ namespace eInvoicing.Web.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Required Field.")]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
+        //[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        //[DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
 
@@ -194,13 +194,6 @@ namespace eInvoicing.Web.Models
         public SelectRoleEditorViewModel() { }
 
         // Update this to accept an argument of type ApplicationRole:
-        public SelectRoleEditorViewModel(ApplicationRole role)
-        {
-            this.RoleName = role.Name;
-
-            // Assign the new Descrption property:
-            this.Description = role.Description;
-        }
 
         public bool Selected { get; set; }
 
@@ -222,11 +215,5 @@ namespace eInvoicing.Web.Models
         public string Description { get; set; }
 
         public EditRoleViewModel() { }
-        public EditRoleViewModel(ApplicationRole role)
-        {
-            this.OriginalRoleName = role.Name;
-            this.RoleName = role.Name;
-            this.Description = role.Description;
-        }
     }
 }

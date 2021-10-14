@@ -2,32 +2,29 @@
 using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
 using Newtonsoft.Json;
-using ProductLicense;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Security.Claims;
-using System.Web;
 using System.Web.Http;
 
 namespace eInvoicing.API.Controllers
 {
-    [JwtAuthentication]
-    public class LookupController : ApiController
+    public class TaxpayerController : ApiController
     {
-        private readonly ILookupService _lookupService;
-        public LookupController(ILookupService lookupService)
+        private readonly ITaxpayerService _taxpayerService;
+        public TaxpayerController(ITaxpayerService taxpayerService)
         {
-            _lookupService = lookupService;
+            _taxpayerService = taxpayerService;
         }
-        
+
+        [JwtAuthentication]
         [HttpPost]
-        [Route("api/lookup/InsertLicenseValue")]
-        public IHttpActionResult InsertEncryptedLicenseValue(LicenseDTO License)
+        [Route("api/taxpayer")]
+        public IHttpActionResult add(TaxpayerDTO obj)
         {
             try
             {
-                _lookupService.InsertLicense(License.License, User.Identity.Name);
+                _taxpayerService.add(obj);
                 return Ok(new {sucess = true});
             }
             catch (Exception ex)
@@ -37,12 +34,12 @@ namespace eInvoicing.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/lookup/GetLicense")]
-        public string GetEncryptedLicenseValue(string Client_Id)
+        [Route("api/taxpayer/GetLicense")]
+        public string token(string clientId = null)
         {
             try
             {
-                return _lookupService.GetEncryptedLicenseValue("License").Replace("\r\n", "");
+                return _taxpayerService.token()?.Replace("\r\n", "");
             }
             catch (Exception ex)
             {
@@ -51,7 +48,37 @@ namespace eInvoicing.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/lookup/GetDate")]
+        [Route("api/taxpayer/GetEncryptionKey")]
+        public string GetEncryptionKey()
+        {
+            try
+            {
+                return _taxpayerService.GetClientId()?.Replace("\r\n", "");
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/taxpayer/details")]
+        public IHttpActionResult GetTaxPayerDetails(string clientId = null)
+        {
+            try
+            {
+                return Ok(_taxpayerService.getTaxpayerDetails());
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/taxpayer/GetDate")]
         public string GetDate()
         {
             try

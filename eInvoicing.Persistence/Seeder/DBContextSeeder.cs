@@ -69,8 +69,8 @@ namespace eInvoicing.Persistence.Seeder
             };
             Permission permission9 = new Permission()
             {
-                Id = "License Renewal",
-                Action = "uploadlicense",
+                Id = "Upload License",
+                Action = "token",
                 CreatedOn = DateTime.Now
             };
             Permission permission10 = new Permission()
@@ -169,7 +169,22 @@ namespace eInvoicing.Persistence.Seeder
                 Action = "ajaxtopgoodsusage",
                 CreatedOn = DateTime.Now
             };
-           
+            Permission permission27 = new Permission()
+            {
+                Id = "View Taxpayer Details",
+                Action = "taxpayer_details",
+                CreatedOn = DateTime.Now
+            };
+
+            Permission permission28 = new Permission()
+            {
+                Id = "Get Taxpayer Details",
+                Action = "ajaxtaxpayerdetails",
+                CreatedOn = DateTime.Now
+            };
+
+            
+
             context.Permission.AddRange(new List<Permission>() { permission1, permission2, permission3, permission4 });
 
 
@@ -199,6 +214,8 @@ namespace eInvoicing.Persistence.Seeder
             RolePermission RolePrivilegePermission24 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission24 };
             RolePermission RolePrivilegePermission25 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission25 };
             RolePermission RolePrivilegePermission26 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission26 };
+            RolePermission RolePrivilegePermission27 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission27 };
+            RolePermission RolePrivilegePermission28 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission28 };
 
 
 
@@ -229,12 +246,14 @@ namespace eInvoicing.Persistence.Seeder
             rolePermissions.Add(RolePrivilegePermission24);
             rolePermissions.Add(RolePrivilegePermission25);
             rolePermissions.Add(RolePrivilegePermission26);
+            rolePermissions.Add(RolePrivilegePermission27);
+            rolePermissions.Add(RolePrivilegePermission28);
 
             Role Role1 = new Role()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "SuperAdmin",
-                Description = "The shop worker on the insertion team will be stationed at the insertion table. This is an 8-hour team shift (6:30am-4:00pm). The job requires inserting fixed and variable metal and plastic pieces with wood glue and a hammer into shelve units for closets. It is a continuous action and a vital role in our shop. This station collaborates with the production of our other customized materials.",
+                Description = "The job requires inserting fixed and variable metal and plastic pieces with wood glue and a hammer into shelve units for closets. It is a continuous action and a vital role in our shop. This station collaborates with the production of our other customized materials.",
                 RolePermissions = rolePermissions
             };
             context.Roles.Add(Role1);
@@ -263,14 +282,20 @@ namespace eInvoicing.Persistence.Seeder
                 PasswordSalt = PasswordSalt,
                 UserRoles = userRoles
             };
-            Lookup lookup = new Lookup()
+            TaxPayer taxPayer = new TaxPayer()
             {
-                Key = "License",
-                Value = "IYjB+HUrjKmTFFeCIng5o2y4K874CJSkyx1MqpQThRoPt+1OEdm06K2sjNIVqQLeDUpXF2dziOB9ySC+wI/qT0z+cw+i249qT5QU0mf4lFsogEK40HFx3w+gM8QRXKPIc7SIF03o9hoi/BOu4jgSj5fKAC5FQDhwvUBqUItfUVo="
+                Id = Guid.NewGuid().ToString(),
+                ClientSecretExpDate = DateTime.Now,
+                CreationDate = DateTime.Now,
+                ExpirationDate = DateTime.Now,
+                RegistrationDate = DateTime.Now,
+                LicenseType = "Basic",
+                Status = true,
+                token = "IYjB+HUrjKmTFFeCIng5o2y4K874CJSkyx1MqpQThRoPt+1OEdm06K2sjNIVqQLeDUpXF2dziOB9ySC+wI/qT0z+cw+i249qT5QU0mf4lFsogEK40HFx3w+gM8QRXKPIc7SIF03o9hoi/BOu4jgSj5fKAC5FQDhwvUBqUItfUVo="
             };
 
             context.AppUsers.Add(user1);
-            context.Lookups.Add(lookup);
+            context.TaxPayers.Add(taxPayer);
             context.SaveChanges();
             base.Seed(context);
         }

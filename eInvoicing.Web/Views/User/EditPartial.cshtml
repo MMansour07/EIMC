@@ -9,49 +9,114 @@
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="card-body">
         <!--begin::Group-->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
         <div class="form-group row">
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            @Html.HiddenFor(model => model.Id)
-        </div>
-        <div class="form-group row">
-            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "First Name" })
-            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-        </div>
-        <!--end::Group-->
-        <!--begin::Group-->
-        <div class="form-group row">
-            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Last Name" })
-            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-        </div>
-        <!--end::Group-->
-        <!--begin::Group-->
-        <div class="form-group row">
-            <div class="input-group input-group-solid input-group-lg">
-                @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Email", @type = "email" })
+            <div class="col-md-6">
+                <label>First Name *</label>
+                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
             </div>
-            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-        </div>
-        <!--end::Group-->
-        <!--begin::Group-->
-        <div class="form-group row">
-            @Html.TextBoxFor(model => model.Title, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Title" })
-            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            <div class="col-md-6">
+                <label>Last Name *</label>
+                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
         </div>
         <div class="form-group row">
-            <div class="input-group input-group-solid input-group-lg">
-                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Phone Number" })
+            <div class="col-md-12">
+                <label>Email *</label>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label>Title *</label>
+                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label>Phone Number *</label>
+                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
                 @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group row">
-            @Html.ListBoxFor(model => model.Roles, ViewBag.Roles as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
-            @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+            <div class="col-md-12">
+                @Html.ListBoxFor(model => model.Roles, ViewBag.Roles as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
+                @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+            </div>
         </div>
-        <!--end::Group-->
-    </div>
+            <!--end::Group-->
+        </div>
 }
 <!--end::Form-->
-<script src="~/Scripts/modernizr-2.8.3.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        var form = KTUtil.getById('_editFrm');
+        _editFrm = FormValidation.formValidation(
+            document.getElementById('_editFrm'),
+            {
+                form,
+                fields: {
+                    Email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email is required'
+                            },
+                            emailAddress: {
+                                message: 'The value is not a valid email address'
+                            }
+                        }
+                    },
+                    FirstName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'First Name is required'
+                            },
+                        }
+                    },
+                    LastName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Last Name is required'
+                            }
+                        }
+                    },
+                    Title: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Title is required'
+                            },
+
+                        }
+                    },
+                    PhoneNumber: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone Number is required'
+                            },
+
+                        }
+                    },
+                    Roles: {
+                        validators: {
+                            choice: {
+                                min: 1,
+                                message: 'Please kindly select at least one role'
+                            }
+                        }
+                    },
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                }
+            }
+        );
+    });
+</script>

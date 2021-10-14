@@ -6,34 +6,74 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="card-body">
-        <!--end::Group-->
-        <div class="form-group row">
-            @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
-        </div>
-        <!--begin::Group-->
-        <div class="form-group row">
-            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name" })
+<div class="card-body">
+    <div class="form-group row">
+        @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Role Name *</label>
+            @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name", @name = "Name" })
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
-            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5" })
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Role Description *</label>
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5", @name = "Description" })
             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
-        @*<div class="form-group row">
-            @Html.ListBoxFor(model => model.Privileges, ViewBag.Privileges as SelectList, new { @class = "form-control select2", @id = "kt_select2_2", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
-            @Html.ValidationMessageFor(model => model.Privileges, "", new { @class = "text-danger" })
-        </div>*@
-        <div class="form-group row">
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Permissions *</label>
             @Html.ListBoxFor(model => model.Permissions, ViewBag.Permissions as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
             @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })
         </div>
     </div>
     <!--end::Group-->
+</div>
 }
 <!--end::Form-->
-<script src="~/Scripts/modernizr-2.8.3.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        var form = KTUtil.getById('_editRoleFrm');
+        _editRoleFrm = FormValidation.formValidation(
+            document.getElementById('_editRoleFrm'),
+            {
+                form,
+                fields: {
+                    Name: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Role Name is required'
+                            },
+                        }
+                    },
+                    Description: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Description is required'
+                            },
+                        }
+                    },
+                    Permissions: {
+                        validators: {
+                            choice: {
+                                min: 1,
+                                message: 'Please kindly select at least one permission'
+                            }
+                        }
+                    },
+
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                }
+            }
+        );
+    });
+</script>
 

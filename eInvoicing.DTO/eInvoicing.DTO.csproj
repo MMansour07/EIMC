@@ -50,6 +50,7 @@
     <Compile Include="EditRoleModel.cs" />
     <Compile Include="genericResponse.cs" />
     <Compile Include="ImportedSheetDTO.cs" />
+    <Compile Include="TaxpayerDTO.cs" />
     <Compile Include="PermissionDTO.cs" />
     <Compile Include="PrivilegeDTO.cs" />
     <Compile Include="EditModelDTO.cs" />

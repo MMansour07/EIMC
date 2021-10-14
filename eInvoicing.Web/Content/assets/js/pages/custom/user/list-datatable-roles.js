@@ -1,6 +1,7 @@
 "use strict";
 // Class definition
 var datatable;
+var _roleFrm;
 var KTAppsUsersListDatatable = function() {
 	// Private functions
 
@@ -60,12 +61,13 @@ var KTAppsUsersListDatatable = function() {
                     title: 'Permissions',
                     template: function (row) {
                         var output = '';
-                        if (row.Permissions.length > 0) {
-                            for (var i = 0; i < row.Permissions.length; i++) {
+                        var len = row.Permissions.length;
+                        if (len > 0) {
+                            for (var i = 0; i < 6; i++) {
                                 output += '<span class=" mr-1 mb-1 label label-md font-weight-bold label-inline">' + row.Permissions[i].Id + '</span>';
                             }
                         }
-                        return output;
+                        return output += (len > 6 ? '<span class=" mr-1 mb-1 label label-md font-weight-bold label-inline">...</span>' : "");
                     }
                 },
 				{
@@ -207,131 +209,174 @@ function editRole(id) {
 
 jQuery(document).ready(function () {
     KTAppsUsersListDatatable.init();
-    $("#RoleSubmission").click(function (e) {
-        var $form = $('#_roleFrm');
-        if ($form.valid()) {
-            e.preventDefault();
-            $("#closeRoleModal").click();
-            KTApp.blockPage();
-            var valdata = $("#_roleFrm").serialize();
-            $.ajax({
-                url: "/EInvoicing/v0/role/createrole",
-                type: "POST",
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: valdata,
-                success: function (response) {
-                    KTApp.unblockPage();
-                    if (response.success) {
-                        datatable.reload();
-                        KTUtil.scrollTop();
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.success("Data has been saved successfully!");
-                    }
-                    else {
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
 
-                        toastr.error("Something went wrong!");
+    var form = KTUtil.getById('_roleFrm');
+    _roleFrm = FormValidation.formValidation(
+        document.getElementById('_roleFrm'),
+        {
+            form,
+            fields: {
+                Name: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Role Name is required'
+                        },
                     }
+                },
+                Description: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Description is required'
+                        },
+                    }
+                },
+                Permissions: {
+                    validators: {
+                        choice: {
+                            min: 1,
+                            message: 'Please kindly select at least one permission'
+                        }
+                    }
+                },
 
-                }
-            });
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap: new FormValidation.plugins.Bootstrap(),
+            }
         }
+    );
+    $("#RoleSubmission").click(function (e) {
+        _roleFrm.validate().then(function (status) {
+            if (status == 'Valid') {
+                e.preventDefault();
+                $("#closeRoleModal").click();
+                KTApp.blockPage();
+                var valdata = $("#_roleFrm").serialize();
+                $.ajax({
+                    url: "/EInvoicing/v0/role/createrole",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (response.success) {
+                            datatable.reload();
+                            KTUtil.scrollTop();
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("Data has been saved successfully!");
+                        }
+                        else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+
+                            toastr.error("Something went wrong!");
+                        }
+
+                    }
+                });
+            }
+            else { return; }
+        });
     });
     $("#roleEdition").click(function (e) {
-        var $form = $('#_editRoleFrm');
-        if ($form.valid()) {
-            e.preventDefault();
-            $("#closeRoleModalEdit").click();
-            KTApp.blockPage();
-            var valdata = $("#_editRoleFrm").serialize();
-            $.ajax({
-                url: "/EInvoicing/v0/role/editrole",
-                type: "POST",
-                dataType: 'json',
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                data: valdata,
-                success: function (response) {
-                    KTApp.unblockPage();
-                    if (response.success) {
-                        datatable.reload();
-                        KTUtil.scrollTop();
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
-                        toastr.success("data has been saved successfully!");
-                    }
-                    else {
-                        toastr.options = {
-                            "closeButton": false,
-                            "debug": false,
-                            "newestOnTop": true,
-                            "progressBar": false,
-                            "positionClass": "toast-top-center",
-                            "preventDuplicates": false,
-                            "onclick": null,
-                            "showDuration": "300",
-                            "hideDuration": "1000",
-                            "timeOut": "5000",
-                            "extendedTimeOut": "1000",
-                            "showEasing": "swing",
-                            "hideEasing": "linear",
-                            "showMethod": "fadeIn",
-                            "hideMethod": "fadeOut"
-                        };
+        _editRoleFrm.validate().then(function (status) {
+            if (status == 'Valid') {
+                e.preventDefault();
+                $("#closeRoleModalEdit").click();
+                KTApp.blockPage();
+                var valdata = $("#_editRoleFrm").serialize();
+                $.ajax({
+                    url: "/EInvoicing/v0/role/editrole",
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    data: valdata,
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (response.success) {
+                            datatable.reload();
+                            KTUtil.scrollTop();
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("data has been saved successfully!");
+                        }
+                        else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
 
-                        toastr.error("Something went wrong!");
-                    }
+                            toastr.error("Something went wrong!");
+                        }
 
-                }
-            });
-        }
+                    }
+                });
+            }
+            else {
+                return;
+            }
+        });
     });
 });
 

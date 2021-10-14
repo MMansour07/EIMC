@@ -59,6 +59,7 @@
     <Compile Include="Entities\Document.cs" />
     <Compile Include="Entities\Error.cs" />
     <Compile Include="Entities\InvoiceLine.cs" />
+    <Compile Include="Entities\TaxPayer.cs" />
     <Compile Include="Entities\Lookup.cs" />
     <Compile Include="Entities\Permission.cs" />
     <Compile Include="Entities\RolePermission.cs" />

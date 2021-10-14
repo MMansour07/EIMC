@@ -4,14 +4,14 @@
 }
 <style>
     .select2-selection__rendered {
-        width: 721px !important;
+        width: 740px !important;
     }
 
     .select2-search__field {
-        width: 721px !important;
+        width: 740px !important;
     }
 </style>
-<div class="container">
+<div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
         <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
@@ -21,9 +21,9 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    <h6 class="text-dark font-weight-bold my-1 mr-5">
                         Users
-                    </h5>
+                    </h6>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -44,34 +44,56 @@
             </div>
             <!--end::Info-->
         </div>
+        <div class="topbar-item" style="margin-right:25px !important">
+            @using System.Security.Claims;
+            @using Microsoft.AspNet.Identity;
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <a class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                        <div class="d-flex flex-column text-right pr-3">
+                            <span class="text-primary font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-primary font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                        </div>
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary">
+                            <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
+                                        <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
+                                        <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
+                        </a>
+                    </div>
+                }
+
+            }
+        </div>
     </div>
     <!--end::Subheader-->
     <!--begin::Card-->
-    <div class="card card-custom">
+    <div class="card card-custom gutter-b draggable">
         <!--begin::Header-->
-        <div class="card-header flex-wrap border-0 pt-6 pb-0">
+        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h3 class="card-label">
-                    User Management
-                    <span class="d-block text-muted pt-2 font-size-sm">User management made easy</span>
-                </h3>
+                <h6 class="">
+                    <i class="fa fa-users mr-1">
+                    </i>
+                    Application Users
+                </h6>
             </div>
             <div class="card-toolbar">
-                <!--begin::Button-->
-                <a href="#userCreation" data-toggle="modal" class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-light svg-icon-2x">
-                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/Communication/Add-user.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24" />
-                                <path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>
-                    New User
-                </a>
                 <a href="#userEditModal" id="editBtn" data-toggle="modal" hidden class="btn btn-primary font-weight-bolder">
                     <span class="svg-icon svg-icon-light svg-icon-2x">
                         <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/Communication/Add-user.svg-->
@@ -94,16 +116,23 @@
         <div class="card-body">
             <div class="mb-7">
                 <div class="row align-items-center">
-                    <div class="col-lg-9 col-xl-8">
+                    <div class="col-lg-12 col-xl-12">
                         <div class="row align-items-center">
-                            <div class="col-md-4 my-2 my-md-0">
-                                <div class="input-icon">
-                                    <input type="text" class="form-control" placeholder="Search..." id="kt_subheader_search_form">
-                                    <span><i class="flaticon2-search-1 text-muted"></i></span>
+                            <div class="col-md-10 my-2 my-md-0">
+                                <a href="#userCreation" data-toggle="modal" class="btn btn-primary font-weight-bold btn-square">
+                                    <i class="flaticon2-user-1"></i>
+                                    Create
+                                </a>
+                            </div>
+                                <div class="col-md-2 my-2 my-md-0">
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Search..." id="kt_subheader_search_form">
+                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                 </div>
             </div>
             <!--begin: Datatable-->
@@ -115,74 +144,75 @@
     </div>
     <!--end::Card-->
     <!-- Modal-->
-    <div class="modal fade" id="userCreation" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal fade modal-sticky-lg" id="userCreation" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userCreation">User Registration Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
                 @using (Html.BeginForm("createuser", "user", FormMethod.Post, new { @class = "", role = "form", id = "_frm" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="modal-body">
-                        <!--begin::Form-->
-                        <!--begin::Wizard Form-->
+                    <div class="modal-body" style="padding: 0 !important;">
                         <div class="card-body">
                             <!--begin::Group-->
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            @Html.HiddenFor(model => model.Id)
                             <div class="form-group row">
-                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                @Html.HiddenFor(model => model.Id)
-                            </div>
-                            <div class="form-group row">
-                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "First Name" })
-                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-                            </div>
-                            <!--end::Group-->
-                            <!--begin::Group-->
-                            <div class="form-group row">
-                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Last Name" })
-                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-                            </div>
-                            <!--end::Group-->
-                            <!--begin::Group-->
-                            <div class="form-group row">
-                                <div class="input-group input-group-solid input-group-lg">
-                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Email", @type = "email" })
+                                <div class="col-md-6">
+                                    <label>First Name *</label>
+                                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
+                                    @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                 </div>
-                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-                            </div>
-                            <!--end::Group-->
-                            <!--begin::Group-->
-                            <div class="form-group row">
-                                @Html.PasswordFor(m => m.Password, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Password" })
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                <div class="col-md-6">
+                                    <label>Last Name *</label>
+                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
+                                    @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <div class="form-group row">
-                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Confirm Password" })
-                                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                <div class="col-md-12">
+                                    <label>Email *</label>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
+                                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <div class="form-group row">
-
-                                @Html.TextBoxFor(model => model.Title, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Title" })
-                                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-
+                                <div class="col-md-12">
+                                    <label>Password *</label>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @name = "Password", @id= "password" })
+                                <div data-field="Password" id="errpassword" data-validator="identical" class="fv-help-block" style="display: none;">Password must be at least 8 characters contains upper, lower case, numbers and special characters</div>
+                                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <div class="form-group row">
-                                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control form-control-solid form-control-lg", @placeholder = "Phone Number" })
-                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                <div class="col-md-12">
+                                    <label>Confirm Password *</label>
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", @name = "ConfirmPassword" })
+                                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <div class="form-group row">
-                                @Html.ListBoxFor(model => model.Roles, (List<SelectListItem>)ViewBag?.Roles, new { @class = "form-control select2", @id = "kt_select2_4", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
-                                @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+                                <div class="col-md-12">
+                                    <label>Title *</label>
+                                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
+                                    @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label>Phone Number *</label>
+                                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
+                                    @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label>Roles *</label>
+                                    @Html.ListBoxFor(model => model.Roles, (List<SelectListItem>)ViewBag?.Roles, new { @class = "form-control select2", @id = "kt_select2_4", @name = "Roles", @multiple = "multiple", @placeholder = "Phone Number" })
+                                    @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                             <!--end::Group-->
                         </div>
-
-                        <!--end::Form-->
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal" data-dismiss="modal">Close</button>
@@ -192,30 +222,22 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="userEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+    <div class="modal fade modal-sticky-lg" id="userEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="userCreation">User Registration Form</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body" id="userEdit">
+                <div class="modal-body" style="padding: 0 !important;" id="userEdit">
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal2" data-dismiss="modal">Close</button>
-                    <button type="button" id="userEdition" class="btn btn-primary font-weight-bold">Submit</button>
+                    <button type="button" id="userEdition" class="btn btn-primary font-weight-bold">Save</button>
                 </div>
             </div>
         </div>
     </div>
     <!--end::Container-->
 </div>
-<script src="~/Scripts/modernizr-2.8.3.js"></script>
-<script src="~/Scripts/jquery.validate.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
 <script src="~/Content/assets/js/pages/custom/user/list-datatable.js?v=7.0.6"></script>
+
 

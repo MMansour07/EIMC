@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace eInvoicing.Repository.Implementation
 {
-    public class LookupRepository: Repository<Lookup>, ILookupRepository
+    public class LookupRepository: IdentityRepository<Lookup>, ILookupRepository
     {
-        public LookupRepository(ApplicationContext context) : base(context)
+        public LookupRepository(IdentityContext context) : base(context)
         {
 
         }

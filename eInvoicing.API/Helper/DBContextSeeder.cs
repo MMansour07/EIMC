@@ -9,9 +9,9 @@ using eInvoicing.Persistence;
 
 namespace eInvoicing.API.Helper
 {
-    public class DBContextSeeder : DropCreateDatabaseIfModelChanges<ApplicationContext>
+    public class DBContextSeeder : DropCreateDatabaseIfModelChanges<IdentityContext>
     {
-        protected override void Seed(ApplicationContext context)
+        protected override void Seed(IdentityContext context)
         {
             Permission permission1 = new Permission()
             {

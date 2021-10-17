@@ -13,7 +13,7 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-dark font-weight-bold my-1 mr-5">
+                    <h5 class="text-light font-weight-bold my-1 mr-5">
                         Sent
                     </h5>
                     <!--end::Page Title-->
@@ -44,18 +44,18 @@
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto btn-clean d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                    <a class="btn btn-icon btn-icon-mobile w-auto btn-hover-bg-dark d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
-                            <span class="text-primary font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-primary font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                            <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
                         </div>
-                        <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary">
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-light">
                             <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
-                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                            <span class="svg-icon svg-icon-light svg-icon" style="padding-right:inherit">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <rect x="0" y="0" width="24" height="24" />
@@ -137,19 +137,39 @@
             <!--begin::Search Form-->
             <div class="mb-7">
                 <div class="row align-items-center mb-4">
-                    <div class="col-lg-10">
-                        <label>Issued On:</label>
-                        <div class="input-daterange input-group">
-                            <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="input-group date">
+                            <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="From Date">
                             <div class="input-group-append">
-                                <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
+                                <span class="input-group-text">
+                                    <i class="la la-calendar"></i>
+                                </span>
                             </div>
-                            <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
                         </div>
                     </div>
+                    <div class="col-lg-5 col-md-6 col-sm-12">
+                        <div class="input-group date">
+                            <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="To Date">
+                            <div class="input-group-append">
+                                <span class="input-group-text">
+                                    <i class="la la-calendar"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    @*<div class="col-lg-10">
+            <label>Issued On:</label>
+            <div class="input-daterange input-group">
+                <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
+                <div class="input-group-append">
+                    <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
+                </div>
+                <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
+            </div>
+        </div>*@
                     <div class="col-lg-2">
-                        <a href="#" id="_find" class="mt-8 btn btn-light-primary btn-shadow">
-                            <i class="flaticon2-search"></i>
+                        <a href="#" id="_find" class="btn btn-primary font-weight-bold btn-square">
+                            <i class="flaticon-search"></i>
                             Find
                         </a>
                     </div>

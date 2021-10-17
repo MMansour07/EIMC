@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace eInvoicing.Repository.Implementation
 {
-    public class UserRoleRepository : Repository<UserRole>, IUserRoleRepository
+    public class UserRoleRepository : IdentityRepository<UserRole>, IUserRoleRepository
     {
-        private readonly ApplicationContext _context;
-        public UserRoleRepository(ApplicationContext context) : base(context)
+        private readonly IdentityContext _context;
+        public UserRoleRepository(IdentityContext context) : base(context)
         {
             _context = context;
         }

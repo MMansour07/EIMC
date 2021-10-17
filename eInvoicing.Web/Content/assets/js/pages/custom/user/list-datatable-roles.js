@@ -52,7 +52,7 @@ var KTAppsUsersListDatatable = function() {
 					field: 'Description',
 					title: 'Description',
 					template: function(row) {
-						var output = '<div class="font-weight-bolder text-primary mb-0">' + row.Description + '</div>';
+						var output = '<div>' + row.Description + '</div>';
 						return output;
 					},
                 },

@@ -15,6 +15,6 @@ namespace eInvoicing.Service.AppService.Contract.Base
         string token();
         void updateTaxPayer(TaxpayerDTO obj);
         TaxpayerDTO getTaxpayerDetails();
-        string GetClientId();
+        string GetClientId(string Environment);
     }
 }

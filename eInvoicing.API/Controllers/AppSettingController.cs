@@ -20,11 +20,6 @@ namespace eInvoicing.API.Controllers
     [JwtAuthentication]
     public class AppSettingController : ApiController
     {
-        private readonly string url = ConfigurationManager.AppSettings["idSrvBaseUrl"];
-        private readonly string submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
-        private readonly string submissionurl = ConfigurationManager.AppSettings["apiBaseUrl"];
-        private readonly string client_id = ConfigurationManager.AppSettings["client_id"];
-        private readonly string client_secret = ConfigurationManager.AppSettings["client_secret"];
         private readonly ITaxpayerService _taxpayerService;
 
         public AppSettingController(ITaxpayerService taxpayerService)
@@ -37,19 +32,20 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                var taxpayer = _taxpayerService.getTaxpayerDetails();
                 return Ok(new SettingViewModel()
                 {
                     PreProductionLoginURL = ConfigurationManager.AppSettings["idSrvBaseUrl"],
                     PreProductionApiURL = ConfigurationManager.AppSettings["apiBaseUrl"],
                     PreProductionAppId = ConfigurationManager.AppSettings["AppId"],
-                    PreProductionClientSecret = ConfigurationManager.AppSettings["client_secret"],
-                    PreProductionClientId = ConfigurationManager.AppSettings["client_id"],
+                    PreProductionClientSecret = taxpayer.PreProdClientSecret,
+                    PreProductionClientId = taxpayer.PreProdClientId,
                     PreProductionAppKey = ConfigurationManager.AppSettings["AppKey"],
                     DevSignerURL = ConfigurationManager.AppSettings["submitSrvBaseUrl"],
                     ProductionAppKey = ConfigurationManager.AppSettings["ProdAppKey"],
                     ProductionAppId = ConfigurationManager.AppSettings["ProdAppId"],
-                    ProductionClientId = ConfigurationManager.AppSettings["Prod_client_id"],
-                    ProductionClientSecret = ConfigurationManager.AppSettings["Prod_client_secret"],
+                    ProductionClientId = taxpayer.ProdClientId,
+                    ProductionClientSecret = taxpayer.ProdClientSecret,
                     ProductionSignerURL = ConfigurationManager.AppSettings["ProdsubmitSrvBaseUrl"],
                     ProductionLoginURL = ConfigurationManager.AppSettings["ProdidSrvBaseUrl"],
                     ProductionApiURL = ConfigurationManager.AppSettings["ProdapiBaseUrl"],
@@ -68,14 +64,13 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                if (model.APIsEnvironment)
+                _taxpayerService.updateTaxPayer(new TaxpayerDTO()
                 {
-                    _taxpayerService.updateTaxPayer(new TaxpayerDTO() { ClientId = model.ProductionClientId, ClientSecret = model.ProductionClientSecret });
-                }
-                else
-                {
-                    _taxpayerService.updateTaxPayer(new TaxpayerDTO() { ClientId = model.PreProductionClientId, ClientSecret = model.PreProductionClientSecret });
-                }
+                    PreProdClientId = model.PreProductionClientId,
+                    PreProdClientSecret = model.PreProductionClientSecret,
+                    ProdClientSecret = model.ProductionClientSecret,
+                    ProdClientId = model.ProductionClientId
+                });
                 Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
                 AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
                 var connectionStringsSection = (ConnectionStringsSection)objConfig.GetSection("connectionStrings");
@@ -84,10 +79,6 @@ namespace eInvoicing.API.Controllers
                 {
                     objAppsettings.Settings["apiBaseUrl"].Value = model.PreProductionApiURL;
                     objAppsettings.Settings["idSrvBaseUrl"].Value = model.PreProductionLoginURL;
-                    //objAppsettings.Settings["client_id"].Value = model.PreProductionClientId;
-                    //objAppsettings.Settings["client_secret"].Value = model.PreProductionClientSecret;
-                    //objAppsettings.Settings["Prod_client_id"].Value = model.ProductionClientId;
-                    //objAppsettings.Settings["Prod_client_secret"].Value = model.ProductionClientSecret;
                     objAppsettings.Settings["ProdapiBaseUrl"].Value = model.ProductionApiURL;
                     objAppsettings.Settings["ProdidSrvBaseUrl"].Value = model.ProductionLoginURL;
                     objAppsettings.Settings["Environment"].Value = model.APIsEnvironment ? "Prod" : "PreProd";

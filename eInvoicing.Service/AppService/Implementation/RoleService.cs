@@ -55,7 +55,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                var Roles = repository.GetAllIncluding(null, null, "RolePermissions.Permission").Select(i => i.ToRoleViewModel());
+                var Roles = repository.GetAllIncluding(x => x.Name.ToLower() != "superadmin", null, "RolePermissions.Permission").Select(i => i.ToRoleViewModel());
                 return Roles;
             }
             catch (Exception ex)

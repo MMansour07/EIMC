@@ -10,10 +10,10 @@ using System.Threading.Tasks;
 
 namespace eInvoicing.Repository.Implementation
 {
-    public class PermissionRepository : Repository<Permission>, IPermissionRepository
+    public class PermissionRepository : IdentityRepository<Permission>, IPermissionRepository
     {
-        private readonly ApplicationContext _context;
-        public PermissionRepository(ApplicationContext context) : base(context)
+        private readonly IdentityContext _context;
+        public PermissionRepository(IdentityContext context) : base(context)
         {
             _context = context;
         }

@@ -9,9 +9,9 @@ using eInvoicing.Persistence;
 
 namespace eInvoicing.Persistence.Seeder
 {
-    public class DBContextSeeder : DropCreateDatabaseIfModelChanges<ApplicationContext>
+    public class DBContextSeeder : DropCreateDatabaseIfModelChanges<IdentityContext>
     {
-        protected override void Seed(ApplicationContext context)
+        protected override void Seed(IdentityContext context)
         {
             Permission permission1 = new Permission()
             {
@@ -271,12 +271,12 @@ namespace eInvoicing.Persistence.Seeder
             User user1 = new User()
             {
                 Id = Guid.NewGuid().ToString(),
-                FirstName = "superadmin",
-                LastName = "superadmin",
-                Email = "superadmin@info.com",
+                FirstName = "Mohamed",
+                LastName = "Mansour",
+                Email = "superadmin@eta-dt.com",
                 CreatedOn = DateTime.Now,
-                PhoneNumber = "+1(13245)(7890)",
-                Title = "IT Manager",
+                PhoneNumber = "02447098701",
+                Title = "Internal Role",
                 UserName = "superadmin",
                 PasswordHash = PasswordHash,
                 PasswordSalt = PasswordSalt,
@@ -291,7 +291,8 @@ namespace eInvoicing.Persistence.Seeder
                 RegistrationDate = DateTime.Now,
                 LicenseType = "Basic",
                 Status = true,
-                token = "IYjB+HUrjKmTFFeCIng5o2y4K874CJSkyx1MqpQThRoPt+1OEdm06K2sjNIVqQLeDUpXF2dziOB9ySC+wI/qT0z+cw+i249qT5QU0mf4lFsogEK40HFx3w+gM8QRXKPIc7SIF03o9hoi/BOu4jgSj5fKAC5FQDhwvUBqUItfUVo="
+                PreProdClientId = "5e287ddc-d504-42e5-977d-ffc609237d64",
+                token = "IYjB+HUrjKmTFFeCIng5o8QddjV0rGfwCuUK34Zhzg3v2iLmUJcge+vDfoRUOdYigZLx/dNNMVMEBf8uJPe5/GfMbp4ehCwvGxnMVl78e7Mi5FixZc7+9R0W//2ar2U9S7wbRRWN7e5jxc9KsV4IzYJMQ3Jy6PvuB1tNG2qNqtYo0kQTma1RUkNFriZBMSRXcoc6CpnNNQe1pkR6Sk2hu+GjU3i8yHFRw1/YTa2/iSeYk3J2kMcoTXsQyZe7Gq+Hz4c1Ku6H6Psb+uU63JnUqgdFldngbHkyt6lDalkvFXqRLSy3iYLablp5WKKJ8Ok+9YHXrjaqiPJDP1Q+cb56WpFvKdtOFy/TlO5SWzYPKl/Gx1yUQ3fzCAfERgPn8/7x/BEcNSMu7r0IKO7MWaoesQymwNj6pwRVG04plFnZGwMHj80lzslmxAWyxauMKNVvu/UI5Gi3tNi0o4V/3zTW7WOJ19rUq9KWyTXFV0QWs+5PE/cWre73OyNrjms3mtQB5LVJUIg3pWS0OcxfIaAz3Vcl7VePlAkdKdPjxkPCf9saHb46loFTnqPldLFaZEUY"
             };
 
             context.AppUsers.Add(user1);

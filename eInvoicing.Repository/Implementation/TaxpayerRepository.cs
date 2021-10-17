@@ -10,17 +10,18 @@ using System.Threading.Tasks;
 
 namespace eInvoicing.Repository.Implementation
 {
-    public class TaxpayerRepository : Repository<TaxPayer>, ITaxpayerRepository
+    public class TaxpayerRepository : IdentityRepository<TaxPayer>, ITaxpayerRepository
     {
-        public TaxpayerRepository(ApplicationContext context) : base(context)
+        private readonly IdentityContext _context;
+        public TaxpayerRepository(IdentityContext context) : base(context)
         {
-
+            _context = context;
         }
         public TaxPayer GetLastRecord()
         {
             try
             {
-                return DbSet.AsNoTracking().OrderByDescending(x => x.CreatedOn).FirstOrDefault(x => x.Status == true);
+                return _context.TaxPayers.AsNoTracking().OrderByDescending(x => x.CreatedOn).FirstOrDefault(x => x.Status == true);
             }
             catch (Exception ex)
             {

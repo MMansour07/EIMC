@@ -46,8 +46,6 @@ namespace eInvoicing.Service.AppService.Implementation
                     NameEn = obj.TaxPayerNameEn,
                     NameAr = obj.TaxPayerNameAr,
                     IRN = obj.IRN,
-                    ClientId = obj.ClientId,
-                    ClientSecret = obj.ClientSecret,
                     ClientSecretExpDate = obj.ClientSecretExpirationDate,
                     CreatedBy = obj.CreatedBy,
                     CreatedOn = DateTime.Now,
@@ -80,11 +78,14 @@ namespace eInvoicing.Service.AppService.Implementation
                 throw e;
             }
         }
-        public string GetClientId()
+        public string GetClientId(string Environment)
         {
             try
             {
-                return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.ClientId;
+                if(Environment.ToLower() == "Prod")
+                    return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.ProdClientId;
+                else
+                    return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
             }
             catch (Exception e)
             {
@@ -103,8 +104,10 @@ namespace eInvoicing.Service.AppService.Implementation
                         TaxPayerNameEn = taxpayer.NameEn,
                         TaxPayerNameAr = taxpayer.NameAr,
                         IRN = taxpayer.IRN,
-                        ClientId = taxpayer.ClientId,
-                        ClientSecret = taxpayer.ClientSecret,
+                        ProdClientId = taxpayer.ProdClientId,
+                        PreProdClientId = taxpayer.PreProdClientId,
+                        ProdClientSecret = taxpayer.ProdClientSecret,
+                        PreProdClientSecret = taxpayer.PreProdClientSecret,
                         ClientSecretExpirationDate = taxpayer.ClientSecretExpDate,
                         CreatedBy = taxpayer.CreatedBy,
                         LicenseCreationDate = taxpayer.CreationDate,
@@ -129,8 +132,10 @@ namespace eInvoicing.Service.AppService.Implementation
             try
             {
                 var taxpayer = repository.GetLastRecord();
-                taxpayer.ClientId = obj.ClientId;
-                taxpayer.ClientSecret = obj.ClientSecret;
+                taxpayer.PreProdClientId = obj.PreProdClientId;
+                taxpayer.PreProdClientSecret = obj.PreProdClientSecret;
+                taxpayer.ProdClientId= obj.ProdClientId;
+                taxpayer.ProdClientSecret = obj.ProdClientSecret;
                 repository.Update(taxpayer);
             }
             catch (Exception e)

@@ -29,7 +29,8 @@
     <style>
         .subheader {
             top: 0 !important;
-            background-color: hsl(210, 20%, 98%) !important;
+            background-color: hsl(208, 33%, 24%) !important;
+           /*background-color: hsl(210, 20%, 98%) !important;*/
         }
         .brand {
             background-color: hsl(210, 20%, 98%) !important;
@@ -126,7 +127,7 @@
                 <!--begin::Brand-->
                 <div class="brand flex-column-auto " id="kt_brand">
                     <!--begin::Logo-->
-                    <a href="@Url.Action("Index","Master")" class="brand-logo">
+                    <a href="@Url.Action("Index", "Master")" class="brand-logo">
                         <img alt="Logo" src="https://cdn.lazurde.com/media/logo/stores/3/lazrude_1.png" class="max-h-20px" />
                     </a>
                     <!--end::Logo-->
@@ -156,7 +157,7 @@
                         <!--begin::Menu Nav-->
                         <ul class="menu-nav ">
                             <li class="menu-item  menu-item-active" aria-haspopup="true">
-                                <a href="@Url.Action("Index","Master")" class="menu-link ">
+                                <a href="@Url.Action("Index", "Master")" class="menu-link ">
                                     <span class="svg-icon menu-icon">
                                         <!--begin::Svg Icon | path:assets/media/svg/icons/Design/Layers.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                             <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
@@ -219,14 +220,14 @@
                                             </div>
                                         </li>
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="@Url.Action("pending","document")" class="menu-link ">
+                                            <a href="@Url.Action("pending", "document")" class="menu-link ">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Draft</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_draft"></span>
                                             </a>
                                         </li>
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="@Url.Action("submitted","document")" class="menu-link ">
+                                            <a href="@Url.Action("submitted", "document")" class="menu-link ">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Sent</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_sent"></span>
@@ -281,30 +282,30 @@
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
-                                <a href="@Url.Action("documents_stats","report")" class="menu-link ">
+                                <a href="@Url.Action("documents_stats", "report")" class="menu-link ">
                                     <span class="menu-text">Documents Statistics</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
-                                <a href="@Url.Action("top_goods_usage","report")" class="menu-link ">
+                                <a href="@Url.Action("top_goods_usage", "report")" class="menu-link ">
                                     <span class="menu-text">Top Goods Usage</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
-                                <a href="@Url.Action("monthly_bestseller","report")" class="menu-link ">
+                                <a href="@Url.Action("monthly_bestseller", "report")" class="menu-link ">
                                     <span class="menu-text">Monthly Bestseller Items</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
-                                <a href="@Url.Action("monthly_lowestseller","report")" class="menu-link ">
+                                <a href="@Url.Action("monthly_lowestseller", "report")" class="menu-link ">
                                     <span class="menu-text">Monthly Lowestseller Items</span>
                                 </a>
                             </li>
 
                             @using System.Security.Claims;
                             @using Microsoft.AspNet.Identity;
-                            @if (Request.IsAuthenticated &&
-                                ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Role").Select(i => i.Value.ToLower()).ToList().Contains("superadmin"))
+                            @{var roles = ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Role").Select(i => i.Value.ToLower()).ToList();}
+                            @if (Request.IsAuthenticated && (roles.Contains("superadmin") || roles.Contains("it admin")))
                             {
                                 <li class="menu-section ">
                                     <h4 class="menu-text">Application Settings</h4>
@@ -324,20 +325,23 @@
                                         <span class="menu-text">Users</span>
                                     </a>
                                 </li>
-                                <li class="menu-item " aria-haspopup="true">
-                                    <a href="@Url.Action("index", "role")" class="menu-link ">
-                                        <span class="svg-icon menu-icon">
-                                            <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Lock-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                                    <rect x="0" y="0" width="24" height="24" />
-                                                    <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
-                                                    <path d="M14.5,11 C15.0522847,11 15.5,11.4477153 15.5,12 L15.5,15 C15.5,15.5522847 15.0522847,16 14.5,16 L9.5,16 C8.94771525,16 8.5,15.5522847 8.5,15 L8.5,12 C8.5,11.4477153 8.94771525,11 9.5,11 L9.5,10.5 C9.5,9.11928813 10.6192881,8 12,8 C13.3807119,8 14.5,9.11928813 14.5,10.5 L14.5,11 Z M12,9 C11.1715729,9 10.5,9.67157288 10.5,10.5 L10.5,11 L13.5,11 L13.5,10.5 C13.5,9.67157288 12.8284271,9 12,9 Z" fill="#000000" />
-                                                </g>
-                                            </svg><!--end::Svg Icon-->
-                                        </span>
-                                        <span class="menu-text">Roles</span>
-                                    </a>
-                                </li>
+                                if (Request.IsAuthenticated && roles.Contains("superadmin"))
+                                {
+                                    <li class="menu-item " aria-haspopup="true">
+                                        <a href="@Url.Action("index", "role")" class="menu-link ">
+                                            <span class="svg-icon menu-icon">
+                                                <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Code\Lock-circle.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                        <rect x="0" y="0" width="24" height="24" />
+                                                        <circle fill="#000000" opacity="0.3" cx="12" cy="12" r="10" />
+                                                        <path d="M14.5,11 C15.0522847,11 15.5,11.4477153 15.5,12 L15.5,15 C15.5,15.5522847 15.0522847,16 14.5,16 L9.5,16 C8.94771525,16 8.5,15.5522847 8.5,15 L8.5,12 C8.5,11.4477153 8.94771525,11 9.5,11 L9.5,10.5 C9.5,9.11928813 10.6192881,8 12,8 C13.3807119,8 14.5,9.11928813 14.5,10.5 L14.5,11 Z M12,9 C11.1715729,9 10.5,9.67157288 10.5,10.5 L10.5,11 L13.5,11 L13.5,10.5 C13.5,9.67157288 12.8284271,9 12,9 Z" fill="#000000" />
+                                                    </g>
+                                                </svg><!--end::Svg Icon-->
+                                            </span>
+                                            <span class="menu-text">Roles</span>
+                                        </a>
+                                    </li>
+                                }
                                 <li class="menu-item " aria-haspopup="true">
                                     <a href="@Url.Action("index", "appsetting")" class="menu-link">
                                         <span class="svg-icon menu-icon">

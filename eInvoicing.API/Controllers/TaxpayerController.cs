@@ -3,6 +3,7 @@ using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
 using Newtonsoft.Json;
 using System;
+using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Web.Http;
@@ -53,7 +54,9 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                return _taxpayerService.GetClientId()?.Replace("\r\n", "");
+                Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+                AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
+                return _taxpayerService.GetClientId(objAppsettings.Settings["Environment"].Value)?.Replace("\r\n", "");
             }
             catch (Exception ex)
             {
@@ -76,7 +79,6 @@ namespace eInvoicing.API.Controllers
             }
         }
 
-        [JwtAuthentication]
         [HttpGet]
         [Route("api/taxpayer/GetDate")]
         public string GetDate()

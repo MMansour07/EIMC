@@ -65,6 +65,7 @@
     <Compile Include="Contract\ITaxableItemRepository.cs" />
     <Compile Include="Contract\IInvoiceLineRepository.cs" />
     <Compile Include="Contract\IDocumentRepository.cs" />
+    <Compile Include="Implementation\Base\IdentityRepository.cs" />
     <Compile Include="Implementation\TaxpayerRepository.cs" />
     <Compile Include="Implementation\PermissionRepository.cs" />
     <Compile Include="Implementation\RolePermissionRepository.cs" />

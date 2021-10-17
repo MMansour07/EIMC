@@ -1,31 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Security.Claims;
-using System.Web;
+﻿using System.Configuration;
+using eInvoicing.Service.AppService.Contract.Base;
 
 namespace eInvoicing.API.Models
 {
     public class UserSession : IUserSession
     {
-        public UserSession()
+        private readonly ITaxpayerService _taxpayerService;
+        public UserSession(ITaxpayerService taxpayerService)
         {
+            _taxpayerService = taxpayerService;
+            var taxpayer = _taxpayerService.getTaxpayerDetails();
             if (ConfigurationManager.AppSettings["Environment"].ToLower() == "preprod")
             {
                 url = ConfigurationManager.AppSettings["idSrvBaseUrl"];
                 submissionurl = ConfigurationManager.AppSettings["apiBaseUrl"];
                 loginUrl = ConfigurationManager.AppSettings["idSrvBaseUrl"];
-                client_id = ConfigurationManager.AppSettings["client_id"];
-                client_secret = ConfigurationManager.AppSettings["client_secret"];
+                client_id = taxpayer.PreProdClientId; //ConfigurationManager.AppSettings["client_id"];
+                client_secret = taxpayer.PreProdClientSecret; //ConfigurationManager.AppSettings["client_secret"];
             }
             else
             {
                 url = ConfigurationManager.AppSettings["ProdidSrvBaseUrl"];
                 submissionurl = ConfigurationManager.AppSettings["ProdapiBaseUrl"];
                 loginUrl = ConfigurationManager.AppSettings["ProdidSrvBaseUrl"];
-                client_id = ConfigurationManager.AppSettings["Prod_client_id"];
-                client_secret = ConfigurationManager.AppSettings["Prod_client_secret"];
+                client_id = taxpayer.ProdClientId; //ConfigurationManager.AppSettings["Prod_client_id"];
+                client_secret = taxpayer.ProdClientSecret; //ConfigurationManager.AppSettings["Prod_client_secret"];
             }
             submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
         }

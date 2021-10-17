@@ -381,6 +381,7 @@ var KTUppy = function () {
 
 KTUtil.ready(function () {
     KTUppy.init();
+    debugger;
     if (window.location.pathname.split("/")[4]?.toString().toLowerCase() === "taxpayer_details") {
         resetForm();
     }
@@ -392,7 +393,6 @@ function resetForm()
         type: "get",
         data: {},
         success: function (response) {
-            debugger;
             var data = response.data;
             $("#CompanyEn").html(data.TaxPayerNameEn);
             $("#CompanyAr").html(data.TaxPayerNameAr);
@@ -401,10 +401,10 @@ function resetForm()
             $("#LicenseType").html(data.LicenseType);
             $("#RegistrationNumber").html(data.RegistrationNumber);
             $("#CreatedBy").html(data.CreatedBy);
-            $("#CreationDate").html(convertToJavaScriptDate(data.LicenseCreationDate));
-            $("#ExpirationDate").html(convertToJavaScriptDate(data.LicenseExpirationDate));
-            $("#ClientSecretExpDate").html(convertToJavaScriptDate(data.ClientSecretExpirationDate));
-            $("#RegistrationDate").html(convertToJavaScriptDate(data.RegistrationDate));
+            $("#CreationDate").html(convertToJavaScriptDate_FileUpload(data.LicenseCreationDate));
+            $("#ExpirationDate").html(convertToJavaScriptDate_FileUpload(data.LicenseExpirationDate));
+            $("#ClientSecretExpDate").html(convertToJavaScriptDate_FileUpload(data.ClientSecretExpirationDate));
+            $("#RegistrationDate").html(convertToJavaScriptDate_FileUpload(data.RegistrationDate));
         },
         error: function (xhr) {
             //Do Something to handle error
@@ -434,7 +434,7 @@ function resetForm()
 
 
 
-function convertToJavaScriptDate(value) {
+function convertToJavaScriptDate_FileUpload(value) {
     const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
         "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
     ];

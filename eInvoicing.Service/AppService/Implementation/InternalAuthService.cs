@@ -107,7 +107,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                var users = repository.GetAllIncluding(null, null, "UserRoles.Role.RolePermissions.Permission").Select(i => i.ToUserDTO()).ToList();
+                var users = repository.GetAllIncluding(u => u.Email != "superadmin@eta-dt.com", null, "UserRoles.Role.RolePermissions.Permission").Select(i => i.ToUserDTO()).ToList();
                 return users;
             }
             catch (Exception ex)

@@ -16,24 +16,25 @@
     -ms-flex-wrap: wrap;
     flex-wrap: wrap; }
     .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step {
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-align: center;
-      -ms-flex-align: center;
-      align-items: center;
-      -webkit-box-pack: center;
-      -ms-flex-pack: center;
-      justify-content: center;
-      -ms-flex-wrap: wrap;
-      flex-wrap: wrap;
-      -webkit-box-flex: 0;
-      -ms-flex: 0 0 calc(25% - 0.25rem);
-      flex: 0 0 calc(25% - 0.25rem);
-      width: calc(25% - 0.25rem);
-      background-color: #F3F6F9;
-      border-top-left-radius: 0.5rem;
-      border-top-right-radius: 0.5rem; }
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc(20% - 0.25rem);
+        flex: 0 0 calc(20% - 0.25rem);
+        width: calc(20% - 0.25rem);
+        background-color: #F3F6F9;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
       .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step .wizard-wrapper {
         -webkit-box-flex: 1;
         -ms-flex: 1;
@@ -65,8 +66,8 @@
           -webkit-box-pack: center;
           -ms-flex-pack: center;
           justify-content: center;
-          background-color: rgba(11, 183, 131, 0.08);
-          color: #0BB783;
+          background-color: rgba(54, 153, 255, 0.08);
+          color: #3699FF;
           margin-right: 1rem;
           border-radius: 0.5rem; }
         .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step .wizard-wrapper .wizard-label {
@@ -84,9 +85,9 @@
         background-color: #ffffff; }
         .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-wrapper .wizard-number {
           color: #ffffff;
-          background-color: #0BB783; }
+          background-color: #3699FF; }
         .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step[data-wizard-state="current"] .wizard-wrapper .wizard-label .wizard-title {
-          color: #0BB783; }
+          color: #3699FF; }
 
 @media (max-width: 1399.98px) {
   .wizard.wizard-4 .wizard-nav .wizard-steps .wizard-step {

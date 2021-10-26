@@ -5,7 +5,7 @@
 }
 <head>
     <meta charset="utf-8" />
-    <title>ETA Hub</title>
+    <title>EIMC Hub</title>
     <meta name="description" content="Login page example" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -42,9 +42,7 @@
                     <!--begin::Login Header-->
                     <div class="d-flex flex-center mb-15">
                         <a href="#">
-                            @*<img src="~/Content/images/favicon.ico" class="max-h-75px" alt=""/>*@
-                            <img src="https://cdn.lazurde.com/media/logo/stores/3/lazrude_1.png" class="max-h-75px" alt="" />
-                            @*<img src="~/Content/assets/media/logos/logo-letter-13.png" class="max-h-75px" alt="" />*@
+                            <img alt="Logo" src="~/Content/images/EIMC-logo.png" class="max-h-75px" />
                         </a>
                     </div>
                     <!--end::Login Header-->
@@ -59,14 +57,14 @@
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.LoginViewModel.Username, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "text", @placeholder = "Username", @name = "username", @autocomplete = "off", @id = "username" })
+                                @Html.TextBoxFor(m => m.LoginViewModel.Username, new { @class = "form-control-solid h-auto form-control py-4 px-8", @type = "text", @placeholder = "Username", @name = "username", @autocomplete = "off", @id = "username" })
                             </div>
                             <div class="form-group mb-5">
-                                @Html.PasswordFor(m => m.LoginViewModel.Password, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "password", @placeholder = "Password", @autocomplete = "off", @name = "password", @id = "password" })
+                                @Html.PasswordFor(m => m.LoginViewModel.Password, new { @class = "form-control-solid h-auto form-control py-4 px-8", @type = "password", @placeholder = "Password", @autocomplete = "off", @name = "password", @id = "password" })
                             </div>
                             <div class="form-group d-flex flex-wrap justify-content-between align-items-center">
                                 <div class="checkbox-inline">
-                                    <label class="checkbox m-0 text-muted">
+                                    <label class="checkbox m-0 text-muted"> 
                                         <input type="checkbox" name="remember" />
                                         <span></span>
                                         Remember me

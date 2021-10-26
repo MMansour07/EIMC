@@ -71,6 +71,16 @@ var KTBootstrapDatepicker = function () {
             todayHighlight: true,
             autoclose: true
         });
+        $('#DateValidity, #DateValidity_validate').datepicker({
+            rtl: KTUtil.isRTL(),
+            orientation: "bottom left",
+            templates: arrows,
+            todayBtn: "linked",
+            format: "dd-M-yyyy",
+            clearBtn: true,
+            todayHighlight: true,
+            autoclose: true
+        });
 
         // input group layout 
         $('#toDate, #toDate_validate').datepicker({

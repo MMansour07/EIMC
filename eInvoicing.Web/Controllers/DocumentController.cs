@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 
@@ -228,6 +229,93 @@ namespace eInvoicing.Web.Controllers
             {
                 // display error page
                 return View(ex.Message.ToString());
+            }
+        }
+
+        [HttpGet]
+        [ActionName("new_document")]
+        public ActionResult CreateNewDocument()
+        {
+            try
+            {
+                var response = JsonConvert.DeserializeObject<NewDocumentVM>(_httpClient.GET("api/taxpayer/details").Info);
+                if (response != null)
+                {
+                    using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/Uploads/"), "Quantities.json")))
+                    {
+                        string json = r.ReadToEnd();
+                        ViewBag.Quans = JsonConvert.DeserializeObject<List<QuantityDTO>>(json);
+                    }
+                    using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/Uploads/"), "Currencies.json")))
+                    {
+                        string json = r.ReadToEnd();
+                        ViewBag.Currencies = JsonConvert.DeserializeObject<Dictionary<string, CurrencyDTO>>(json).GroupBy(item => item.Key)
+                          .Select(group => new CurrencyDTO()
+                          {
+                              code = group.First().Value.code,
+                              name = group.First().Value.name,
+                              decimal_digits = group.First().Value.decimal_digits,
+                              name_plural = group.First().Value.name_plural,
+                              rounding = group.First().Value.rounding,
+                              symbol_native = group.First().Value.symbol_native,
+                          }).ToList();
+                    }
+                    using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/Uploads/"), "TaxTypes.json")))
+                    {
+                        string json = r.ReadToEnd();
+                        ViewBag.TaxTypes = JsonConvert.DeserializeObject<List<TaxTypeDTO>>(json);
+                    }
+                    using (StreamReader r = new StreamReader(Path.Combine(Server.MapPath("~/Content/Uploads/"), "SubTypes.json")))
+                    {
+                        string json = r.ReadToEnd();
+                        ViewBag.SubTypes = JsonConvert.DeserializeObject<List<SubTypeDTO>>(json);
+                    }
+                    return View(response);
+                }
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+
+
+        }
+
+        [HttpPost]
+        [ActionName("ajax_new_document")]
+        public ActionResult ajaxtaxpayerdetails(doc obj)
+        {
+            try
+            {
+
+                foreach (var item in obj.InvoiceLines)
+                {
+                    item.Id = Guid.NewGuid().ToString();
+                    item.SalesTotal = item.Quantity * item.AmountEGP;
+                    item.NetTotal   = item.SalesTotal - item.DiscountAmount;
+                    item.Total   = item.NetTotal + item.TaxableItems.Sum(i => i.Amount) - item.ItemsDiscount;
+                }
+                obj.Document.InvoiceLines = obj.InvoiceLines;
+                obj.Document.DateTimeIssued = DateTime.Now;
+                obj.Document.DateTimeReceived = DateTime.Now;
+                obj.Document.TotalSalesAmount = obj.Document.InvoiceLines.Sum(i => i.SalesTotal);
+                obj.Document.TotalDiscountAmount = obj.Document.InvoiceLines.Sum(i => i.DiscountAmount);
+                obj.Document.TotalItemsDiscountAmount = obj.Document.InvoiceLines.Sum(i => i.ItemsDiscount);
+                obj.Document.Status = "New";
+                obj.Document.NetAmount = obj.Document.TotalSalesAmount - obj.Document.TotalDiscountAmount;
+                obj.Document.TotalItemsDiscountAmount = obj.Document.InvoiceLines.Sum(i => i.ItemsDiscount);
+                obj.Document.TotalAmount = (obj.Document.NetAmount + obj.Document.InvoiceLines.SelectMany(b => b.TaxableItems)?.Distinct().Sum(x => x.Amount)) - (obj.Document.TotalItemsDiscountAmount);
+                var response = _httpClient.POST("api/document/new", obj.Document).Message;
+                if (response.ToLower() == "success")
+                {
+                    return Json(new { status = "Success" }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new { status = "Failed" }, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(new { status = "Failed" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

@@ -10,7 +10,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/EInvoicing/v0/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
+                    url: '/v0/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
                 },
             },
             pageSize: 10,

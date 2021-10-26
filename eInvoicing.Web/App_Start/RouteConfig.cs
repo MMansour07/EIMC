@@ -14,7 +14,7 @@ namespace eInvoicing.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
                 name: "General",
-                url: "EInvoicing/v0/{controller}/{action}/{id}",
+                url: "v0/{controller}/{action}/{id}",
                 defaults: new { controller = "Master", action = "Index", id = UrlParameter.Optional }
             );
             routes.MapRoute(

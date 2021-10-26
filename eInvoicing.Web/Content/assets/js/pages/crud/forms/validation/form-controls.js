@@ -201,7 +201,7 @@ var KTFormControls = function () {
 						//validators: {
 						//	identical: {
 						//		compare: function () {
-						//			debugger;
+						//			 
 						//			return form.querySelector('[name="Password"]').value;
 						//		},
 						//		message: 'The password and its confirm are not the same'

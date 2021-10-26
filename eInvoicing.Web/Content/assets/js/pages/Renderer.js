@@ -5,7 +5,7 @@ jQuery(document).ready(function () {
 	KTApp.block('#Card5');
 	KTApp.block('#Card6');
     $.ajax({
-        url: "/EInvoicing/v0/master/renderer?_date=" + ModifyDate(new Date()),
+        url: "/v0/master/renderer?_date=" + ModifyDate(new Date()),
         type: "get", //send it through get method
         data: {},
 		success: function (response) {
@@ -25,10 +25,10 @@ jQuery(document).ready(function () {
 					}
 				}).then(function (result) {
 					if (result.value) {
-						window.location.href = "/EInvoicing/v0";
+						window.location.href = "/ETA.Hub/einvoicing/v0";
 						KTUtil.scrollTop();
 					} else if (result.dismiss === "cancel") {
-						window.location.href = "/EInvoicing/v0/appsetting";
+						window.location.href = "/v0/appsetting";
 					}
 				});
 			}
@@ -78,10 +78,10 @@ jQuery(document).ready(function () {
 				}
 			}).then(function (result) {
 				if (result.value) {
-					window.location.href = "/EInvoicing/v0";
+					window.location.href = "/ETA.Hub/einvoicing/v0";
 					KTUtil.scrollTop();
 				} else if (result.dismiss === "cancel") {
-					window.location.href = "/EInvoicing/v0/appsetting";
+					window.location.href = "/v0/appsetting";
 				}
 			});
         }
@@ -92,7 +92,7 @@ jQuery(document).ready(function () {
         KTApp.block('#Card5');
         KTApp.block('#Card6');
         $.ajax({
-            url: "/EInvoicing/v0/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
+            url: "/v0/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
             type: "get", //send it through get method
             data: {},
 			success: function (response) {
@@ -138,10 +138,10 @@ jQuery(document).ready(function () {
 					}
 				}).then(function (result) {
 					if (result.value) {
-						window.location.href = "/EInvoicing/v0";
+						window.location.href = "/ETA.Hub/einvoicing/v0";
 						KTUtil.scrollTop();
 					} else if (result.dismiss === "cancel") {
-						window.location.href = "/EInvoicing/v0/appsetting";
+						window.location.href = "/v0/appsetting";
 					}
 				});
 			}

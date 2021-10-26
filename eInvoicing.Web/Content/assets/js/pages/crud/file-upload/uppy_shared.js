@@ -68,7 +68,7 @@ var KTUppy = function () {
                         state: 'primary'
                     });
                     $.ajax({
-                        url: '/EInvoicing/v0/master/UploadLicense',
+                        url: '/v0/master/UploadLicense',
                         type: "POST",
                         contentType: false, // Not to set any content header  
                         processData: false, // Not to process data  
@@ -153,7 +153,7 @@ var KTUppy = function () {
                     // Create FormData object  
                     var fileData = new FormData();
                     $.each(file.successful, function (index, value) {
-                        debugger;
+                         
                         var sizeLabel = "bytes";
                         var filesize = value.size;
                         if (filesize > 1024) {
@@ -174,7 +174,7 @@ var KTUppy = function () {
                         state: 'primary'
                     });
                     $.ajax({
-                        url: '/EInvoicing/v0/document/UploadFile',
+                        url: '/v0/document/UploadFile',
                         type: "POST",
                         contentType: false, // Not to set any content header  
                         processData: false, // Not to process data  
@@ -287,7 +287,7 @@ var KTUppy = function () {
                 // Create FormData object  
                 var _data = new FormData();
                 $.each(file.successful, function (index, value) {
-                    debugger;
+                     
                     var sizeLabel = "bytes";
                     var filesize = value.size;
                     if (filesize > 1024) {
@@ -311,7 +311,7 @@ var KTUppy = function () {
                     state: 'primary'
                 });
                 $.ajax({
-                    url: '/EInvoicing/v0/taxpayer/token',
+                    url: '/v0/taxpayer/token',
                     type: "POST",
                     contentType: false, // Not to set any content header  
                     processData: false, // Not to process data  
@@ -370,7 +370,7 @@ var KTUppy = function () {
     return {
         // public functions
         init: function () {
-            if (window.location.pathname.split("/")[4]?.toString().toLowerCase() === "taxpayer_details")
+            if (window.location.pathname.split("/")[3]?.toString().toLowerCase() === "taxpayer_details")
             {
                 initUppy5();
             }
@@ -381,15 +381,15 @@ var KTUppy = function () {
 
 KTUtil.ready(function () {
     KTUppy.init();
-    debugger;
-    if (window.location.pathname.split("/")[4]?.toString().toLowerCase() === "taxpayer_details") {
+     
+    if (window.location.pathname.split("/")[3]?.toString().toLowerCase() === "taxpayer_details") {
         resetForm();
     }
 });
 function resetForm()
 {
     $.ajax({
-        url: "/EInvoicing/v0/taxpayer/ajaxtaxpayerdetails",
+        url: "/v0/taxpayer/ajaxtaxpayerdetails",
         type: "get",
         data: {},
         success: function (response) {
@@ -422,10 +422,10 @@ function resetForm()
                 }
             }).then(function (result) {
                 if (result.value) {
-                    window.location.href = "/EInvoicing/v0";
+                    window.location.href = "/ETA.Hub/einvoicing/v0";
                     KTUtil.scrollTop();
                 } else if (result.dismiss === "cancel") {
-                    window.location.href = "/EInvoicing/v0/taxpayer/taxpayer_details";
+                    window.location.href = "/v0/taxpayer/taxpayer_details";
                 }
             });
         }

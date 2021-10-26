@@ -27,6 +27,9 @@ namespace eInvoicing.Service.Helper
                 cfg.CreateMap<Permission, PermissionDTO>().ReverseMap();
                 cfg.CreateMap<Role, RoleViewModel>().ReverseMap();
                 cfg.CreateMap<TaxPayer, TaxpayerDTO>().ReverseMap();
+                cfg.CreateMap<Document, NewDocumentVM>().ReverseMap();
+                cfg.CreateMap<InvoiceLine, NewInvoiceLineVM>().ReverseMap();
+                cfg.CreateMap<TaxableItem, NewTaxableItem>().ReverseMap();
             });
             Mapper = MapperConfiguration.CreateMapper();
         }

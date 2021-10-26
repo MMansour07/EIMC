@@ -4,7 +4,7 @@
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>ETA Hub</title>
+    <title>EIMC Hub</title>
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -27,10 +27,14 @@
 
     @RenderSection("scripts", required: false)
     <style>
+        .was-validated .form-control:valid, .form-control.is-valid {
+            background-position: right calc(1.375 em + 1.325 rem ) center !important;
+        }
+
         .subheader {
             top: 0 !important;
             background-color: hsl(208, 33%, 24%) !important;
-           /*background-color: hsl(210, 20%, 98%) !important;*/
+            /*background-color: hsl(210, 20%, 98%) !important;*/
         }
         .brand {
             background-color: hsl(210, 20%, 98%) !important;
@@ -128,7 +132,7 @@
                 <div class="brand flex-column-auto " id="kt_brand">
                     <!--begin::Logo-->
                     <a href="@Url.Action("Index", "Master")" class="brand-logo">
-                        <img alt="Logo" src="https://cdn.lazurde.com/media/logo/stores/3/lazrude_1.png" class="max-h-20px" />
+                        <img alt="Logo" src="~/Content/images/EIMC-logo.png" class="max-h-20px" />
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -201,7 +205,7 @@
                                                 <ul class="menu-subnav">
                                                     <li class="menu-item  menu-item-parent" aria-haspopup="true"><span class="menu-link"><span class="menu-text">New</span></span></li>
                                                     <li class="menu-item " aria-haspopup="true">
-                                                        <a class="menu-link service_unavailable">
+                                                        <a href="@Url.Action("new_document", "document")" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                             <span class="menu-text">Create New Document</span>
                                                             <span class="font-weight-lighter" style="margin: auto !important;"></span>
@@ -499,7 +503,7 @@
         });
         function LoadDraft() {
             $.ajax({
-                url: "/EInvoicing/v0/master/DraftCount",
+                url: "/v0/master/DraftCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
@@ -512,7 +516,7 @@
         }
         function LoadSent() {
             $.ajax({
-                url: "/EInvoicing/v0/master/SentCount",
+                url: "/v0/master/SentCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {

@@ -2366,6 +2366,7 @@
     <Content Include="Content\images\close.png" />
     <Content Include="Content\images\drag-copy.png" />
     <Content Include="Content\images\drag-move.png" />
+    <Content Include="Content\images\EIMC-logo.png" />
     <Content Include="Content\images\faces\face1.jpg" />
     <Content Include="Content\images\faces\face10.jpg" />
     <Content Include="Content\images\faces\face11.jpg" />
@@ -2477,6 +2478,10 @@
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.woff2" />
+    <Content Include="Content\Uploads\Quantities.json" />
+    <Content Include="Content\Uploads\Currencies.json" />
+    <Content Include="Content\Uploads\TaxTypes.json" />
+    <Content Include="Content\Uploads\SubTypes.json" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -2555,11 +2560,11 @@
     <Content Include="Views\Role\EditPartial.cshtml" />
     <Content Include="Views\Report\top_goods_usage.cshtml" />
     <Content Include="Views\Taxpayer\taxpayer_details.cshtml" />
+    <Content Include="Views\Document\new_document.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\License\" />
-    <Folder Include="Content\Uploads\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

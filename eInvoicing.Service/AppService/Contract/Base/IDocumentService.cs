@@ -28,5 +28,6 @@ namespace eInvoicing.Service.AppService.Contract.Base
         DocumentVM GetDocumentById(string Id);
         DocumentVM GetDocumentByuuid(string uuid);
         void UpdateDocuments(DocumentSubmissionDTO obj, string submittedBy);
+        void CreateNewDocument(NewDocumentVM obj);
     }
 }

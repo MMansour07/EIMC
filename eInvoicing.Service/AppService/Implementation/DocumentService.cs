@@ -13,6 +13,7 @@ using Newtonsoft.Json.Linq;
 using eInvoicing.Service.Helper.Extension;
 using System.Linq.Dynamic;
 using System.Data.Entity;
+using eInvoicing.Service.Helper;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -302,16 +303,16 @@ namespace eInvoicing.Service.AppService.Implementation
                 var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d");
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
+                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N5"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
                     ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedInvoiceCount = ReceivedInvoices.Count(),
-                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
                     ReceivedCreditTotalAmount = ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedCreditCount = ReceivedCredits.Count(),
-                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
                     ReceivedDebitTotalAmount = Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
                     ReceivedDebitCount = Receiveddebits.Count(),
-                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
                     ReceivedValidDocumentsCount = _Receivedvaliddocs.Count(),
                     ReceivedCanceledDocumentsCount = _Receivedcancelleddocs.Count(),
                     ReceivedRejectedDocumentsCount = _Receivedrejecteddocs.Count(),
@@ -414,6 +415,19 @@ namespace eInvoicing.Service.AppService.Implementation
                     entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
                     repository.UpdateBulk(entity);
                 }
+            }
+        }
+        // Create document through this portal
+        public void CreateNewDocument(NewDocumentVM obj)
+        {
+            try
+            {
+                obj.Id = Guid.NewGuid().ToString();
+                repository.Add(AutoMapperConfiguration.Mapper.Map<Document>(obj));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

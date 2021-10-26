@@ -31,12 +31,26 @@ namespace eInvoicing.API.Controllers
         bool IsInserted, IsUpdated = false;
         List<string> UpdatedDocumentsIds;
         List<string> UpdatedInvoiceLinesIds;
-
         public DocumentController(IDocumentService documentService, IAuthService auth, IUserSession userSession)
         {
             _documentService = documentService;
             _auth = auth;
             _userSession = userSession;
+        }
+
+        [HttpPost]
+        [Route("api/document/new")]
+        public IHttpActionResult CreateNewDocument(NewDocumentVM obj)
+        {
+            try
+            {
+                _documentService.CreateNewDocument(obj);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
         }
         [HttpGet]
         [Route("api/document/pending")]

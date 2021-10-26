@@ -47,9 +47,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeDTO.cs" />
+    <Compile Include="CurrencyDTO.cs" />
+    <Compile Include="SubTypeDTO.cs" />
+    <Compile Include="TaxTypeDTO.cs" />
+    <Compile Include="QuantityDTO.cs" />
+    <Compile Include="NewInvoiceLineVM.cs" />
+    <Compile Include="NewDocumentVM.cs" />
     <Compile Include="EditRoleModel.cs" />
     <Compile Include="genericResponse.cs" />
     <Compile Include="ImportedSheetDTO.cs" />
+    <Compile Include="NewTaxableItem.cs" />
     <Compile Include="TaxpayerDTO.cs" />
     <Compile Include="PermissionDTO.cs" />
     <Compile Include="PrivilegeDTO.cs" />

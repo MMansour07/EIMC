@@ -182,8 +182,19 @@ namespace eInvoicing.Persistence.Seeder
                 Action = "ajaxtaxpayerdetails",
                 CreatedOn = DateTime.Now
             };
+            Permission permission29 = new Permission()
+            {
+                Id = "Create New Document",
+                Action = "ajax_new_document",
+                CreatedOn = DateTime.Now
+            };
+            Permission permission30 = new Permission()
+            {
+                Id = "View New Document",
+                Action = "ajax_new_document",
+                CreatedOn = DateTime.Now
+            };
 
-            
 
             context.Permission.AddRange(new List<Permission>() { permission1, permission2, permission3, permission4 });
 
@@ -216,6 +227,8 @@ namespace eInvoicing.Persistence.Seeder
             RolePermission RolePrivilegePermission26 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission26 };
             RolePermission RolePrivilegePermission27 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission27 };
             RolePermission RolePrivilegePermission28 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission28 };
+            RolePermission RolePrivilegePermission29 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission29 };
+            RolePermission RolePrivilegePermission30 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission30 };
 
 
 
@@ -248,6 +261,8 @@ namespace eInvoicing.Persistence.Seeder
             rolePermissions.Add(RolePrivilegePermission26);
             rolePermissions.Add(RolePrivilegePermission27);
             rolePermissions.Add(RolePrivilegePermission28);
+            rolePermissions.Add(RolePrivilegePermission29);
+            rolePermissions.Add(RolePrivilegePermission30);
 
             Role Role1 = new Role()
             {

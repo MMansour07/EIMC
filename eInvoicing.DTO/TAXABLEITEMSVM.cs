@@ -14,7 +14,6 @@ namespace eInvoicing.DTO
         public string rate { get; set; }
         public string amount { get; set; }
         public string subType { get; set; }
-        
     }
 }
 

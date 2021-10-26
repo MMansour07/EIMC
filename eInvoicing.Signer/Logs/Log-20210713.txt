@@ -1,3 +1,0 @@
-2021-07-13T11:31:36.2958472+02:00 80000002-0004-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
-2021-07-13T11:33:40.6824571+02:00 8000000a-0002-f700-b63f-84710c7967bb [WRN] Exception: Failed due to the following exception --->  (45796e3c)
-2021-07-13T11:40:05.4549792+02:00 80000022-0001-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)

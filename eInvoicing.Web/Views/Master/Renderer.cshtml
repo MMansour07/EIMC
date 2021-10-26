@@ -544,10 +544,10 @@
                 }
             }).then(function (result) {
                 if (result.value) {
-                    window.location.href = "/EInvoicing/v0";
+                    window.location.href = "/ETA.Hub/einvoicing/v0";
                     KTUtil.scrollTop();
                 } else if (result.dismiss === "cancel") {
-                    window.location.href = "/EInvoicing/v0/appsetting";
+                    window.location.href = "/v0/appsetting";
                 }
             });
         });

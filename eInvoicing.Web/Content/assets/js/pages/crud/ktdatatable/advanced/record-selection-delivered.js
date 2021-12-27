@@ -18,7 +18,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 source: {
                     read: {
                         method: 'POST',
-                        url: '/v0/document/ajax_submitted',
+                        url: '/v1/document/ajax_submitted',
                         map: function (raw) {
                             // 
                             // sample data mapping
@@ -70,7 +70,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     title: 'ID/Internal ID',
                     width:220,
                     template: function (row) {
-                        return '<a class="btn btn-link no-hover" href="/v0/document/raw?uuid=' + row.uuid +'" style="padding-left: 0;text-decoration: underline;">' + row.uuid +'</a>\
+                        return '<a class="btn btn-link no-hover" href="/v1/document/raw?uuid=' + row.uuid +'" style="padding-left: 0;text-decoration: underline;">' + row.uuid +'</a>\
                                 <span class="navi-text" style= "float:left; clear:left;">' + row.internalID + '</span>';
                     }
                 },
@@ -105,7 +105,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     template: function (row) {
                         var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeReceived.substr(6)))).split(" ");
                         return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
-                            <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
+                                <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
                     }
                 },
                 {
@@ -114,15 +114,8 @@ var KTDatatableRecordSelectionDemo = function() {
                     sortable: false,
                     width: 170,
                     template: function (row) {
-                        if (row.receiver.id == null || row.receiver.id == "") {
-                            return '<span class="navi-text" style= "float:left; clear:left;">' + row.receiver.name + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left; color:#0bb783;">NA</span>';
-                        }
-                        else {
-                            return '<span class="navi-text" style= "float:left; clear:left;">' + row.receiver.name + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left; color:#0bb783;">' + row.receiver.id + '</span>';
-                        }
-
+                        return '<span class="navi-text" style= "float:left; clear:left;">' + ((row.receiver.name) ? row.receiver.name : 'NA') + '</span>\
+                                <span class="navi-text" style= "float:left; clear:left; color:#3699FF;">' + ((row.receiver.id) ? row.receiver.id : 'NA') + '</span>';
                     }
                 },
                 {
@@ -173,37 +166,37 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
                             <ul class="navi flex-column navi-hover py-2">\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-file-excel"></i></span>\
                                         <span class="navi-text">Cancel</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-link"></i></span>\
                                         <span class="navi-text">Get Public Link</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-print"></i></span>\
                                         <span class="navi-text">Print</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-plus-circle"></i></span>\
                                         <span class="navi-text">Debit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-minus-circle"></i></span>\
                                         <span class="navi-text">Credit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                    <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                         <span class="navi-icon"><i class="la la-download"></i></span>\
                                         <span class="navi-text">Download</span>\
                                     </a>\

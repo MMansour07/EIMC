@@ -171,7 +171,10 @@ namespace eInvoicing.API.Controllers
             {
                 var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
                 var result = _documentService.GetDocument_ETA(_userSession.submissionurl, auth.access_token, uuid);
-                return Ok(result);
+                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                    return Ok(result);
+                else
+                    return NotFound();
             }
             catch (Exception ex)
             {
@@ -226,7 +229,7 @@ namespace eInvoicing.API.Controllers
         private void ExcelConn(string FilePath)
         {
 
-            constr = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties=""Excel 12.0 Xml;HDR=YES;""", FilePath);
+            constr = string.Format(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={0};Extended Properties="+ Convert.ToChar(34).ToString()+ @"Excel 12.0;Imex=1;HDR=Yes;" + Convert.ToChar(34).ToString(), FilePath);
             Econ = new OleDbConnection(constr);
 
         }

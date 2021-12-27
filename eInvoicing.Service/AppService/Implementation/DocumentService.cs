@@ -69,9 +69,9 @@ namespace eInvoicing.Service.AppService.Implementation
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                throw ex;
             }
         }
         public GetRecentDocumentsResponse GetRecentDocuments_ETA2(string URL, string Key, int pageNo, int pageSize)

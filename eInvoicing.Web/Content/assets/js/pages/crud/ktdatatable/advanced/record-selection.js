@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                    method: 'POST',
-                   url: '/v0/document/ajax_pending',
+                   url: '/v1/document/ajax_pending',
                    map: function (raw) {
                         // 
                         // sample data mapping
@@ -74,7 +74,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 sortable: false,
                 width: 120,
                 template: function (row) {
-                    return '<a class="btn btn-link no-hover" href="/v0/document/details?id=' + row.internalID + '" style="padding-left: 0;text-decoration: underline;">' + row.internalID + '</a>';
+                    return '<a class="btn btn-link no-hover" href="/v1/document/details?id=' + row.internalID + '" style="padding-left: 0;text-decoration: underline;">' + row.internalID + '</a>';
             },
             },
             {
@@ -107,16 +107,8 @@ var KTDatatableRecordSelectionDemo = function () {
                 width: 170,
                 sortable: false,
                 template: function (row) {
-                    if (row.receiver.id == null || row.receiver.id == "") {
-                        return '<span class="navi-text" style= "float:left; clear:left;">' + row.receiver.name + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left; color:#0bb783;">NA</span>';
-                    }
-                    else
-                    {
-                        return '<span class="navi-text" style= "float:left; clear:left;">' + row.receiver.name + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left; color:#0bb783;">' + row.receiver.id + '</span>';
-                    }
-                    
+                    return '<span class="navi-text" style= "float:left; clear:left;">' + ((row.receiver.name) ? row.receiver.name : 'NA') + '</span>\
+                            <span class="navi-text" style= "float:left; clear:left; color:#3699FF;">' + ((row.receiver.id) ? row.receiver.id : 'NA') + '</span>';
                 }
             },
             {
@@ -177,7 +169,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/details/'+ row.internalID + '" class="navi-link">\
+                                    <a href="/v1/document/details/'+ row.internalID + '" class="navi-link">\
                                         <span class="navi-icon"><i class="la la-eye"></i></span>\
                                         <span class="navi-text">View</span>\
                                     </a>\
@@ -215,7 +207,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class="navi-item">\
-                                    <a href="/v0/document/details/'+ row.internalID + '" class="navi-link">\
+                                    <a href="/v1/document/details/'+ row.internalID + '" class="navi-link">\
                                         <span class="navi-icon"><i class="la la-eye"></i></span>\
                                         <span class="navi-text">View</span>\
                                     </a>\
@@ -423,7 +415,7 @@ jQuery(document).ready(function () {
         Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
         var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/v0/documentsubmission/submit', { obj: FilteredDocuments },
+        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -506,7 +498,7 @@ jQuery(document).ready(function () {
         Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
         var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/v0/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
+        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
             KTUtil.btnRelease(btn);
             $('#kt_datatable_group_action_form').collapse('hide');
             KTApp.unblockPage();
@@ -584,7 +576,7 @@ jQuery(document).ready(function () {
         var btn = KTUtil.getById("kt_datatable_sendAll");
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
         // Ajax Call to Submit documnets Web Contoller
-        $.post('/v0/documentsubmission/auto_submit',
+        $.post('/v1/documentsubmission/auto_submit',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -680,7 +672,7 @@ var func = function (input)
     Result = datatable.rows().data().KTDatatable.dataSet.where(p => p.internalID == id).map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     // Ajax Call to Submit documnets Web Contoller
     var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-    $.post('/v0/documentsubmission/submit', { obj: FilteredDocuments },
+    $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
         function (returnedData) {
             datatable.reload();
             $('#cover-spin').hide(0);

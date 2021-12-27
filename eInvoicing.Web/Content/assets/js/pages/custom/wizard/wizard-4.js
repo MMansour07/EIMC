@@ -17,6 +17,7 @@ var lineRowIndex;
 var _linefrmvalidation;
 var _taxfrmvalidation;
 var amount = 0;
+var amountIsGreaterthan50 = false;
 
 var KTWizard4 = function () {
 	
@@ -35,10 +36,10 @@ var KTWizard4 = function () {
 				{
 					_wizard.stop();
 					swal.fire({
-						text: "please fill the required fields before going to the next step.",
+						text: "Please fill the required fields before going to the next step.",
 						icon: "warning",
 						buttonsstyling: false,
-						confirmbuttontext: "ok, got it!",
+						confirmbuttontext: "Ok, got it!",
 						customclass: {
 							confirmbutton: "btn font-weight-bold btn-light"
 						}
@@ -184,73 +185,118 @@ var KTWizard4 = function () {
 							}
 						}
 					},
-					ReceiverName: {
+					IssuerBranchId: {
 						validators: {
 							notEmpty: {
-								message: 'Receiver Name is required'
+								message: 'Branch Code is required'
+							}
+						}
+					},
+					ReceiverName: {
+						validators: {
+							callback: {
+								message: 'Receiver Name Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					RGN: {
 						validators: {
-							notEmpty: {
-								message: 'Rgisteration Number is required'
+							callback: {
+								message: 'Registartion Number Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B') ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
-					//NID: {
-					//	validators: {
-					//		notEmpty: {
-					//			message: 'National Id is required'
-					//		}
-					//	}
-					//},
-					//PID: {
-					//	validators: {
-					//		notEmpty: {
-					//			message: 'Id is required'
-					//		}
-					//	}
-					//},
+					NID: {
+						validators: {
+							callback: {
+								message: 'National Id Is Required',
+								callback: function (input) {
+									return (type === 'P' && amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
+							}
+						}
+					},
+					PID: {
+						validators: {
+							callback: {
+								message: 'Id Is Required',
+								callback: function (input) {
+									return (type === 'F' && amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
+							}
+						}
+					},
 					ReceiverCountry: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver Country is required'
+							callback: {
+								message: 'Receiver Country Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					ReceiverGovernorate: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver Governorate is required'
+							callback: {
+								message: 'Receiver Governorate Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					ReceiverBuildingNumber: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver Building Number is required'
+							callback: {
+								message: 'Receiver Building Name/Number Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					ReceiverRegionCity: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver City is required'
+							callback: {
+								message: 'Receiver City Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					ReceiverFloor: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver Floor is required'
+							callback: {
+								message: 'Receiver Floor Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
 					ReceiverStreet: {
 						validators: {
-							notEmpty: {
-								message: 'Receiver Street is required'
+							callback: {
+								message: 'Receiver Street Is Required',
+								callback: function (input) {
+									const type = $("select[name=ReceiverType").val();
+									return (type === 'B' || amountIsGreaterthan50) ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
@@ -296,8 +342,23 @@ var KTWizard4 = function () {
 					},
 					AmountEGP: {
 						validators: {
-							notEmpty: {
-								message: ' Unit Price is required'
+							callback: {
+								message: ' Unit Price is required',
+								callback: function (input) {
+									const type = $("select[name=CurrencySold").val();
+									return (type === 'EGP') ? (input.value !== '') : true;
+								}
+							}
+						}
+					},
+					AmountSold: {
+						validators: {
+							callback: {
+								message: ' Unit Price is required',
+								callback: function (input) {
+									const type = $("select[name=CurrencySold").val();
+									return (type !== 'EGP') ? (input.value !== '') : true;
+								}
 							}
 						}
 					},
@@ -365,68 +426,75 @@ jQuery(document).ready(function () {
 	$("#PID").hide();
 	KTWizard4.init();
 	$("#doc_submit").click(function (e) {
-		KTApp.blockPage();
-		 
-		//var valdata = $("#kt_form").serialize();
-		//var InvoiceLines = Lines;
-		var obj = { Document: "", InvoiceLines: "" }
-		var urlParam = JSON.stringify($("#kt_form").serialize()); 
-		var jObject = JSON.parse('{"' + decodeURI(urlParam).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
-		obj.Document = jObject;
-		obj.InvoiceLines = Lines;
-		 
-		$.ajax({
-			url: "/v0/document/ajax_new_document",
-			type: "POST",
-			dataType: 'json',
-			contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-			data: obj,
-			success: function (response) {
-				 
-				KTApp.unblockPage();
-                if (response.status.toLowerCase() == "success") {
-                    KTUtil.scrollTop();
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": true,
-                        "progressBar": false,
-                        "positionClass": "toast-top-center",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    };
-                    toastr.success("Data has been saved successfully!");
-                }
-                else {
-                    toastr.options = {
-                        "closeButton": false,
-                        "debug": false,
-                        "newestOnTop": true,
-                        "progressBar": false,
-                        "positionClass": "toast-top-center",
-                        "preventDuplicates": false,
-                        "onclick": null,
-                        "showDuration": "300",
-                        "hideDuration": "1000",
-                        "timeOut": "5000",
-                        "extendedTimeOut": "1000",
-                        "showEasing": "swing",
-                        "hideEasing": "linear",
-                        "showMethod": "fadeIn",
-                        "hideMethod": "fadeOut"
-                    };
-                    toastr.error("Something went wrong!");
-                }
-			}
-		});
+		if (Lines.reduce((s, a) => s + parseFloat(a.SalesTotal), 0) < 50000 || validateForm()) {
+			KTApp.blockPage();
+			var obj = { Document: "", InvoiceLines: "" }
+			var urlParam = JSON.stringify($("#kt_form").serialize());
+			var jObject = JSON.parse('{"' + decodeURI(urlParam).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+			obj.Document = jObject;
+			obj.InvoiceLines = Lines;
+
+			$.ajax({
+				url: "/v1/document/ajax_new_document",
+				type: "POST",
+				dataType: 'json',
+				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				data: obj,
+				success: function (response) {
+
+					KTApp.unblockPage();
+					if (response.status.toLowerCase() == "success") {
+						KTUtil.scrollTop();
+						toastr.options = {
+							"closeButton": false,
+							"debug": false,
+							"newestOnTop": true,
+							"progressBar": false,
+							"positionClass": "toast-top-center",
+							"preventDuplicates": false,
+							"onclick": null,
+							"showDuration": "300",
+							"hideDuration": "1000",
+							"timeOut": "5000",
+							"extendedTimeOut": "1000",
+							"showEasing": "swing",
+							"hideEasing": "linear",
+							"showMethod": "fadeIn",
+							"hideMethod": "fadeOut"
+						};
+						toastr.success("Data has been saved successfully!");
+						setTimeout(function () { window.location.href = '/v1/document/pending'; }, 500);
+					}
+					else {
+						toastr.options = {
+							"closeButton": false,
+							"debug": false,
+							"newestOnTop": true,
+							"progressBar": false,
+							"positionClass": "toast-top-center",
+							"preventDuplicates": false,
+							"onclick": null,
+							"showDuration": "300",
+							"hideDuration": "1000",
+							"timeOut": "5000",
+							"extendedTimeOut": "1000",
+							"showEasing": "swing",
+							"hideEasing": "linear",
+							"showMethod": "fadeIn",
+							"hideMethod": "fadeOut"
+						};
+						toastr.error("Something went wrong!");
+					}
+				}
+			});
+		}
+		else
+		{
+			amountIsGreaterthan50 = true;
+			var validator = _validations[1];
+			validator.validate();
+			_wizard.goTo(2, true);
+		}
 	});
 });
 
@@ -449,6 +517,17 @@ function checkwhenCallBack()
 		}).then(function () {
 			ktutil.scrolltop();
 		});
+	}
+}
+
+function validateForm() {
+
+	if ((($("select[name=ReceiverType]").val() == "P" && $("input[name=NID]").val()) || ($("select[name=ReceiverType]").val() == "F" && $("input[name=PID]").val())) && $("select[name=ReceiverCountry]").val() 
+		&& $("input[name=ReceiverGovernorate]").val() && $("input[name=ReceiverRegionCity]").val() && $("input[name=ReceiverFloor]").val() && $("input[name=ReceiverStreet]").val()) {
+		return true;
+	}
+	else {
+		return false;
 	}
 }
 

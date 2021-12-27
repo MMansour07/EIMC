@@ -26,7 +26,7 @@ namespace eInvoicing.Web
             //app.UseCookieAuthentication(new CookieAuthenticationOptions
             //{
             //    AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            //    LoginPath = new PathString("/v0/account/login"),
+            //    LoginPath = new PathString("/v1/account/login"),
             //    Provider = new CookieAuthenticationProvider
             //    {
             //        // Enables the application to validate the security stamp when the user logs in.

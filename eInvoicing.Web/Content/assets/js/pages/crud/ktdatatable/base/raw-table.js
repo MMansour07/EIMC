@@ -10,7 +10,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/v0/document/submitted_items?uuid=' + getParameterByName("uuid")
+                    url: '/v1/document/submitted_items?uuid=' + getParameterByName("uuid")
                 },
             },
             pageSize: 10,
@@ -72,12 +72,9 @@ var KTDatatableRecordSelectionDemo = function () {
                 }
             },
             {
-                field: 'totalTax',
+                field: 'taxAmount',
                 title: 'Total Tax',
-                width: 100,
-                template: function () {
-                    return 0.00000;
-                }
+                width: 100
             },
             {
                 field: 'netTotal',

@@ -21,6 +21,12 @@ namespace eInvoicing.DTO
         public string valueDifference { get; set; }
         public string totalTaxableFees { get; set; }
         public string totalTax { get; set; }
+        public decimal taxAmount {
+            get
+            {
+                return decimal.Round(Convert.ToDecimal(total) - Convert.ToDecimal(netTotal), 2, MidpointRounding.AwayFromZero);
+            }
+        }
         public string netTotal { get; set; }
         public string itemsDiscount { get; set; }
         public string description { get; set; }

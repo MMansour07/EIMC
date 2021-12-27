@@ -80,7 +80,7 @@ namespace eInvoicing.Service.Helper.Extension
                 internalID = document.Id,
                 recordID = document.Id,
                 status = document.Status,
-                taxAmount = (document.TotalSalesAmount - document.NetAmount).ToString("N5"),
+                taxAmount = (document.TotalAmount - document.NetAmount).ToString("N2"),
                 netAmount = document.NetAmount.ToString("N5"),
                 totalAmount = document.TotalAmount.ToString("N5"),
                 totalDiscountAmount = document.TotalDiscountAmount.ToString("N5"),
@@ -159,9 +159,9 @@ namespace eInvoicing.Service.Helper.Extension
                         taxType = x.TaxType
                     }).ToList(),
                     discount = new DISCOUNTSVM() { amount = i.DiscountAmount.ToString("N5"),rate = i.DiscountRate.ToString("N0") },
-                    unitValue = new UNITVALUESVM() { amountEGP = i.AmountEGP.ToString("N5"),amountSold = i.AmountSold.ToString("N5"),currencyExchangeRate = i.CurrencyExchangeRate.ToString("N5"),currencySold = i.CurrencySold }
+                    unitValue = new UNITVALUESVM() { amountEGP = i.AmountEGP.ToString("N5"),amountSold = i.AmountSold.ToString("N5"),currencyExchangeRate = i.CurrencyExchangeRate.ToString("N5"), currencySold = i.CurrencySold }
                 }).ToList(),
-                taxTotals = document.InvoiceLines.SelectMany(b => b.TaxableItems)?.Distinct().GroupBy(o => o.TaxType).Select(x => new TAXTOTALSDTO() { amount = x.Sum(y => y.Amount), taxType = x.Select(e => e.TaxType).First() }).ToList(),
+                taxTotals = document.InvoiceLines.SelectMany(b => b.TaxableItems)?.Distinct().GroupBy(o => o.TaxType).Select(x => new TAXTOTALSDTO() { amount = decimal.Round(x.Sum(y => y.Amount), 2, MidpointRounding.AwayFromZero), taxType = x.Select(e => e.TaxType).First() }).ToList(),
                 receiver = new RECEIVERSDTO()
                 {
                     address = new RECEIVERADDRESSESDTO()
@@ -177,7 +177,7 @@ namespace eInvoicing.Service.Helper.Extension
                         room = document.ReceiverRoom,
                         street = document.ReceiverStreet
                     },
-                    id =   document.ReceiverId,
+                    id = document.ReceiverId,
                     name = document.ReceiverName,
                     type = document.ReceiverType
                 },
@@ -288,5 +288,6 @@ namespace eInvoicing.Service.Helper.Extension
                 Permissions = AutoMapperConfiguration.Mapper.Map <List<PermissionDTO>> (obj.RolePermissions.Select(p => p.Permission).ToList())
             };
         }
+        
     }
 }

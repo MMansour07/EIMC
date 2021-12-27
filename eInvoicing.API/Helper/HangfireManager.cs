@@ -1,4 +1,5 @@
-﻿using eInvoicing.DTO;
+﻿using eInvoicing.API.Models;
+using eInvoicing.DTO;
 using eInvoicing.Persistence;
 using eInvoicing.Repository.Contract;
 using eInvoicing.Repository.Implementation;
@@ -27,7 +28,7 @@ namespace eInvoicing.API.Helper
         private static string client_secret { get; set; }
         private static string submitServiceUrl { get; set; }
         private static string submissionurl { get; set; }
-        public static void Sync()
+        public static void SyncDocumentsFromOROViewsToEIMC()
         {
             try
             {
@@ -36,7 +37,7 @@ namespace eInvoicing.API.Helper
                     myConnection.Open();
                     SqlCommand comm = myConnection.CreateCommand();
                     comm.CommandType = CommandType.StoredProcedure;
-                    comm.CommandTimeout = 300;
+                    comm.CommandTimeout = 600;
                     comm.CommandText = "SP_SyncDataFromViewsToTBLs";
                     var _rowsaffected = comm.ExecuteNonQuery();
                 }
@@ -47,34 +48,20 @@ namespace eInvoicing.API.Helper
                 // to do --> logs into file
             }
         }
-        public static void SyncFromETAToDB()
+        public static void UpdateDocumentsStatusFromETAToEIMC()
         {
             try
             {
-                if (ConfigurationManager.AppSettings["Environment"].ToLower() == "preprod")
-                {
-                    loginUrl = ConfigurationManager.AppSettings["idSrvBaseUrl"];
-                    APIUrl = ConfigurationManager.AppSettings["apiBaseUrl"];
-                    submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
-                    client_id = ConfigurationManager.AppSettings["client_id"];
-                    client_secret = ConfigurationManager.AppSettings["client_secret"];
-                    submissionurl = ConfigurationManager.AppSettings["apiBaseUrl"];
-                }
-                else
-                {
-                    loginUrl = ConfigurationManager.AppSettings["ProdidSrvBaseUrl"];
-                    APIUrl = ConfigurationManager.AppSettings["ProdapiBaseUrl"];
-                    client_id = ConfigurationManager.AppSettings["Prod_client_id"];
-                    submitServiceUrl = ConfigurationManager.AppSettings["ProdsubmitSrvBaseUrl"];
-                    client_secret = ConfigurationManager.AppSettings["Prod_client_secret"];
-                    submissionurl = ConfigurationManager.AppSettings["ProdapiBaseUrl"];
-                }
+                IdentityContext identitycon = new IdentityContext();
+                ITaxpayerRepository _taxpayerrepo = new TaxpayerRepository(identitycon);
+                ITaxpayerService taxpayerService = new TaxpayerService(_taxpayerrepo);
+                IUserSession _userSession = new UserSession(taxpayerService);
                 ApplicationContext con = new ApplicationContext();
                 IDocumentRepository _repo = new DocumentRepository(con);
                 IDocumentService obj = new DocumentService(_repo);
                 IAuthService _auth = new AuthService();
-                var auth =  _auth.token(loginUrl, "client_credentials", client_id, client_secret, "InvoicingAPI");
-                obj.GetRecentDocuments_ETA(APIUrl, auth.access_token, 2000);
+                var auth =  _auth.token(_userSession.url, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                obj.GetRecentDocuments_ETA(_userSession.submissionurl, auth.access_token, 2000);
             }
 
             catch
@@ -82,61 +69,87 @@ namespace eInvoicing.API.Helper
                 // to do --> logs into file
             }
         }
-        public static void AutoSubmission()
+        public static void SubmitDocumentsPeriodically()
         {
             try
             {
-                if (ConfigurationManager.AppSettings["Environment"].ToLower() == "preprod")
-                {
-                    loginUrl = ConfigurationManager.AppSettings["idSrvBaseUrl"];
-                    APIUrl = ConfigurationManager.AppSettings["apiBaseUrl"];
-                    submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
-                    client_id = ConfigurationManager.AppSettings["client_id"];
-                    client_secret = ConfigurationManager.AppSettings["client_secret"];
-                    submissionurl = ConfigurationManager.AppSettings["apiBaseUrl"];
-                }
-                else
-                {
-                    loginUrl = ConfigurationManager.AppSettings["ProdidSrvBaseUrl"];
-                    APIUrl = ConfigurationManager.AppSettings["ProdapiBaseUrl"];
-                    client_id = ConfigurationManager.AppSettings["Prod_client_id"];
-                    submitServiceUrl = ConfigurationManager.AppSettings["ProdsubmitSrvBaseUrl"];
-                    client_secret = ConfigurationManager.AppSettings["Prod_client_secret"];
-                    submissionurl = ConfigurationManager.AppSettings["ProdapiBaseUrl"];
-                }
                 ApplicationContext con = new ApplicationContext();
+                IdentityContext identitycon = new IdentityContext();
                 IDocumentRepository _repo = new DocumentRepository(con);
                 IErrorReposistory _errorrepo = new ErrorRepository(con);
+                ITaxpayerRepository _taxpayerrepo = new TaxpayerRepository(identitycon);
+                ITaxpayerService taxpayerService = new TaxpayerService(_taxpayerrepo);
                 IDocumentService _documentService = new DocumentService(_repo);
                 IErrorService _errorService = new ErrorService(_errorrepo);
                 IAuthService _auth = new AuthService();
-                var auth = _auth.token(loginUrl, "client_credentials", client_id, client_secret, "InvoicingAPI");
-                CustomDelegatingHandler customDelegatingHandler = new CustomDelegatingHandler();
-                using (HttpClient client = new HttpClient())
+                IUserSession _userSession = new UserSession(taxpayerService);
+                DocumentSubmissionDTO Temp = new DocumentSubmissionDTO() { acceptedDocuments = new List<DocumentAcceptedDTO>(), rejectedDocuments = new List<DocumentRejectedDTO>() };
+                var auth = _auth.token(_userSession.url, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                var _docs = _documentService.GetAllDocumentsToSubmit().ToList();
+                _docs.ForEach(i => i.documentTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower() == "1.0" ? "1.0" : "0.9");
+                int totalPages = Convert.ToInt32(Math.Ceiling(_docs.Count() / 30.0));
+                SubmitInput paramaters;
+                for (int i = 0; i < totalPages; i++)
                 {
-                    client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    var url = submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
-                    client.BaseAddress = new Uri(url);
-                    var _docs = _documentService.GetAllDocumentsToSubmit().Take(100).ToList();
-                    _docs.ForEach(i => i.documentTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower() == "1.0" ? "1.0" : "0.9");
-                    SubmitInput paramaters = new SubmitInput() { documents = _docs, token = auth.access_token, url = submissionurl };
-                    var stringContent = new StringContent(JsonConvert.SerializeObject(paramaters), Encoding.UTF8, "application/json");
-                    var postTask = client.PostAsync(url, stringContent);
-                    postTask.Wait();
-                    var result = postTask.Result;
-                    if (result.IsSuccessStatusCode)
+                    using (HttpClient client = new HttpClient())
                     {
-                        var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
-                        if (response != null)
+                        client.DefaultRequestHeaders.Clear();
+                        client.Timeout = TimeSpan.FromMinutes(60);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        var url = _userSession.submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
+                        client.BaseAddress = new Uri(url);
+                        var _internalDocs = _documentService.GetAllDocumentsToSubmit();
+                        if (_internalDocs.Count() < 30)
                         {
-                            _errorService.InsertBulk(response.rejectedDocuments);
-                            _documentService.UpdateDocuments(response, null);
+                            paramaters = new SubmitInput() { documents = _internalDocs.ToList(), token = auth.access_token, url = _userSession.submissionurl };
+                        }
+                        else
+                        {
+                            paramaters = new SubmitInput() { documents = _internalDocs.Take(30).ToList(), token = auth.access_token, url = _userSession.submissionurl };
+                        }
+                        var stringContent = new StringContent(JsonConvert.SerializeObject(paramaters), Encoding.UTF8, "application/json");
+                        var postTask = client.PostAsync(url, stringContent);
+                        postTask.Wait();
+                        var result = postTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
+                            if (response != null)
+                            {
+                                if (response.acceptedDocuments != null)
+                                    Temp.acceptedDocuments.AddRange(response.acceptedDocuments);
+                                if (response?.rejectedDocuments != null)
+                                {
+                                    Temp.rejectedDocuments.AddRange(response.rejectedDocuments);
+                                    _errorService.InsertBulk(response.rejectedDocuments);
+                                }
+                                _documentService.UpdateDocuments(response, "Auto");
+                            }
                         }
                     }
                 }
-            }
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void EIMCBackupPeriodically()
+        {
+            try
+            {
+                using (SqlConnection myConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["eInvoicing_CS"].ToString()))
+                {
+                    myConnection.Open();
+                    string SQLQuery = @"BACKUP DATABASE EIMC_Preprod TO DISK = 'D:\EIMC" + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                    SqlCommand command = new SqlCommand(SQLQuery, myConnection);
+                    command.CommandTimeout = 600;
+                    var output = command.ExecuteReader();
+                    output.Close();
+                    myConnection.Close();
+                }
+            }
             catch
             {
                 // to do --> logs into file

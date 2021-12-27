@@ -1,22 +1,15 @@
 ﻿using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation;
-using Microsoft.Ajax.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using eInvoicing.Service.Helper.Extension;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
-using System.Web.Script.Serialization;
 using System.Text;
 using eInvoicing.API.Filters;
-using eInvoicing.API.Helper;
 using eInvoicing.API.Models;
 
 namespace eInvoicing.API.Controllers

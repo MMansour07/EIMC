@@ -10,10 +10,7 @@ using eInvoicing.Web.Models;
 
 namespace eInvoicing.Web.Controllers
 {
-    [Route("EInvoicing/v0/settings")]
     public class ManageController : Controller
     {
-        
-
     }
 }

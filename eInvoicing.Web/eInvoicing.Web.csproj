@@ -2478,10 +2478,12 @@
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.ttf" />
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.woff" />
     <Content Include="Content\assets\plugins\global\fonts\summernote\summernote.woff2" />
-    <Content Include="Content\Uploads\Quantities.json" />
-    <Content Include="Content\Uploads\Currencies.json" />
-    <Content Include="Content\Uploads\TaxTypes.json" />
-    <Content Include="Content\Uploads\SubTypes.json" />
+    <Content Include="Content\uploads\Currencies.json" />
+    <Content Include="Content\uploads\license-005-20211012.lic" />
+    <Content Include="Content\uploads\ORO TAX WS 9-2021-V4.xlsx" />
+    <Content Include="Content\uploads\Quantities.json" />
+    <Content Include="Content\uploads\SubTypes.json" />
+    <Content Include="Content\uploads\TaxTypes.json" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -2564,7 +2566,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Content\License\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

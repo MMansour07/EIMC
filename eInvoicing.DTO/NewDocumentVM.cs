@@ -47,6 +47,7 @@ namespace eInvoicing.DTO
         public string NID { get; set; }
         public string PID { get; set; }
         public string ReceiverName { get; set; }
+        public string ReceiverId { get; set; }
         public string ReceiverType { get; set; }
         public string ReceiverCountry { get; set; }
         public string ReceiverGovernorate { get; set; }

@@ -20,12 +20,12 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">
-                                Documents
+                            <a href="@Url.Action("Index", "Master")" class="text-muted">
+                                Home
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">
+                            <a href="@Url.Action("pending", "document")" class="text-muted">
                                 Draft
                             </a>
                         </li>
@@ -184,12 +184,12 @@
     <!--end::Card-->
     <!--begin::Modal-->
     <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content" style="min-height: 400px;">
-                <div class="modal-header py-5">
-                    <h5 class="modal-title">
+                <div class="modal-header bg-warning" py-5">
+                    <h5 class="modal-title" style="color: #3F4254 !important">
                         Errors
-                        <span class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
+                        <span style="color: #3F4254 !important" class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>

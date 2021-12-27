@@ -38,6 +38,7 @@ namespace eInvoicing.Persistence
             modelBuilder.Entity<Document>().Property(x => x.NetAmount).HasPrecision(18, 5);
             modelBuilder.Entity<Document>().Property(x => x.TotalItemsDiscountAmount).HasPrecision(18, 5);
             modelBuilder.Entity<InvoiceLine>().Property(x => x.AmountEGP).HasPrecision(18, 5);
+            modelBuilder.Entity<InvoiceLine>().Property(x => x.CurrencyExchangeRate).HasPrecision(18, 5);
             modelBuilder.Entity<InvoiceLine>().Property(x => x.AmountSold).HasPrecision(18, 5);
             modelBuilder.Entity<InvoiceLine>().Property(x => x.DiscountAmount).HasPrecision(18, 5);
             modelBuilder.Entity<InvoiceLine>().Property(x => x.ItemsDiscount).HasPrecision(18, 5);

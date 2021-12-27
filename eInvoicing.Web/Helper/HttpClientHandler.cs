@@ -34,7 +34,10 @@ namespace eInvoicing.Web.Helper
                         response.Message = Global.Success.ToString();
                     }
                     else
-                    { response.Message = Global.Failure.ToString(); }
+                    {
+                        response.Info = null;
+                        response.Message = Global.Failure.ToString(); 
+                    }
                 }
                 return response;
             }

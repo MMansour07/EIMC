@@ -10,6 +10,8 @@ using System.Linq;
 using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
+using eInvoicing.Service.Helper.Extension;
+
 
 namespace eInvoicing.Web.Controllers
 {
@@ -198,31 +200,39 @@ namespace eInvoicing.Web.Controllers
         {
             try
             {
-                var result = JsonConvert.DeserializeObject<GetDocumentResponse>(_httpClient.GET("api/document/raw?uuid=" + uuid).Info);
-                GetDocumentResponse document = result;
-                if (document.StatusCode == System.Net.HttpStatusCode.OK)
+                GetDocumentResponse document = new GetDocumentResponse();
+                var obj = _httpClient.GET("api/document/raw?uuid=" + uuid)?.Info;
+                if (obj != null)
                 {
-                    document.dateTimeIssued = DateTime.Parse(document.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                    document.dateTimeReceived = DateTime.Parse(document.dateTimeReceived).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                    var status = new List<Catalog>() {
+                    var result = JsonConvert.DeserializeObject<GetDocumentResponse>(obj);
+                    document = result;
+                    if (document.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        document.dateTimeIssued = DateTime.Parse(document.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        document.dateTimeReceived = DateTime.Parse(document.dateTimeReceived).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },
                             new Catalog(){Value = "submitted",Text = "bg-primary" },
                             new Catalog(){Value = "cancelled",Text = "bg-info" },
                             new Catalog(){Value = "rejected", Text = "bg-warning" } };
-                    var docType = new List<Catalog>()
+                        var docType = new List<Catalog>()
                             {
                              new Catalog(){ Value = "i", Text = "Invoice" },
                              new Catalog(){ Value = "c", Text = "Credit" },
                              new Catalog(){ Value = "d", Text = "Debit" }
                             };
-                    document.typeName = docType.FirstOrDefault(i => i.Value == document.typeName.ToLower())?.Text;
-                    document.statusClass = status.FirstOrDefault(i => i.Value == document.status.ToLower())?.Text;
-                    ViewBag.IsExist = true;
+                        document.typeName = docType.FirstOrDefault(i => i.Value == document.typeName.ToLower())?.Text;
+                        document.statusClass = status.FirstOrDefault(i => i.Value == document.status.ToLower())?.Text;
+                        ViewBag.IsExist = true;
+                    }
+                    else
+                        ViewBag.IsExist = false;
                 }
                 else
+                {
                     ViewBag.IsExist = false;
-
+                }
                 return View(document);
             }
             catch (Exception ex)
@@ -288,7 +298,6 @@ namespace eInvoicing.Web.Controllers
         {
             try
             {
-
                 foreach (var item in obj.InvoiceLines)
                 {
                     item.Id = Guid.NewGuid().ToString();
@@ -296,9 +305,13 @@ namespace eInvoicing.Web.Controllers
                     item.NetTotal   = item.SalesTotal - item.DiscountAmount;
                     item.Total   = item.NetTotal + item.TaxableItems.Sum(i => i.Amount) - item.ItemsDiscount;
                 }
+                obj.Document.ReceiverId = obj.Document.ReceiverType == "B" ? obj.Document.RGN : obj.Document.ReceiverType == "P" ? obj.Document.NID : obj.Document.PID;
+                obj.Document.IssuerId = obj.Document.RegistrationNumber;
+                obj.Document.IssuerName = obj.Document.TaxPayerNameEn;
+                obj.Document.IssuerType = "B";
                 obj.Document.InvoiceLines = obj.InvoiceLines;
-                obj.Document.DateTimeIssued = DateTime.Now;
-                obj.Document.DateTimeReceived = DateTime.Now;
+                obj.Document.DateTimeIssued = DateTime.ParseExact(DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss"), "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);
+                obj.Document.DateTimeReceived = DateTime.ParseExact(DateTime.UtcNow.ToString("yyyy-MM-dd hh:mm:ss"), "yyyy-MM-dd hh:mm:ss", CultureInfo.InvariantCulture);
                 obj.Document.TotalSalesAmount = obj.Document.InvoiceLines.Sum(i => i.SalesTotal);
                 obj.Document.TotalDiscountAmount = obj.Document.InvoiceLines.Sum(i => i.DiscountAmount);
                 obj.Document.TotalItemsDiscountAmount = obj.Document.InvoiceLines.Sum(i => i.ItemsDiscount);
@@ -313,7 +326,7 @@ namespace eInvoicing.Web.Controllers
                 }
                 return Json(new { status = "Failed" }, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception ex)
             {
                 return Json(new { status = "Failed" }, JsonRequestBehavior.AllowGet);
             }

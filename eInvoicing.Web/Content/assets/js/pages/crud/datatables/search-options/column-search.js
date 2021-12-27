@@ -64,7 +64,7 @@ var initTable1 = function () {
 			[7, "desc"]
 		],
 		ajax: {
-			url: '/v0/report/AjaxGetSubmittedDocumentsStats',
+			url: '/v1/report/AjaxGetSubmittedDocumentsStats',
 			type: 'POST',
 			data: function (post) {
 				post.fromDate = ModifyDate(fromDate);

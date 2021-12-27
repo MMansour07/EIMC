@@ -31,6 +31,13 @@ namespace eInvoicing.DTO
         public decimal totalDiscount { get; set; }
         public decimal netAmount { get; set; }
         public decimal total { get; set; }
+        public decimal totalTax 
+        {
+            get
+            {
+                return decimal.Round(total - netAmount, 2, MidpointRounding.AwayFromZero);
+            }
+        }
         public string status { get; set; }
         public string statusClass { get; set; }
     }

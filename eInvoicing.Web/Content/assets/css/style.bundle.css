@@ -44992,7 +44992,9 @@ code {
       -webkit-transition: background 0.3s ease;
       transition: background 0.3s ease; }
       .datatable.datatable-default > .datatable-table > .datatable-body .datatable-row > .datatable-cell > span {
-        color: #3F4254; }
+        color: #3F4254; 
+		font-family: monospace;
+		}
       .datatable.datatable-default > .datatable-table > .datatable-body .datatable-row > .datatable-cell.datatable-cell-check > span > .checkbox {
         top: 1px; }
       .datatable.datatable-default > .datatable-table > .datatable-body .datatable-row > .datatable-cell.datatable-cell-hover {
@@ -45061,11 +45063,13 @@ code {
     border-right: 1px solid #EBEDF3; }
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell > span,
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell > span {
-    color: #B5B5C3;
+	color: #000000;
     font-size: 0.9rem;
     text-transform: uppercase;
     font-weight: 600;
-    letter-spacing: 0.1rem; }
+    letter-spacing: 0rem;
+    font-family: -webkit-pictograph;
+	}
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell.datatable-cell-sorted > span,
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell.datatable-cell-sorted > span {
     color: #3699FF; }
@@ -59293,7 +59297,7 @@ body {
   .header-fixed .wrapper {
     padding-top: 65px; }
   .header-fixed.subheader-fixed.subheader-enabled .wrapper {
-    padding-top: 119px; }
+    padding-top: 75px; }
   .aside-fixed .wrapper {
     padding-left: 265px; }
   .aside-fixed.aside-minimize .wrapper {

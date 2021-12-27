@@ -29,7 +29,7 @@ var initTable1 = function () {
 			[2, "desc"]
 		],
 		ajax: {
-			url: '/v0/report/AjaxTopGoodsUsage',
+			url: '/v1/report/AjaxTopGoodsUsage',
 			type: 'POST',
 			data: function (post) {
 				post.fromDate = ModifyDate(fromDate);

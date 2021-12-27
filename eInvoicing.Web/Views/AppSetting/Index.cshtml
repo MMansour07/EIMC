@@ -28,12 +28,12 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">
+                            <a href="@Url.Action("Index", "Master")" class="text-muted">
                                 Home
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="" class="text-muted">
+                            <a href="@Url.Action("Index", "appsetting")" class="text-muted">
                                 General Settings
                             </a>
                         </li>
@@ -268,7 +268,7 @@
             var valdata = $("#_frm").serialize();
             //to get alert popup
             $.ajax({
-                url: "/v0/appsetting/update",
+                url: "/v1/appsetting/update",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

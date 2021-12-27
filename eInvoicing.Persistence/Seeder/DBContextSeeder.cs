@@ -185,7 +185,7 @@ namespace eInvoicing.Persistence.Seeder
             Permission permission29 = new Permission()
             {
                 Id = "Create New Document",
-                Action = "ajax_new_document",
+                Action = "new_document",
                 CreatedOn = DateTime.Now
             };
             Permission permission30 = new Permission()
@@ -230,6 +230,68 @@ namespace eInvoicing.Persistence.Seeder
             RolePermission RolePrivilegePermission29 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission29 };
             RolePermission RolePrivilegePermission30 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission30 };
 
+            RolePermission RolePrivilegePermission31 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
+            RolePermission RolePrivilegePermission32 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
+            RolePermission RolePrivilegePermission33 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
+            RolePermission RolePrivilegePermission34 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
+            RolePermission RolePrivilegePermission35 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission5 };
+            RolePermission RolePrivilegePermission36 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission6 };
+            RolePermission RolePrivilegePermission37 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission7 };
+            RolePermission RolePrivilegePermission38 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission8 };
+            RolePermission RolePrivilegePermission39 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission9 };
+            RolePermission RolePrivilegePermission40 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission10 };
+            RolePermission RolePrivilegePermission41 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission11 };
+            RolePermission RolePrivilegePermission42 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission12 };
+            RolePermission RolePrivilegePermission43 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission13 };
+            RolePermission RolePrivilegePermission44 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission14 };
+            RolePermission RolePrivilegePermission45 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission15 };
+            RolePermission RolePrivilegePermission46 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission16 };
+            RolePermission RolePrivilegePermission47 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission17 };
+            RolePermission RolePrivilegePermission48 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission18 };
+            RolePermission RolePrivilegePermission49 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission19 };
+            RolePermission RolePrivilegePermission50 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission20 };
+            RolePermission RolePrivilegePermission51 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission21 };
+            RolePermission RolePrivilegePermission52 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission22 };
+            RolePermission RolePrivilegePermission53 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission23 };
+            RolePermission RolePrivilegePermission54 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission24 };
+            RolePermission RolePrivilegePermission55 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission25 };
+            RolePermission RolePrivilegePermission56 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission26 };
+            RolePermission RolePrivilegePermission57 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission27 };
+            RolePermission RolePrivilegePermission58 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission28 };
+            RolePermission RolePrivilegePermission59 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission29 };
+            RolePermission RolePrivilegePermission60 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission30 };
+
+            RolePermission RolePrivilegePermission61 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission1 };
+            RolePermission RolePrivilegePermission62 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission2 };
+            RolePermission RolePrivilegePermission63 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission3 };
+            RolePermission RolePrivilegePermission64 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission4 };
+            RolePermission RolePrivilegePermission65 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission5 };
+            RolePermission RolePrivilegePermission66 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission6 };
+            RolePermission RolePrivilegePermission67 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission7 };
+            RolePermission RolePrivilegePermission68 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission8 };
+            RolePermission RolePrivilegePermission69 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission9 };
+            RolePermission RolePrivilegePermission70 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission10 };
+            RolePermission RolePrivilegePermission71 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission11 };
+            RolePermission RolePrivilegePermission72 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission12 };
+            RolePermission RolePrivilegePermission73 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission13 };
+            RolePermission RolePrivilegePermission74 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission14 };
+            RolePermission RolePrivilegePermission75 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission15 };
+            RolePermission RolePrivilegePermission76 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission16 };
+            RolePermission RolePrivilegePermission77 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission17 };
+            RolePermission RolePrivilegePermission78 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission18 };
+            RolePermission RolePrivilegePermission79 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission19 };
+            RolePermission RolePrivilegePermission80 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission20 };
+            RolePermission RolePrivilegePermission81 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission21 };
+            RolePermission RolePrivilegePermission82 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission22 };
+            RolePermission RolePrivilegePermission83 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission23 };
+            RolePermission RolePrivilegePermission84 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission24 };
+            RolePermission RolePrivilegePermission85 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission25 };
+            RolePermission RolePrivilegePermission86 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission26 };
+            RolePermission RolePrivilegePermission87 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission27 };
+            RolePermission RolePrivilegePermission88 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission28 };
+            RolePermission RolePrivilegePermission89 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission29 };
+            RolePermission RolePrivilegePermission90 = new RolePermission() { Id = Guid.NewGuid().ToString(), Permission = permission30 };
+
 
 
             List<RolePermission> rolePermissions = new List<RolePermission>();
@@ -264,6 +326,72 @@ namespace eInvoicing.Persistence.Seeder
             rolePermissions.Add(RolePrivilegePermission29);
             rolePermissions.Add(RolePrivilegePermission30);
 
+
+            List<RolePermission> rolePermissions1 = new List<RolePermission>();
+            rolePermissions1.Add(RolePrivilegePermission31);
+            rolePermissions1.Add(RolePrivilegePermission32);
+            rolePermissions1.Add(RolePrivilegePermission33);
+            rolePermissions1.Add(RolePrivilegePermission34);
+            rolePermissions1.Add(RolePrivilegePermission35);
+            rolePermissions1.Add(RolePrivilegePermission36);
+            rolePermissions1.Add(RolePrivilegePermission37);
+            rolePermissions1.Add(RolePrivilegePermission38);
+            rolePermissions1.Add(RolePrivilegePermission39);
+            rolePermissions1.Add(RolePrivilegePermission40);
+            rolePermissions1.Add(RolePrivilegePermission41);
+            rolePermissions1.Add(RolePrivilegePermission42);
+            rolePermissions1.Add(RolePrivilegePermission43);
+            rolePermissions1.Add(RolePrivilegePermission44);
+            rolePermissions1.Add(RolePrivilegePermission45);
+            rolePermissions1.Add(RolePrivilegePermission46);
+            rolePermissions1.Add(RolePrivilegePermission47);
+            rolePermissions1.Add(RolePrivilegePermission48);
+            rolePermissions1.Add(RolePrivilegePermission49);
+            rolePermissions1.Add(RolePrivilegePermission50);
+            rolePermissions1.Add(RolePrivilegePermission51);
+            rolePermissions1.Add(RolePrivilegePermission52);
+            rolePermissions1.Add(RolePrivilegePermission53);
+            rolePermissions1.Add(RolePrivilegePermission54);
+            rolePermissions1.Add(RolePrivilegePermission55);
+            rolePermissions1.Add(RolePrivilegePermission56);
+            rolePermissions1.Add(RolePrivilegePermission57);
+            rolePermissions1.Add(RolePrivilegePermission58);
+            rolePermissions1.Add(RolePrivilegePermission59);
+            rolePermissions1.Add(RolePrivilegePermission60);
+
+
+            List<RolePermission> rolePermissions2 = new List<RolePermission>();
+            rolePermissions2.Add(RolePrivilegePermission61);
+            rolePermissions2.Add(RolePrivilegePermission62);
+            rolePermissions2.Add(RolePrivilegePermission63);
+            rolePermissions2.Add(RolePrivilegePermission64);
+            rolePermissions2.Add(RolePrivilegePermission65);
+            rolePermissions2.Add(RolePrivilegePermission66);
+            rolePermissions2.Add(RolePrivilegePermission67);
+            rolePermissions2.Add(RolePrivilegePermission68);
+            rolePermissions2.Add(RolePrivilegePermission69);
+            rolePermissions2.Add(RolePrivilegePermission70);
+            rolePermissions2.Add(RolePrivilegePermission71);
+            rolePermissions2.Add(RolePrivilegePermission72);
+            rolePermissions2.Add(RolePrivilegePermission73);
+            rolePermissions2.Add(RolePrivilegePermission74);
+            rolePermissions2.Add(RolePrivilegePermission75);
+            rolePermissions2.Add(RolePrivilegePermission76);
+            rolePermissions2.Add(RolePrivilegePermission77);
+            rolePermissions2.Add(RolePrivilegePermission78);
+            rolePermissions2.Add(RolePrivilegePermission79);
+            rolePermissions2.Add(RolePrivilegePermission80);
+            rolePermissions2.Add(RolePrivilegePermission81);
+            rolePermissions2.Add(RolePrivilegePermission82);
+            rolePermissions2.Add(RolePrivilegePermission83);
+            rolePermissions2.Add(RolePrivilegePermission84);
+            rolePermissions2.Add(RolePrivilegePermission85);
+            rolePermissions2.Add(RolePrivilegePermission86);
+            rolePermissions2.Add(RolePrivilegePermission87);
+            rolePermissions2.Add(RolePrivilegePermission88);
+            rolePermissions2.Add(RolePrivilegePermission89);
+            rolePermissions2.Add(RolePrivilegePermission90);
+
             Role Role1 = new Role()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -271,7 +399,23 @@ namespace eInvoicing.Persistence.Seeder
                 Description = "The job requires inserting fixed and variable metal and plastic pieces with wood glue and a hammer into shelve units for closets. It is a continuous action and a vital role in our shop. This station collaborates with the production of our other customized materials.",
                 RolePermissions = rolePermissions
             };
+            Role Role2 = new Role()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "IT Admin",
+                Description = "IT administrators oversee organizations' computer systems and manage IT teams. They maintain information systems and networks, upgrade and install new hardware and software, and perform troubleshooting. They also back up data and manage network security..",
+                RolePermissions = rolePermissions1
+            };
+            Role Role3 = new Role()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Business User",
+                Description = "The standard user role suits business owners or admin staff responsible for managing day-to-day tasks, giving them almost full access to the Xero organisation.",
+                RolePermissions = rolePermissions2
+            };
             context.Roles.Add(Role1);
+            context.Roles.Add(Role2);
+            context.Roles.Add(Role3);
             UserRole userRole = new UserRole()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -291,7 +435,7 @@ namespace eInvoicing.Persistence.Seeder
                 Email = "superadmin@eta-dt.com",
                 CreatedOn = DateTime.Now,
                 PhoneNumber = "02447098701",
-                Title = "Internal Role",
+                Title = "System Administrator",
                 UserName = "superadmin",
                 PasswordHash = PasswordHash,
                 PasswordSalt = PasswordSalt,
@@ -302,7 +446,7 @@ namespace eInvoicing.Persistence.Seeder
                 Id = Guid.NewGuid().ToString(),
                 ClientSecretExpDate = DateTime.Now,
                 CreationDate = DateTime.Now,
-                ExpirationDate = DateTime.Now,
+                ExpirationDate = DateTime.Now.AddDays(7),
                 RegistrationDate = DateTime.Now,
                 LicenseType = "Basic",
                 Status = true,

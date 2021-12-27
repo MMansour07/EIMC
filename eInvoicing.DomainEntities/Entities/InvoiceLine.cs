@@ -35,6 +35,8 @@ namespace eInvoicing.DomainEntities.Entities
         public decimal AmountEGP { get; set; }
         [DataType("decimal(18, 5)")]
         public decimal AmountSold { get; set; }
+
+        [DataType("decimal(18, 5)")]
         public decimal CurrencyExchangeRate { get; set; }
         public decimal DiscountRate { get; set; }
         [DataType("decimal(18, 5)")]

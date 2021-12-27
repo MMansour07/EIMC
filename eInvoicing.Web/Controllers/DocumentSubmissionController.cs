@@ -1,22 +1,13 @@
 ﻿using eInvoicing.DTO;
-using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation;
-using eInvoicing.Service.Helper;
-using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
-using Microsoft.AspNet.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
-using System.Web.Script.Serialization;
+
 
 namespace eInvoicing.Web.Controllers
 {
@@ -47,8 +38,17 @@ namespace eInvoicing.Web.Controllers
                     if (postTask.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(postTask.Content.ReadAsStringAsync().Result);
-                        if(string.IsNullOrEmpty(response.statusCode))
-                        return Json(new {message = postTask.StatusCode.ToString(), status = "1", data = response}, JsonRequestBehavior.AllowGet);
+                        if (string.IsNullOrEmpty(response.statusCode))
+                        {
+                            if (response != null)
+                            {
+                                return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                return Json(new { message = "Unprocessable Entity, You must wait for 10 mins to resend this document to ensure the modification.", status = "5", data = response }, JsonRequestBehavior.AllowGet);
+                            }
+                        }
                         else
                         return Json(new {message = postTask.StatusCode.ToString(), status = "2", data = response}, JsonRequestBehavior.AllowGet);
                     }
@@ -73,9 +73,9 @@ namespace eInvoicing.Web.Controllers
             {
                 using (HttpClient client = new HttpClient())
                 {
+                    client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
                     client.Timeout = TimeSpan.FromMinutes(60);
-                    client.DefaultRequestHeaders.Clear();
                     var url = _userSession.URL + "api/documentsubmission/_autosubmit?SubmittedBy="+ User.Identity.Name;
                     client.BaseAddress = new Uri(url);
                     var postTask = Task.Run(() => client.GetAsync(url)).Result;
@@ -99,6 +99,5 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { message = ex.ToString(), status = "4", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
             }
         }
-
     }
 }

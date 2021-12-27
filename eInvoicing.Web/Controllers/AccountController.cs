@@ -58,30 +58,32 @@ namespace eInvoicing.Web.Controllers
                         options.IsPersistent = true;
                         options.ExpiresUtc = DateTime.UtcNow.AddDays(1);
                         List<Claim> claims = new List<Claim>();
-                        claims.Add(new Claim(ClaimTypes.Name, response?.UserName));
-                        claims.Add(new Claim(ClaimTypes.NameIdentifier, response?.Id));
-                        claims.Add(new Claim("Title", response?.Title));
-                        claims.Add(new Claim("AcessToken", string.Format(response?.Token)));
-                        claims.Add(new Claim("FullName", response?.FullName));
-                        foreach (var item in response?.stringfiedRoles)
+                        if (response != null)
                         {
-                            claims.Add(new Claim("Role", item));
+                            claims.Add(new Claim(ClaimTypes.Name, response?.UserName));
+                            claims.Add(new Claim(ClaimTypes.NameIdentifier, response?.Id));
+                            claims.Add(new Claim("Title", response?.Title));
+                            claims.Add(new Claim("AcessToken", string.Format(response?.Token)));
+                            claims.Add(new Claim("FullName", response?.FullName));
+                            foreach (var item in response?.stringfiedRoles)
+                            {
+                                claims.Add(new Claim("Role", item));
+                            }
+                            foreach (var item in response?.stringfiedPermissions)
+                            {
+                                claims.Add(new Claim("Permission", item));
+                            }
+                            var identity = new ClaimsIdentity(claims, "ApplicationCookie");
+                            Request.GetOwinContext().Authentication.SignIn(options, identity);
+                            return RedirectToLocal(returnUrl);
                         }
-                        foreach (var item in response?.stringfiedPermissions)
-                        {
-                            claims.Add(new Claim("Permission", item));
-                        }
-                        var identity = new ClaimsIdentity(claims, "ApplicationCookie");
-                        Request.GetOwinContext().Authentication.SignIn(options, identity);
-                        return RedirectToLocal(returnUrl);
                     }
                     else if (postTask.StatusCode == HttpStatusCode.Unauthorized)
                     {
-                        ModelState.AddModelError("", "Oops, License has been expired!");
+                        ModelState.AddModelError("", "The license has been expired or doesn't belong to this client. Back to the product owner.");
                         return View(model);
-
                     }
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "The user name or password you entered isn't correct. Try entering it again.");
                     return View(model);
                 }
             }

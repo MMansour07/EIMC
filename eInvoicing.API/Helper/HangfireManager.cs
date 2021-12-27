@@ -28,7 +28,7 @@ namespace eInvoicing.API.Helper
         private static string client_secret { get; set; }
         private static string submitServiceUrl { get; set; }
         private static string submissionurl { get; set; }
-        public static void SyncDocumentsFromOROViewsToEIMC()
+        public static void SyncDocumentsFromViewsToEIMC()
         {
             try
             {
@@ -142,7 +142,7 @@ namespace eInvoicing.API.Helper
                 using (SqlConnection myConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["eInvoicing_CS"].ToString()))
                 {
                     myConnection.Open();
-                    string SQLQuery = @"BACKUP DATABASE EIMC_Preprod TO DISK = 'D:\EIMC" + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                    string SQLQuery = @"BACKUP DATABASE EIMC_Preprod TO DISK = '"+ ConfigurationManager.AppSettings["Backup_Path"] + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
                     SqlCommand command = new SqlCommand(SQLQuery, myConnection);
                     command.CommandTimeout = 600;
                     var output = command.ExecuteReader();

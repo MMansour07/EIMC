@@ -31,11 +31,11 @@ namespace eInvoicing.API
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             HangfireAspNet.Use(GetHangfireServers);
 
-            RecurringJob.AddOrUpdate(() => HangfireManager.SyncDocumentsFromOROViewsToEIMC(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => HangfireManager.SyncDocumentsFromViewsToEIMC(), "0 0 0/24 ? * * *");
             // update Documents with the status retreived from ETA
-            RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), Cron.Daily);
-            RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), Cron.Daily);
-            RecurringJob.AddOrUpdate(() => HangfireManager.SubmitDocumentsPeriodically(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), "0 0 2/24 ? * * *");
+            RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), "0 0 3/24 ? * * *");
+            RecurringJob.AddOrUpdate(() => HangfireManager.SubmitDocumentsPeriodically(), "0 0 1/24 ? * * *");
             //RecurringJob.AddOrUpdate(() => HangfireManager.AutoSubmission(), Cron.Daily);
         }
         private IEnumerable<IDisposable> GetHangfireServers()

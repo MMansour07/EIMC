@@ -26,7 +26,7 @@ namespace eInvoicing.API.Helper
 
             //Calculate UNIX time
             DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan timeSpan = DateTime.UtcNow - epochStart;
+            TimeSpan timeSpan = DateTime.Now - epochStart;
             string requestTimeStamp = Convert.ToUInt64(timeSpan.TotalSeconds).ToString();
 
             //create random nonce for each request

@@ -2,6 +2,8 @@
 // Class definition
 var Result;
 var datatable;
+var FilteredDocuments;
+
 var KTDatatableRecordSelectionDemo = function () {
     var options = {
         // datasource definition
@@ -10,7 +12,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/v1/document/submitted_items?uuid=' + getParameterByName("uuid")
+                    url: '/eimc.hub/v1/document/submitted_items?uuid=' + getParameterByName("uuid")
                 },
             },
             pageSize: 10,
@@ -150,6 +152,7 @@ var KTDatatableRecordSelectionDemo = function () {
 }();
 
 jQuery(document).ready(function () {
+    //FilteredDocuments = sessionStorage.getItem("DeliveredDocs");
     KTDatatableRecordSelectionDemo.init();
 });
 function convertToJavaScriptDate(value) {
@@ -168,7 +171,7 @@ var initSubDatatable = function (id) {
     var options_sub = {
         data: {
             type: 'local',
-            source: Result.find(x => x.internalId == id)?.taxableItems,
+            source: Result.find(x => x.internalId == id)?.lineTaxableItems,
             pageSize: 5
         },
         // layout definition
@@ -242,4 +245,142 @@ function getParameterByName(name, url = window.location.href) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+
+function CancelDocumentByUUID(uuid) {
+    debugger;
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'primary'
+    });
+    $.ajax({
+        url: "/eimc.hub/v1/document/canceldocument?uuid=" + uuid,
+        type: "get", //send it through get method
+        data: {},
+        success: function (response) {
+            datatable.reload();
+            KTApp.unblockPage();
+            if (response.status == "Success") {
+                Swal.fire({
+                    title: 'Document has been cancelled successfully',
+                    text: 'A request to cancel this document has been initiated: For Correction.. | Cancellation will occur after 72 hours from starting from now unless declined by recipient.',
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+            else {
+                Swal.fire({
+                    title: "Sorry, something went wrong!",
+                    text: "It might be not found or you exceed the limit duration.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+
+        },
+        error: function (xhr) {
+            KTApp.unblockPage();
+            //Do Something to handle error
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: "Internal Server Error: " + result.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+    });
+}
+
+function ShowSpinner() {
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'primary'
+    });
+    setTimeout(() => { KTApp.unblockPage(); }, 3000);
+}
+
+function UpdateDocumentByInternalId(InternalId) {
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'primary'
+    });
+    $.ajax({
+        url: "/eimc.hub/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        type: "get", //send it through get method
+        data: {},
+        success: function (response) {
+            datatable.reload();
+            KTApp.unblockPage();
+            if (response.status == "Success") {
+                Swal.fire({
+                    text: 'Document has been recalled successfully, Now you can send it agian.',
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                    window.location.href = "/eimc.hub/v1/document/pending";
+                });
+            }
+            else {
+                Swal.fire({
+                    text: "Sorry, something went wrong, please try again.",
+                    //text: "Internal Server Error: " + result.message,
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+
+        },
+        error: function (xhr) {
+            KTApp.unblockPage();
+            //Do Something to handle error
+            Swal.fire({
+                text: "Sorry, something went wrong, please try again.",
+                //text: "Internal Server Error: " + result.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+    });
+}
+
+function EditDocument(InternalId) {
+    //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
+    //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
+    //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
+    window.location.href = "/eimc.hub/v1/document/edit_document?InternalId=" + InternalId;
 }

@@ -4,7 +4,9 @@ using eInvoicing.Service.AppService.Implementation;
 using eInvoicing.Web.Filters;
 using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using NLog;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,6 +28,8 @@ namespace eInvoicing.Web.Controllers
     {
         private readonly IUserSession _userSession;
         private readonly IHttpClientHandler _httpClient;
+        Logger logger = LogManager.GetCurrentClassLogger();
+
         public MasterController(IHttpClientHandler httpClient, IUserSession userSession)
         {
             _httpClient = httpClient;
@@ -45,20 +49,23 @@ namespace eInvoicing.Web.Controllers
                 {
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
-                    var url = _userSession.URL + "api/document/MonthlyDocuments?_date=" + DateTime.Parse(_date.ToString());
+                    var url = _userSession.URL + "api/document/MonthlyDocuments?_date=" + DateTime.ParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    logger.Info(url);
                     client.BaseAddress = new Uri(url);
                     var postTask = Task.Run(() => client.GetAsync(url)).Result;
                     if (postTask.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DashboardDTO>(postTask.Content.ReadAsStringAsync().Result);
-                        return Json(new { status = "Success", data = response}, JsonRequestBehavior.AllowGet);
+                        if (string.IsNullOrEmpty(response.Reason))
+                            return Json(new { status = "Success", data = response }, JsonRequestBehavior.AllowGet);
                     }
-                    return Json(new { status = "Failed"}, JsonRequestBehavior.AllowGet);
+                    return Json(new { status = postTask.StatusCode, ReasonPhrase = postTask.ReasonPhrase, RequestMessage = postTask.RequestMessage, Content = postTask.Content.ReadAsStringAsync()}, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { status = "Failed"}, JsonRequestBehavior.AllowGet);
+                logger.Error(ex.Message);
+                return Json(new { status = ex.Message.ToString()}, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]
@@ -86,9 +93,9 @@ namespace eInvoicing.Web.Controllers
                     return Json(new { status = "Failed", Message = postTask.StatusCode}, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return Json(new { status = "Failed", Message = 500 }, JsonRequestBehavior.AllowGet);
+                return Json(new { status = ex.Message.ToString(), Message = 500 }, JsonRequestBehavior.AllowGet);
             }
         }
         [HttpGet]

@@ -6,6 +6,8 @@ using System;
 using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
 
 namespace eInvoicing.API.Controllers
@@ -36,11 +38,25 @@ namespace eInvoicing.API.Controllers
 
         [HttpGet]
         [Route("api/taxpayer/GetLicense")]
-        public string token(string clientId = null)
+        public string token()
         {
             try
             {
-                return _taxpayerService.token()?.Replace("\r\n", "");
+                Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+                AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
+                if (objAppsettings.Settings["IsExternal"]?.Value == "1")
+                {
+                    return _taxpayerService.TokenByBusinessGroup(objAppsettings.Settings["Current_BusinessGroup"]?.Value)?.Replace("\r\n", "");
+                }
+                else
+                {
+                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                    if (identity != null)
+                        return _taxpayerService.TokenByRegistrationNumber("347383874")?.Replace("\r\n", "");
+                    else
+                        return null;
+                }
             }
             catch (Exception ex)
             {
@@ -56,7 +72,19 @@ namespace eInvoicing.API.Controllers
             {
                 Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
                 AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
-                return _taxpayerService.GetClientId(objAppsettings.Settings["Environment"].Value)?.Replace("\r\n", "");
+                if (objAppsettings.Settings["IsExternal"]?.Value == "1")
+                {
+                    return _taxpayerService.GetClientIdByBusinessGroup(objAppsettings.Settings["Current_BusinessGroup"]?.Value)?.Replace("\r\n", "");
+                }
+                else
+                {
+                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                    if (identity != null)
+                        return _taxpayerService.GetClientIdByRegistrationNumber("347383874")?.Replace("\r\n", "");
+                    else
+                        return null;
+                }
             }
             catch (Exception ex)
             {
@@ -67,11 +95,11 @@ namespace eInvoicing.API.Controllers
         [JwtAuthentication]
         [HttpGet]
         [Route("api/taxpayer/details")]
-        public IHttpActionResult GetTaxPayerDetails(string clientId = null)
+        public IHttpActionResult GetTaxPayerDetails(string BusinessGroupId)
         {
             try
             {
-                return Ok(_taxpayerService.getTaxpayerDetails());
+                return Ok(_taxpayerService.getTaxpayerDetails(BusinessGroupId));
             }
             catch (Exception ex)
             {

@@ -11,6 +11,7 @@ namespace eInvoicing.Service.AppService.Contract.Base
 {
     public interface IErrorService 
     {
+        void GetTheConnectionString(string ConnectionString);
         void InsertBulk(IEnumerable<DocumentRejectedDTO> dto);
     }
 }

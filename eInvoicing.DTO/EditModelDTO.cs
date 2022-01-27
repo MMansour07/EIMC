@@ -29,6 +29,7 @@ namespace eInvoicing.DTO
         [Required(ErrorMessage = "Required Field.")]
 
         public List<string> Roles { get; set; }
+        public string BusinessGroupId { get; set; }
         public string SlashSeparatedRoles { get; set; }
     }
 }

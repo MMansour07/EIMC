@@ -68,7 +68,7 @@ var KTUppy = function () {
                         state: 'primary'
                     });
                     $.ajax({
-                        url: '/v1/master/UploadLicense',
+                        url: '/eimc.hub/v1/master/UploadLicense',
                         type: "POST",
                         contentType: false, // Not to set any content header  
                         processData: false, // Not to process data  
@@ -115,9 +115,9 @@ var KTUppy = function () {
             else { IscalledFirst = true; }
         });
         uppyDashboard.use(Dashboard, options);
-        uppyDashboard.use(GoogleDrive, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
-        uppyDashboard.use(Dropbox, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
-        uppyDashboard.use(Webcam, { target: Dashboard });
+        //uppyDashboard.use(GoogleDrive, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
+        //uppyDashboard.use(Dropbox, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
+        //uppyDashboard.use(Webcam, { target: Dashboard });
         //}
     }
     var initUppy6 = function () {
@@ -174,7 +174,7 @@ var KTUppy = function () {
                         state: 'primary'
                     });
                     $.ajax({
-                        url: '/v1/document/UploadFile',
+                        url: '/eimc.hub/v1/document/UploadFile',
                         type: "POST",
                         contentType: false, // Not to set any content header  
                         processData: false, // Not to process data  
@@ -182,23 +182,37 @@ var KTUppy = function () {
                         success: function (result) {
                             KTApp.unblockPage();
                             if (result.success) {
-                                if (result.IsInserted || result.IsUpdated) {
+                                var Temp = "";
+                                if (result.NonExistingDocumentIds?.length > 0) {
+                                    for (var i = 0; i < result.NonExistingDocumentIds.length; i++) {
+                                        Temp += '<span class="navi-text" style= "float:left; clear:left;">'+ result.NonExistingDocumentIds[i] + '</span>'
+                                    }
+                                }
+
+                                var text = "";
+                                text = (result.IsInserted  && result.UpdatesStatus == -1)  ? "Data has been saved successfully, but there are some non-existing records, the following ids:" :
+                                       (!result.IsInserted && result.UpdatesStatus == -1)  ? "There are some non-existing records, the following ids:" :
+                                       (result.IsInserted  || result.UpdatesStatus > 0)   ? "Data has been saved successfully!" : "No available invoices to be uploaded, Data already exits.";
+
+
+
+                                if (result.IsInserted || result.UpdatesStatus > 0) {
                                     $(".uppy-Dashboard-Item-action--remove").click();
                                 }
                                 Swal.fire({
-                                    text: result.IsInserted || result.IsUpdated ? 'Data has been saved successfully!' : 'Data already exist!',
+                                    title: text,
                                     html:
-                                        result.IsInserted && result.IsUpdated ?
+                                        result.IsInserted && result.UpdatesStatus > 0 ?
                                             '<span class="navi-text mb-1" style= "float:left; clear:left;">Documents: [Inserted (' + result.InsertedDocumentsCount + '), Updated (' + result.UpdatedDocumentsCount + ')]</span>\
 										 <span class="navi-text" style= "float:left; clear:left;">Lines : [Inserted ('+ result.InsertedInvoiceLinesCount + '), Updated (' + result.UpdatedInvoiceLinesCount + ')]</span>\
 									     <span class="navi-text" style= "float:left; clear:left;">Taxable Items : [Inserted ('+ result.InsertedTaxableItemsCount + '), Updated (' + result.UpdatedTaxableItemsCount + ')]</span>' : result.IsInserted ?
                                                 '<span class="navi-text mb-1" style= "float:left; clear:left;">Documents: [' + result.InsertedDocumentsCount + ']</span>\
 										 <span class="navi-text" style= "float:left; clear:left;">Lines : ['+ result.InsertedInvoiceLinesCount + ']</span>\
-									     <span class="navi-text" style= "float:left; clear:left;">Taxable Items : ['+ result.InsertedTaxableItemsCount + ']</span>' : result.IsUpdated ?
+									     <span class="navi-text" style= "float:left; clear:left;">Taxable Items : ['+ result.InsertedTaxableItemsCount + ']</span>' : result.UpdatesStatus > 0 ?
                                                     '<span class="navi-text mb-1" style= "float:left; clear:left;">Documents: [' + result.UpdatedDocumentsCount + ']</span>\
 										 <span class="navi-text" style= "float:left; clear:left;">Lines : ['+ result.UpdatedInvoiceLinesCount + ']</span>\
-									     <span class="navi-text" style= "float:left; clear:left;">Taxable Items : ['+ result.UpdatedTaxableItemsCount + ']</span>' : '',
-                                    icon: result.IsInserted || result.IsUpdated ? "success" : "warning",
+									     <span class="navi-text" style= "float:left; clear:left;">Taxable Items : ['+ result.UpdatedTaxableItemsCount + ']</span>' : result.UpdatesStatus == -1 ? Temp : '',
+                                    icon: result.IsInserted || result.UpdatesStatus >= 0 ? "success" : "warning",
                                     buttonsStyling: false,
                                     confirmButtonText: "Ok, got it!",
                                     customClass: {
@@ -207,6 +221,7 @@ var KTUppy = function () {
                                 }).then(function () {
                                     KTUtil.scrollTop();
                                 });
+                                LoadDraft();
                             }
                             else {
                                 Swal.fire({
@@ -234,9 +249,9 @@ var KTUppy = function () {
             else { IscalledFirst = true; }
         });
         uppyDashboard.use(Dashboard, options);
-        uppyDashboard.use(GoogleDrive, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
-        uppyDashboard.use(Dropbox, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
-        uppyDashboard.use(Webcam, { target: Dashboard });
+        //uppyDashboard.use(GoogleDrive, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
+        //uppyDashboard.use(Dropbox, { target: Dashboard, companionUrl: 'https://companion.uppy.io' });
+        //uppyDashboard.use(Webcam, { target: Dashboard });
     }
     var initUppy5 = function () {
         // Uppy variables
@@ -311,7 +326,7 @@ var KTUppy = function () {
                     state: 'primary'
                 });
                 $.ajax({
-                    url: '/v1/taxpayer/token',
+                    url: '/eimc.hub/v1/taxpayer/token',
                     type: "POST",
                     contentType: false, // Not to set any content header  
                     processData: false, // Not to process data  
@@ -389,7 +404,7 @@ KTUtil.ready(function () {
 function resetForm()
 {
     $.ajax({
-        url: "/v1/taxpayer/ajaxtaxpayerdetails",
+        url: "/eimc.hub/v1/taxpayer/ajaxtaxpayerdetails",
         type: "get",
         data: {},
         success: function (response) {
@@ -425,7 +440,7 @@ function resetForm()
                     window.location.href = "/ETA.Hub/einvoicing/v0";
                     KTUtil.scrollTop();
                 } else if (result.dismiss === "cancel") {
-                    window.location.href = "/v1/taxpayer/taxpayer_details";
+                    window.location.href = "/eimc.hub/v1/taxpayer/taxpayer_details";
                 }
             });
         }

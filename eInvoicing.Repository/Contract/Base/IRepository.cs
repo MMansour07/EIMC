@@ -1,4 +1,5 @@
 ﻿using eInvoicing.DomainEntities.Base;
+using eInvoicing.DomainEntities.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace eInvoicing.Repository.Contract.Base
 {
     public interface IRepository<TEntity> where TEntity : IEntity
     {
-
+        void GetTheConnectionString(string ConnectionString);
         IQueryable<TEntity> All { get; }
         bool CheckIsExist(Expression<Func<TEntity, bool>> filter);
         TEntity Add(TEntity entity);
@@ -18,6 +19,7 @@ namespace eInvoicing.Repository.Contract.Base
         IEnumerable<TEntity> AddRange(IEnumerable<TEntity> entities);
         //Task AddRangeAsync(IEnumerable<TEntity> dto);
         TEntity Update(TEntity entity);
+        TEntity ModifyById(TEntity entity);
         void Update(TEntity entity, params string[] properties);
         void UpdateBulk(TEntity entity);
         TEntity Delete(string id);

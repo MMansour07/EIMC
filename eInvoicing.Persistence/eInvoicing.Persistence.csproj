@@ -54,11 +54,6 @@
     <Compile Include="IdentityContext.cs" />
     <Compile Include="ApplicationContext.cs" />
     <Compile Include="Base\BaseEntityTypeConfiguration.cs" />
-    <Compile Include="Migrations\202112201708383_1st_migration.cs" />
-    <Compile Include="Migrations\202112201708383_1st_migration.Designer.cs">
-      <DependentUpon>202112201708383_1st_migration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seeder\DBContextSeeder.cs" />
   </ItemGroup>
@@ -69,16 +64,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\202112201708383_1st_migration.resx">
-      <DependentUpon>202112201708383_1st_migration.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

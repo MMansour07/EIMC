@@ -103,9 +103,9 @@ namespace eInvoicing.Service.Helper.Extension
                 {
                     description = i.description ?? "",
                     internalCode = i.internalCode,
-                    itemCode = "10003761",//i.itemCode,
+                    itemCode = i.itemCode,
                     itemsDiscount = Convert.ToDecimal(i.itemsDiscount),
-                    itemType = "GS1",//i.itemType ?? "" ,
+                    itemType = i.itemType ?? "" ,
                     netTotal = Convert.ToDecimal(i.netTotal),
                     quantity = Convert.ToDecimal(i.quantity),
                     salesTotal = Convert.ToDecimal(i.salesTotal),

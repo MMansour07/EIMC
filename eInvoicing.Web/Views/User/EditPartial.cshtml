@@ -7,51 +7,58 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="card-body">
-        <!--begin::Group-->
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label>First Name *</label>
-                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
-                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
-            </div>
-            <div class="col-md-6">
-                <label>Last Name *</label>
-                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
-                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
-            </div>
+<div class="card-body">
+    <!--begin::Group-->
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.Id)
+    <div class="form-group row">
+        <div class="col-md-6">
+            <label>First Name *</label>
+            @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
+            @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <label>Email *</label>
-                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
-                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-6">
+            <label>Last Name *</label>
+            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
+            @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <label>Title *</label>
-                @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
-                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Email *</label>
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
+            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <label>Phone Number *</label>
-                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
-                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Title *</label>
+            @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
+            @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                @Html.ListBoxFor(model => model.Roles, ViewBag.Roles as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
-                @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
-            </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Phone Number *</label>
+            @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
+            @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
         </div>
-            <!--end::Group-->
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            @Html.ListBoxFor(model => model.Roles, ViewBag.Roles as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
+            @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
         </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
+            <label>Business Group *</label>
+            @Html.DropDownListFor(model => model.BusinessGroupId, (List<SelectListItem>)ViewBag?.Groups, new { @class = "form-control", @name = "Group" })
+            @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <!--end::Group-->
+</div>
 }
 <!--end::Form-->
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
@@ -111,6 +118,13 @@
                             }
                         }
                     },
+                    Group: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Group is required'
+                            },
+                        }
+                    }
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),

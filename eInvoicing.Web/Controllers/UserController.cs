@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -19,7 +20,6 @@ using Newtonsoft.Json;
 namespace eInvoicing.Web.Controllers
 {
     [Authorize]
-
     public class UserController : Controller
     {
         private readonly IUserSession _userSession;
@@ -27,15 +27,12 @@ namespace eInvoicing.Web.Controllers
         {
             _userSession = userSession;
         }
-        [AllowAnonymous]
         [HttpGet]
         public ActionResult Index()
         {
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
-                client.Timeout = TimeSpan.FromMinutes(60);
                 var url = _userSession.URL + "/api/auth/getRoles";
                 client.BaseAddress = new Uri(url);
                 var postTask = Task.Run(() => client.GetAsync(url)).Result;
@@ -43,6 +40,19 @@ namespace eInvoicing.Web.Controllers
                 {
                     var result = JsonConvert.DeserializeObject<List<DTO.RoleViewModel>>(postTask.Content.ReadAsStringAsync().Result);
                     TempData["Roles"] = ViewBag.Roles = result.Select(Role => new SelectListItem { Value = Role.Id, Text = Role.Name }).ToList();
+                    var _url = _userSession.URL + "/api/BG/GetGroups";
+                    using (HttpClient _client = new HttpClient())
+                    {
+                        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                        _client.BaseAddress = new Uri(_url);
+                        var _postTask = Task.Run(() => _client.GetAsync(_url)).Result;
+                        if (_postTask.IsSuccessStatusCode)
+                        {
+                            var _result = JsonConvert.DeserializeObject<List<BusinessGroupDTO>>(_postTask.Content.ReadAsStringAsync().Result);
+                            TempData["Groups"] = ViewBag.Groups = _result.Select(Group => new SelectListItem { Value = Group.Id, Text = Group.GroupName }).ToList();
+                            return View();
+                        }
+                    }
                     return View();
                 }
             }
@@ -56,12 +66,14 @@ namespace eInvoicing.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var BusinessGroupId = ClaimsPrincipal.Current.FindFirst("BusinessGroupId").Value;
+                    var LoggedinUserName = ClaimsPrincipal.Current.Identity.Name;
                     using (HttpClient client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Clear();
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
                         client.Timeout = TimeSpan.FromMinutes(60);
-                        var url = _userSession.URL + "/api/auth/getusers";
+                        var url = _userSession.URL + "/api/auth/getusers?BusinessGroupId="+ BusinessGroupId+ "&LoggedinUserName=" + LoggedinUserName;
                         client.BaseAddress = new Uri(url);
                         var postTask = Task.Run(() => client.GetAsync(url)).Result;
                         if (postTask.IsSuccessStatusCode)
@@ -88,8 +100,13 @@ namespace eInvoicing.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    var LoggedinUserName = ClaimsPrincipal.Current.Identity.Name;
                     using (HttpClient client = new HttpClient())
                     {
+                        if (LoggedinUserName.ToLower() != "superadmin")
+                        {
+                            model.BusinessGroupId = ClaimsPrincipal.Current.FindFirst("BusinessGroupId").Value;
+                        }
                         client.DefaultRequestHeaders.Clear();
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
                         model.UserName = model.Email.Split('@')[0];
@@ -110,6 +127,11 @@ namespace eInvoicing.Web.Controllers
                 }
                 if (TempData.ContainsKey("Roles"))
                     ViewBag.Roles = TempData["Roles"];
+
+                if (TempData.ContainsKey("Groups"))
+                    ViewBag.Roles = TempData["Groups"];
+
+
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -117,9 +139,8 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { success = ex.Message.ToString() }, JsonRequestBehavior.AllowGet);
             }
         }
-        [AllowAnonymous]
+        
         [HttpGet]
-        //[ActionName("EditUser")]
         public ActionResult EditPartial(string Id)
         {
             try
@@ -141,6 +162,18 @@ namespace eInvoicing.Web.Controllers
                         var result = JsonConvert.DeserializeObject<DTO.EditViewModel>(postTask.Content.ReadAsStringAsync().Result);
                         var rolelist = result.Roles.Select(Role => new SelectListItem { Value = Role.Id, Text = Role.Name, Selected = result.User.Roles.Contains(Role.Id) }).ToList();
                         ViewBag.Roles = rolelist;
+                        var _url = _userSession.URL + "/api/BG/GetGroups";
+                        using (HttpClient _client = new HttpClient())
+                        {
+                            _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                            _client.BaseAddress = new Uri(_url);
+                            var _postTask = Task.Run(() => _client.GetAsync(_url)).Result;
+                            if (_postTask.IsSuccessStatusCode)
+                            {
+                                var _result = JsonConvert.DeserializeObject<List<BusinessGroupDTO>>(_postTask.Content.ReadAsStringAsync().Result);
+                                ViewBag.Groups = _result.Select(Group => new SelectListItem { Value = Group.Id, Text = Group.GroupName, Selected = _result.Select(x=> x.Id).Contains(result.User.BusinessGroupId)}).ToList();
+                            }
+                        }
                         return PartialView(result.User);
                     }
                     return PartialView(new EditModelDTO());
@@ -151,6 +184,7 @@ namespace eInvoicing.Web.Controllers
                 return PartialView(new EditModelDTO());
             }
         }
+        
         [HttpPost]
         [ActionName("EditUser")]
         public ActionResult Edit(EditModelDTO model)
@@ -166,7 +200,7 @@ namespace eInvoicing.Web.Controllers
                         client.Timeout = TimeSpan.FromMinutes(60);
                         var url = _userSession.URL + "/api/auth/edit";
                         client.BaseAddress = new Uri(url);
-                        var postTask = Task.Run(() => client.PutAsJsonAsync(url, model)).Result;
+                        var postTask = Task.Run(() => client.PostAsJsonAsync(url, model)).Result;
                         if (postTask.IsSuccessStatusCode)
                         {
                             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -180,8 +214,8 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
         }
-
-        [HttpPost, ActionName("DeleteUser")]
+        [HttpPost]
+        [ActionName("DeleteUser")]
         public ActionResult DeleteConfirmed(string Id)
         {
             try
@@ -195,7 +229,7 @@ namespace eInvoicing.Web.Controllers
                         client.Timeout = TimeSpan.FromMinutes(60);
                         var url = _userSession.URL + "/api/auth/delete?Id=" + Id;
                         client.BaseAddress = new Uri(url);
-                        var postTask = Task.Run(() => client.DeleteAsync(url)).Result;
+                        var postTask = Task.Run(() => client.GetAsync(url)).Result;
                         if (postTask.IsSuccessStatusCode)
                         {
                             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -210,12 +244,39 @@ namespace eInvoicing.Web.Controllers
 
             }
         }
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
             {
                 ModelState.AddModelError("", error);
+            }
+        }
+        [HttpGet]
+        [ActionName("myprofile")]
+        public ActionResult MyProfile()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    var url = _userSession.URL + "/api/auth/edit?Id=" + ClaimsPrincipal.Current.Identity.GetUserId();
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        var result = JsonConvert.DeserializeObject<DTO.EditViewModel>(postTask.Content.ReadAsStringAsync().Result);
+                        return View(result.User);
+                    }
+                    return View(new DTO.EditViewModel());
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+                //return View(new EditModelDTO());
             }
         }
     }

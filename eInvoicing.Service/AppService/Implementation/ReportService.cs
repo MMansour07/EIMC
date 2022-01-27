@@ -12,9 +12,16 @@ namespace eInvoicing.Service.AppService.Implementation
     public class ReportService :  IReportService
     {
         private readonly IDocumentRepository repository;
-        public ReportService(IDocumentRepository _repository)
+        private readonly IValidationStepRepository _validationStepRepository;
+        public ReportService(IDocumentRepository _repository, IValidationStepRepository validationStepRepository)
         {
             this.repository = _repository;
+            this._validationStepRepository = validationStepRepository;
+        }
+        public void GetTheConnectionString(string ConnectionString)
+        {
+            this.repository.GetTheConnectionString(ConnectionString);
+            this._validationStepRepository.GetTheConnectionString(ConnectionString);
         }
         public PagedList<SubmittedDocumentsDTO> GetSubmittedDocumentsStats(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
         {
@@ -46,7 +53,6 @@ namespace eInvoicing.Service.AppService.Implementation
             }
             return PagedList<SubmittedDocumentsDTO>.Create(result, pageNumber, pageSize, totalCount);
         }
-
         public IEnumerable<GoodsModel> GetMonthlyBestSeller(int SpecificDate)
         {
             var docs = repository.Get(i => i.DateTimeIssued.Year == SpecificDate, m => m.OrderByDescending(x => x.DateTimeIssued), null).ToList();
@@ -60,7 +66,6 @@ namespace eInvoicing.Service.AppService.Implementation
                 month = i.Select(t => t.DateTimeIssued.Month).FirstOrDefault()
             }).OrderByDescending(x => x.count).FirstOrDefault());
         }
-
         public IEnumerable<GoodsModel> GetMonthlyLowestSeller(int SpecificDate)
         {
 
@@ -96,6 +101,45 @@ namespace eInvoicing.Service.AppService.Implementation
                 goodsModel = goodsModel.OrderBy(sortColumnName + " " + sortDirection);
             }
             return PagedList<GoodsModel>.Create(goodsModel, pageNumber, pageSize, totalCount);
+        }
+        public PagedList<InvalidDocumentsReasonsDTO> GetInvalidDocumentReasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            try
+            {
+                toDate = toDate.AddDays(1);
+                var validationSteps = _validationStepRepository.Get(i => i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date, null, "StepErrors.InnerError").AsEnumerable();
+                var result = validationSteps.GroupBy(o => o.DocumentId).Select(x => new InvalidDocumentsReasonsDTO()
+                {
+                    DocumentId = x.Select(i => i.DocumentId).FirstOrDefault(),
+                    DateTimeIssued = x.Select(i => i.DateTimeIssued).FirstOrDefault(),
+                    DateTimeReceived = x.Select(i => i.DateTimeReceived).FirstOrDefault(),
+                    TotalAmount = x.Select(i => i.TotalAmount).FirstOrDefault(),
+                    TotalDiscountAmount = x.Select(i => i.TotalDiscountAmount).FirstOrDefault(),
+                    TotalItemsDiscountAmount = x.Select(i => i.TotalItemsDiscountAmount).FirstOrDefault(),
+                    NetAmount = x.Select(i => i.NetAmount).FirstOrDefault(),
+                    TotalSalesAmount = x.Select(i => i.TotalSalesAmount).FirstOrDefault(),
+                    ExtraDiscountAmount = x.Select(i => i.ExtraDiscountAmount).FirstOrDefault(),
+                    ValidationSteps = string.Join(", ", x.Select(p => p.StepName?.ToString()).Distinct()),
+                    //Temp = x.SelectMany(p => p.StepErrors.Select(o => o.Error)).ToList(),
+                    Errors = string.Join(", ", x.SelectMany(p => p.StepErrors.Select(o => o.Error).Distinct()).Distinct()),
+                    InnerErrors = string.Join(", ", x.SelectMany(p => p.StepErrors.SelectMany(o => o.InnerError.Select(z => z.Error).Distinct()).Distinct()).Distinct()),
+                });
+                int totalCount = validationSteps.Count();
+                if (!string.IsNullOrEmpty(searchValue))//filter
+                {
+                    result = result.Where(x => x.ValidationSteps.ToLower().Contains(searchValue) || x.Errors.Contains(searchValue) || x.InnerErrors.Contains(searchValue));
+                }
+                if (!string.IsNullOrEmpty(sortColumnName))
+                {
+                    result = result.OrderBy(sortColumnName + " " + sortDirection);
+                }
+                return PagedList<InvalidDocumentsReasonsDTO>.Create(result, pageNumber, pageSize, totalCount);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            
         }
     }
 }

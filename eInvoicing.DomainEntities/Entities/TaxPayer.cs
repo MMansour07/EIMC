@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using eInvoicing.DomainEntities.Base;
 
 namespace eInvoicing.DomainEntities.Entities
@@ -26,7 +20,11 @@ namespace eInvoicing.DomainEntities.Entities
         public string PreProdClientSecret { get; set; }
         public string ProdClientId { get; set; }
         public string ProdClientSecret { get; set; }
+        public string TokenPin { get; set; }
         public int IRN { get; set; }
+        public string BusinessGroupId { get; set; }
         public bool Status { get; set; }
+        public virtual BusinessGroup BusinessGroup { get; set; }
+
     }
 }

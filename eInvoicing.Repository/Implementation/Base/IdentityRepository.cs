@@ -257,5 +257,19 @@ namespace eInvoicing.Repository.Implementation.Base
             return 0;
         }
 
+        public void GetTheConnectionString(string ConnectionString)
+        {
+            throw new NotImplementedException();
+        }
+
+        public TEntity ModifyById(TEntity entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Document ModifyById(Document entity)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

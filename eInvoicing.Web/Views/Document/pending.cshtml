@@ -3,6 +3,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <title>EInvoicing|Documents</title>
+<style>
+    .submitdoc {
+        cursor: pointer !important;
+    }
+</style>
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
@@ -55,8 +60,20 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
+                        <a class="dropdown-item" href="@Url.Action("myprofile", "user")">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                        <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
+                                        <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
+                        </a>
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
-                            <span class="svg-icon svg-icon-light svg-icon" style="padding-right:inherit">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <rect x="0" y="0" width="24" height="24" />
@@ -154,25 +171,25 @@
             <!--begin: Selected Rows Group Action Form-->
             <div class="mt-10 mb-5 collapse" id="kt_datatable_group_action_form">
                 <div class="d-flex align-items-center">
-                    <div class="font-weight-bold text-danger mr-3">
+                    <div class="font-weight-bold text-dark-75 mr-3">
                         Selected <span id="kt_datatable_selected_records">0</span> records:
                     </div>
-                    @using System.Security.Claims;
+                    @*@using System.Security.Claims;
                     @using Microsoft.AspNet.Identity;
                     @if (Request.IsAuthenticated &&
                     ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Permission")
                     .Select(i => i.Value.ToLower()).Where(x => x == "submit" || x == "auto_submit").Count() > 0)
-                    {
-                        <button class="btn btn-sm btn-bg-light mr-2" type="button" id="kt_datatable_send">
+                    {*@
+                        <button class="btn btn-sm btn-bg-light mr-2 btn-square" type="button" id="kt_datatable_send">
                             Send <i class="far fa-arrow-alt-circle-right"></i>
                         </button>
-                        <button class="btn btn-sm btn-bg-secondary  mr-2" type="button" id="kt_datatable_fetch_modal">
+                        <button class="btn btn-sm btn-bg-secondary  mr-2 btn-square" type="button" id="kt_datatable_fetch_modal">
                             <i class="far fa-arrow-alt-circle-right"></i>
                         </button>
-                        <button class="btn btn-sm btn-bg-light" type="button" id="kt_datatable_sendAll">
+                        <button class="btn btn-sm btn-bg-light btn-square" type="button" id="kt_datatable_sendAll">
                             Send All <i class="far fa-arrow-alt-circle-right"></i>
                         </button>
-                    }
+                   @* }*@
                 </div>
             </div>
             <!--end: Selected Rows Group Action Form-->

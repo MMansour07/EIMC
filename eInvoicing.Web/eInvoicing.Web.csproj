@@ -57,7 +57,11 @@
     <Reference Include="EntLibContrib.Data.OdpNet, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EntLibContrib.Data.OdpNet.6.0.1304.0\lib\NET45\EntLibContrib.Data.OdpNet.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Build.Framework" />
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Logging.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\lib\net461\Microsoft.Extensions.Logging.Abstractions.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common, Version=6.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -76,18 +80,36 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.7.13\lib\net45\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="ProductLicense">
       <HintPath>C:\Users\Rasan15\Downloads\ProductLicense.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.7\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.3\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -214,6 +236,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TemplateController.cs" />
+    <Compile Include="Controllers\BusinessGroupController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -358,6 +381,7 @@
     <Content Include="Content\assets\js\pages\crud\datatables\extensions\select.min.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.min.js" />
+    <Content Include="Content\assets\js\pages\crud\datatables\search-options\invalid-reasons.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\TopGoods.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\GetMonthlyLowestSeller.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\GetMonthlyBestSeller.js" />
@@ -394,6 +418,7 @@
     <Content Include="Content\assets\js\pages\crud\forms\validation\form-widgets.min.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.min.js" />
+    <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-invalidreasons.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker.min.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-daterangepicker.js" />
@@ -511,10 +536,18 @@
     <Content Include="Content\assets\js\pages\custom\projects\list-datatable.min.js" />
     <Content Include="Content\assets\js\pages\custom\todo\todo.js" />
     <Content Include="Content\assets\js\pages\custom\todo\todo.min.js" />
+    <Content Include="Content\assets\js\pages\custom\group\add-user.js" />
+    <Content Include="Content\assets\js\pages\custom\group\add-user.min.js" />
+    <Content Include="Content\assets\js\pages\custom\group\edit-user.js" />
+    <Content Include="Content\assets\js\pages\custom\group\edit-user.min.js" />
+    <Content Include="Content\assets\js\pages\custom\group\list-datatable-roles.js" />
+    <Content Include="Content\assets\js\pages\custom\group\list-datatable.js" />
+    <Content Include="Content\assets\js\pages\custom\group\list-datatable.min.js" />
     <Content Include="Content\assets\js\pages\custom\user\add-user.js" />
     <Content Include="Content\assets\js\pages\custom\user\add-user.min.js" />
     <Content Include="Content\assets\js\pages\custom\user\edit-user.js" />
     <Content Include="Content\assets\js\pages\custom\user\edit-user.min.js" />
+    <Content Include="Content\assets\js\pages\custom\user\cpassword.js" />
     <Content Include="Content\assets\js\pages\custom\user\list-datatable-roles.js" />
     <Content Include="Content\assets\js\pages\custom\user\list-datatable.js" />
     <Content Include="Content\assets\js\pages\custom\user\list-datatable.min.js" />
@@ -524,6 +557,7 @@
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-2.min.js" />
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-3.js" />
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-3.min.js" />
+    <Content Include="Content\assets\js\pages\custom\wizard\wizard_edit-4.js" />
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-4.js" />
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-4.min.js" />
     <Content Include="Content\assets\js\pages\custom\wizard\wizard-5.js" />
@@ -2166,6 +2200,7 @@
     <Content Include="Content\assets\plugins\custom\datatables\datatables.bundle.js" />
     <Content Include="Content\assets\plugins\custom\draggable\draggable.bundle.js" />
     <Content Include="Content\assets\plugins\custom\flot\flot.bundle.js" />
+    <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar-invalidreasons.bundle.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.css" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.js" />
     <Content Include="Content\assets\plugins\custom\gmaps\gmaps.js" />
@@ -2366,7 +2401,9 @@
     <Content Include="Content\images\close.png" />
     <Content Include="Content\images\drag-copy.png" />
     <Content Include="Content\images\drag-move.png" />
-    <Content Include="Content\images\EIMC-logo.png" />
+    <Content Include="Content\images\E-Hub_logo.png" />
+    <Content Include="Content\images\E-Hub_logo_transparent.png" />
+    <Content Include="Content\images\EIMC-logo1.png" />
     <Content Include="Content\images\faces\face1.jpg" />
     <Content Include="Content\images\faces\face10.jpg" />
     <Content Include="Content\images\faces\face11.jpg" />
@@ -2395,7 +2432,6 @@
     <Content Include="Content\images\faces\face8.jpg" />
     <Content Include="Content\images\faces\face9.jpg" />
     <Content Include="Content\images\favicon.ico" />
-    <Content Include="Content\images\favicon.png" />
     <Content Include="Content\images\glyphicons-white.png" />
     <Content Include="Content\images\glyphicons-white.svg" />
     <Content Include="Content\images\glyphicons.png" />
@@ -2484,6 +2520,7 @@
     <Content Include="Content\uploads\Quantities.json" />
     <Content Include="Content\uploads\SubTypes.json" />
     <Content Include="Content\uploads\TaxTypes.json" />
+    <Content Include="Content\images\E-Hub-logo %284%29.zip" />
     <None Include="Scripts\jquery-3.6.0.intellisense.js" />
     <Content Include="Scripts\jquery-3.6.0.js" />
     <Content Include="Scripts\jquery-3.6.0.min.js" />
@@ -2499,7 +2536,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Unity.Mvc3.README.txt" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -2563,6 +2599,18 @@
     <Content Include="Views\Report\top_goods_usage.cshtml" />
     <Content Include="Views\Taxpayer\taxpayer_details.cshtml" />
     <Content Include="Views\Document\new_document.cshtml" />
+    <Content Include="Views\BusinessGroup\Create.cshtml" />
+    <Content Include="Views\BusinessGroup\Delete.cshtml" />
+    <Content Include="Views\BusinessGroup\Details.cshtml" />
+    <Content Include="Views\BusinessGroup\Edit.cshtml" />
+    <Content Include="Views\BusinessGroup\EditPartial.cshtml" />
+    <Content Include="Views\BusinessGroup\Index.cshtml" />
+    <Content Include="Views\BusinessGroup\MyProfile.cshtml" />
+    <Content Include="Views\BusinessGroup\View.cshtml" />
+    <Content Include="Views\Account\ChangePassword.cshtml" />
+    <Content Include="Views\Report\invalidreasons.cshtml" />
+    <Content Include="Views\Document\edit_document.cshtml" />
+    <Content Include="NLog.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -2625,7 +2673,9 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets'))" />
   </Target>
+  <Import Project="..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets" Condition="Exists('..\packages\Microsoft.Extensions.Logging.Abstractions.6.0.0\build\Microsoft.Extensions.Logging.Abstractions.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

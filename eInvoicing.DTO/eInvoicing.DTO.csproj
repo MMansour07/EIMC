@@ -47,7 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AttributeDTO.cs" />
+    <Compile Include="CancelDocumentRq.cs" />
+    <Compile Include="ChangePasswordDTO.cs" />
     <Compile Include="CurrencyDTO.cs" />
+    <Compile Include="InvalidDocumentsReasonsDTO.cs" />
     <Compile Include="SubTypeDTO.cs" />
     <Compile Include="TaxTypeDTO.cs" />
     <Compile Include="QuantityDTO.cs" />
@@ -149,8 +152,9 @@
     <Compile Include="UpdateCodeRequestDTO.cs" />
     <Compile Include="UpdateEGSCodeUsageRequestDTO.cs" />
     <Compile Include="RoleDTO.cs" />
-    <Compile Include="UserRoleDTO.cs" />
     <Compile Include="UserDTO.cs" />
+    <Compile Include="UserRoleDTO.cs" />
+    <Compile Include="BusinessGroupDTO.cs" />
     <Compile Include="ValidationResultsDTO.cs" />
     <Compile Include="ValidationStepResultDTO.cs" />
     <Compile Include="ErrorDTO.cs" />

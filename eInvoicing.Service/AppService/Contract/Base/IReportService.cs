@@ -11,9 +11,11 @@ namespace eInvoicing.Service.AppService.Contract.Base
 {
     public interface IReportService
     {
+        void GetTheConnectionString(string ConnectionString);
         PagedList<SubmittedDocumentsDTO> GetSubmittedDocumentsStats(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
         IEnumerable<GoodsModel> GetMonthlyBestSeller(int SpecificDate);
         IEnumerable<GoodsModel> GetMonthlyLowestSeller(int SpecificDate);
         PagedList<GoodsModel> GetTopGoodsUsage(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
+        PagedList<InvalidDocumentsReasonsDTO> GetInvalidDocumentReasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
     }
 }

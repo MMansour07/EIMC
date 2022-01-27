@@ -14,5 +14,10 @@ namespace eInvoicing.API.Models
         string submissionurl { get; set; }
         string client_id { get; set; }
         string client_secret { get; set; }
+        string InternalAPIURL { get; set; }
+        string pin { get; set; }
+        void GetBusinessGroupId(string BusinessGroupId);
+        void SetBusinessGroup(string BusinessGroup);
+        bool IsDBSync(string BusinessGroup);
     }
 }

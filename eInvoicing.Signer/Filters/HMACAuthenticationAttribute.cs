@@ -155,7 +155,7 @@ namespace eInvoicing.API.Filters
             //}
 
             DateTime epochStart = new DateTime(1970, 01, 01, 0, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan currentTs = DateTime.UtcNow - epochStart;
+            TimeSpan currentTs = DateTime.Now - epochStart;
 
             var serverTotalSeconds = Convert.ToUInt64(currentTs.TotalSeconds);
             var requestTotalSeconds = Convert.ToUInt64(requestTimeStamp);

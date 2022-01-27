@@ -167,6 +167,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppService\Contract\Base\IBusinessGroupService.cs" />
     <Compile Include="AppService\Contract\Base\ITaxpayerService.cs" />
     <Compile Include="AppService\Contract\Base\IRoleService.cs" />
     <Compile Include="AppService\Contract\Base\IInternalAuthService.cs" />
@@ -181,6 +182,7 @@
     <Compile Include="AppService\Contract\Base\IDocumentService.cs" />
     <Compile Include="AppService\Contract\Base\INotificationService.cs" />
     <Compile Include="AppService\Contract\Base\IService.cs" />
+    <Compile Include="AppService\Implementation\BusinessGroupService.cs" />
     <Compile Include="AppService\Implementation\TaxpayerService.cs" />
     <Compile Include="AppService\Implementation\RoleService.cs" />
     <Compile Include="AppService\Implementation\InternalAuthService.cs" />

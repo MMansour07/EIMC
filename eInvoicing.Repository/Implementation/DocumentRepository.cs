@@ -16,5 +16,16 @@ namespace eInvoicing.Repository.Implementation
         {
 
         }
+        public Document GetDocumentByuuid(string uuid)
+        {
+            try
+            {
+                return DbSet.AsNoTracking().FirstOrDefault(x => x.uuid == uuid);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

@@ -11,11 +11,16 @@ namespace eInvoicing.Service.AppService.Contract.Base
 {
     public interface IDocumentService
     {
+        bool DeleteDocument(string Id);
+        void CreateNewDocumentWithOldId(NewDocumentVM obj);
+        NewDocumentVM GetDocumentByInternalId(string InternalId);
+        bool EditDocument(NewDocumentVM obj);
+        void GetTheConnectionString(string ConnectionString);
         void GetRecentDocuments_ETA(string URL, string Key, int DailyInvoicesAverage);
         GetRecentDocumentsResponse GetRecentDocuments_ETA2(string URL, string Key, int pageNo, int pageSize);
         GetDocumentResponse GetDocument_ETA(string URL, string Key, string uuid);
-        Task<HttpContent> GetDocumentPrintOut(string URL, string Key, string uuid);
-        int CancelDocument(string URL, string Key, string uuid, string reason);
+        HttpResponseMessage GetDocumentPrintOut(string URL, string Key, string uuid);
+        bool CancelDocument(string URL, string Key, string uuid, string reason);
         int RejectDocument(string URL, string Key, string uuid, string reason);
         int DeclineDocumentCancellation(string URL, string Key, string uuid);
         int DeclineDocumentRejection(string URL, string Key, string uuid);
@@ -29,5 +34,8 @@ namespace eInvoicing.Service.AppService.Contract.Base
         DocumentVM GetDocumentByuuid(string uuid);
         void UpdateDocuments(DocumentSubmissionDTO obj, string submittedBy);
         void CreateNewDocument(NewDocumentVM obj);
+        void GetInvalidDocumentsReasone(string URL, string Key);
+        void UpdateDocumentByInternalId(string InternalId);
+        //bool RequestDocumentCancellation(string uuid, string reason);
     }
 }

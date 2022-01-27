@@ -72,14 +72,18 @@ namespace eInvoicing.Service.Helper
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim(ClaimTypes.Name, obj.UserName));
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, obj.Id));
-                foreach (var item in obj.stringfiedRoles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, item));
-                }
-                foreach (var item in obj.stringfiedPermissions)
-                {
-                    claims.Add(new Claim("Permission", item));
-                }
+                claims.Add(new Claim("BusinessGroup", obj.BusinessGroup));
+                claims.Add(new Claim("IsDBSync", obj.IsDBSync.ToString()));
+                claims.Add(new Claim("BusinessGroupId", obj.BusinessGroupId));
+                claims.Add(new Claim("Token", obj.Token));
+                //foreach (var item in obj.stringfiedRoles)
+                //{
+                //    claims.Add(new Claim(ClaimTypes.Role, item));
+                //}
+                //foreach (var item in obj.stringfiedPermissions)
+                //{
+                //    claims.Add(new Claim("Permission", item));
+                //}
                 return claims.ToArray();
             }
 

@@ -10,10 +10,11 @@ namespace eInvoicing.Service.AppService.Contract.Base
         UserDTO Login(string UserName, string Password);
         bool Register(RegistrationModelDTO user);
         bool UserExists(string UserName);
-        IEnumerable<UserDTO> GetUsers();
+        IEnumerable<UserDTO> GetUsers(string BusinessGroupId, string LoggedinUserName);
         EditModelDTO GetUser(string Id);
         bool Edit(EditModelDTO obj);
         bool Delete(string id);
         List<PermissionDTO> GetPermissions();
+        bool ChangePassword(ChangePasswordDTO model);
     }
 }

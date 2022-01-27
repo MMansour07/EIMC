@@ -1,0 +1,2002 @@
+﻿
+
+@model eInvoicing.DTO.NewDocumentVM
+<link href="~/Content/assets/css/pages/wizard/wizard-4.css?v=7.0.6" rel="stylesheet" type="text/css" />
+<style>
+    .select2 {
+        width: 100% !important;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $("select[name=IssuerCountry").val("@Model.IssuerCountry").change();
+        $("select[name=ReceiverCountry").val("@Model.ReceiverCountry").change();
+        var arObj = {};
+        var arObj1 = {};
+        //var i = 1;
+            @foreach (var d in Model.InvoiceLines)
+            {
+                @:arObj["ItemCode"] = "@d.ItemCode";
+                @:arObj["ItemType"] = "@d.ItemType";
+                @:arObj["InternalCode"] = "@d.InternalCode";
+                @:arObj["InternalId"] = "@d.Id";
+                @:arObj["UnitType"] = "@d.UnitType";
+                @:arObj["Quantity"] = "@d.Quantity";
+                @:arObj["SalesTotal"] = "@d.SalesTotal";
+                @:arObj["Total"] = "@d.Total";
+                @:arObj["ValueDifference"] = "@d.ValueDifference";
+                @:arObj["TotalTaxableFees"] = "@d.TotalTaxableFees";
+                //@:arObj["TotalTax"] = "@d";
+                @:arObj["NetTotal"] = "@d.NetTotal";
+                @:arObj["ItemsDiscount"] = "@d.ItemsDiscount";
+                @:arObj["Description"] = "@d.Description";
+                @:arObj["CurrencySold"] = "@d.CurrencySold";
+                @:arObj["AmountEGP"] = "@d.AmountEGP";
+                @:arObj["AmountSold"] = "@d.AmountSold";
+                @:arObj["CurrencyExchangeRate"] = "@d.CurrencyExchangeRate";
+                @:arObj["Rate"] = "@d.DiscountRate";
+                @:arObj["Amount"] = "@d.DiscountAmount";
+                @:arObj["Id"] = "@d.Id";
+                @:TaxableItems = [];
+                foreach (var x in d.TaxableItems)
+                {
+                    @:arObj1["Id"] = "@x.Id";
+                    @:arObj1["InternalId"] = "@x.InternalId";
+                    @:arObj1["TaxType"] = "@x.TaxType";
+                    @:arObj1["SubType"] = "@x.SubType";
+                    @:arObj1["Rate"] =    "@x.Rate";
+                    @:arObj1["Amount"] =  "@x.Amount";
+                    @:arObj1["InvoiceLineId"] =  "@d.Id";
+                    @:TaxableItems.push(arObj1);
+                    @:arObj1 = {};
+                }
+                @:arObj["TaxableItems"] = TaxableItems;
+                @*@:$("select[name='[" + i + "][UnitType]']").val("@d.UnitType").change();
+                @:$("select[name='[" + i + "][CurrencySold]']").val("@d.CurrencySold").change();*@
+                @:Lines.push(arObj);
+                //@:i++;
+                @:arObj = {};
+            }
+
+        console.log(Lines);
+    });
+</script>
+<div class="container-fluid">
+    <!--begin::Subheader-->
+    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
+        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+            <!--begin::Info-->
+            <div class="d-flex align-items-center flex-wrap mr-1">
+
+                <!--begin::Page Heading-->
+                <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <!--begin::Page Title-->
+                    <h5 class="text-light font-weight-bold my-1 mr-5">
+                        New Document
+                    </h5>
+                    <!--end::Page Title-->
+                    <!--begin::Breadcrumb-->
+                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("Index", "Master")" class="text-muted">
+                                Home
+                            </a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="javascript:window.location.reload();" class="text-muted">
+                                New Document
+                            </a>
+                        </li>
+                    </ul>
+                    <!--end::Breadcrumb-->
+                </div>
+                <!--end::Page Heading-->
+            </div>
+            <!--end::Info-->
+        </div>
+
+        <div class="topbar-item" style="margin-right:25px !important">
+            @using System.Security.Claims;
+            @using Microsoft.AspNet.Identity;
+            @if (Request.IsAuthenticated)
+            {
+                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <a class="btn btn-icon btn-icon-mobile w-auto btn-hover-bg-dark d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                        <div class="d-flex flex-column text-right pr-3">
+                            <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                        </div>
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-light">
+                            <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
+                        <a class="dropdown-item" href="@Url.Action("myprofile", "user")">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                        <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
+                                        <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
+                        </a>
+                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24" />
+                                        <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
+                                        <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
+                                        <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
+                        </a>
+                    </div>
+                }
+
+            }
+        </div>
+    </div>
+    <!--end::Subheader-->
+    <!--Form-->
+    <div class="card card-custom card-transparent">
+        <div class="card-body p-0">
+            <!--begin: Wizard-->
+            <div class="wizard wizard-4" id="kt_wizard_v4" data-wizard-state="step-first" data-wizard-clickable="true">
+                <!--begin: Wizard Nav-->
+                <div class="wizard-nav">
+                    <div class="wizard-steps">
+                        <!--begin::Wizard Step 1 Nav-->
+                        <div class="wizard-step" data-wizard-type="step" data-wizard-state="current">
+                            <div class="wizard-wrapper">
+                                <div class="wizard-number">
+                                    1
+                                </div>
+                                <div class="wizard-label">
+                                    <div class="wizard-title">
+                                        Basic Information
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 1 Nav-->
+                        <!--begin::Wizard Step 2 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-wrapper">
+                                <div class="wizard-number">
+                                    2
+                                </div>
+                                <div class="wizard-label">
+                                    <div class="wizard-title">
+                                        Issuer & Receiver
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 2 Nav-->
+                        <!--begin::Wizard Step 3 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-wrapper">
+                                <div class="wizard-number">
+                                    3
+                                </div>
+                                <div class="wizard-label">
+                                    <div class="wizard-title">
+                                        Line Items
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 3 Nav-->
+                        <!--begin::Wizard Step 4 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-wrapper">
+                                <div class="wizard-number">
+                                    4
+                                </div>
+                                <div class="wizard-label">
+                                    <div class="wizard-title">
+                                        Order & Payment
+                                    </div>
+                                    @*<div class="wizard-desc">
+                                            Review and Submit
+                                        </div>*@
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 4 Nav-->
+                        <!--begin::Wizard Step 5 Nav-->
+                        <div class="wizard-step" data-wizard-type="step">
+                            <div class="wizard-wrapper">
+                                <div class="wizard-number">
+                                    5
+                                </div>
+                                <div class="wizard-label">
+                                    <div class="wizard-title">
+                                        Delivery
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Wizard Step 5 Nav-->
+                    </div>
+                </div>
+                <!--end: Wizard Nav-->
+                <!--begin: Wizard Body-->
+                <div class="card card-custom card-shadowless rounded-top-0">
+                    <div class="card-body p-0">
+                        <div class="row justify-content-center py-8 px-8 py-lg-15 px-lg-10">
+                            <div class="col-xl-12">
+                                <!--begin: Wizard Form-->
+                                @using System.Security.Claims;
+                                @using Microsoft.AspNet.Identity;
+                                @if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("ajax_new_document", "document", FormMethod.Post, new { id = "kt_form", @class = "form mt-0 mt-lg-10" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        <!--begin: Wizard Step 1-->
+                                        @Html.HiddenFor(model => model.Id)
+                                        <div class="pb-5" data-wizard-type="step-content" data-wizard-state="current">
+                                            <div class="font-weight-bold text-dark">Basic Information: Full Invoice</div>
+                                            <hr class="mb-10" />
+                                            <!--begin::Input-->
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Type Of Document</label>
+                                                        @Html.DropDownListFor(Model => Model.DocumentType, new List<SelectListItem>() { new SelectListItem { Text = "Invoice", Value = "I" },
+                                                       new SelectListItem { Text = "Credit", Value = "C" }, new SelectListItem { Text = "Debit", Value = "D" } }, new { @class = "form-control form-control-lg", @name = "DocumentType" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Document Version</label>
+                                                        @Html.DropDownListFor(Model => Model.DocumentTypeVersion, new List<SelectListItem>() { new SelectListItem { Text = "0.9", Value = "0.9" },
+                                                       new SelectListItem { Text = "1.0", Value = "1.0" } }, new { @class = "form-control form-control-lg", @name = "DocumentTypeVersion" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                @*<div class="col-md-6">
+                            <div class="form-group">
+                                <label>Internal ID </label>
+                                @Html.TextBoxFor(model => model.Id, new { @class = "form-control", @placeholder = "Internal ID", @name = "InternalId" })
+                            </div>
+                        </div>*@
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Time Issued</label>
+                                                        @Html.TextBoxFor(model => model.DateTimeIssued, new { @Value = "Auto", @class = "form-control form-control-solid", @reaodonly = "readonly", @placeholder = "Auto", @name = "Id" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end: Wizard Step 1-->
+                                        <!--begin: Wizard Step 2-->
+                                        <div class="pb-5" data-wizard-type="step-content">
+                                            <div class="font-weight-bold text-dark">Issuer & Receiver</div>
+                                            <hr class="mb-10" />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="card gutter-b">
+                                                        <div class="card-header bg-light">
+                                                            <div class="card-title">
+                                                                <h6 class="card-label">
+                                                                    Issuer (From)
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Name</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerName, new { @class = "form-control form-control-solid", @readonly = "readonly", @name = "IssuerName" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Registration Number</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerId, new { @class = "form-control form-control-solid", @readonly = "readonly", @name = "IssuerId" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Issuer Type</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerType, new { @class = "form-control form-control-solid", @Value = "Business", @readonly = "readonly", @name = "IssuerType" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Tax Activity Code *</label>
+                                                                        @Html.TextBoxFor(model => model.TaxpayerActivityCode, new { @class = "form-control", @placeholder = "Tax Activity Code", @name = "TaxpayerActivityCode" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Country *</label>
+                                                                        <div>
+                                                                            <select class="form-control form-control-lg _custom-select" id="kt_select2_1" name="IssuerCountry">
+                                                                                <option value="">Select</option>
+                                                                                <option value="AF">Afghanistan</option>
+                                                                                <option value="AX">Åland Islands</option>
+                                                                                <option value="AL">Albania</option>
+                                                                                <option value="DZ">Algeria</option>
+                                                                                <option value="AS">American Samoa</option>
+                                                                                <option value="AD">Andorra</option>
+                                                                                <option value="AO">Angola</option>
+                                                                                <option value="AI">Anguilla</option>
+                                                                                <option value="AQ">Antarctica</option>
+                                                                                <option value="AG">Antigua and Barbuda</option>
+                                                                                <option value="AR">Argentina</option>
+                                                                                <option value="AM">Armenia</option>
+                                                                                <option value="AW">Aruba</option>
+                                                                                <option value="AU">Australia</option>
+                                                                                <option value="AT">Austria</option>
+                                                                                <option value="AZ">Azerbaijan</option>
+                                                                                <option value="BS">Bahamas</option>
+                                                                                <option value="BH">Bahrain</option>
+                                                                                <option value="BD">Bangladesh</option>
+                                                                                <option value="BB">Barbados</option>
+                                                                                <option value="BY">Belarus</option>
+                                                                                <option value="BE">Belgium</option>
+                                                                                <option value="BZ">Belize</option>
+                                                                                <option value="BJ">Benin</option>
+                                                                                <option value="BM">Bermuda</option>
+                                                                                <option value="BT">Bhutan</option>
+                                                                                <option value="BO">Bolivia, Plurinational State of</option>
+                                                                                <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                                                                <option value="BA">Bosnia and Herzegovina</option>
+                                                                                <option value="BW">Botswana</option>
+                                                                                <option value="BV">Bouvet Island</option>
+                                                                                <option value="BR">Brazil</option>
+                                                                                <option value="IO">British Indian Ocean Territory</option>
+                                                                                <option value="BN">Brunei Darussalam</option>
+                                                                                <option value="BG">Bulgaria</option>
+                                                                                <option value="BF">Burkina Faso</option>
+                                                                                <option value="BI">Burundi</option>
+                                                                                <option value="KH">Cambodia</option>
+                                                                                <option value="CM">Cameroon</option>
+                                                                                <option value="CA">Canada</option>
+                                                                                <option value="CV">Cape Verde</option>
+                                                                                <option value="KY">Cayman Islands</option>
+                                                                                <option value="CF">Central African Republic</option>
+                                                                                <option value="TD">Chad</option>
+                                                                                <option value="CL">Chile</option>
+                                                                                <option value="CN">China</option>
+                                                                                <option value="CX">Christmas Island</option>
+                                                                                <option value="CC">Cocos (Keeling) Islands</option>
+                                                                                <option value="CO">Colombia</option>
+                                                                                <option value="KM">Comoros</option>
+                                                                                <option value="CG">Congo</option>
+                                                                                <option value="CD">Congo, the Democratic Republic of the</option>
+                                                                                <option value="CK">Cook Islands</option>
+                                                                                <option value="CR">Costa Rica</option>
+                                                                                <option value="CI">Côte d'Ivoire</option>
+                                                                                <option value="HR">Croatia</option>
+                                                                                <option value="CU">Cuba</option>
+                                                                                <option value="CW">Curaçao</option>
+                                                                                <option value="CY">Cyprus</option>
+                                                                                <option value="CZ">Czech Republic</option>
+                                                                                <option value="DK">Denmark</option>
+                                                                                <option value="DJ">Djibouti</option>
+                                                                                <option value="DM">Dominica</option>
+                                                                                <option value="DO">Dominican Republic</option>
+                                                                                <option value="EC">Ecuador</option>
+                                                                                <option value="EG">Egypt</option>
+                                                                                <option value="SV">El Salvador</option>
+                                                                                <option value="GQ">Equatorial Guinea</option>
+                                                                                <option value="ER">Eritrea</option>
+                                                                                <option value="EE">Estonia</option>
+                                                                                <option value="ET">Ethiopia</option>
+                                                                                <option value="FK">Falkland Islands (Malvinas)</option>
+                                                                                <option value="FO">Faroe Islands</option>
+                                                                                <option value="FJ">Fiji</option>
+                                                                                <option value="FI">Finland</option>
+                                                                                <option value="FR">France</option>
+                                                                                <option value="GF">French Guiana</option>
+                                                                                <option value="PF">French Polynesia</option>
+                                                                                <option value="TF">French Southern Territories</option>
+                                                                                <option value="GA">Gabon</option>
+                                                                                <option value="GM">Gambia</option>
+                                                                                <option value="GE">Georgia</option>
+                                                                                <option value="DE">Germany</option>
+                                                                                <option value="GH">Ghana</option>
+                                                                                <option value="GI">Gibraltar</option>
+                                                                                <option value="GR">Greece</option>
+                                                                                <option value="GL">Greenland</option>
+                                                                                <option value="GD">Grenada</option>
+                                                                                <option value="GP">Guadeloupe</option>
+                                                                                <option value="GU">Guam</option>
+                                                                                <option value="GT">Guatemala</option>
+                                                                                <option value="GG">Guernsey</option>
+                                                                                <option value="GN">Guinea</option>
+                                                                                <option value="GW">Guinea-Bissau</option>
+                                                                                <option value="GY">Guyana</option>
+                                                                                <option value="HT">Haiti</option>
+                                                                                <option value="HM">Heard Island and McDonald Islands</option>
+                                                                                <option value="VA">Holy See (Vatican City State)</option>
+                                                                                <option value="HN">Honduras</option>
+                                                                                <option value="HK">Hong Kong</option>
+                                                                                <option value="HU">Hungary</option>
+                                                                                <option value="IS">Iceland</option>
+                                                                                <option value="IN">India</option>
+                                                                                <option value="ID">Indonesia</option>
+                                                                                <option value="IR">Iran, Islamic Republic of</option>
+                                                                                <option value="IQ">Iraq</option>
+                                                                                <option value="IE">Ireland</option>
+                                                                                <option value="IM">Isle of Man</option>
+                                                                                <option value="IL">Israel</option>
+                                                                                <option value="IT">Italy</option>
+                                                                                <option value="JM">Jamaica</option>
+                                                                                <option value="JP">Japan</option>
+                                                                                <option value="JE">Jersey</option>
+                                                                                <option value="JO">Jordan</option>
+                                                                                <option value="KZ">Kazakhstan</option>
+                                                                                <option value="KE">Kenya</option>
+                                                                                <option value="KI">Kiribati</option>
+                                                                                <option value="KP">Korea, Democratic People's Republic of</option>
+                                                                                <option value="KR">Korea, Republic of</option>
+                                                                                <option value="KW">Kuwait</option>
+                                                                                <option value="KG">Kyrgyzstan</option>
+                                                                                <option value="LA">Lao People's Democratic Republic</option>
+                                                                                <option value="LV">Latvia</option>
+                                                                                <option value="LB">Lebanon</option>
+                                                                                <option value="LS">Lesotho</option>
+                                                                                <option value="LR">Liberia</option>
+                                                                                <option value="LY">Libya</option>
+                                                                                <option value="LI">Liechtenstein</option>
+                                                                                <option value="LT">Lithuania</option>
+                                                                                <option value="LU">Luxembourg</option>
+                                                                                <option value="MO">Macao</option>
+                                                                                <option value="MK">Macedonia, the former Yugoslav Republic of</option>
+                                                                                <option value="MG">Madagascar</option>
+                                                                                <option value="MW">Malawi</option>
+                                                                                <option value="MY">Malaysia</option>
+                                                                                <option value="MV">Maldives</option>
+                                                                                <option value="ML">Mali</option>
+                                                                                <option value="MT">Malta</option>
+                                                                                <option value="MH">Marshall Islands</option>
+                                                                                <option value="MQ">Martinique</option>
+                                                                                <option value="MR">Mauritania</option>
+                                                                                <option value="MU">Mauritius</option>
+                                                                                <option value="YT">Mayotte</option>
+                                                                                <option value="MX">Mexico</option>
+                                                                                <option value="FM">Micronesia, Federated States of</option>
+                                                                                <option value="MD">Moldova, Republic of</option>
+                                                                                <option value="MC">Monaco</option>
+                                                                                <option value="MN">Mongolia</option>
+                                                                                <option value="ME">Montenegro</option>
+                                                                                <option value="MS">Montserrat</option>
+                                                                                <option value="MA">Morocco</option>
+                                                                                <option value="MZ">Mozambique</option>
+                                                                                <option value="MM">Myanmar</option>
+                                                                                <option value="NA">Namibia</option>
+                                                                                <option value="NR">Nauru</option>
+                                                                                <option value="NP">Nepal</option>
+                                                                                <option value="NL">Netherlands</option>
+                                                                                <option value="NC">New Caledonia</option>
+                                                                                <option value="NZ">New Zealand</option>
+                                                                                <option value="NI">Nicaragua</option>
+                                                                                <option value="NE">Niger</option>
+                                                                                <option value="NG">Nigeria</option>
+                                                                                <option value="NU">Niue</option>
+                                                                                <option value="NF">Norfolk Island</option>
+                                                                                <option value="MP">Northern Mariana Islands</option>
+                                                                                <option value="NO">Norway</option>
+                                                                                <option value="OM">Oman</option>
+                                                                                <option value="PK">Pakistan</option>
+                                                                                <option value="PW">Palau</option>
+                                                                                <option value="PS">Palestinian Territory, Occupied</option>
+                                                                                <option value="PA">Panama</option>
+                                                                                <option value="PG">Papua New Guinea</option>
+                                                                                <option value="PY">Paraguay</option>
+                                                                                <option value="PE">Peru</option>
+                                                                                <option value="PH">Philippines</option>
+                                                                                <option value="PN">Pitcairn</option>
+                                                                                <option value="PL">Poland</option>
+                                                                                <option value="PT">Portugal</option>
+                                                                                <option value="PR">Puerto Rico</option>
+                                                                                <option value="QA">Qatar</option>
+                                                                                <option value="RE">Réunion</option>
+                                                                                <option value="RO">Romania</option>
+                                                                                <option value="RU">Russian Federation</option>
+                                                                                <option value="RW">Rwanda</option>
+                                                                                <option value="BL">Saint Barthélemy</option>
+                                                                                <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+                                                                                <option value="KN">Saint Kitts and Nevis</option>
+                                                                                <option value="LC">Saint Lucia</option>
+                                                                                <option value="MF">Saint Martin (French part)</option>
+                                                                                <option value="PM">Saint Pierre and Miquelon</option>
+                                                                                <option value="VC">Saint Vincent and the Grenadines</option>
+                                                                                <option value="WS">Samoa</option>
+                                                                                <option value="SM">San Marino</option>
+                                                                                <option value="ST">Sao Tome and Principe</option>
+                                                                                <option value="SA">Saudi Arabia</option>
+                                                                                <option value="SN">Senegal</option>
+                                                                                <option value="RS">Serbia</option>
+                                                                                <option value="SC">Seychelles</option>
+                                                                                <option value="SL">Sierra Leone</option>
+                                                                                <option value="SG">Singapore</option>
+                                                                                <option value="SX">Sint Maarten (Dutch part)</option>
+                                                                                <option value="SK">Slovakia</option>
+                                                                                <option value="SI">Slovenia</option>
+                                                                                <option value="SB">Solomon Islands</option>
+                                                                                <option value="SO">Somalia</option>
+                                                                                <option value="ZA">South Africa</option>
+                                                                                <option value="GS">South Georgia and the South Sandwich Islands</option>
+                                                                                <option value="SS">South Sudan</option>
+                                                                                <option value="ES">Spain</option>
+                                                                                <option value="LK">Sri Lanka</option>
+                                                                                <option value="SD">Sudan</option>
+                                                                                <option value="SR">Suriname</option>
+                                                                                <option value="SJ">Svalbard and Jan Mayen</option>
+                                                                                <option value="SZ">Swaziland</option>
+                                                                                <option value="SE">Sweden</option>
+                                                                                <option value="CH">Switzerland</option>
+                                                                                <option value="SY">Syrian Arab Republic</option>
+                                                                                <option value="TW">Taiwan, Province of China</option>
+                                                                                <option value="TJ">Tajikistan</option>
+                                                                                <option value="TZ">Tanzania, United Republic of</option>
+                                                                                <option value="TH">Thailand</option>
+                                                                                <option value="TL">Timor-Leste</option>
+                                                                                <option value="TG">Togo</option>
+                                                                                <option value="TK">Tokelau</option>
+                                                                                <option value="TO">Tonga</option>
+                                                                                <option value="TT">Trinidad and Tobago</option>
+                                                                                <option value="TN">Tunisia</option>
+                                                                                <option value="TR">Turkey</option>
+                                                                                <option value="TM">Turkmenistan</option>
+                                                                                <option value="TC">Turks and Caicos Islands</option>
+                                                                                <option value="TV">Tuvalu</option>
+                                                                                <option value="UG">Uganda</option>
+                                                                                <option value="UA">Ukraine</option>
+                                                                                <option value="AE">United Arab Emirates</option>
+                                                                                <option value="GB">United Kingdom</option>
+                                                                                <option value="US">United States</option>
+                                                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                                                <option value="UY">Uruguay</option>
+                                                                                <option value="UZ">Uzbekistan</option>
+                                                                                <option value="VU">Vanuatu</option>
+                                                                                <option value="VE">Venezuela, Bolivarian Republic of</option>
+                                                                                <option value="VN">Viet Nam</option>
+                                                                                <option value="VG">Virgin Islands, British</option>
+                                                                                <option value="VI">Virgin Islands, U.S.</option>
+                                                                                <option value="WF">Wallis and Futuna</option>
+                                                                                <option value="EH">Western Sahara</option>
+                                                                                <option value="YE">Yemen</option>
+                                                                                <option value="ZM">Zambia</option>
+                                                                                <option value="ZW">Zimbabwe</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Governorate *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerGovernorate, new { @class = "form-control", @placeholder = "Governorate", @name = "IssuerGovernorate" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>City *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerRegionCity, new { @class = "form-control", @placeholder = "City", @name = "IssuerRegionCity" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Building Name/No *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerBuildingNumber, new { @class = "form-control", @placeholder = "Building Name/No", @name = "IssuerBuildingNumber" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Floor No. *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerFloor, new { @class = "form-control", @placeholder = "Floor No.", @name = "IssuerFloor" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Street Name *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerStreet, new { @class = "form-control", @placeholder = "Street Name", @name = "IssuerStreet" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Branch Code *</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerBranchId, new { @class = "form-control", @placeholder = "Branch Code", @name = "IssuerBranchId" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Postal Code</label>
+                                                                        @Html.TextBoxFor(model => model.IssuerPostalCode, new { @class = "form-control", @placeholder = "Postal Code", @name = "IssuerPostalCode" })
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Additional Information (eg.closest landmark/street corner)</label>
+                                                                        @Html.TextAreaFor(model => model.IssuerAdditionalInformation, new { @class = "form-control", @placeholder = "Additional Information (eg.closest landmark/street corner)", @row = "8", @name = "IssuerBuildingNumber" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="card gutter-b">
+                                                        <div class="card-header bg-light">
+                                                            <div class="card-title">
+                                                                <h6 class="card-label">
+                                                                    Receiver (To)
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Type *</label>
+                                                                        @Html.DropDownListFor(Model => Model.ReceiverType, new List<SelectListItem>() {new SelectListItem { Text = "Select", Value = "" }, new SelectListItem { Text = "Business", Value = "B" },
+                                                                       new SelectListItem { Text = "Personal", Value = "P" }, new SelectListItem { Text = "Foriegner", Value = "F" }}, new { @class = "form-control form-control-lg", @name = "ReceiverType", @onchange = "onTypeChanged(this.value)" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="name-lbl">Name</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverName, new { @class = "form-control req", @placeholder = "Name", @name = "ReceiverName" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group" id="RGN">
+                                                                        <label>Registration Number *</label>
+                                                                        @Html.TextBoxFor(model => model.RGN, new { @class = "form-control", @name = "RGN", @id = "rgn", @placeholder = "Registration Number" })
+                                                                    </div>
+                                                                    <div class="form-group" id="NID">
+                                                                        <label id="id-lbl">National Id</label>
+                                                                        @Html.TextBoxFor(model => model.NID, new { @class = "form-control", @name = "NID", @id = "nid", @placeholder = "National Id" })
+                                                                    </div>
+                                                                    <div class="form-group" id="PID">
+                                                                        <label>Id</label>
+                                                                        @Html.TextBoxFor(model => model.PID, new { @class = "form-control", @name = "PID", @id = "pid", @placeholder = "National Id" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="country-lbl">Country </label>
+                                                                        <div>
+                                                                            <select name="ReceiverCountry" id="kt_select2_2" class="form-control form-control-lg req  _custom-select">
+                                                                                <option value="">Select</option>
+                                                                                <option value="AF">Afghanistan</option>
+                                                                                <option value="AX">Åland Islands</option>
+                                                                                <option value="AL">Albania</option>
+                                                                                <option value="DZ">Algeria</option>
+                                                                                <option value="AS">American Samoa</option>
+                                                                                <option value="AD">Andorra</option>
+                                                                                <option value="AO">Angola</option>
+                                                                                <option value="AI">Anguilla</option>
+                                                                                <option value="AQ">Antarctica</option>
+                                                                                <option value="AG">Antigua and Barbuda</option>
+                                                                                <option value="AR">Argentina</option>
+                                                                                <option value="AM">Armenia</option>
+                                                                                <option value="AW">Aruba</option>
+                                                                                <option value="AU">Australia</option>
+                                                                                <option value="AT">Austria</option>
+                                                                                <option value="AZ">Azerbaijan</option>
+                                                                                <option value="BS">Bahamas</option>
+                                                                                <option value="BH">Bahrain</option>
+                                                                                <option value="BD">Bangladesh</option>
+                                                                                <option value="BB">Barbados</option>
+                                                                                <option value="BY">Belarus</option>
+                                                                                <option value="BE">Belgium</option>
+                                                                                <option value="BZ">Belize</option>
+                                                                                <option value="BJ">Benin</option>
+                                                                                <option value="BM">Bermuda</option>
+                                                                                <option value="BT">Bhutan</option>
+                                                                                <option value="BO">Bolivia, Plurinational State of</option>
+                                                                                <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                                                                <option value="BA">Bosnia and Herzegovina</option>
+                                                                                <option value="BW">Botswana</option>
+                                                                                <option value="BV">Bouvet Island</option>
+                                                                                <option value="BR">Brazil</option>
+                                                                                <option value="IO">British Indian Ocean Territory</option>
+                                                                                <option value="BN">Brunei Darussalam</option>
+                                                                                <option value="BG">Bulgaria</option>
+                                                                                <option value="BF">Burkina Faso</option>
+                                                                                <option value="BI">Burundi</option>
+                                                                                <option value="KH">Cambodia</option>
+                                                                                <option value="CM">Cameroon</option>
+                                                                                <option value="CA">Canada</option>
+                                                                                <option value="CV">Cape Verde</option>
+                                                                                <option value="KY">Cayman Islands</option>
+                                                                                <option value="CF">Central African Republic</option>
+                                                                                <option value="TD">Chad</option>
+                                                                                <option value="CL">Chile</option>
+                                                                                <option value="CN">China</option>
+                                                                                <option value="CX">Christmas Island</option>
+                                                                                <option value="CC">Cocos (Keeling) Islands</option>
+                                                                                <option value="CO">Colombia</option>
+                                                                                <option value="KM">Comoros</option>
+                                                                                <option value="CG">Congo</option>
+                                                                                <option value="CD">Congo, the Democratic Republic of the</option>
+                                                                                <option value="CK">Cook Islands</option>
+                                                                                <option value="CR">Costa Rica</option>
+                                                                                <option value="CI">Côte d'Ivoire</option>
+                                                                                <option value="HR">Croatia</option>
+                                                                                <option value="CU">Cuba</option>
+                                                                                <option value="CW">Curaçao</option>
+                                                                                <option value="CY">Cyprus</option>
+                                                                                <option value="CZ">Czech Republic</option>
+                                                                                <option value="DK">Denmark</option>
+                                                                                <option value="DJ">Djibouti</option>
+                                                                                <option value="DM">Dominica</option>
+                                                                                <option value="DO">Dominican Republic</option>
+                                                                                <option value="EC">Ecuador</option>
+                                                                                <option value="EG">Egypt</option>
+                                                                                <option value="SV">El Salvador</option>
+                                                                                <option value="GQ">Equatorial Guinea</option>
+                                                                                <option value="ER">Eritrea</option>
+                                                                                <option value="EE">Estonia</option>
+                                                                                <option value="ET">Ethiopia</option>
+                                                                                <option value="FK">Falkland Islands (Malvinas)</option>
+                                                                                <option value="FO">Faroe Islands</option>
+                                                                                <option value="FJ">Fiji</option>
+                                                                                <option value="FI">Finland</option>
+                                                                                <option value="FR">France</option>
+                                                                                <option value="GF">French Guiana</option>
+                                                                                <option value="PF">French Polynesia</option>
+                                                                                <option value="TF">French Southern Territories</option>
+                                                                                <option value="GA">Gabon</option>
+                                                                                <option value="GM">Gambia</option>
+                                                                                <option value="GE">Georgia</option>
+                                                                                <option value="DE">Germany</option>
+                                                                                <option value="GH">Ghana</option>
+                                                                                <option value="GI">Gibraltar</option>
+                                                                                <option value="GR">Greece</option>
+                                                                                <option value="GL">Greenland</option>
+                                                                                <option value="GD">Grenada</option>
+                                                                                <option value="GP">Guadeloupe</option>
+                                                                                <option value="GU">Guam</option>
+                                                                                <option value="GT">Guatemala</option>
+                                                                                <option value="GG">Guernsey</option>
+                                                                                <option value="GN">Guinea</option>
+                                                                                <option value="GW">Guinea-Bissau</option>
+                                                                                <option value="GY">Guyana</option>
+                                                                                <option value="HT">Haiti</option>
+                                                                                <option value="HM">Heard Island and McDonald Islands</option>
+                                                                                <option value="VA">Holy See (Vatican City State)</option>
+                                                                                <option value="HN">Honduras</option>
+                                                                                <option value="HK">Hong Kong</option>
+                                                                                <option value="HU">Hungary</option>
+                                                                                <option value="IS">Iceland</option>
+                                                                                <option value="IN">India</option>
+                                                                                <option value="ID">Indonesia</option>
+                                                                                <option value="IR">Iran, Islamic Republic of</option>
+                                                                                <option value="IQ">Iraq</option>
+                                                                                <option value="IE">Ireland</option>
+                                                                                <option value="IM">Isle of Man</option>
+                                                                                <option value="IL">Israel</option>
+                                                                                <option value="IT">Italy</option>
+                                                                                <option value="JM">Jamaica</option>
+                                                                                <option value="JP">Japan</option>
+                                                                                <option value="JE">Jersey</option>
+                                                                                <option value="JO">Jordan</option>
+                                                                                <option value="KZ">Kazakhstan</option>
+                                                                                <option value="KE">Kenya</option>
+                                                                                <option value="KI">Kiribati</option>
+                                                                                <option value="KP">Korea, Democratic People's Republic of</option>
+                                                                                <option value="KR">Korea, Republic of</option>
+                                                                                <option value="KW">Kuwait</option>
+                                                                                <option value="KG">Kyrgyzstan</option>
+                                                                                <option value="LA">Lao People's Democratic Republic</option>
+                                                                                <option value="LV">Latvia</option>
+                                                                                <option value="LB">Lebanon</option>
+                                                                                <option value="LS">Lesotho</option>
+                                                                                <option value="LR">Liberia</option>
+                                                                                <option value="LY">Libya</option>
+                                                                                <option value="LI">Liechtenstein</option>
+                                                                                <option value="LT">Lithuania</option>
+                                                                                <option value="LU">Luxembourg</option>
+                                                                                <option value="MO">Macao</option>
+                                                                                <option value="MK">Macedonia, the former Yugoslav Republic of</option>
+                                                                                <option value="MG">Madagascar</option>
+                                                                                <option value="MW">Malawi</option>
+                                                                                <option value="MY">Malaysia</option>
+                                                                                <option value="MV">Maldives</option>
+                                                                                <option value="ML">Mali</option>
+                                                                                <option value="MT">Malta</option>
+                                                                                <option value="MH">Marshall Islands</option>
+                                                                                <option value="MQ">Martinique</option>
+                                                                                <option value="MR">Mauritania</option>
+                                                                                <option value="MU">Mauritius</option>
+                                                                                <option value="YT">Mayotte</option>
+                                                                                <option value="MX">Mexico</option>
+                                                                                <option value="FM">Micronesia, Federated States of</option>
+                                                                                <option value="MD">Moldova, Republic of</option>
+                                                                                <option value="MC">Monaco</option>
+                                                                                <option value="MN">Mongolia</option>
+                                                                                <option value="ME">Montenegro</option>
+                                                                                <option value="MS">Montserrat</option>
+                                                                                <option value="MA">Morocco</option>
+                                                                                <option value="MZ">Mozambique</option>
+                                                                                <option value="MM">Myanmar</option>
+                                                                                <option value="NA">Namibia</option>
+                                                                                <option value="NR">Nauru</option>
+                                                                                <option value="NP">Nepal</option>
+                                                                                <option value="NL">Netherlands</option>
+                                                                                <option value="NC">New Caledonia</option>
+                                                                                <option value="NZ">New Zealand</option>
+                                                                                <option value="NI">Nicaragua</option>
+                                                                                <option value="NE">Niger</option>
+                                                                                <option value="NG">Nigeria</option>
+                                                                                <option value="NU">Niue</option>
+                                                                                <option value="NF">Norfolk Island</option>
+                                                                                <option value="MP">Northern Mariana Islands</option>
+                                                                                <option value="NO">Norway</option>
+                                                                                <option value="OM">Oman</option>
+                                                                                <option value="PK">Pakistan</option>
+                                                                                <option value="PW">Palau</option>
+                                                                                <option value="PS">Palestinian Territory, Occupied</option>
+                                                                                <option value="PA">Panama</option>
+                                                                                <option value="PG">Papua New Guinea</option>
+                                                                                <option value="PY">Paraguay</option>
+                                                                                <option value="PE">Peru</option>
+                                                                                <option value="PH">Philippines</option>
+                                                                                <option value="PN">Pitcairn</option>
+                                                                                <option value="PL">Poland</option>
+                                                                                <option value="PT">Portugal</option>
+                                                                                <option value="PR">Puerto Rico</option>
+                                                                                <option value="QA">Qatar</option>
+                                                                                <option value="RE">Réunion</option>
+                                                                                <option value="RO">Romania</option>
+                                                                                <option value="RU">Russian Federation</option>
+                                                                                <option value="RW">Rwanda</option>
+                                                                                <option value="BL">Saint Barthélemy</option>
+                                                                                <option value="SH">Saint Helena, Ascension and Tristan da Cunha</option>
+                                                                                <option value="KN">Saint Kitts and Nevis</option>
+                                                                                <option value="LC">Saint Lucia</option>
+                                                                                <option value="MF">Saint Martin (French part)</option>
+                                                                                <option value="PM">Saint Pierre and Miquelon</option>
+                                                                                <option value="VC">Saint Vincent and the Grenadines</option>
+                                                                                <option value="WS">Samoa</option>
+                                                                                <option value="SM">San Marino</option>
+                                                                                <option value="ST">Sao Tome and Principe</option>
+                                                                                <option value="SA">Saudi Arabia</option>
+                                                                                <option value="SN">Senegal</option>
+                                                                                <option value="RS">Serbia</option>
+                                                                                <option value="SC">Seychelles</option>
+                                                                                <option value="SL">Sierra Leone</option>
+                                                                                <option value="SG">Singapore</option>
+                                                                                <option value="SX">Sint Maarten (Dutch part)</option>
+                                                                                <option value="SK">Slovakia</option>
+                                                                                <option value="SI">Slovenia</option>
+                                                                                <option value="SB">Solomon Islands</option>
+                                                                                <option value="SO">Somalia</option>
+                                                                                <option value="ZA">South Africa</option>
+                                                                                <option value="GS">South Georgia and the South Sandwich Islands</option>
+                                                                                <option value="SS">South Sudan</option>
+                                                                                <option value="ES">Spain</option>
+                                                                                <option value="LK">Sri Lanka</option>
+                                                                                <option value="SD">Sudan</option>
+                                                                                <option value="SR">Suriname</option>
+                                                                                <option value="SJ">Svalbard and Jan Mayen</option>
+                                                                                <option value="SZ">Swaziland</option>
+                                                                                <option value="SE">Sweden</option>
+                                                                                <option value="CH">Switzerland</option>
+                                                                                <option value="SY">Syrian Arab Republic</option>
+                                                                                <option value="TW">Taiwan, Province of China</option>
+                                                                                <option value="TJ">Tajikistan</option>
+                                                                                <option value="TZ">Tanzania, United Republic of</option>
+                                                                                <option value="TH">Thailand</option>
+                                                                                <option value="TL">Timor-Leste</option>
+                                                                                <option value="TG">Togo</option>
+                                                                                <option value="TK">Tokelau</option>
+                                                                                <option value="TO">Tonga</option>
+                                                                                <option value="TT">Trinidad and Tobago</option>
+                                                                                <option value="TN">Tunisia</option>
+                                                                                <option value="TR">Turkey</option>
+                                                                                <option value="TM">Turkmenistan</option>
+                                                                                <option value="TC">Turks and Caicos Islands</option>
+                                                                                <option value="TV">Tuvalu</option>
+                                                                                <option value="UG">Uganda</option>
+                                                                                <option value="UA">Ukraine</option>
+                                                                                <option value="AE">United Arab Emirates</option>
+                                                                                <option value="GB">United Kingdom</option>
+                                                                                <option value="US">United States</option>
+                                                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                                                <option value="UY">Uruguay</option>
+                                                                                <option value="UZ">Uzbekistan</option>
+                                                                                <option value="VU">Vanuatu</option>
+                                                                                <option value="VE">Venezuela, Bolivarian Republic of</option>
+                                                                                <option value="VN">Viet Nam</option>
+                                                                                <option value="VG">Virgin Islands, British</option>
+                                                                                <option value="VI">Virgin Islands, U.S.</option>
+                                                                                <option value="WF">Wallis and Futuna</option>
+                                                                                <option value="EH">Western Sahara</option>
+                                                                                <option value="YE">Yemen</option>
+                                                                                <option value="ZM">Zambia</option>
+                                                                                <option value="ZW">Zimbabwe</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="governorate-lbl">Governorate</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverGovernorate, new { @class = "form-control", @placeholder = "Governorate", @name = "ReceiverGovernorate" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="city-lbl">City</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverRegionCity, new { @class = "form-control req", @placeholder = "City", @name = "ReceiverRegionCity" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="building-lbl">Building Name/No</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverBuildingNumber, new { @class = "form-control req", @placeholder = "Building Name/No", @name = "ReceiverBuildingNumber" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="floor-lbl">Floor No.</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverFloor, new { @class = "form-control req", @placeholder = "Floor No.", @name = "ReceiverFloor" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label id="street-lbl">Street Name</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverStreet, new { @class = "form-control req", @placeholder = "Street Name", @name = "ReceiverStreet" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Postal Code</label>
+                                                                        @Html.TextBoxFor(model => model.ReceiverPostalCode, new { @class = "form-control", @placeholder = "Postal Code", @name = "ReceiverPostalCode" })
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="form-group">
+                                                                        <label>Additional Information (eg.closest landmark/street corner)</label>
+                                                                        @Html.TextAreaFor(model => model.ReceiverAdditionalInformation, new { @class = "form-control", @placeholder = "Additional Information (eg.closest landmark/street corner)", @row = "8", @name = "ReceiverAdditionalInformation" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end: Wizard Step 2-->
+                                        <!--begin: Wizard Step 3-->
+                                        <div class="pb-5" data-wizard-type="step-content">
+                                            <div class="row mb-1">
+                                                <div class="col-md-12">
+                                                    <a data-toggle="modal" data-target="#modal_line" id="addline" class="btn btn-sm font-weight-bolder btn-primary btn-square">
+                                                        <i class="la la-plus"></i>Add Line
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <table class="table table-hover table-checkable dataTable dtr-inline" id="dt_lines">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Code Name</th>
+                                                                <th>Item Code</th>
+                                                                <th>Description</th>
+                                                                <th>Quantity/Unit Type</th>
+                                                                <th>Unit Price (EGP)</th>
+                                                                <th>Total Sales Amount (EGP)</th>
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach (var item in Model.InvoiceLines)
+                                                            {
+                                                                <tr>
+                                                                    <td>
+                                                                        @item.ItemCode.Split('-')[0]
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.ItemCode
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.Description
+                                                                    </td>
+                                                                    <td>
+                                                                        <span class='navi-text' style='float:left; clear:left;'>@item.Quantity</span><span class='navi-text' style='float: left; clear: left; color:#3699FF;'>@item.UnitType</span>
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.AmountEGP
+                                                                    </td>
+                                                                    <td>
+                                                                        @item.SalesTotal
+                                                                    </td>
+                                                                    <td><a href='javascript: void (0);' class='editline'><i class='fa fa-info'></i></a> | <a href='javascript: void (0);' class='remline'><i class='fa fa-trash'></i></a></td>
+                                                                </tr>
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <!--end::Card-->
+                                        </div>
+                                        <!--end: Wizard Step 3-->
+                                        <!--begin: Wizard Step 4-->
+                                        <div class="pb-5" data-wizard-type="step-content">
+                                            <div class="font-weight-bold text-dark">
+                                                Order & Payment (Optional)
+                                            </div>
+                                            <hr class="mb-10" />
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card card-shadowless gutter-b">
+                                                        <div class="card-header bg-light">
+                                                            <div class="card-title">
+                                                                <h6 class="card-label">
+                                                                    Order Details
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Purchase Order Reference</label>
+                                                                        @Html.TextBoxFor(model => model.PurchaseOrderReference, new { @class = "form-control", @placeholder = "Purchase Order Reference", @name = "PurchaseOrderReference" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <label>Purchase Order Description</label>
+                                                                        @Html.TextBoxFor(model => model.PurchaseOrderDescription, new { @class = "form-control", @placeholder = "Purchase Order Description", @name = "PurchaseOrderDescription" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Sales Order Reference</label>
+                                                                        @Html.TextBoxFor(model => model.SalesOrderReference, new { @class = "form-control", @placeholder = "Sales Order Reference", @name = "SalesOrderReference" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Sales Order Description
+                                                                        </label>
+                                                                        @Html.TextBoxFor(model => model.SalesOrderDescription, new { @class = "form-control", @placeholder = "Sales Order Description", @name = "SalesOrderDescription" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Proforma Invoice Number</label>
+                                                                        @Html.TextBoxFor(model => model.ProformaInvoiceNumber, new { @class = "form-control", @placeholder = "Proforma Invoice Number", @name = "ProformaInvoiceNumber" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <!--begin::Input-->
+
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="card card-shadowless gutter-b">
+                                                        <div class="card-header bg-light">
+                                                            <div class="card-title">
+                                                                <h6 class="card-label">
+                                                                    Payment
+                                                                </h6>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Bank Name</label>
+                                                                        @Html.TextBoxFor(model => model.BankName, new { @class = "form-control", @placeholder = "Bank Name", @name = "BankName" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Bank Account No.</label>
+                                                                        @Html.TextBoxFor(model => model.BankAccountNo, new { @class = "form-control", @placeholder = "Bank Account No.", @name = "BankAccountNo" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>Swift Code</label>
+                                                                        @Html.TextBoxFor(model => model.SwiftCode, new { @class = "form-control", @placeholder = "Swift Code", @name = "SwiftCode" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <label>
+                                                                            Bank Account IBAN
+                                                                        </label>
+                                                                        @Html.TextBoxFor(model => model.BankAccountIBAN, new { @class = "form-control", @placeholder = "Bank Account IBAN", @name = "BankAccountIBAN" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Bank Address</label>
+                                                                        @Html.TextAreaFor(model => model.BankAddress, new { @class = "form-control", @placeholder = "Bank Address", @name = "BankAddress" })
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="form-group">
+                                                                        <label>Payment Terms</label>
+                                                                        @Html.TextAreaFor(model => model.PaymentTerms, new { @class = "form-control", @placeholder = "Payment Terms", @name = "PaymentTerms" })
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!--end: Wizard Step 4-->
+
+                                        <!--begin: Wizard Step 5-->
+                                        <div class="pb-5" data-wizard-type="step-content">
+                                            <div class="font-weight-bold text-dark">
+                                                Delivery Information (Optional)
+                                            </div>
+                                            <hr class="mb-10" />
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Date Validity</label>
+                                                        <div class="input-group date">
+                                                            <input type="text" class="form-control" id="DateValidity" placeholder="Date Validity">
+                                                            <div class="input-group-append">
+                                                                <span class="input-group-text">
+                                                                    <i class="la la-calendar"></i>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Approach</label>
+                                                        @Html.TextAreaFor(model => model.Packaging, new { @class = "form-control", @placeholder = "Packaging", @name = "Packaging" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Sales Order Reference</label>
+                                                        @Html.TextBoxFor(model => model.ProformaInvoiceNumber, new { @class = "form-control", @placeholder = "Proforma Invoice Number", @name = "ProformaInvoiceNumber" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group">
+                                                        <label>
+                                                            Export Port
+                                                        </label>
+                                                        @Html.TextBoxFor(model => model.ExportPort, new { @class = "form-control", @placeholder = "Export Port", @name = "ExportPort" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Country of Origin</label>
+                                                        @Html.TextBoxFor(model => model.CountryOfOrigin, new { @class = "form-control", @placeholder = "Country of Origin", @name = "CountryOfOrigin" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Gross Weight (kg)</label>
+                                                        @Html.TextBoxFor(model => model.GrossWeight, new { @class = "form-control", @placeholder = "Gross Weight (kg)", @name = "GrossWeight" })
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <div class="form-group">
+                                                        <label>Net Weight (kg)</label>
+                                                        @Html.TextBoxFor(model => model.NetWeight, new { @class = "form-control", @placeholder = "Net Weight (kg)", @name = "NetWeight" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label>Delivery Terms</label>
+                                                        @Html.TextAreaFor(model => model.DeliveryTerms, new { @class = "form-control", @placeholder = "Delivery Terms", @name = "DeliveryTerms" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!--begin::Input-->
+                                        </div>
+                                        <!--end: Wizard Step 5-->
+                                        <!--begin: Wizard Actions-->
+                                        <div class="d-flex justify-content-between border-top mt-5 pt-10">
+                                            <div class="mr-2">
+                                                <button type="button" class="btn btn-light-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-prev">
+                                                    Previous
+                                                </button>
+                                            </div>
+                                            <div>
+                                                <button type="button" id="doc_submit" class="btn btn-success font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-submit">
+                                                    Update
+                                                </button>
+                                                <button type="button" id="nxt-btn" class="btn btn-primary font-weight-bold text-uppercase px-9 py-4" data-wizard-type="action-next">
+                                                    Next
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!--end: Wizard Actions-->
+                                    }
+                                    <!--end: Wizard Form-->
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end: Wizard Bpdy-->
+            </div>
+            <!--end: Wizard-->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal_line" tabindex="-1" role="dialog" aria-labelledby="modal_line" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title" id="exampleModalLabel">Line Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body" style="height: 500px;">
+                <form id="line_frm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Item Code *</label>
+                                <input type="text" name="ItemCode" class="form-control" placeholder="Item Code" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Internal Code </label>
+                                <input type="text" name="InternalCode" class="form-control" placeholder="Internal Code" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Quantity *</label>
+                                <input type="number" name="Quantity" class="form-control basic NetTotal" id="quanitity" placeholder="Qunatity" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Unit Type *</label>
+                                <div>
+                                    <select name="UnitType" id="kt_select2_3" class="form-control form-control-lg _custom-select _custom-select">
+                                        <option value="">Select</option>
+                                        @foreach (var item in ViewBag.Quans)
+                                        {
+                                            <option value=@item.code>@item.desc_en</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Item Description *</label>
+                                <textarea type="text" name="Description" class="form-control" placeholder="Item Description"></textarea>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Currency *</label>
+                                <div>
+                                    <select name="CurrencySold" id="kt_select2_4" class="form-control form-control-lg amountsold_calc _custom-select">
+                                        <option value="">Select</option>
+                                        @foreach (var item in ViewBag.Currencies)
+                                        {
+                                            <option value=@item.code>@item.name</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Rate </label>
+                                <input type="number" id="CurrencyExchangeRate" name="CurrencyExchangeRate" class="form-control amountsold_calc" placeholder="Rate" />
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" id="AmountSold_input" style="display: none;">
+                            <div class="form-group">
+                                <label>Unit Price *</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text selectedCurrency"></span></div>
+                                    <input type="number" name="AmountSold" class="form-control amountsold_calc" id="amountsold" placeholder="Unit Price">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Unit Price *</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text NetTotal">EGP</span></div>
+                                    <input type="number" name="AmountEGP" class="form-control basic" id="unit" placeholder="Unit Price">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Total Sales Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="number" name="SalesTotal" disabled class="form-control" id="total_sales_amount">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Discount Rate</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-percent"></i></span></div>
+                                    <input type="text" name="DiscountRate" class="form-control basic" id="discount_rate" placeholder="Discount">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Discount Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text NetTotal">EGP</span></div>
+                                    <input type="number" name="DiscountAmount" id="discount_amount" class="form-control" disabled>
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row mt-1 mb-1">
+                        <div class="col-md-12">
+                            <a data-toggle="modal" data-target="#modal_tax" id="addtax" class="btn btn-sm font-weight-bolder btn-primary btn-square">
+                                <i class="la la-plus"></i>Add Tax
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-12">
+                            <table class="table table-hover table-checkable dataTable dtr-inline" id="dt_taxes">
+                                <thead>
+                                    <tr>
+                                        <th>Tax Type</th>
+                                        <th>SubType</th>
+                                        <th>Rate</th>
+                                        <th>Amount (EGP)</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Total Taxable Fees</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="text" name="TotalTaxableFees" class="form-control" placeholder="Total Taxable Fees">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Value Difference</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="number" name="ValueDifference" class="form-control" placeholder="Value Difference">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Items Discount (after tax)</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="text" name="ItemsDiscount" id="ItemsDiscount" class="form-control" placeholder="Items Discount (after tax)">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Net Total</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="number" name="NetTotal" id="NetTotal" class="form-control NetTotal" disabled>
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Totals Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text">EGP</span></div>
+                                    <input type="text" name="Total" id="TotalAmount" class="form-control" disabled>
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" id="line_modalClose" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary font-weight-bold" id="add_line">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal_tax" tabindex="-1" role="dialog" aria-labelledby="modal_tax" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content bg-light">
+            <div class="modal-header bg-secondary">
+                <h5 class="modal-title" id="tax">Tax Details</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <i aria-hidden="true" class="ki ki-close"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="tax_frm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Tax Type </label>
+                                <div>
+                                    <select name="TaxType" id="kt_select2_5" class="form-control form-control-lg  _custom-select">
+                                        <option value="">Select</option>
+                                        @foreach (var item in ViewBag.TaxTypes)
+                                        {
+                                            <option value=@item.Code>@item.Code (@item.Desc_en)</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Sub Type </label>
+                                <div>
+                                    <select name="SubType" id="kt_select2_6" class="form-control form-control-lg _custom-select">
+                                        <option value="">Select</option>
+                                        @foreach (var item in ViewBag.SubTypes)
+                                        {
+                                            <option value=@item.Code>@item.Code (@item.Desc_en)</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Rate </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-percent"></i></span></div>
+                                    <input type="text" name="Rate" id="tax_rate" class="form-control" placeholder="Rate">
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Amount </label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend"><span class="input-group-text selectedCurrency"></span></div>
+                                    <input type="number" name="Amount" id="tax_amount" class="form-control" disabled>
+                                </div>
+                                <div class="d-md-none mb-2"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal" id="tax_modalClose">Close</button>
+                <button type="button" class="btn btn-primary font-weight-bold" id="add_tax">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#modal_line').on('hidden.bs.modal', function (e) {
+        // do something...
+        $("input[name=ItemCode]").val("");
+        $("input[name=InternalCode]").val("");
+        $("input[name=InternalId]").val("");
+        //$("select[name=UnitType]").val("");
+        $("input[name=Quantity]").val("");
+        $("input[name=SalesTotal]").val("");
+        $("input[name=Total]").val("");
+        $("input[name=ValueDifference]").val("");
+        $("input[name=TotalTaxableFees]").val("");
+        $("input[name=TotalTax]").val("");
+        $("input[name=NetTotal]").val("");
+        $("input[name=ItemsDiscount]").val("");
+        $("textarea[name=Description]").val("");
+        //$("select[name=CurrencySold]").val("");
+        $("input[name=AmountEGP]").val("");
+        $("input[name=AmountSold]").val("");
+        $("input[name=CurrencyExchangeRate]").val("");
+        $("input[name=DiscountRate]").val("");
+        $("input[name=DiscountAmount]").val("");
+        lineEditMode = false;
+        $('#dt_taxes > tbody > tr')?.remove();
+        TaxableItems = [];
+    });
+
+    $('#modal_tax').on('hidden.bs.modal', function (e) {
+        $("[name=Rate]").val("");
+        $("[name=Amount]").val("");
+        editMode = false;
+    });
+
+    $("#dt_taxes").on('click', '.remCF', function () {
+        $(this).parent().parent().remove();
+        var index = $('#dt_taxes tr').index($(this).parent().parent());
+        TaxableItems.splice(index - 1, 1);
+        editMode = false;
+    });
+
+    $("#dt_taxes").on('click', '.editCF', function () {
+        var tr = $(this).parent().parent();
+        rowIndex = $('#dt_taxes tr').index($(this).parent().parent());
+        $("[name=Rate]").val($(tr[0]).children('td').eq(2).html());
+        $("[name=Amount]").val($(tr[0]).children('td').eq(3).html());
+        $("[select=TaxType]").val($(tr[0]).children('td').eq(0).html()).change();
+        $("[select=SubType]").val($(tr[0]).children('td').eq(1).html()).change();
+        editMode = true;
+        $('#addtax').click();
+    });
+
+    $("#dt_lines").on('click', '.remline', function () {
+        $(this).parent().parent().remove();
+        $('#dt_taxes > tbody > tr')?.remove();
+        var index = $('#dt_lines tr').index($(this).parent().parent());
+        Lines.splice(index - 1, 1);
+        lineEditMode = false;
+        TaxableItems = [];
+    });
+
+    $("#dt_lines").on('click', '.editline', function () {
+        lineRowIndex = $('#dt_lines tr').index($(this).parent().parent());
+        var _line = Lines[lineRowIndex - 1];
+
+        $("input[name=ItemCode]").val(_line.ItemCode);
+        $("input[name=InternalCode]").val(_line.InternalCode);
+        $("input[name=InternalId]").val(_line.InternalId);
+        $("select[name=UnitType]").val(_line.UnitType).change();;
+        $("input[name=Quantity]").val(_line.Quantity);
+        $("input[name=SalesTotal]").val(_line.SalesTotal);
+        $("input[name=Total]").val(_line.Total);
+        $("input[name=ValueDifference]").val(_line.ValueDifference);
+        $("input[name=TotalTaxableFees]").val(_line.TotalTaxableFees);
+        $("input[name=NetTotal]").val(_line.NetTotal);
+        $("input[name=ItemsDiscount]").val(_line.ItemsDiscount);
+        $("textarea[name=Description]").val(_line.Description);
+        $("select[name=CurrencySold]").val(_line.CurrencySold).change();;
+        $("input[name=AmountEGP]").val(_line.AmountEGP);
+        $("input[name=AmountSold]").val(_line.AmountSold);
+        $("input[name=CurrencyExchangeRate]").val(_line.CurrencyExchangeRate);
+        $("input[name=DiscountRate]").val(_line.DiscountRate);
+        $("input[name=DiscountAmount]").val(_line.DiscountAmount);
+
+        TaxableItems = _line.TaxableItems;
+
+        //append taxable itesm
+        for (var i = 0; i < _line.TaxableItems.length; i++) {
+            $("#dt_taxes tbody").append(
+                $("<tr>\n" +
+                    "<td>" + _line.TaxableItems[i].TaxType + "</td>\n" +
+                    "<td>" + _line.TaxableItems[i].SubType + "</td>\n" +
+                    "<td>" + _line.TaxableItems[i].Rate + "</td>\n" +
+                    "<td>" + _line.TaxableItems[i].Amount + "</td>\n" +
+                    "<td><a href='javascript: void (0);' class='editCF'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remCF'><i class = 'fa fa-trash'></i></a></td>\n" +
+                    "</tr>\n")
+            );
+        }
+
+        lineEditMode = true;
+
+        $('#addline').click();
+    });
+
+    function onTypeChanged(val) {
+        if (val == "B") {
+
+            $("#RGN").show();
+
+            $("#NID").hide();
+            $("#PID").hide();
+
+            $("#name-lbl").html("Name *");
+            $("#country-lbl").html("Country *");
+            $("#governorate-lbl").html("Governorate *");
+            $("#city-lbl").html("City *");
+            $("#floor-lbl").html("Floor *");
+            $("#building-lbl").html("Building Name/No *");
+            $("#street-lbl").html("Street Name *");
+
+        }
+        else if (val == "P") {
+
+            var validator = _validations[1];
+            validator.validate();
+
+            $("#NID").show();
+
+            $("#RGN").hide();
+            $("#PID").hide();
+
+            $("#name-lbl").html("Name");
+            $("#country-lbl").html("Country");
+            $("#governorate-lbl").html("Governorate");
+            $("#city-lbl").html("City");
+            $("#floor-lbl").html("Floor");
+            $("#building-lbl").html("Building Name/No");
+            $("#street-lbl").html("Street Name");
+
+        }
+        else if (val == "F") {
+
+            var validator = _validations[1];
+            validator.validate();
+
+            $("#PID").show();
+
+            $("#RGN").hide();
+            $("#NID").hide();
+
+            $("#name-lbl").html("Name");
+            $("#country-lbl").html("Country");
+            $("#govenrorate-lbl").html("Governorate");
+            $("#city-lbl").html("City");
+            $("#floor-lbl").html("Floor");
+            $("#building-lbl").html("Building Name/No");
+            $("#street-lbl").html("Street Name");
+
+        }
+        else {
+            $("#RGN").hide();
+            $("#NID").hide();
+            $("#PID").hide();
+        }
+
+    }
+    $('._custom-select').on('change', function () {
+        if ($(this).val())
+            $(this).closest('.form-group').children('.fv-plugins-message-container').remove()
+    });
+
+    $('#kt_select2_4').on('change', function () {
+        if ($(this).val() == "EGP") {
+            $("#AmountSold_input").css("display", 'none');
+            $("#unit").removeAttr("disabled");
+            $("#CurrencyExchangeRate").val(0);
+            $("#CurrencyExchangeRate").attr("disabled", "disabled");
+        }
+        else {
+            $("#AmountSold_input").css("display", '');
+            $("#unit").attr("disabled", "disabled");
+            $("#CurrencyExchangeRate").removeAttr("disabled");
+        }
+        $(".selectedCurrency").html($(this).val());
+    });
+
+
+    $('.amountsold_calc').on('keyup', function () {
+        $("#unit").val(parseFloat($("#CurrencyExchangeRate").val() ?? 0) * parseFloat($("#amountsold").val() ?? 0));
+        $("#discount_amount").val(parseFloat($("#total_sales_amount").val() ?? 0) * parseFloat($("#discount_rate").val() ?? 0) / 100.00);
+        $("#total_sales_amount").val(parseFloat($("#quanitity").val()) * parseFloat($("#unit").val()));
+        $("#NetTotal").val(parseFloat($("#total_sales_amount").val() ?? 0) - (parseFloat($("#discount_amount").val() ?? 0) ? parseFloat($("#discount_amount").val() ?? 0) : 0));
+
+        var rows = $('#dt_taxes > tbody > tr');
+        if (rows.length > 0) {
+            amount = 0;
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                cells[3].innerHTML = parseFloat(cells[2].innerHTML) * parseFloat($("#NetTotal").val()) / 100.00;
+                amount += parseFloat(cells[3].innerHTML);
+            }
+            //$("#TotalAmount").val(parseFloat($("#NetTotal").val() ?? 0) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0));
+            $("#Totaldmount").val(parseFloat($("#NetTotal").val()) ? parseFloat($("#NetTotal").val()) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0) : '');
+        }
+        else {
+            $("#TotalAmount").val(parseFloat($("#NetTotal").val()) ? parseFloat($("#NetTotal").val()) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0) : '');
+        }
+
+    });
+
+    $("#discount_rate").on('keyup', function () {
+        $("#discount_amount").val(parseFloat($("#total_sales_amount").val() ?? 0) * parseFloat($("#discount_rate").val() ?? 0) / 100.00);
+    });
+
+    $('.basic').on('keyup', function () {
+        $("#total_sales_amount").val(parseFloat($("#quanitity").val()) * parseFloat($("#unit").val()));
+        $("#NetTotal").val(parseFloat($("#total_sales_amount").val() ?? 0) - (parseFloat($("#discount_amount").val() ?? 0) ? parseFloat($("#discount_amount").val() ?? 0) : 0));
+
+        var rows = $('#dt_taxes > tbody > tr');
+        if (rows.length > 0) {
+            amount = 0;
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName("td");
+                cells[3].innerHTML = parseFloat(cells[2].innerHTML) * parseFloat($("#NetTotal").val()) / 100.00;
+                amount += parseFloat(cells[3].innerHTML);
+            }
+            //$("#TotalAmount").val(parseFloat($("#NetTotal").val() ?? 0) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0));
+            $("#TotalAmount").val(parseFloat($("#NetTotal").val()) ? parseFloat($("#NetTotal").val()) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0) : '');
+        }
+        else {
+            $("#TotalAmount").val(parseFloat($("#NetTotal").val()) ? parseFloat($("#NetTotal").val()) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0) : '');
+        }
+    });
+
+    $('#tax_rate').on('keyup', function () {
+        $("#tax_amount").val((parseFloat($("#NetTotal").val() ? $("#NetTotal").val() : 0) * parseFloat($("#tax_rate").val() ? $("#tax_rate").val() : 0)) / 100.00);
+    });
+
+    $("#add_tax").on('click', function () {
+        amount = 0;
+        _taxfrmvalidation.validate().then(function (status) {
+            var Tax = {
+                TaxType: "",
+                SubType: "",
+                Rate: 0,
+                Amount: 0,
+            };
+            if (status == 'Valid') {
+                if (editMode) {
+                    Tax.Id = TaxableItems[rowIndex - 1].Id;
+                    Tax.InvoiceLineId = TaxableItems[rowIndex - 1].InvoiceLineId;
+                    Tax.TaxType = $("select[name=TaxType").val();
+                    Tax.SubType = $("select[name=SubType").val();
+                    Tax.Rate = $("input[name=Rate").val();
+                    Tax.Amount = $("input[name=Amount").val();
+                    TaxableItems.splice(rowIndex - 1, 1);
+                    TaxableItems.splice(rowIndex - 1, 0, Tax);
+                    var html =
+                        "<td>" + $('select[name=TaxType]').val() + "</td>\n" +
+                        "<td>" + $('select[name=SubType]').val() + "</td>\n" +
+                        "<td>" + $('input[name=Rate]').val() + "</td>\n" +
+                        "<td>" + $('input[name=Amount]').val() + "</td>\n" +
+                        "<td><a href='javascript: void (0);' class='editCF'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remCF'><i class = 'fa fa-trash'></i></a></td>\n";
+
+                    $('#dt_taxes > tbody > tr').eq(rowIndex - 1).html(html);
+                }
+                else {
+                    Tax.TaxType = $("select[name=TaxType").val();
+                    Tax.SubType = $("select[name=SubType").val();
+                    Tax.Rate = $("input[name=Rate").val();
+                    Tax.Amount = $("input[name=Amount").val();
+                    TaxableItems.push(Tax);
+
+                    $("#dt_taxes tbody").append(
+                        $("<tr>\n" +
+                            "<td>" + $('select[name=TaxType]').val() + "</td>\n" +
+                            "<td>" + $('select[name=SubType]').val() + "</td>\n" +
+                            "<td>" + $('input[name=Rate]').val() + "</td>\n" +
+                            "<td>" + $('input[name=Amount]').val() + "</td>\n" +
+                            "<td><a href='javascript: void (0);' class='editCF'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remCF'><i class = 'fa fa-trash'></i></a></td>\n" +
+                            "</tr>\n")
+                    );
+                }
+                editMode = false;
+
+                //clear all data upon close/save
+                $("#tax_modalClose").click();
+
+                //$("[select=TaxType]").val("");
+                //$("[select=SubType]").val("");
+
+                var rows = $('#dt_taxes > tbody > tr');
+                amount = 0;
+                for (var i = 0; i < rows.length; i++) {
+                    var cells = rows[i].getElementsByTagName("td");
+                    amount += parseFloat(cells[3].innerHTML);
+                }
+                $("#TotalAmount").val(parseFloat($("#NetTotal").val()) ? parseFloat($("#NetTotal").val()) + amount - (parseFloat($("#ItemsDiscount").val()) ? parseFloat($("#ItemsDiscount").val()) : 0) : '');
+
+                //$("#TotalAmount").val(parseFloat($("#NetTotal").val() ?? 0) + amount ?? 0);
+
+                // $('#dt_taxes tr:last').after('<tr>...</tr><tr>...</tr>');
+            }
+            else {
+                KTUtil.scrollTop();
+                return false;
+            }
+        });
+    });
+
+    $("#add_line").on('click', function () {
+        amount = 0;
+        var Line = {
+            Id: "",
+            ItemType: "",
+            InternalId: "",
+            ItemCode: "",
+            UnitType: "",
+            InternalCode: "",
+            Quantity: 0,
+            SalesTotal: 0,
+            Total: 0,
+            ValueDifference: 0,
+            TotalTaxableFees: 0,
+            TotalTax: 0,
+            NetTotal: 0,
+            ItemsDiscount: 0,
+            Description: "",
+            CurrencySold: "",
+            AmountEGP: 0,
+            AmountSold: 0,
+            CurrencyExchangeRate: "",
+            DiscountRate: 0,
+            DiscountAmount: 0,
+            TaxableItems: []
+        };
+        _linefrmvalidation.validate().then(function (status) {
+            if (status == 'Valid' && TaxableItems.length > 0) {
+                Line.ItemCode = $("input[name=ItemCode]").val();
+                Line.InternalCode = $("input[name=InternalCode]").val();
+                Line.InternalId = $("input[name=InternalId]").val();
+                Line.UnitType = $("select[name=UnitType]").val();
+                Line.Quantity = $("input[name=Quantity]").val();
+                Line.SalesTotal = $("input[name=SalesTotal]").val();
+                Line.Total = $("input[name=Total]").val();
+                Line.ValueDifference = $("input[name=ValueDifference]").val();
+                Line.TotalTaxableFees = $("input[name=TotalTaxableFees]").val();
+                Line.NetTotal = $("input[name=NetTotal]").val();
+                Line.ItemsDiscount = $("input[name=ItemsDiscount]").val();
+                Line.Description = $("textarea[name=Description]").val();
+                Line.CurrencySold = $("select[name=CurrencySold]").val();
+                Line.AmountEGP = $("input[name=AmountEGP]").val();
+                Line.AmountSold = $("input[name=AmountSold]").val();
+                Line.CurrencyExchangeRate = $("input[name=CurrencyExchangeRate]").val();
+                Line.DiscountRate = $("input[name=DiscountRate]").val();
+                Line.DiscountAmount = $("input[name=DiscountAmount]").val();
+                Line.TaxableItems = TaxableItems;
+                if (lineEditMode) {
+                    //debugger;
+                    Line.Id = Lines[lineRowIndex - 1].Id;
+                    //Line.DocumentId = Lines[lineRowIndex - 1].DocumentId;
+                    Lines.splice(lineRowIndex - 1, 1);
+                    Lines.splice(lineRowIndex - 1, 0, Line);
+                    var html =
+                        "<td>EGS</td>\n" +
+                        "<td>" + $('input[name=ItemCode]').val() + "</td>\n" +
+                        "<td>" + $('textarea[name=Description]').val() + "</td>\n" +
+                        "<td><span class='navi-text' style= 'float:left; clear:left;'>" + $('input[name=Quantity]').val() + "</span><span class='navi-text' style= 'float: left; clear: left; color:#3699FF;'>" + $('select[name=UnitType]').val() + "</span></td>\n" +
+                        "<td>" + $('input[name=AmountEGP]').val() + "</td>\n" +
+                        "<td>" + $('input[name=SalesTotal]').val() + "</td>\n" +
+                        "<td><a href='javascript: void (0);' class='editline'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remline'><i class = 'fa fa-trash'></i></a></td>\n";
+
+                    $('#dt_lines > tbody > tr').eq(lineRowIndex - 1).html(html)
+                }
+                else {
+                    Lines.push(Line);
+
+                    $("#dt_lines tbody").append(
+                        $("<tr>\n" +
+                            "<td>EGS</td>\n" +
+                            "<td>" + $('input[name=ItemCode]').val() + "</td>\n" +
+                            "<td>" + $('textarea[name=Description]').val() + "</td>\n" +
+                            "<td><span class='navi-text' style= 'float:left; clear:left;'>" + $('input[name=Quantity]').val() + "</span><span class='navi-text' style= 'float: left; clear: left; color:#3699FF;'>" + $('select[name=UnitType]').val() + "</span></td>\n" +
+                            "<td>" + $('input[name=AmountEGP]').val() + "</td>\n" +
+                            "<td>" + $('input[name=SalesTotal]').val() + "</td>\n" +
+                            "<td><a href='javascript: void (0);' class='editline'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remline'><i class = 'fa fa-trash'></i></a></td>\n" +
+                            "</tr>\n")
+                    );
+                }
+
+                //clear all data upon close/save
+                $("#line_modalClose").click();
+
+                TaxableItems = [];
+                $('#dt_taxes > tbody > tr').remove();
+            }
+            else {
+                KTUtil.scrollTop();
+                return false;
+            }
+        });
+    });
+
+</script>
+<script src="~/Content/assets/js/pages/custom/wizard/wizard_edit-4.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

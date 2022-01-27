@@ -16,7 +16,7 @@ var KTAppsUsersListDatatable = function () {
                 source: {
                     read: {
                         method: "GET",
-                        url: "/v1/user/getusers",
+                        url: "/eimc.hub/v1/user/getusers",
                     },
                 },
                 //pageSize: 10, // display 10 records per page
@@ -156,7 +156,7 @@ function deleteUser(id, username) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/v1/user/deleteuser?id=" + id,
+                url: "/eimc.hub/v1/user/deleteuser?id=" + id,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -212,7 +212,7 @@ function deleteUser(id, username) {
 
 function editUser(id) {
     $.ajax({
-        url: "/v1/user/editpartial?id=" + id,
+        url: "/eimc.hub/v1/user/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -280,6 +280,13 @@ jQuery(document).ready(function () {
                         }
                     }
                 },
+                Group: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Group is required'
+                        },
+                    }
+                },
                 Password: {
                     validators: {
                         notEmpty: {
@@ -314,7 +321,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_frm").serialize();
                 $.ajax({
-                    url: "/v1/user/createuser",
+                    url: "/eimc.hub/v1/user/createuser",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -403,7 +410,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_editFrm").serialize();
                 $.ajax({
-                    url: "/v1/user/edituser",
+                    url: "/eimc.hub/v1/user/edituser",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

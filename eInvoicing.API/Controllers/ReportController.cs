@@ -16,7 +16,7 @@ using System.Web.Http.Cors;
 namespace eInvoicing.API.Controllers
 {
     [JwtAuthentication]
-    public class ReportController : ApiController
+    public class ReportController : BaseController
     {
         private readonly IReportService _reportService;
         public ReportController(IReportService reportService)
@@ -29,9 +29,37 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
                 var response = _reportService.GetSubmittedDocumentsStats(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
                 return Ok(new SubmittedDocumentResponse() { meta = new Meta() { page = response.CurrentPage, pages = response.TotalPages, perpage = response.PageSize, 
                     total = response.TotalCount, totalFiltered = response.TotalFiltered }, data = response });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
+        [Route("api/report/invalidreasons")]
+        public IHttpActionResult invalidreasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            try
+            {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
+                var response = _reportService.GetInvalidDocumentReasons(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
+                return Ok(new InvalidDocumentResponse()
+                {
+                    meta = new Meta()
+                    {
+                        page = response.CurrentPage,
+                        pages = response.TotalPages,
+                        perpage = response.PageSize,
+                        total = response.TotalCount,
+                        totalFiltered = response.TotalFiltered
+                    },
+                    data = response
+                });
             }
             catch (Exception ex)
             {
@@ -45,6 +73,7 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
                 var response = _reportService.GetTopGoodsUsage(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
                 return Ok(new GoodsModelVM() { meta = new Meta() { page = response.CurrentPage, pages = response.TotalPages, perpage = response.PageSize,
                     total = response.TotalCount, totalFiltered = response.TotalFiltered }, data = response });
@@ -60,6 +89,7 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
                 return Ok(_reportService.GetMonthlyBestSeller(SpecificDate));
             }
             catch (Exception ex)
@@ -73,6 +103,7 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
                 return Ok(_reportService.GetMonthlyLowestSeller(SpecificDate));
             }
             catch (Exception ex)

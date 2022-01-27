@@ -2,6 +2,7 @@
 using eInvoicing.API.Models;
 using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
+using Newtonsoft.Json;
 using ProductLicense;
 using System;
 using System.Collections.Generic;
@@ -9,41 +10,50 @@ using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Web.Http;
-using System.Web.Http.Cors;
-using WebApi.Jwt.Filters;
 
 namespace eInvoicing.API.Controllers
 {
-
-    [JwtAuthentication]
-    public class DocumentController : ApiController
+    public class DocumentController : BaseController
     {
         private readonly IDocumentService _documentService;
+        private readonly IErrorService _errorService;
         private readonly IAuthService _auth;
         private readonly IUserSession _userSession;
         OleDbConnection Econ;
         SqlConnection con;
-        string constr, Query, sqlconn;
+        string constr, Query;
+        bool HasUpdatedRecords;
         bool IsInserted, IsUpdated = false;
         List<string> UpdatedDocumentsIds;
+        List<string> NonExistingDocumentIds;
         List<string> UpdatedInvoiceLinesIds;
-        public DocumentController(IDocumentService documentService, IAuthService auth, IUserSession userSession)
+        List<string> InternalDocumentIds = new List<string>();
+        List<string> InternalInvoiceLinesIds = new List<string>();
+
+        public DocumentController(IDocumentService documentService, IAuthService auth, IUserSession userSession, IErrorService errorService)
         {
             _documentService = documentService;
             _auth = auth;
             _userSession = userSession;
+            _errorService = errorService;
         }
 
+        [JwtAuthentication]
         [HttpPost]
         [Route("api/document/new")]
         public IHttpActionResult CreateNewDocument(NewDocumentVM obj)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 _documentService.CreateNewDocument(obj);
                 return Ok();
             }
@@ -52,12 +62,73 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("api/document/edit")]
+        public IHttpActionResult EditDocument(NewDocumentVM obj)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                var res = _documentService.DeleteDocument(obj.Id);
+                if (res)
+                {
+                    _documentService.CreateNewDocumentWithOldId(obj);
+                    if (res)
+                        return Ok();
+                    else
+                        return InternalServerError();
+                }
+                return InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/getdocumentbyinternalid")]
+        public IHttpActionResult GetDocumentByInternalId(string InternalId)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                return Ok(_documentService.GetDocumentByInternalId(InternalId));
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/UpdateDocumentByInternalId")]
+        public IHttpActionResult UpdateDocumentByInternalId(string InternalId)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                _documentService.UpdateDocumentByInternalId(InternalId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/pending")]
         public IHttpActionResult Pending(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 var docs = _documentService.GetPendingDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
                 return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
             }
@@ -66,12 +137,15 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/pendingCount")]
         public IHttpActionResult PendingCount()
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 return Ok(_documentService.GetPendingCount());
             }
             catch (Exception ex)
@@ -79,25 +153,31 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/MonthlyDocuments")]
         public IHttpActionResult GetMonthlyDocuments(DateTime _date)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 return Ok(_documentService.GetMonthlyDocuments(_date));
             }
             catch (Exception ex)
             {
-                return InternalServerError(ex);
+                return Ok(new DashboardDTO() { Reason  = ex.Message.ToString()});
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/submitted")]
         public IHttpActionResult Submitted(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 var docs = _documentService.GetSubmittedDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
                 return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
             }
@@ -106,12 +186,15 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/submittedCount")]
         public IHttpActionResult submittedCount()
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 return Ok(_documentService.GetSubmittedCount());
             }
             catch (Exception ex)
@@ -119,12 +202,15 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/GetByDocumentId")]
         public IHttpActionResult GetByDocumentId(string id)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 var docs = _documentService.GetDocumentById(id);
                 return Ok(docs);
             }
@@ -133,12 +219,15 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/GetDocumentByuuid")]
         public IHttpActionResult GetDocumentByuuid(string uuid)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 var docs = _documentService.GetDocumentByuuid(uuid);
                 return Ok(docs);
             }
@@ -147,12 +236,16 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/recent")]
         public IHttpActionResult GetRecentDocuments_ETA(int pageNo, int pageSize)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
                 var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
                 var result = _documentService.GetRecentDocuments_ETA2(_userSession.submissionurl, auth.access_token, pageNo, pageSize);
                 return Ok(result);
@@ -163,15 +256,19 @@ namespace eInvoicing.API.Controllers
             }
 
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/raw")]
         public IHttpActionResult Raw(string uuid)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
                 var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
                 var result = _documentService.GetDocument_ETA(_userSession.submissionurl, auth.access_token, uuid);
-                if (result.StatusCode == System.Net.HttpStatusCode.OK)
+                if (result != null && result.StatusCode == HttpStatusCode.OK)
                     return Ok(result);
                 else
                     return NotFound();
@@ -181,42 +278,82 @@ namespace eInvoicing.API.Controllers
                 return InternalServerError(ex);
             }
         }
-        public IHttpActionResult GetDocumentPrintOut(string uuid)
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/printout")]
+        public HttpResponseMessage GetDocumentPrintOut(string uuid)
         {
-            var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
-            var result = _documentService.GetDocumentPrintOut(_userSession.submissionurl, auth.access_token, uuid);
-            return Ok(result);
+            try 
+            {
+                _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+                var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                var result = _documentService.GetDocumentPrintOut(_userSession.submissionurl, auth.access_token, uuid);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
-        public IHttpActionResult CancelDocument(string uuid, string reason)
+
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/canceldocument")]
+        public IHttpActionResult CancelDocument(string uuid, string reason = "For Correction.")
         {
+            _documentService.GetTheConnectionString(this.OnActionExecuting());
+            _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+
             var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
             var result = _documentService.CancelDocument(_userSession.submissionurl, auth.access_token, uuid, reason);
-            return Ok(result);
+            if (result)
+                return Ok(result);
+            else
+                return NotFound();
         }
+
+        
         public IHttpActionResult RejectDocument(string uuid, string reason)
         {
+            _documentService.GetTheConnectionString(this.OnActionExecuting());
+            _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+
             var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
             var result = _documentService.RejectDocument(_userSession.submissionurl, auth.access_token, uuid, reason);
             return Ok(result);
         }
+
+        
         public IHttpActionResult DeclineDocumentCancellation(string uuid)
         {
+            _documentService.GetTheConnectionString(this.OnActionExecuting());
+            _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+
             var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
             var result = _documentService.DeclineDocumentCancellation(_userSession.submissionurl, auth.access_token, uuid);
             return Ok(result);
         }
+
+        
         public IHttpActionResult DeclineDocumentRejection(string uuid)
         {
+            _documentService.GetTheConnectionString(this.OnActionExecuting());
+            _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+
             var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
             var result = _documentService.DeclineDocumentRejection(_userSession.submissionurl, auth.access_token, uuid);
             return Ok(result);
         }
 
+        [JwtAuthentication]
         [Route("api/document/updatedocuments")]
         public IHttpActionResult UpdateDocuments(DocumentSubmissionDTO obj, string submittedBy)
         {
             try
             {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
                 _documentService.UpdateDocuments(obj, submittedBy);
                 return Ok();
             }
@@ -235,23 +372,18 @@ namespace eInvoicing.API.Controllers
         }
         private void connection()
         {
-            Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
-            var connectionStringsSection = (ConnectionStringsSection)objConfig.GetSection("connectionStrings");
-            sqlconn = connectionStringsSection.ConnectionStrings["eInvoicing_CS"].ConnectionString;
-            con = new SqlConnection(sqlconn);
+            con = new SqlConnection(this.OnActionExecuting());
         }
-
         private int InsertDocuments()
         {
             Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
                                          "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
                                          "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
                                          "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], " +
-                                         "[NetWeight], [InternalDocumentStatus] , 'New' as [NewStatus], #"+ DateTime.Now +"# as [DateTimeReceived] FROM [{0}]", "Documents$");
+                                         "[NetWeight], [InternalDocumentStatus], 0 as [IsInternallyCreated], 'New' as [NewStatus], #" + DateTime.Now +"# as [DateTimeReceived] FROM [{0}]", "Documents$");
 
             // select document by id
             string SQLQuery = "SELECT [Id] FROM DOCUMENTS ";
-            List<string> InternalDocumentIds = new List<string>();
 
             SqlCommand command = new SqlCommand(SQLQuery, con);
             var output = command.ExecuteReader();
@@ -272,10 +404,15 @@ namespace eInvoicing.API.Controllers
 
             var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) && 
             row["InternalDocumentStatus"].ToString().ToLower() == "completed"); //|| row["InternalDocumentStatus"].ToString().ToLower() == "updated"
+
+            //var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) &&
+            //row["InternalDocumentStatus"].ToString().ToLower() == "updated"); //|| row["InternalDocumentStatus"].ToString().ToLower() == "updated"
+
+            HasUpdatedRecords = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Any();
+
             if (NewRows.Any())
             {
                 Exceldt = NewRows.CopyToDataTable();
-                IsInserted = true;
             }
 
             //creating object of SqlBulkCopy  
@@ -313,8 +450,9 @@ namespace eInvoicing.API.Controllers
             objbulk.ColumnMappings.Add("ReceiverCountry", "ReceiverCountry");
             objbulk.ColumnMappings.Add("GrossWeight", "GrossWeight");
             objbulk.ColumnMappings.Add("NetWeight", "NetWeight");
-            objbulk.ColumnMappings.Add("NewStatus", "Status");
+            objbulk.ColumnMappings.Add("NewStatus", "Status"); 
             objbulk.ColumnMappings.Add("DateTimeReceived", "DateTimeReceived");
+            objbulk.ColumnMappings.Add("IsInternallyCreated", "IsInternallyCreated");
 
 
             //inserting Datatable Records to DataBase  
@@ -322,18 +460,20 @@ namespace eInvoicing.API.Controllers
             if (Exceldt != null)
             {
                 objbulk.WriteToServer(Exceldt);
+                IsInserted = true;
+                InternalDocumentIds.AddRange(ds.Tables[0].AsEnumerable().Select(row => row["InternalDocumentId"].ToString()));
                 return Exceldt.Rows.Count;
             }
             return 0;
         }
-
         private int InsertInvoiceLine()
         {
+            List<DataRow> Lines = new List<DataRow>();
             Query = string.Format("Select [InternalInvoiceLineId],[ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
                 "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
                 " [NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Invoice Lines$");
+            
             string SQLQuery = "SELECT [Id] FROM INVOICELINES";
-            List<string> InternalInvoiceLinesIds = new List<string>();
             if (con.State == ConnectionState.Closed)
             {
                 con.Open();
@@ -343,7 +483,6 @@ namespace eInvoicing.API.Controllers
             while (output.Read())
             {
                 InternalInvoiceLinesIds.Add(output[0].ToString());
-
             }
             output.Close();
             //OleDbCommand Ecom = new OleDbCommand(Query, Econ);
@@ -352,11 +491,23 @@ namespace eInvoicing.API.Controllers
             oda.Fill(ds);
             DataTable Exceldt = null;
 
-            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalInvoiceLinesIds.Any(id => id == row["InternalInvoiceLineId"].ToString()));
-            if (NewRows.Any())
+            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalInvoiceLinesIds.Any(id => id == row["InternalInvoiceLineId"].ToString()) && InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()));
+            foreach (var currentRow in NewRows)
             {
-                Exceldt = NewRows.CopyToDataTable();
-                IsInserted = true;
+                currentRow.BeginEdit();
+                currentRow["AmountEGP"] = Math.Round(Convert.ToDouble(currentRow["AmountEGP"]), 5);
+                currentRow["AmountSold"] = Math.Round(Convert.ToDouble(currentRow["AmountSold"]), 5);
+                currentRow["CurrencyExchangeRate"] = Math.Round(Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5);
+                currentRow["SalesTotal"] = Math.Round(Convert.ToDouble(currentRow["SalesTotal"]), 5);
+                currentRow["NetTotal"] = Math.Round(Convert.ToDouble(currentRow["NetTotal"]), 5);
+                currentRow["Total"] = Math.Round(Convert.ToDouble(currentRow["Total"]), 5);
+                currentRow.EndEdit();
+                Lines.Add(currentRow);
+            }
+            if (Lines.Any())
+            {
+                Exceldt = Lines.CopyToDataTable();
+                //IsInserted = true;
             }
             //creating object of SqlBulkCopy  
             SqlBulkCopy objbulk = new SqlBulkCopy(con);
@@ -386,12 +537,13 @@ namespace eInvoicing.API.Controllers
             if (Exceldt != null)
             {
                 objbulk.WriteToServer(Exceldt);
+                InternalInvoiceLinesIds.AddRange(ds.Tables[0].AsEnumerable().Select(row => row["InternalInvoiceLineId"].ToString()));
+                IsInserted = true;
                 return Exceldt.Rows.Count;
             }
             return 0;
 
         }
-
         private int InsertTaxableItems()
         {
             Query = string.Format("Select [InternalId],[TaxType], [Rate], [Amount], [SubType], [InternalInvoiceLineId] FROM [{0}]", "Taxable Items$");
@@ -414,7 +566,7 @@ namespace eInvoicing.API.Controllers
             oda.Fill(ds);
             DataTable Exceldt = null;
 
-            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !UniqueTaxableItemKeys.Any(key => key == row["InternalId"].ToString() + row["InternalInvoiceLineId"].ToString()));
+            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !UniqueTaxableItemKeys.Any(key => key == row["InternalId"].ToString() + row["InternalInvoiceLineId"].ToString()) && InternalInvoiceLinesIds.Any(key => key == row["InternalInvoiceLineId"].ToString()));
             if (NewRows.Any())
             {
                 Exceldt = NewRows.CopyToDataTable();
@@ -443,37 +595,42 @@ namespace eInvoicing.API.Controllers
         }
         private int UpdateDocument()
         {
-            Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], " +
+            try
+            {
+                Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], " +
                                   "[TotalItemsDiscountAmount], [ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
                                   "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
                                   "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], [NetWeight], [InternalDocumentStatus], " +
                                   "'New' as [NewStatus], #" + DateTime.Now + "# as [DateTimeReceived] FROM [{0}]", "Documents$");
 
-            string SQLQuery = "SELECT [Id] FROM DOCUMENTS";
-            List<string> InternalDocumentIds = new List<string>();
-            if (con.State == ConnectionState.Closed)
-            {
-                con.Open();
-            }
-            SqlCommand command = new SqlCommand(SQLQuery, con);
-            var output = command.ExecuteReader();
-            while (output.Read())
-            {
-                InternalDocumentIds.Add(output[0].ToString());
-            }
-            output.Close();
-            DataSet ds = new DataSet();
-            OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
-            oda.Fill(ds);
-            var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) 
-            && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
-            if (UpdatedRows.Any())
-            {
-                UpdatedDocumentsIds = new List<string>();
-                UpdatedDocumentsIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Select(row => row["InternalDocumentId"].ToString()).ToList();
-                for (int i = 0; i < UpdatedRows.Count; i++)
+                string SQLQuery = "SELECT [Id] FROM DOCUMENTS";
+                List<string> InternalDocumentIds = new List<string>();
+                if (con.State == ConnectionState.Closed)
                 {
-                    string SqlQuery = @"UPDATE DOCUMENTS SET [DocumentType] = @DocumentType ,[DocumentTypeVersion] = @DocumentTypeVersion 
+                    con.Open();
+                }
+                SqlCommand command = new SqlCommand(SQLQuery, con);
+                var output = command.ExecuteReader();
+                while (output.Read())
+                {
+                    InternalDocumentIds.Add(output[0].ToString());
+                }
+                output.Close();
+                DataSet ds = new DataSet();
+                OleDbDataAdapter oda = new OleDbDataAdapter(Query, Econ);
+                oda.Fill(ds);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
+
+                    if (UpdatedRows.Any())
+                    {
+                        UpdatedDocumentsIds = new List<string>();
+                        UpdatedDocumentsIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Select(row => row["InternalDocumentId"].ToString()).ToList();
+
+                        for (int i = 0; i < UpdatedRows.Count; i++)
+                        {
+                            string SqlQuery = @"UPDATE DOCUMENTS SET [DocumentType] = @DocumentType ,[DocumentTypeVersion] = @DocumentTypeVersion, [DateTimeIssued] = @DateTimeIssued 
                                       , [TaxpayerActivityCode] = @TaxpayerActivityCode, [TotalSalesAmount]  = @TotalSalesAmount , [TotalDiscountAmount]  = @TotalDiscountAmount
                                       , [TotalItemsDiscountAmount]  = @TotalItemsDiscountAmount ,[ExtraDiscountAmount]  = @ExtraDiscountAmount
                                       , [NetAmount]  = @NetAmount , [TotalAmount]  = @TotalAmount
@@ -483,54 +640,64 @@ namespace eInvoicing.API.Controllers
                                       , [ReceiverId] = @ReceiverId, [ReceiverGovernorate] = @ReceiverGovernorate, [ReceiverRegionCity] = @ReceiverRegionCity
                                       , [ReceiverStreet] = @ReceiverStreet, [ReceiverBuildingNumber] = @ReceiverBuildingNumber
                                       , [ReceiverName]  = @ReceiverName , [ReceiverType]  = @ReceiverType , [ReceiverCountry]  = @ReceiverCountry
-                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight WHERE Id = @InternalDocumentId";
+                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight, [Status] = @Status  WHERE Id = @InternalDocumentId";
 
-                    SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
-                    SqlCommand.Parameters.AddWithValue("@DocumentType", UpdatedRows[i]["DocumentType"]);
-                    SqlCommand.Parameters.AddWithValue("@DocumentTypeVersion", UpdatedRows[i]["DocumentTypeVersion"]);
-                    SqlCommand.Parameters.AddWithValue("@TaxpayerActivityCode", UpdatedRows[i]["TaxpayerActivityCode"]);
-                    SqlCommand.Parameters.AddWithValue("@TotalSalesAmount", Convert.ToDecimal(UpdatedRows[i]["TotalSalesAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@TotalDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["TotalDiscountAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@TotalItemsDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["TotalItemsDiscountAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@ExtraDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["ExtraDiscountAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@NetAmount", Convert.ToDecimal(UpdatedRows[i]["NetAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@TotalAmount", Convert.ToDecimal(UpdatedRows[i]["TotalAmount"]));
-                    SqlCommand.Parameters.AddWithValue("@IssuerId", UpdatedRows[i]["IssuerId"].ToString());
-                    SqlCommand.Parameters.AddWithValue("@IssuerName", UpdatedRows[i]["IssuerName"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerType", UpdatedRows[i]["IssuerType"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerBranchId", UpdatedRows[i]["IssuerBranchId"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerCountry", UpdatedRows[i]["IssuerCountry"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerGovernorate", UpdatedRows[i]["IssuerGovernorate"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerRegionCity", UpdatedRows[i]["IssuerRegionCity"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerStreet", UpdatedRows[i]["IssuerStreet"]);
-                    SqlCommand.Parameters.AddWithValue("@IssuerBuildingNumber", UpdatedRows[i]["IssuerBuildingNumber"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverId", UpdatedRows[i]["ReceiverId"].ToString());
-                    SqlCommand.Parameters.AddWithValue("@ReceiverGovernorate", UpdatedRows[i]["ReceiverGovernorate"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverStreet", UpdatedRows[i]["ReceiverStreet"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverRegionCity", UpdatedRows[i]["ReceiverRegionCity"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverBuildingNumber", UpdatedRows[i]["ReceiverBuildingNumber"]);
+                            SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
+                            SqlCommand.Parameters.AddWithValue("@DocumentType", UpdatedRows[i]["DocumentType"]);
+                            SqlCommand.Parameters.AddWithValue("@DocumentTypeVersion", UpdatedRows[i]["DocumentTypeVersion"]);
+                            SqlCommand.Parameters.AddWithValue("@TaxpayerActivityCode", UpdatedRows[i]["TaxpayerActivityCode"]);
+                            SqlCommand.Parameters.AddWithValue("@TotalSalesAmount", Convert.ToDecimal(UpdatedRows[i]["TotalSalesAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@TotalDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["TotalDiscountAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@TotalItemsDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["TotalItemsDiscountAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@ExtraDiscountAmount", Convert.ToDecimal(UpdatedRows[i]["ExtraDiscountAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@NetAmount", Convert.ToDecimal(UpdatedRows[i]["NetAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@TotalAmount", Convert.ToDecimal(UpdatedRows[i]["TotalAmount"]));
+                            SqlCommand.Parameters.AddWithValue("@IssuerId", UpdatedRows[i]["IssuerId"].ToString());
+                            SqlCommand.Parameters.AddWithValue("@IssuerName", UpdatedRows[i]["IssuerName"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerType", UpdatedRows[i]["IssuerType"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerBranchId", UpdatedRows[i]["IssuerBranchId"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerCountry", UpdatedRows[i]["IssuerCountry"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerGovernorate", UpdatedRows[i]["IssuerGovernorate"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerRegionCity", UpdatedRows[i]["IssuerRegionCity"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerStreet", UpdatedRows[i]["IssuerStreet"]);
+                            SqlCommand.Parameters.AddWithValue("@IssuerBuildingNumber", UpdatedRows[i]["IssuerBuildingNumber"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverId", UpdatedRows[i]["ReceiverId"].ToString());
+                            SqlCommand.Parameters.AddWithValue("@ReceiverGovernorate", UpdatedRows[i]["ReceiverGovernorate"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverStreet", UpdatedRows[i]["ReceiverStreet"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverRegionCity", UpdatedRows[i]["ReceiverRegionCity"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverBuildingNumber", UpdatedRows[i]["ReceiverBuildingNumber"]);
 
-                    SqlCommand.Parameters.AddWithValue("@ReceiverName", UpdatedRows[i]["ReceiverName"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverType", UpdatedRows[i]["ReceiverType"]);
-                    SqlCommand.Parameters.AddWithValue("@ReceiverCountry", UpdatedRows[i]["ReceiverCountry"]);
-                    SqlCommand.Parameters.AddWithValue("@GrossWeight", Convert.ToDecimal(UpdatedRows[i]["GrossWeight"]));
-                    SqlCommand.Parameters.AddWithValue("@NetWeight", Convert.ToDecimal(UpdatedRows[i]["NetWeight"]));
-                    SqlCommand.Parameters.AddWithValue("@Status", UpdatedRows[i]["NewStatus"]);
-                    SqlCommand.Parameters.AddWithValue("@DateTimeReceived", UpdatedRows[i]["DateTimeReceived"]);
-                    SqlCommand.Parameters.AddWithValue("@InternalDocumentId", UpdatedRows[i]["InternalDocumentId"]);
-                    SqlCommand.ExecuteNonQuery();
+                            SqlCommand.Parameters.AddWithValue("@ReceiverName", UpdatedRows[i]["ReceiverName"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverType", UpdatedRows[i]["ReceiverType"]);
+                            SqlCommand.Parameters.AddWithValue("@ReceiverCountry", UpdatedRows[i]["ReceiverCountry"]);
+                            SqlCommand.Parameters.AddWithValue("@GrossWeight", Convert.ToDecimal(UpdatedRows[i]["GrossWeight"]));
+                            SqlCommand.Parameters.AddWithValue("@NetWeight", Convert.ToDecimal(UpdatedRows[i]["NetWeight"]));
+                            SqlCommand.Parameters.AddWithValue("@Status", "New");
+                            SqlCommand.Parameters.AddWithValue("@DateTimeReceived", UpdatedRows[i]["DateTimeReceived"]);
+                            SqlCommand.Parameters.AddWithValue("@DateTimeIssued", UpdatedRows[i]["DateTimeIssued"]);
+                            SqlCommand.Parameters.AddWithValue("@InternalDocumentId", UpdatedRows[i]["InternalDocumentId"].ToString());
+                            SqlCommand.ExecuteNonQuery();
+                        }
+                        IsUpdated = true;
+                        return UpdatedRows.Count;
+                    }
+                    else
+                    {
+                        NonExistingDocumentIds = new List<string>();
+                        NonExistingDocumentIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Select(row => row["InternalDocumentId"].ToString()).ToList();
+                    }
                 }
-
-                //Exceldt = UpdatedRows.CopyToDataTable();
-
-                IsUpdated = true;
-                return UpdatedRows.Count;
+                
+                return -1;
             }
-
-            return 0;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         private int UpdateInvoiceLines()
         {
+            List<DataRow> Lines = new List<DataRow>();
             Query = string.Format("Select " +
                                   "[InternalInvoiceLineId], [ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
                                   "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
@@ -541,7 +708,20 @@ namespace eInvoicing.API.Controllers
 
             oda.Fill(ds);
             var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString())).ToList();
-            if (UpdatedRows.Any())
+            foreach (var currentRow in UpdatedRows)
+            {
+                currentRow.BeginEdit();
+                currentRow["AmountEGP"] = Math.Round(Convert.ToDouble(currentRow["AmountEGP"]), 5);
+                currentRow["AmountSold"] = Math.Round(Convert.ToDouble(currentRow["AmountSold"]), 5);
+                currentRow["CurrencyExchangeRate"] = Math.Round(Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5);
+                currentRow["SalesTotal"] = Math.Round(Convert.ToDouble(currentRow["SalesTotal"]), 5);
+                currentRow["NetTotal"] = Math.Round(Convert.ToDouble(currentRow["NetTotal"]), 5);
+                currentRow["Total"] = Math.Round(Convert.ToDouble(currentRow["Total"]), 5);
+                currentRow.EndEdit();
+                Lines.Add(currentRow);
+            }
+
+            if (Lines.Any())
             {
                 UpdatedInvoiceLinesIds = new List<string>();
                 UpdatedInvoiceLinesIds = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString())).Select(row => row["InternalInvoiceLineId"].ToString()).ToList();
@@ -552,7 +732,7 @@ namespace eInvoicing.API.Controllers
                                        ,[CurrencySold] = @CurrencySold, [CurrencyExchangeRate] = @CurrencyExchangeRate, [SalesTotal] = @SalesTotal
                                        ,[DiscountRate] = @DiscountRate, [DiscountAmount] = @DiscountAmount, [ItemsDiscount] = @ItemsDiscount
                                        ,[TotalTaxableFees] = @TotalTaxableFees, [ValueDifference] = @ValueDifference , [ModifiedOn] = GETDATE()
-                                       ,[NetTotal] = @NetTotal, [Total] = @Total, [Description] = @Description, [DocumentId] = @DocumentId WHERE Id = @InternalInvoiceLineId";
+                                       ,[NetTotal] = @NetTotal, [Total] = @Total, [Description] = @Description WHERE Id = @InternalInvoiceLineId";
                     SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                     SqlCommand.Parameters.AddWithValue("@ItemType", UpdatedRows[i]["ItemType"]);
                     SqlCommand.Parameters.AddWithValue("@ItemCode", UpdatedRows[i]["ItemCode"]);
@@ -572,7 +752,7 @@ namespace eInvoicing.API.Controllers
                     SqlCommand.Parameters.AddWithValue("@NetTotal", Convert.ToDecimal(UpdatedRows[i]["NetTotal"]));
                     SqlCommand.Parameters.AddWithValue("@Total", Convert.ToDecimal(UpdatedRows[i]["Total"]));
                     SqlCommand.Parameters.AddWithValue("@Description", UpdatedRows[i]["Description"]);
-                    SqlCommand.Parameters.AddWithValue("@DocumentId", UpdatedRows[i]["InternalDocumentId"]);
+                    //SqlCommand.Parameters.AddWithValue("@DocumentId", UpdatedRows[i]["InternalDocumentId"]);
                     SqlCommand.Parameters.AddWithValue("@InternalInvoiceLineId", UpdatedRows[i]["InternalInvoiceLineId"]);
                     SqlCommand.ExecuteNonQuery();
 
@@ -594,13 +774,13 @@ namespace eInvoicing.API.Controllers
                 for (int i = 0; i < UpdatedRows.Count; i++)
                 {
                     string SqlQuery = @"UPDATE TAXABLEITEMS SET [TaxType] = cast(@TaxType as nvarchar(max)), [Rate] = cast(@Rate as float), [Amount] = cast(@Amount as float), [SubType] = cast (@SubType as nvarchar(max)) 
-                                       , [InvoiceLineId] = cast(@InternalInvoiceLineId as nvarchar(max)), [ModifiedOn] = GETDATE() WHERE InternalId = @InternalId";
+                                       , [ModifiedOn] = GETDATE() WHERE InternalId = @InternalId";
                     SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                     SqlCommand.Parameters.AddWithValue("@TaxType", UpdatedRows[i]["TaxType"]);
                     SqlCommand.Parameters.AddWithValue("@Rate", UpdatedRows[i]["Rate"]);
                     SqlCommand.Parameters.AddWithValue("@Amount", UpdatedRows[i]["Amount"]);
                     SqlCommand.Parameters.AddWithValue("@SubType", UpdatedRows[i]["SubType"]);
-                    SqlCommand.Parameters.AddWithValue("@InternalInvoiceLineId", UpdatedRows[i]["InternalInvoiceLineId"]);
+                    //SqlCommand.Parameters.AddWithValue("@InternalInvoiceLineId", UpdatedRows[i]["InternalInvoiceLineId"]);
                     SqlCommand.Parameters.AddWithValue("@InternalId", UpdatedRows[i]["InternalId"]);
                     SqlCommand.ExecuteNonQuery();
                 }
@@ -608,6 +788,8 @@ namespace eInvoicing.API.Controllers
             }
             return 0;
         }
+
+        [JwtAuthentication]
         [HttpGet]
         [Route("api/document/importfromexcel")]
         public IHttpActionResult ImportFromExcel(string fullPath)
@@ -616,6 +798,7 @@ namespace eInvoicing.API.Controllers
             {
                 int UpdatedInvoiceLinesCount = 0;
                 int UpdatedTaxableItemsCount = 0;
+                int UpdatedDocumentsCount = 0;
                 ExcelConn(fullPath);
                 connection();
                 Econ.Open();
@@ -623,11 +806,14 @@ namespace eInvoicing.API.Controllers
                 int InsertedDocumentsCount = InsertDocuments();
                 int InsertedInvoiceLinesCount = InsertInvoiceLine();
                 int InsertedTaxableItemsCount = InsertTaxableItems();
-                int UpdatedDocumentsCount = UpdateDocument();
-                if (UpdatedDocumentsCount > 0)
+                if (HasUpdatedRecords)
                 {
-                    UpdatedInvoiceLinesCount = UpdateInvoiceLines();
-                    UpdatedTaxableItemsCount = UpdateTaxableItems();
+                    UpdatedDocumentsCount = UpdateDocument();
+                    if (UpdatedDocumentsCount > 0)
+                    {
+                        UpdatedInvoiceLinesCount = UpdateInvoiceLines();
+                        UpdatedTaxableItemsCount = UpdateTaxableItems();
+                    }
                 }
                 Econ.Close();
                 con.Close();
@@ -639,8 +825,10 @@ namespace eInvoicing.API.Controllers
                     UpdatedDocumentsCount = UpdatedDocumentsCount,
                     UpdatedInvoiceLinesCount = UpdatedInvoiceLinesCount,
                     UpdatedTaxableItemsCount = UpdatedTaxableItemsCount,
+                    NonExistingDocumentIds = NonExistingDocumentIds,
                     IsInserted = IsInserted,
-                    IsUpdated = IsUpdated
+                    //IsUpdated = IsUpdated,
+                    UpdatesStatus = UpdatedDocumentsCount
                 });
             }
             catch (Exception ex)
@@ -653,6 +841,267 @@ namespace eInvoicing.API.Controllers
                 con.Close();
             }
         }
+        
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/document/updatedocumentsStatusfromETAToEIMC")]
+        public IHttpActionResult UpdateDocumentsStatusFromETAToEIMC()
+        {
+            try
+            {
+                var regEX = new Regex(@"
+                (?<=[A-Z])(?=[A-Z][a-z]) |
+                 (?<=[^A-Z])(?=[A-Z]) |
+                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
+                {
+                    if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
+                    {
+                        _documentService.GetTheConnectionString(Item.ConnectionString);
+                        //_userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
+                        _userSession.SetBusinessGroup("Subsea7");
+                        var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                        _documentService.GetRecentDocuments_ETA(_userSession.submissionurl, auth.access_token, 2000);
+                    }
+                }
+                return Ok();
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+        }
 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/document/RetrieveDocumentInvalidityReasons")]
+        public IHttpActionResult RetrieveDocumentInvalidityReasons()
+        {
+            try
+            {
+                var regEX = new Regex(@"
+                (?<=[A-Z])(?=[A-Z][a-z]) |
+                 (?<=[^A-Z])(?=[A-Z]) |
+                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
+                {
+                    if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
+                    {
+                        _documentService.GetTheConnectionString(Item.ConnectionString);
+                        _userSession.SetBusinessGroup("Subsea7");
+                        //_userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
+                        var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                        _documentService.GetInvalidDocumentsReasone(_userSession.submissionurl, auth.access_token);
+                    }
+                }
+                return Ok();
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/document/SpecifyWhichActionsChain")]
+        public IHttpActionResult SpecifyWhichActionsChain()
+        {
+            try
+            {
+                var regEX = new Regex(@"
+                (?<=[A-Z])(?=[A-Z][a-z]) |
+                 (?<=[^A-Z])(?=[A-Z]) |
+                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
+                {
+                    if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
+                    {
+                        if (_userSession.IsDBSync(regEX.Replace(Item.Name, " ")))
+                        {
+                            string commandText = "EXEC [dbo].[SP_SyncDataFromViewsToTBLs]";
+                            RunCommandAsynchronously(commandText, Item.ConnectionString, regEX.Replace(Item.Name, " "));
+                        }
+                        else
+                        {
+                            if (SubmitDocumentsPeriodically("BackGround_JOB",Item.ConnectionString, regEX.Replace(Item.Name, " ")))
+                                continue;
+                            else
+                                break;
+                        }
+                    }
+                }
+                return Ok();
+                //return Request.CreateResponse(HttpStatusCode.BadRequest, new { Success = true, RedirectUrl = newUrl });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/document/EIMCBackupPeriodically")]
+        public IHttpActionResult EIMCBackupPeriodically()
+        {
+            try
+            {
+                foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
+                {
+                    if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
+                    {
+                        using (SqlConnection myConnection = new SqlConnection(Item.ConnectionString))
+                        {
+                            myConnection.Open();
+                            string SQLQuery  = @"BACKUP DATABASE Subsea7_PreProd TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"]+ "PreProd" + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                            string SQLQuery2 = @"BACKUP DATABASE Subsea7 TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"] + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                            SqlCommand command = new SqlCommand(SQLQuery+SQLQuery2, myConnection);
+                            command.CommandTimeout = 600;
+                            var output = command.ExecuteReader();
+                            output.Close();
+                            myConnection.Close();
+                        }
+                    }
+                }
+                return Ok();
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+        }
+        private void RunCommandAsynchronously(string commandText, string connectionString, string Name)
+        {
+            // Given command text and connection string, asynchronously execute
+            // the specified command against the connection. For this example,
+            // the code displays an indicator as it is working, verifying the
+            // asynchronous behavior.
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    int count = 0;
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+
+                    IAsyncResult result = command.BeginExecuteNonQuery();
+                    while (!result.IsCompleted)
+                    {
+                        Console.WriteLine("Waiting ({0})", count++);
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
+                    connection.Close();
+                    SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                }
+            }
+        }
+        
+        [LicenseAuthorization]
+        private bool SubmitDocumentsPeriodically(string submittedBy, string CS, string Name)
+        {
+            Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+            AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
+            try
+            {
+                _documentService.GetTheConnectionString(CS);
+                _errorService.GetTheConnectionString(CS);
+                _userSession.SetBusinessGroup(Name);
+                var auth = _auth.token(_userSession.url, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                if(!string.IsNullOrEmpty(auth.access_token))
+                {
+                    if (objAppsettings != null)
+                    {
+                        objAppsettings.Settings["IsExternal"].Value = "1";
+                        objAppsettings.Settings["Current_BusinessGroup"].Value = Name;
+                    }
+                    var _docs = _documentService.GetAllDocumentsToSubmit().ToList();
+                    if (_docs.Count() > 0)
+                    {
+                        _docs.ForEach(i => i.documentTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower() == "1.0" ? "1.0" : "0.9");
+                        int totalPages = Convert.ToInt32(Math.Ceiling(_docs.Count() / 100.0));
+                        SubmitInput paramaters;
+                        for (int i = 0; i < totalPages; i++)
+                        {
+                            using (HttpClient client = new HttpClient())
+                            {
+                                client.DefaultRequestHeaders.Clear();
+                                client.Timeout = TimeSpan.FromMinutes(60);
+                                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                                var url = _userSession.submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
+                                client.BaseAddress = new Uri(url);
+                                var _internalDocs = _documentService.GetAllDocumentsToSubmit();
+                                if (_internalDocs.Count() < 100)
+                                {
+                                    paramaters = new SubmitInput()
+                                    {
+                                        documents = _internalDocs.ToList(),
+                                        token = auth.access_token,
+                                        pin = _userSession.pin,
+                                        url = _userSession.submissionurl,
+                                        docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
+                                    };
+                                }
+                                else
+                                {
+                                    paramaters = new SubmitInput()
+                                    {
+                                        documents = _internalDocs.Take(100).ToList(),
+                                        token = auth.access_token,
+                                        pin = _userSession.pin,
+                                        url = _userSession.submissionurl,
+                                        docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
+                                    };
+                                }
+                                var stringContent = new StringContent(JsonConvert.SerializeObject(paramaters), Encoding.UTF8, "application/json");
+                                var postTask = client.PostAsync(url, stringContent);
+                                postTask.Wait();
+                                var result = postTask.Result;
+                                if (result.IsSuccessStatusCode)
+                                {
+                                    var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
+                                    if (response != null)
+                                    {
+                                        _errorService.InsertBulk(response.rejectedDocuments);
+                                        _documentService.UpdateDocuments(response, submittedBy);
+                                    }
+                                }
+                            }
+                            if (objAppsettings != null)
+                            {
+                                objAppsettings.Settings["IsExternal"].Value = "0";
+                            }
+                        }
+                    }
+                    
+                }
+                if (objAppsettings != null)
+                {
+                    objAppsettings.Settings["IsExternal"].Value = "0";
+                }
+                return false;
+            }
+            catch
+            {
+                if (objAppsettings != null)
+                {
+                    objAppsettings.Settings["IsExternal"].Value = "0";
+                }
+                return false;
+            }
+        }
     }
 }

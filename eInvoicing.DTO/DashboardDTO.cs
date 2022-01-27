@@ -9,6 +9,7 @@ namespace eInvoicing.DTO
 {
     public class DashboardDTO: BaseDTO
     {
+        public string Reason { get; set; }
         public List<GoodsModel> goodsModel { get; set; }
         public string SubmittedInvoiceTotalAmount { get; set; }
         public string SubmittedCreditTotalAmount { get; set; }

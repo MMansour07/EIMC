@@ -11,7 +11,7 @@ namespace eInvoicing.Persistence
     {
         public IdentityContext(): base("name=Identity_CS")
         {
-            Database.SetInitializer(new DBContextSeeder());
+            //Database.SetInitializer(new DBContextSeeder());
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -44,5 +44,6 @@ namespace eInvoicing.Persistence
         public DbSet<RolePermission> RolePermissions { get; set; }
         public DbSet<Lookup> Lookups { get; set; }
         public DbSet<TaxPayer> TaxPayers { get; set; }
+        public DbSet<BusinessGroup> BusinessGroups { get; set; }
     }
 }

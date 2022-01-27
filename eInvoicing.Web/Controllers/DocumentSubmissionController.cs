@@ -38,25 +38,37 @@ namespace eInvoicing.Web.Controllers
                     if (postTask.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(postTask.Content.ReadAsStringAsync().Result);
-                        if (string.IsNullOrEmpty(response.statusCode))
+                        if (response != null)
                         {
-                            if (response != null)
+                            if (!string.IsNullOrEmpty(response.statusCode))
                             {
-                                return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
+                                if (response.statusCode?.ToLower() == "unprocessableentity")
+                                {
+                                    return Json(new { message = "Unprocessable Entity, You must wait for 10 mins to resend this document.", status = "5", data = response }, JsonRequestBehavior.AllowGet);
+                                }
+                                else
+                                {
+                                    return Json(new { message = response.statusCode, status = "2", data = response }, JsonRequestBehavior.AllowGet);
+                                }
                             }
                             else
                             {
-                                return Json(new { message = "Unprocessable Entity, You must wait for 10 mins to resend this document to ensure the modification.", status = "5", data = response }, JsonRequestBehavior.AllowGet);
+                                return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
                             }
                         }
                         else
-                        return Json(new {message = postTask.StatusCode.ToString(), status = "2", data = response}, JsonRequestBehavior.AllowGet);
+                            return Json(new { message = postTask.StatusCode.ToString(), status = "3", data = response }, JsonRequestBehavior.AllowGet);
                     }
-                    return Json(new { message = postTask.StatusCode.ToString(), status = "3", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
+                    else if (postTask.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        return Json(new { message = postTask.ReasonPhrase, status = "401", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new { message = postTask.StatusCode.ToString(), status = "2", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
                     // 1 --> Sucess
-                    // 2 --> External integration error
-                    // 3 --> Internal Integration Error
-                    // 4 --> Internal server error
+                    // 2 --> Integration error ----> ETA APIs
+                    // 3 --> Integration Error ----> Internal APIs
+                    // 4 --> Inner Exception
+                    // 5 --> Unprocessable Entity
                 }
             }
             catch (Exception ex)
@@ -82,16 +94,37 @@ namespace eInvoicing.Web.Controllers
                     if (postTask.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(postTask.Content.ReadAsStringAsync().Result);
-                        if (string.IsNullOrEmpty(response.statusCode))
-                            return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
+                        if (response.statusCode != "-1")
+                        {
+                            if (response.acceptedDocuments?.Count == 0 && response.rejectedDocuments?.Count == 0 && response.statusCode?.ToLower() == "unprocessableentity")
+                            {
+                                return Json(new { message = "Unprocessable Entity, You must wait for 10 mins to resend these documents.", status = "5", data = response }, JsonRequestBehavior.AllowGet);
+                            }
+                            else
+                            {
+                                if (!string.IsNullOrEmpty(response.statusCode))
+                                {
+                                    return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
+                                }
+                                else
+                                {
+                                    return Json(new { message = response.statusCode, status = "5", data = response }, JsonRequestBehavior.AllowGet);
+                                }
+                            }
+                        }
                         else
                             return Json(new { message = response.statusCode.ToString(), status = "2", data = response }, JsonRequestBehavior.AllowGet);
                     }
+                    else if (postTask.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        return Json(new { message = postTask.ReasonPhrase, status = "401", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
+                    }
                     return Json(new { message = postTask.StatusCode.ToString(), status = "3", data = new DocumentSubmissionDTO() }, JsonRequestBehavior.AllowGet);
                     // 1 --> Sucess
-                    // 2 --> External integration error
-                    // 3 --> Internal Integration Error
-                    // 4 --> Internal server error
+                    // 2 --> Integration error ----> ETA APIs
+                    // 3 --> Integration Error ----> Internal APIs
+                    // 4 --> Inner Exception
+                    // 5 --> Unprocessable Entity
                 }
             }
             catch (Exception ex)

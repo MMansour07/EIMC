@@ -14,7 +14,9 @@ namespace eInvoicing.DTO
         public int UpdatedDocumentsCount { get; set; }
         public int UpdatedInvoiceLinesCount { get; set; }
         public int UpdatedTaxableItemsCount { get; set; }
+        public List<string> NonExistingDocumentIds { get; set; }
         public bool IsInserted { get; set; }
         public bool IsUpdated { get; set; }
+        public int UpdatesStatus { get; set; }
     }
 }

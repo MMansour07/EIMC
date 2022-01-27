@@ -24,6 +24,10 @@ namespace eInvoicing.DTO
         public string LastName { get; set; }
         public string Title { get; set; }
         public string Email { get; set; }
+        public string BusinessGroup { get; set; }
+        public string BusinessGroupId { get; set; }
+        public bool IsDBSync { get; set; }
+
         public string PhoneNumber { get; set; }
         public List<RoleDTO> Roles { get; set; }
         [JsonProperty("Privileges")]

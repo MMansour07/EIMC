@@ -12,9 +12,13 @@ namespace eInvoicing.Service.AppService.Contract.Base
     public interface ITaxpayerService
     {
         void add(TaxpayerDTO obj);
-        string token();
         void updateTaxPayer(TaxpayerDTO obj);
-        TaxpayerDTO getTaxpayerDetails();
-        string GetClientId(string Environment);
+        TaxpayerDTO getTaxpayerDetails(string BusinessGroupId);
+        TaxpayerDTO getTaxpayerDetailsByBusinessGroupName(string BusinessGroup);
+        string TokenByBusinessGroup(string BusinessGroup);
+        string TokenByRegistrationNumber(string BusinessGroup);
+        string GetClientIdByBusinessGroup(string BusinessGroup);
+        string GetClientIdByRegistrationNumber(string BusinessGroupId);
+        bool CheckIsDBSync(string BusinessGroup);
     }
 }

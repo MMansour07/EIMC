@@ -6,10 +6,10 @@
     .input-group-append {
         margin-left: 0 !important;
     }
+
     .chkbox_disabled {
         pointer-events: none !important;
     }
-   
 </style>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
 <div class="container-fluid">
@@ -62,8 +62,20 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
+                        <a class="dropdown-item" href="@Url.Action("myprofile", "user")">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
+                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <rect x="0" y="0" width="24" height="24"></rect>
+                                        <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
+                                        <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
+                                    </g>
+                                </svg>
+                            </span>
+                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
+                        </a>
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
-                            <span class="svg-icon svg-icon-light svg-icon" style="padding-right:inherit">
+                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
                                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
                                     <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
                                         <rect x="0" y="0" width="24" height="24" />
@@ -142,10 +154,10 @@
                                             <div class="input-group">
                                                 @Html.TextBoxFor(model => model.PreProductionClientSecret, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                                 @*<div class="input-group-append">
-                                                    <span class="input-group-text editBtn1">
-                                                        <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
-                                                    </span>
-                                                </div>*@
+                                                        <span class="input-group-text editBtn1">
+                                                            <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
+                                                        </span>
+                                                    </div>*@
                                             </div>
                                         </div>
                                     </div>
@@ -193,14 +205,23 @@
                                             <div class="input-group">
                                                 @Html.TextBoxFor(model => model.ProductionClientSecret, new { @class = "form-control form-control-solid disable1", @readonly = "readonly" })
                                                 @*<div class="input-group-append">
-                                                    <span class="input-group-text editBtn11">
-                                                        <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
-                                                    </span>
-                                                </div>*@
+                                                        <span class="input-group-text editBtn11">
+                                                            <i class="la la-edit icon-lg" style="cursor: pointer !important;"></i>
+                                                        </span>
+                                                    </div>*@
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @*<div class="form-group">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>Token Pin</label>
+                                            @Html.TextBoxFor(model => model.TokenPin, new { @class = "form-control form-control-solid disable1", @readonly = "readonly", @placeholder = "TokenPin", @name = "TokenPin" })
+                                            @Html.ValidationMessageFor(model => model.TokenPin, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>*@
                             </div>
                         </div>
 
@@ -219,17 +240,36 @@
                                 <div class="form-group row pointer chkbox_disabled">
                                     <label class="col-form-label text-left col-lg-3 col-sm-12">APIs Environment:</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
-                                        @Html.CheckBoxFor(m => m.APIsEnvironment, new { data_switch = "true", @type = "checkbox", data_on_text = "Prod",
-                                       @class= "form-control-solid disable1", data_handle_width = "70", data_off_text = "UAT", data_on_color = "primary" })
+                                        @Html.CheckBoxFor(m => m.APIsEnvironment, new
+                                        {
+                                            data_switch = "true",
+                                            @type = "checkbox",
+                                            data_on_text = "Prod",
+                                       @class = "form-control-solid disable1",
+                                            data_handle_width = "70",
+                                            data_off_text = "UAT",
+                                            data_on_color = "primary"
+                                        })
                                     </div>
                                 </div>
                                 <div class="form-group row pointer chkbox_disabled">
                                     <label class="col-form-label text-left col-lg-3 col-sm-12">Type Version:</label>
                                     <div class="col-lg-9 col-md-9 col-sm-12">
-                                        @Html.CheckBoxFor(m => m.TypeVersion, new { data_switch = "true", @type = "checkbox", data_on_text = "1.0", @class = "form-control-solid disable1"
-                                       , data_handle_width = "70", data_off_text = "0.9", data_on_color = "primary" })
+                                        @Html.CheckBoxFor(m => m.TypeVersion, new
+                                        {
+                                            data_switch = "true",
+                                            @type = "checkbox",
+                                            data_on_text = "1.0",
+                                            @class = "form-control-solid disable1"
+                                       ,
+                                            data_handle_width = "70",
+                                            data_off_text = "0.9",
+                                            data_on_color = "primary"
+                                        })
                                     </div>
                                 </div>
+
+
                             </div>
                         </div>
 
@@ -254,8 +294,8 @@
                         </div>
 
                     </div>-->
-                    <!--end::Card-->
-                <!--</div>
+            <!--end::Card-->
+            <!--</div>
             </div>-->
         </div>
     }
@@ -268,7 +308,7 @@
             var valdata = $("#_frm").serialize();
             //to get alert popup
             $.ajax({
-                url: "/v1/appsetting/update",
+                url: "/eimc.hub/v1/appsetting/update",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

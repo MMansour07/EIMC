@@ -15,12 +15,16 @@ namespace eInvoicing.Repository.Implementation.Base
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
     {
-
+        public string ConnectionString { get; set; }
         protected Repository(ApplicationContext context)
         {
             Context = context;
-            //Context.Database.Log = BaseRepository<TEntity>.Log;
             DbSet = Context.Set<TEntity>();
+        }
+        public void GetTheConnectionString(string ConnectionString)
+        {
+            this.ConnectionString = ConnectionString;
+            Context.Database.Connection.ConnectionString = ConnectionString?? "Data Source=.;Initial Catalog=EIMC_Preprod;User ID=sa;Password=123";
         }
 
         public IQueryable<TEntity> All { get { return DbSet.AsNoTracking(); } }
@@ -60,6 +64,18 @@ namespace eInvoicing.Repository.Implementation.Base
             try
             {
                 DbSet.AddOrUpdate(entity);
+                Context.SaveChanges();
+                return entity;
+            }
+            catch (Exception e) { throw e; }
+        }
+
+        public virtual TEntity ModifyById(TEntity entity)
+        {
+            try
+            {
+                //Context.Entry<TEntity>(entity).State = EntityState.Modified;
+                entity = DbSet.Attach(entity);
                 Context.SaveChanges();
                 return entity;
             }
@@ -168,7 +184,6 @@ namespace eInvoicing.Repository.Implementation.Base
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
         }

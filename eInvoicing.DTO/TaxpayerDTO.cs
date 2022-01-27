@@ -20,11 +20,13 @@ namespace eInvoicing.DTO
         public DateTime ClientSecretExpirationDate { get; set; }
         public DateTime RegistrationDate { get; set; }
         public string LicenseType { get; set; }
+        public string PIN { get; set; }
         public string PreProdClientId { get; set; }
         public string PreProdClientSecret { get; set; }
         public string ProdClientId { get; set; }
         public string ProdClientSecret { get; set; }
         public string License { get; set; }
+        public string BusinessGroupId { get; set; }
         public string CreatedBy { get; set; }
         public int IRN { get; set; }
         public bool Status { get; set; }

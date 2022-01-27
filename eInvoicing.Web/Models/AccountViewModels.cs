@@ -93,6 +93,7 @@ namespace eInvoicing.Web.Models
         public string FullName { get; set; }
         [Required(ErrorMessage = "Required Field.")]
         public List<string> Roles { get; set; }
+        public string BusinessGroupId { get; set; }
         public string SlashSeparatedRoles { get; set; }
 
     }
@@ -139,6 +140,8 @@ namespace eInvoicing.Web.Models
         public string DevSignerURL { get; set; }
         public string ProductionSignerURL { get; set; }
         public string DevAPIURL { get; set; }
+        public string TokenPin { get; set; }
+        public string BusinessGroupId { get; set; }
         public string ProductionInternalAPIURL { get; set; }
     }
 

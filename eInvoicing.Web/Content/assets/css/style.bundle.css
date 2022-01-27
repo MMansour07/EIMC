@@ -2024,6 +2024,7 @@ pre {
     border: 0; }
 
 .form-control {
+  font-family: monospace;
   display: block;
   width: 100%;
   height: calc(1.5em + 1.3rem + 2px);
@@ -55828,6 +55829,7 @@ code {
     margin: 1rem 0 !important;
     border-radius: 0.42rem; }
     .dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
+      font-family: monospace;
       font-weight: 400;
       font-size: 1rem;
       vertical-align: middle;
@@ -55865,8 +55867,13 @@ code {
           color: #3699FF !important; }
     .dataTables_wrapper .dataTable tfoot th,
     .dataTables_wrapper .dataTable thead th {
-      font-weight: 500;
-      color: #181C32; }
+        color: #000000;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        font-weight: 600;
+        letter-spacing: 0rem;
+        font-family: -webkit-pictograph;
+    }
     .dataTables_wrapper .dataTable thead th {
       border-top: 0; }
     .dataTables_wrapper .dataTable tbody tr.active,
@@ -56046,7 +56053,8 @@ code {
       .dataTables_wrapper .dataTables_paginate .pagination .page-item:first-child {
         margin-left: 0 !important; } }
   .dataTables_wrapper table.dataTable.collapsed > tbody > tr[role="row"] > td:first-child {
-    padding-left: 25px !important; }
+    padding-left: 25px !important; 
+  }
   .dataTables_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr[role="row"] > td:first-child:before {
     -webkit-box-shadow: none;
     box-shadow: none;

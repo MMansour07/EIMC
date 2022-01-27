@@ -10,6 +10,7 @@ namespace eInvoicing.DTO
     public class SubmitDocumentRqDTO: BaseDTO
     {
         public string submittedBy { get; set; }
+        public string BusinessGroupId { get; set; }
         public List<DocumentVM> documents { get; set; }
     }
 }

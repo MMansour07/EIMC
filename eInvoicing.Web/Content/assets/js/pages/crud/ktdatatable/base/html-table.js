@@ -10,7 +10,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/v1/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
+                    url: '/eimc.hub/v1/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
                 },
             },
             pageSize: 10,
@@ -148,9 +148,10 @@ var KTDatatableRecordSelectionDemo = function () {
         },
     };
 }();
-
+var FilteredDocuments;
 jQuery(document).ready(function () {
     KTDatatableRecordSelectionDemo.init();
+    FilteredDocuments = sessionStorage.getItem("PendingDocs");
 });
 function convertToJavaScriptDate(value) {
     var dt = value;
@@ -211,7 +212,7 @@ var initSubDatatable = function (id) {
         datatable.search($(this).val().toLowerCase(), 'Type');
     });
 
-    // fix datatable layout after modal shown
+    // Fix datatable layout after modal shown
     datatable.hide();
     modal.on('shown.bs.modal', function () {
         var modalContent = $(this).find('.modal-content');
@@ -242,4 +243,118 @@ function getParameterByName(name, url = window.location.href) {
     if (!results) return null;
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}
+function SubmitDocument() {
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'primary',
+        message: 'Please wait as this may take a few seconds'
+    });
+    $.post('/eimc.hub/v1/documentsubmission/submit', { obj: JSON.parse(FilteredDocuments)}, function (returnedData) {
+        KTApp.unblockPage();
+        if (returnedData.status == "1") {
+            Swal.fire({
+                title: 'Process has been executed successfully! with the below results.',
+                html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
+                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                icon: "success",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                window.location.href = "/eimc.hub/v1/document/pending";
+            });
+        }
+        else if (returnedData.status == "2") {
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: "ETA & Signer Integration Failure, Please check logs.",
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+        else if (returnedData.status == "3") {
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: "Internal Integration Failure due to the following: " + returnedData.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+        else if (returnedData.status == "5") {
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: returnedData.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+        else if (returnedData.status == "401") {
+            Swal.fire({
+                title: "Your license has expired. You can no longer use this product.",
+                text: "To purchase a new license of this product, Contact the product owner.",
+                icon: "info",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Sorry, something went wrong, please try again.",
+                text: "Inner Exception due to the following: " + returnedData.message,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
+        }
+    }).fail(function () {
+        KTUtil.btnRelease(btn);
+        KTApp.unblockPage();
+        Swal.fire({
+            title: "Sorry, something went wrong, please try again.",
+            text: "Internal Server Error: " + returnedData.message,
+            icon: "error",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn font-weight-bold btn-light-primary"
+            }
+        }).then(function () {
+            KTUtil.scrollTop();
+        });
+    });
+}
+
+function EditDocument(InternalId) {
+    window.location.href = "/eimc.hub/v1/document/edit_document?InternalId=" + InternalId;
 }

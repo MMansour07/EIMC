@@ -54,18 +54,22 @@
   <ItemGroup>
     <Compile Include="Contract\Base\IRepository.cs" />
     <Compile Include="Contract\Base\IUnitOfWork.cs" />
+    <Compile Include="Contract\IAuthRepository.cs" />
+    <Compile Include="Contract\IValidationStepRepository.cs" />
     <Compile Include="Contract\ITaxpayerRepository.cs" />
     <Compile Include="Contract\IPermissionRepository.cs" />
     <Compile Include="Contract\IRolePermissionRepository.cs" />
     <Compile Include="Contract\IUserRoleRepository.cs" />
     <Compile Include="Contract\IRoleRepository.cs" />
-    <Compile Include="Contract\IAuthRepository.cs" />
+    <Compile Include="Contract\IBusinessGroupRepository.cs" />
     <Compile Include="Contract\ILookupRepository.cs" />
     <Compile Include="Contract\IErrorReposistory.cs" />
     <Compile Include="Contract\ITaxableItemRepository.cs" />
     <Compile Include="Contract\IInvoiceLineRepository.cs" />
     <Compile Include="Contract\IDocumentRepository.cs" />
+    <Compile Include="Implementation\BusinessGroupRepository.cs" />
     <Compile Include="Implementation\Base\IdentityRepository.cs" />
+    <Compile Include="Implementation\ValidationStepRepository.cs" />
     <Compile Include="Implementation\TaxpayerRepository.cs" />
     <Compile Include="Implementation\PermissionRepository.cs" />
     <Compile Include="Implementation\RolePermissionRepository.cs" />

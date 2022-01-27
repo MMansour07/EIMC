@@ -30,7 +30,7 @@ namespace eInvoicing.Signer.Controllers
     public class InvoiceHasher : ControllerBase
     {
         private readonly string DllLibPath;
-        private readonly string TokenPin;
+        private string TokenPin = "";
         private readonly IConfiguration _config;
         private readonly ILogger<InvoiceHasher> _logger;
         public InvoiceHasher(IConfiguration config, ILogger<InvoiceHasher> logger)
@@ -38,7 +38,7 @@ namespace eInvoicing.Signer.Controllers
             _logger = logger;
             _config = config;
             DllLibPath = _config.GetValue<string>("AppSettings:DllLibPath");
-            TokenPin = _config.GetValue<string>("AppSettings:TokenPin");
+            //TokenPin = _config.GetValue<string>("AppSettings:TokenPin");
         }
         [Route("SubmitDocument")]
         [HttpPost]
@@ -46,10 +46,11 @@ namespace eInvoicing.Signer.Controllers
         {
             try
             {
+                TokenPin = paramaters.pin;
                 var docs = paramaters.documents.Select(d=> d.ToDocumentWithoutSignatureDTO()).ToList();
                 Temp docsFormatted = new Temp() { documents = docs };
                 string docsJsonStr = JsonConvert.SerializeObject(docsFormatted);
-                var SignedDocuments = SignDocument(TokenPin, docsJsonStr);
+                var SignedDocuments = SignDocument(TokenPin, docsJsonStr, paramaters.docuemntTypeVersion);
                 _logger.LogInformation("Info: Here are the submitted documents of date [" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")+ "] --> " + SignedDocuments);
                 using (HttpClient client = new HttpClient())
                 {
@@ -65,18 +66,19 @@ namespace eInvoicing.Signer.Controllers
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
+                        var responseX = result.Content.ReadAsStringAsync().Result;
                         var _res = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
                         _logger.LogInformation("Info: Here are the response of submission of date [" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss") + "]--> "+ JsonConvert.SerializeObject(_res));
                         return _res;
                     }
-                    _logger.LogWarning("Warning: Failed With Status Code ---> ", result.StatusCode);
+                    _logger.LogWarning("Warning: Failed With Status Code ---> " + result.ReasonPhrase.ToString());
                     return new DocumentSubmissionDTO() { statusCode = result.StatusCode.ToString() };
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogWarning("Exception: Failed due to the following exception ---> ", ex.Message.ToString());
-                return new DocumentSubmissionDTO() { statusCode = ex.ToString() };
+                _logger.LogWarning("Exception: Failed due to the following exception ---> " +  ex.Message.ToString());
+                return new DocumentSubmissionDTO() { statusCode = ex.Message.ToString() };
             }
         }
         private string Serialize(JObject document)
@@ -141,7 +143,7 @@ namespace eInvoicing.Signer.Controllers
 
             return serialized;
         }
-        private string SignDocument(string pin,string docsJsonStr)
+        private string SignDocument(string pin,string docsJsonStr, string documentTypeVersion)
         {
             JObject request = JsonConvert.DeserializeObject<JObject>(docsJsonStr, new JsonSerializerSettings()
             {
@@ -156,16 +158,32 @@ namespace eInvoicing.Signer.Controllers
             for (int i = 0; i < documents.Count; i++)
             {
                 var document = documents[i].ToObject<JObject>();
-                //var serializedString = Serialize(document);
-                //var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString));
-                var signatures = new List<SIGNATURESDTO>();
-                signatures.Add(new SIGNATURESDTO
+                if (documentTypeVersion == "1.0")
                 {
-                    signatureType = "I",
-                    value = "NA"
-                });
-                document.Add("signatures", JArray.FromObject(signatures));
-                inputDocuments.Add(document);
+                    var serializedString = Serialize(document);
+                    var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString));
+                    var signatures = new List<SIGNATURESDTO>();
+                    signatures.Add(new SIGNATURESDTO
+                    {
+                        signatureType = "I",
+                        value = signatureString
+                    });
+                    document.Add("signatures", JArray.FromObject(signatures));
+                    inputDocuments.Add(document);
+                }
+                else
+                {
+                    string signatureString = "NA";
+                    var signatures = new List<SIGNATURESDTO>();
+                    signatures.Add(new SIGNATURESDTO
+                    {
+                        signatureType = "I",
+                        value = signatureString
+                    });
+                    document.Add("signatures", JArray.FromObject(signatures));
+                    inputDocuments.Add(document);
+                }
+                
             }
             request.Remove("documents");
             request.Add("documents", inputDocuments);
@@ -254,7 +272,7 @@ namespace eInvoicing.Signer.Controllers
 
 
 
-                    signer.SignedAttributes.Add(new Pkcs9SigningTime(DateTime.UtcNow));
+                    signer.SignedAttributes.Add(new Pkcs9SigningTime(DateTime.Now));
                     signer.SignedAttributes.Add(new AsnEncodedData(new Oid("1.2.840.113549.1.9.16.2.47"), signerCertificateV2.GetEncoded()));
 
                     cms.ComputeSignature(signer);

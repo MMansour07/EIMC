@@ -24,6 +24,11 @@ namespace eInvoicing.Web
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AutoMapperConfiguration.Init();
             Bootstrapper.Initialise();
+
+            //Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            //Response.Cache.SetExpires(DateTime.UtcNow.AddHours(-1));
+            //Response.Cache.SetNoStore();
         }
+
     }
 }

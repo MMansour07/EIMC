@@ -1,20 +1,13 @@
 ﻿using eInvoicing.DTO;
-using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation;
-using eInvoicing.Service.Helper;
-using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace eInvoicing.Web.Controllers
@@ -27,25 +20,31 @@ namespace eInvoicing.Web.Controllers
         {
             _userSession = userSession;
         }
-        [AllowAnonymous]
+        
         [HttpGet]
         public ActionResult documents_stats()
         {
             return View();
         }
-        [AllowAnonymous]
+
+        [HttpGet]
+        public ActionResult invalidreasons()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult top_goods_usage()
         {
             return View();
         }
-        [AllowAnonymous]
+
         [HttpGet]
         public ActionResult monthly_bestseller()
         {
             return View();
         }
-        [AllowAnonymous]
+        
         [HttpGet]
         public ActionResult monthly_lowestseller()
         {
@@ -68,8 +67,8 @@ namespace eInvoicing.Web.Controllers
 
                 var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 var Today = DateTime.Now;
-                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : Convert.ToDateTime(fromDate);
-                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : Convert.ToDateTime(toDate);
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);//Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
                 if (start == 0)
                     start = 1;
                 else
@@ -90,11 +89,12 @@ namespace eInvoicing.Web.Controllers
                     return Json(new SubmittedDocumentResponse(), JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return Json(new SubmittedDocumentResponse(), JsonRequestBehavior.AllowGet);
             }
         }
+        
         [HttpPost]
         [ActionName("AjaxTopGoodsUsage")]
         public ActionResult AjaxTopGoodsUsage()
@@ -111,8 +111,8 @@ namespace eInvoicing.Web.Controllers
 
                 var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 var Today = DateTime.Now;
-                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : Convert.ToDateTime(fromDate);
-                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : Convert.ToDateTime(toDate);
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
                 if (start == 0)
                     start = 1;
                 else
@@ -164,7 +164,7 @@ namespace eInvoicing.Web.Controllers
                     return Json(new List<GoodsModel>(), JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return Json(new List<GoodsModel>(), JsonRequestBehavior.AllowGet);
             }
@@ -195,11 +195,55 @@ namespace eInvoicing.Web.Controllers
                     return Json(new List<GoodsModel>(), JsonRequestBehavior.AllowGet);
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return Json(new List<GoodsModel>(), JsonRequestBehavior.AllowGet);
             }
         }
 
+        [HttpPost]
+        [ActionName("AjaxInvalidReasons")]
+        public ActionResult AjaxInvalidReasons()
+        {
+            try
+            {
+                int start = Convert.ToInt32(Request["start"]);
+                int length = Convert.ToInt32(Request["length"]);
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                string searchValue = Request["search[value]"];
+                string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string sortDirection = Request["order[0][dir]"];
+
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
+                if (start == 0)
+                    start = 1;
+                else
+                    start = (start / length) + 1;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    var url = _userSession.URL + "api/report/invalidreasons?pageNumber=" + Convert.ToInt32(start) + "&pageSize=" + Convert.ToInt32(length) +
+                        "&fromdate=" + _fromDate + "&todate=" + _toDate + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection;
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<InvalidDocumentResponse>(postTask.Content.ReadAsStringAsync().Result);
+                        return Json(new { recordsTotal = response.meta.total, recordsFiltered = response.meta.totalFiltered, data = response.data }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new InvalidDocumentResponse(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(new InvalidDocumentResponse(), JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

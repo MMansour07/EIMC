@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +14,8 @@ using eInvoicing.DTO;
 using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
 using Newtonsoft.Json;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
 
 namespace eInvoicing.Web.Controllers
 {
@@ -40,7 +43,8 @@ namespace eInvoicing.Web.Controllers
         {
             try
             {
-                var response = JsonConvert.DeserializeObject<TaxpayerDTO>(_httpClient.GET("api/taxpayer/details").Info);
+                var BusinessGroupId = ClaimsPrincipal.Current.FindFirst("BusinessGroupId").Value;
+                var response = JsonConvert.DeserializeObject<TaxpayerDTO>(_httpClient.GET("api/taxpayer/details?BusinessGroupId="+ BusinessGroupId).Info);
                 if (response != null)
                 {
                     return Json(new { status = "Success", data = response }, JsonRequestBehavior.AllowGet);
@@ -88,6 +92,7 @@ namespace eInvoicing.Web.Controllers
                     taxpayerDTO.Id = 0;
                     taxpayerDTO.Status = true;
                     taxpayerDTO.CreatedBy = User.Identity.Name;
+                    taxpayerDTO.BusinessGroupId = ClaimsPrincipal.Current.FindFirst("BusinessGroupId")?.Value;
                     var response = _httpClient.POST("api/taxpayer", taxpayerDTO);
                     if (response.HttpStatusCode == HttpStatusCode.OK)
                     {

@@ -65,6 +65,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>().InSingletonScope();
             kernel.Bind<IRepository<User>>().To<Repository<User>>().InThreadScope();
             kernel.Bind<IDocumentRepository>().To<DocumentRepository>().InThreadScope();
+            kernel.Bind<IValidationStepRepository>().To<ValidationStepRepository>().InThreadScope();
             kernel.Bind<IAuthRepository>().To<AuthRepository>().InThreadScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InThreadScope();
             kernel.Bind<IPermissionRepository>().To<PermissionRepository>().InThreadScope();
@@ -74,6 +75,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<ITaxableItemRepository>().To<TaxableItemRepository>().InThreadScope();
             kernel.Bind<ILookupRepository>().To<LookupRepository>().InThreadScope();
             kernel.Bind<ITaxpayerRepository>().To<TaxpayerRepository>().InThreadScope();
+            kernel.Bind<IBusinessGroupRepository>().To<BusinessGroupRepository>().InThreadScope();
             kernel.Bind<IErrorReposistory>().To<ErrorRepository>().InThreadScope();
             kernel.Bind<IDocumentService>().To<DocumentService>().InThreadScope();
             kernel.Bind<IReportService>().To<ReportService>().InThreadScope();
@@ -86,6 +88,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<ISyncService>().To<SyncService>().InThreadScope();
             kernel.Bind<ILookupService>().To<LookupService>().InThreadScope();
             kernel.Bind<ITaxpayerService>().To<TaxpayerService>().InThreadScope();
+            kernel.Bind<IBusinessGroupService>().To<BusinessGroupService>().InThreadScope();
             return kernel;
         }
     }

@@ -191,7 +191,7 @@ namespace eInvoicing.Web.Controllers
                         client.Timeout = TimeSpan.FromMinutes(60);
                         var url = _userSession.URL + "api/auth/editRole";
                         client.BaseAddress = new Uri(url);
-                        var postTask = Task.Run(() => client.PutAsJsonAsync(url, model)).Result;
+                        var postTask = Task.Run(() => client.PostAsJsonAsync(url, model)).Result;
                         if (postTask.IsSuccessStatusCode)
                         {
                             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
@@ -205,7 +205,8 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { success = false }, JsonRequestBehavior.AllowGet);
             }
         }
-        [HttpPost, ActionName("DeleteRole")]
+        [HttpPost]
+        [ActionName("DeleteRole")]
         public ActionResult DeleteConfirmed(string Id)
         {
             try
@@ -219,7 +220,7 @@ namespace eInvoicing.Web.Controllers
                         client.Timeout = TimeSpan.FromMinutes(60);
                         var url = _userSession.URL + "api/auth/deleteRole?Id=" + Id;
                         client.BaseAddress = new Uri(url);
-                        var postTask = Task.Run(() => client.DeleteAsync(url)).Result;
+                        var postTask = Task.Run(() => client.GetAsync(url)).Result;
                         if (postTask.IsSuccessStatusCode)
                         {
                             return Json(new { success = true }, JsonRequestBehavior.AllowGet);

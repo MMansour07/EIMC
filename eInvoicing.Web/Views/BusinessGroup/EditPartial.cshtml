@@ -1,0 +1,151 @@
+﻿@model eInvoicing.DTO.BusinessGroupDTO
+
+
+<!--begin::Form-->
+<!--begin::Wizard Form-->
+@using (Html.BeginForm("editgroup", "bg", FormMethod.Post, new { @class = "", role = "form", id = "_editFrm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="card-body">
+        <!--begin::Group-->
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.Id)
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label>Group Name *</label>
+                @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @placeholder = "Group Name", @name = "GroupName" })
+                @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label>Business Type *</label>
+                @Html.TextBoxFor(model => model.BusinessType, new { @class = "form-control", @placeholder = "Business Type", @name = "BusinessType" })
+                @Html.ValidationMessageFor(model => model.BusinessType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label>Sync Type *</label>
+                @Html.TextBoxFor(model => model.SyncType, new { @class = "form-control", @placeholder = "Sync Type", @name = "SyncType" })
+                @Html.ValidationMessageFor(model => model.SyncType, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-6">
+                <label>Token Pin *</label>
+                @Html.TextBoxFor(model => model.Token, new { @class = "form-control", @placeholder = "Token", @name = "Token" })
+                @Html.ValidationMessageFor(model => model.Token, "", new { @class = "text-danger" })
+            </div>
+            
+        </div>
+        <div class="form-group row">
+            <div class="col-md-6">
+                <label>Is DBSync *</label>
+                @Html.CheckBoxFor(model => model.IsDBSync, new { @class = "form-control", @name = "IsDBSync", @id = "IsDBSync", @style = "width: 11% !important;" })
+                @Html.ValidationMessageFor(model => model.IsDBSync, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label>Email *</label>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
+                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label>Phone Number *</label>
+                @Html.TextBoxFor(model => model.Phone, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "Phone" })
+                @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
+                <label>Address *</label>
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address", @type = "text", @name = "Address" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <!--end::Group-->
+    </div>
+}
+<!--end::Form-->
+<script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
+<script>
+    jQuery(document).ready(function () {
+        var form = KTUtil.getById('_editFrm');
+        _editFrm = FormValidation.formValidation(
+            document.getElementById('_editFrm'),
+            {
+                form,
+                fields: {
+                    Email: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Email is required'
+                            },
+                            emailAddress: {
+                                message: 'The value is not a valid email address'
+                            }
+                        }
+                    },
+                    GroupName: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Group Name is required'
+                            },
+                        }
+                    },
+                    SyncType: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Sync Type is required'
+                            }
+                        }
+                    },
+                    IsSyncDB: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Is SyncDB is required'
+                            }
+                        }
+                    },
+                    BusinessType: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Business Type is required'
+                            },
+
+                        }
+                    },
+                    Phone: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Phone Number is required'
+                            },
+
+                        }
+                    },
+                    Address: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Address is required'
+                            },
+
+                        }
+                    },
+                    Token: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Token is required'
+                            },
+
+                        }
+                    }
+                },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                }
+            }
+        );
+    });
+</script>

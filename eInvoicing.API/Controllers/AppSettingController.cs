@@ -14,6 +14,7 @@ using eInvoicing.Service.Helper;
 using eInvoicing.API.Helper;
 using Newtonsoft.Json;
 using eInvoicing.DTO;
+using System.Security.Claims;
 
 namespace eInvoicing.API.Controllers
 {
@@ -28,11 +29,12 @@ namespace eInvoicing.API.Controllers
         }
 
         [HttpGet, ActionName("GetChannelManagerSettings")]
-        public IHttpActionResult Settings()
+        public IHttpActionResult Settings(string BusinessGroupId)
         {
             try
             {
-                var taxpayer = _taxpayerService.getTaxpayerDetails();
+
+                var taxpayer = _taxpayerService.getTaxpayerDetails(BusinessGroupId);
                 return Ok(new SettingViewModel()
                 {
                     PreProductionLoginURL = ConfigurationManager.AppSettings["idSrvBaseUrl"],
@@ -83,14 +85,30 @@ namespace eInvoicing.API.Controllers
                     objAppsettings.Settings["ProdidSrvBaseUrl"].Value = model.ProductionLoginURL;
                     objAppsettings.Settings["Environment"].Value = model.APIsEnvironment ? "Prod" : "PreProd";
                     objAppsettings.Settings["TypeVersion"].Value = model.TypeVersion ? "1.0" : "0.9";
+
+
+                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
+
+                    string connString = ConfigurationManager.ConnectionStrings["EInvoice_" + identity?.FindFirst("BusinessGroup")?.Value?.Replace(" ", "")]?.ConnectionString;
+                    string preprod_connString = "";
+                    string Temp = connString?.Split(';')[1]?.Split('=')[1];
+                    if (!Temp.ToLower().Contains("preprod"))
+                        preprod_connString = connString.Replace(identity?.FindFirst("BusinessGroup").Value.Replace(" ", ""), identity?.FindFirst("BusinessGroup").Value.Replace(" ", "") + "_PreProd");
+                    else
+                        preprod_connString = connString.Replace(identity?.FindFirst("BusinessGroup").Value.Replace(" ", ""), identity?.FindFirst("BusinessGroup").Value.Replace(" ", ""));
+
+                    string prod_connString = connString.Replace(identity?.FindFirst("BusinessGroup").Value.Replace(" ", "") + "_PreProd", identity?.FindFirst("BusinessGroup").Value.Replace(" ", ""));
+
                     if (model.APIsEnvironment)
                     {
-                        connectionStringsSection.ConnectionStrings["eInvoicing_CS"].ConnectionString = objAppsettings.Settings["ConnectioString_Prod"].Value;
+                        connectionStringsSection.ConnectionStrings["EInvoice_" + identity?.FindFirst("BusinessGroup").Value.Replace(" ", "")].ConnectionString = prod_connString;
                     }
                     else
                     {
-                        connectionStringsSection.ConnectionStrings["eInvoicing_CS"].ConnectionString = objAppsettings.Settings["ConnectioString_PreProd"].Value;
+                        connectionStringsSection.ConnectionStrings["EInvoice_" + identity?.FindFirst("BusinessGroup").Value.Replace(" ", "")].ConnectionString = preprod_connString;
                     }
+
                     objConfig.Save();
                     return Ok();
                 }

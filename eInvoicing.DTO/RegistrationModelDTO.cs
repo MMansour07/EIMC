@@ -25,6 +25,7 @@ namespace DatingApp.API.Dtos
         public string PhoneNumber { get; set; }
         public string FullName { get; set; }
         public List<string> Roles { get; set; }
+        public string BusinessGroupId { get; set; }
         public string SlashSeparatedRoles { get; set; }
     }
 }

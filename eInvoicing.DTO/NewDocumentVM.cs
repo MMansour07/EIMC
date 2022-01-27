@@ -82,6 +82,7 @@ namespace eInvoicing.DTO
         public string SubmittedBy { get; set; }
         public string InvalidReason { get; set; }
         public string ParentId { get; set; }
+        public bool isInternallyCreated { get; set; }
         public List<NewInvoiceLineVM> InvoiceLines { get; set; }
     }
 

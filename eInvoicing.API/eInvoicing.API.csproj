@@ -288,8 +288,11 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AppSettingController.cs" />
+    <Compile Include="Controllers\BusinessGroupController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\CodeController.cs" />
+    <Compile Include="Controllers\BaseContoller.cs" />
+    <Compile Include="Controllers\HangfireController.cs" />
     <Compile Include="Controllers\TaxpayerController.cs" />
     <Compile Include="Controllers\LookupController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -316,7 +319,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

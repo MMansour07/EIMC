@@ -78,12 +78,23 @@ namespace eInvoicing.DomainEntities.Entities
         public string submissionId { get; set; }
         public string longId { get; set; }
         public string Status { get; set; }
+        public bool IsInternallyCreated { get; set; }
+        public bool? IsCancelRequested { get; set; }
+        public bool? IsDeclineRequested { get; set; }
+        public string DocumentStatusReason { get; set; }
+        public DateTime? CancelRequestDate { get; set; }
+        public DateTime? RejectRequestDate { get; set; }
+        public DateTime? DeclineCancelRequestDate { get; set; }
+        public DateTime? DeclineRejectRequestDate { get; set; }
+        public DateTime? CanbeCancelledUntil { get; set; }
+        public DateTime? CanbeRejectedUntil { get; set; }
         public string SubmittedBy { get; set; }
         public string InvalidReason { get; set; }
         public string ParentId { get; set; }
         [ForeignKey("ParentId")]
         public virtual List<Document> Documents { get; set; }
         public virtual ICollection<InvoiceLine> InvoiceLines { get; set; }
+        public virtual ICollection<ValidationStep> ValidationSteps { get; set; }
         public virtual ICollection<Error> Errors { get; set; }
     }
 }

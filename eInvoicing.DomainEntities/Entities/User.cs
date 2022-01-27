@@ -20,6 +20,8 @@ namespace eInvoicing.DomainEntities.Entities
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string PhoneNumber { get; set; }
+        public string BusinessGroupId { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
+        public virtual BusinessGroup BusinessGroup { get; set; }
     }
 }

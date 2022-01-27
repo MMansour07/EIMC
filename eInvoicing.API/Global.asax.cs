@@ -1,18 +1,10 @@
 ﻿using eInvoicing.API.Helper;
-using eInvoicing.API.Infrastructure;
-using eInvoicing.Persistence;
-using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation;
 using eInvoicing.Service.Helper;
 using Hangfire;
 using Hangfire.SqlServer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
-using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -31,12 +23,14 @@ namespace eInvoicing.API
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             HangfireAspNet.Use(GetHangfireServers);
 
-            RecurringJob.AddOrUpdate(() => HangfireManager.SyncDocumentsFromViewsToEIMC(), "0 0 0/24 ? * * *");
-            // update Documents with the status retreived from ETA
-            RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), "0 0 2/24 ? * * *");
-            RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), "0 0 3/24 ? * * *");
-            RecurringJob.AddOrUpdate(() => HangfireManager.SubmitDocumentsPeriodically(), "0 0 1/24 ? * * *");
-            //RecurringJob.AddOrUpdate(() => HangfireManager.AutoSubmission(), Cron.Daily);
+            Database.SetInitializer(new DBContextSeeder());
+
+            RecurringJob.AddOrUpdate(() => HangfireManager.SpecifyWhichActionsChain(), "0 0 10 * * ?");
+            //RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), "0 0 */3 ? * *");
+            //RecurringJob.AddOrUpdate(() => HangfireManager.RetrieveDocumentInvalidityReasons(), "0 0 */5 ? * *");
+            RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), Cron.Hourly());
+            RecurringJob.AddOrUpdate(() => HangfireManager.RetrieveDocumentInvalidityReasons(), Cron.Hourly());
+            RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), Cron.Daily);
         }
         private IEnumerable<IDisposable> GetHangfireServers()
         {

@@ -13,6 +13,7 @@ namespace eInvoicing.DTO
         public string Name { get; set; }
         public string Description { get; set; }
         public List<PrivilegeDTO> Privileges { get; set; }
+        public List<BusinessGroupDTO> BusinessGroups { get; set; }
         public List<PermissionDTO> Permissions { get; set; }
     }
 }

@@ -5,9 +5,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using eInvoicing.DTO;
 using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
 using Newtonsoft.Json;
@@ -24,25 +26,39 @@ namespace eInvoicing.Web.Controllers
             _httpClient = httpClient;
             _userSession = userSession;
         }
-        [AllowAnonymous]
+        //[AllowAnonymous]
         public ActionResult Index()
         {
             try
             {
-                var response = JsonConvert.DeserializeObject<SettingViewModel>(_httpClient.GET("api/appsetting/GetChannelManagerSettings").Info);
-                if (response != null)
+                var BusinessGroupId = ClaimsPrincipal.Current.FindFirst("BusinessGroupId")?.Value;
+                var response = JsonConvert.DeserializeObject<SettingViewModel>(_httpClient.GET("api/appsetting/GetChannelManagerSettings?BusinessGroupId=" + BusinessGroupId).Info);
+                using (HttpClient _client = new HttpClient())
                 {
-                    response.DevAPIURL = ConfigurationManager.AppSettings["DevSrvBaseUrl"];
-                    response.ProductionInternalAPIURL = ConfigurationManager.AppSettings["ProdSrvBaseUrl"];
-                    response.Environment = ConfigurationManager.AppSettings["Environment"].ToLower() == "development" ? false : true;
-                    return View(response);
+                    var _url = _userSession.URL + "/api/BG/GetGroups";
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    _client.BaseAddress = new Uri(_url);
+                    var _postTask = Task.Run(() => _client.GetAsync(_url)).Result;
+                    if (_postTask.IsSuccessStatusCode)
+                    {
+                        var _result = JsonConvert.DeserializeObject<List<BusinessGroupDTO>>(_postTask.Content.ReadAsStringAsync().Result);
+                        ViewBag.Groups = _result.Select(Group => new SelectListItem { Value = Group.Id, Text = Group.GroupName }).ToList();
+                        if (response != null)
+                        {
+                            response.DevAPIURL = ConfigurationManager.AppSettings["DevSrvBaseUrl"];
+                            response.ProductionInternalAPIURL = ConfigurationManager.AppSettings["ProdSrvBaseUrl"];
+                            response.Environment = ConfigurationManager.AppSettings["Environment"].ToLower() == "development" ? false : true;
+                            return View(response);
+                        }
+                    }
+                    return View(new SettingViewModel()
+                    {
+                        DevAPIURL = ConfigurationManager.AppSettings["DevSrvBaseUrl"],
+                        ProductionInternalAPIURL = ConfigurationManager.AppSettings["ProdSrvBaseUrl"],
+                        Environment = ConfigurationManager.AppSettings["Environment"].ToLower() == "development" ? false : true
+                    });
+
                 }
-                return View(new SettingViewModel()
-                {
-                    DevAPIURL = ConfigurationManager.AppSettings["DevSrvBaseUrl"],
-                    ProductionInternalAPIURL = ConfigurationManager.AppSettings["ProdSrvBaseUrl"],
-                    Environment = ConfigurationManager.AppSettings["Environment"].ToLower() == "development" ? false : true
-                });
             }
             catch
             {

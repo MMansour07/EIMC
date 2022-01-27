@@ -14,32 +14,42 @@ using eInvoicing.Service.Helper.Extension;
 using System.Linq.Dynamic;
 using System.Data.Entity;
 using eInvoicing.Service.Helper;
+using System.Diagnostics;
+using System.Text;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
     public class DocumentService :  IDocumentService
     {
         private readonly IDocumentRepository repository;
-        public DocumentService(IDocumentRepository _repository)
+        private readonly IValidationStepRepository _validationStepRepository;
+        private List<string> IdsStack;
+
+        public DocumentService(IDocumentRepository _repository, IValidationStepRepository validationStepRepository)
         {
             this.repository = _repository;
+            this._validationStepRepository = validationStepRepository;
         }
-        public Task<HttpContent> GetDocumentPrintOut(string URL, string Key, string uuid)
+        public void GetTheConnectionString(string ConnectionString)
+        {
+            this.repository.GetTheConnectionString(ConnectionString);
+            this._validationStepRepository.GetTheConnectionString(ConnectionString);
+        }
+        public HttpResponseMessage GetDocumentPrintOut(string URL, string Key, string uuid)
         {
             using (HttpClient client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Clear();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/pdf"));
                 URL += "documents/" + uuid + "/pdf";
                 client.BaseAddress = new Uri(URL);
                 var postTask = client.GetAsync(URL);
                 postTask.Wait();
                 var result = postTask.Result;
-
                 if (result.IsSuccessStatusCode)
-                { 
-                    return Task.FromResult(result.Content);
+                {
+                    return result;
                 }
             }
                     
@@ -49,6 +59,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
+                IdsStack = new List<string>();
                 for (int i = 0; i < DailyInvoicesAverage/100; i++)
                 {
                     using (HttpClient client = new HttpClient())
@@ -62,7 +73,6 @@ namespace eInvoicing.Service.AppService.Implementation
                         var result = postTask.Result;
                         if (result.IsSuccessStatusCode)
                         {
-
                             var res = JsonConvert.DeserializeObject<GetRecentDocumentsResponse>(result.Content.ReadAsStringAsync().Result);
                             UpdateDocumentsStatus(res);
                         }
@@ -71,7 +81,7 @@ namespace eInvoicing.Service.AppService.Implementation
             }
             catch (Exception ex)
             {
-                throw ex;
+                Debug.WriteLine("Error: {0}", ex.Message);
             }
         }
         public GetRecentDocumentsResponse GetRecentDocuments_ETA2(string URL, string Key, int pageNo, int pageSize)
@@ -113,23 +123,27 @@ namespace eInvoicing.Service.AppService.Implementation
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    URL += "documents/"+uuid+"/raw";
+                    URL += "documents/"+uuid+ "/details";
                     client.BaseAddress = new Uri(URL);
                     var postTask = client.GetAsync(URL);
                     postTask.Wait();
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        var GetDocumentResponseJSON = JObject.Parse(result.Content.ReadAsStringAsync().Result);
-                        var document = GetDocumentResponseJSON.SelectToken("document");
-                        var documentProps = JObject.Parse(document.ToString()).Properties();
-                        documentProps.Where(attr => attr.Name.Equals("taxAuthorityDocument")).ToList().ForEach(attr => attr.Remove());
-                        GetDocumentResponseJSON.Properties().Where(attr => attr.Name.Equals("document")).ToList().ForEach(attr => attr.Remove());
-                        var documentJsonStr = JsonConvert.SerializeObject(new JObject(documentProps));
-                        GetDocumentResponseJSON.Add("document", JObject.Parse(documentJsonStr));
-                        var response = JsonConvert.DeserializeObject<GetDocumentResponse>(GetDocumentResponseJSON.ToString());
-                        response.StatusCode = System.Net.HttpStatusCode.OK;
-                        return response;
+                        var res = JsonConvert.DeserializeObject<GetDocumentResponse>(result.Content.ReadAsStringAsync().Result);
+                        res.StatusCode = System.Net.HttpStatusCode.OK;
+                        return res;
+
+                        //var GetDocumentResponseJSON = JObject.Parse(result.Content.ReadAsStringAsync().Result);
+                        //var document = GetDocumentResponseJSON.SelectToken("document");
+                        //var documentProps = JObject.Parse(document.ToString()).Properties();
+                        //documentProps.Where(attr => attr.Name.Equals("taxAuthorityDocument")).ToList().ForEach(attr => attr.Remove());
+                        //GetDocumentResponseJSON.Properties().Where(attr => attr.Name.Equals("document")).ToList().ForEach(attr => attr.Remove());
+                        //var documentJsonStr = JsonConvert.SerializeObject(new JObject(documentProps));
+                        //GetDocumentResponseJSON.Add("document", JObject.Parse(documentJsonStr));
+                        //var response = JsonConvert.DeserializeObject<GetDocumentResponse>(GetDocumentResponseJSON.ToString());
+                        //response.StatusCode = System.Net.HttpStatusCode.OK;
+                        //return response;
                     }
                     else 
                     {
@@ -142,32 +156,36 @@ namespace eInvoicing.Service.AppService.Implementation
                 throw ex;
             }
         }
-        public int CancelDocument(string URL, string Key, string uuid,string reason)
+        public bool CancelDocument(string URL, string Key, string uuid, string reason)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
-                    URL += "documents/"+uuid+"/state";
-                    client.BaseAddress = new Uri(URL);
-                    var postTask = client.PutAsJsonAsync(URL, new
-                    {
-                        status = "cancelled",
-                        reason = reason
-                    });
+                    client.DefaultRequestHeaders.Clear();
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var url = URL + "documents/state/" + uuid + "/state";
+                    client.BaseAddress = new Uri(URL + "documents/state/" + uuid + "/state");
+                    CancelDocumentRq cancelDocumentRq = new CancelDocumentRq() {status = "cancelled", reason = reason};
+                    var stringContent = new StringContent(JsonConvert.SerializeObject(cancelDocumentRq), Encoding.UTF8, "application/json");
+                    var postTask = client.PutAsync(url, stringContent);
                     postTask.Wait();
                     var result = postTask.Result;
-
                     if (result.IsSuccessStatusCode)
                     {
-                        return 1;
+                        if (RequestDocumentCancellation(uuid, reason))
+                            return true;
+                        else
+                            return false;
                     }
-                    return 0;
+                    return false;
                 }
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return 0 ;
+                throw ex;
             }
         }
         public int RejectDocument(string URL, string Key, string uuid, string reason)
@@ -248,7 +266,8 @@ namespace eInvoicing.Service.AppService.Implementation
         }
         public IEnumerable<DocumentVM> GetAllDocumentsToSubmit()
         {
-            return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "updated", m => m.OrderBy(x => x.DateTimeIssued), "InvoiceLines").ToList().Select(x => x.ToDocumentVM());
+            return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" ||
+            i.Status.ToLower() == "updated", m => m.OrderBy(x => x.DateTimeIssued), "InvoiceLines").ToList().Select(x => x.ToDocumentVM());
         }
 
         public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, 
@@ -303,16 +322,16 @@ namespace eInvoicing.Service.AppService.Implementation
                 var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d");
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N5"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N0") }).OrderByDescending(x => x.count).ToList(),
-                    ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
+                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N2") }).OrderByDescending(x => x.count).ToList(),
+                    ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedInvoiceCount = ReceivedInvoices.Count(),
-                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
-                    ReceivedCreditTotalAmount = ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
+                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedCreditTotalAmount = ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedCreditCount = ReceivedCredits.Count(),
-                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
-                    ReceivedDebitTotalAmount = Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N1"),
+                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedDebitTotalAmount = Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedDebitCount = Receiveddebits.Count(),
-                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N5"),
+                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
                     ReceivedValidDocumentsCount = _Receivedvaliddocs.Count(),
                     ReceivedCanceledDocumentsCount = _Receivedcancelleddocs.Count(),
                     ReceivedRejectedDocumentsCount = _Receivedrejecteddocs.Count(),
@@ -370,6 +389,12 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             return repository.GetAllIncluding(i => i.Id == Id, null, "InvoiceLines, Errors").ToList().Select(e => e.ToDocumentVM()).FirstOrDefault();
         }
+
+        public NewDocumentVM GetDocumentByInternalId(string InternalId)
+        {
+            var result = repository.GetAllIncluding(i => i.Id == InternalId, null, "InvoiceLines").FirstOrDefault();
+            return AutoMapperConfiguration.Mapper.Map<NewDocumentVM>(result);
+        }
         public DocumentVM GetDocumentByuuid(string uuid)
         {
             return repository.GetAllIncluding(i => i.uuid == uuid, null, "InvoiceLines").Select(e => e.ToDocumentVM()).FirstOrDefault();
@@ -405,17 +430,37 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             foreach (var item in obj.result)
             {
-                var entity = repository.Get(item.internalId);
-                if (entity != null && entity.Status.ToLower() != "valid")
+                if (!IdsStack.Contains(item.internalId))
                 {
-                    entity.Status = item.status;
-                    entity.uuid = item.uuid;
-                    entity.submissionId = item.submissionUUID;
-                    entity.longId = item.longId;
-                    entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
-                    repository.UpdateBulk(entity);
+                    var entity = repository.Get(item.internalId);
+                    if (entity != null && entity.Status.ToLower() != "valid")
+                    {
+                        entity.Status = item.status;
+                        entity.uuid = item.uuid;
+                        entity.submissionId = item.submissionUUID;
+                        entity.longId = item.longId;
+                        entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
+                        repository.UpdateBulk(entity);
+                    }
                 }
+                IdsStack.Add(item.internalId);
             }
+        }
+        private bool RequestDocumentCancellation(string uuid, string reason)
+        {
+            var entity = repository.GetDocumentByuuid(uuid);
+            if (entity != null && entity.Status.ToLower() == "valid")
+            {
+                entity.IsCancelRequested = true;
+                entity.CancelRequestDate = DateTime.Now;
+                entity.DocumentStatusReason = reason;
+                var res = repository.Update(entity);
+                if (res != null)
+                    return true;
+                else
+                    return false;
+            }
+            return false;
         }
         // Create document through this portal
         public void CreateNewDocument(NewDocumentVM obj)
@@ -428,6 +473,107 @@ namespace eInvoicing.Service.AppService.Implementation
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public void CreateNewDocumentWithOldId(NewDocumentVM obj)
+        {
+            try
+            {
+                repository.Add(AutoMapperConfiguration.Mapper.Map<Document>(obj));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool EditDocument(NewDocumentVM obj)
+        {
+            try
+            {
+                var entity = repository.Get(obj.Id);
+                entity = AutoMapperConfiguration.Mapper.Map<Document>(obj);
+                var res = repository.Update(entity);
+                if (res != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool DeleteDocument(string Id)
+        {
+            try
+            {
+                var entity = repository.Delete(Id);
+                if (entity != null)
+                    return true;
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void GetInvalidDocumentsReasone(string BaseURL, string Key)
+        {
+            try
+            {
+                var InvalidDocuments = repository.Get(i => (i.Status.ToLower() == "invalid"), null).Select(x => new { UUID = x.uuid, ID = x.Id }).ToList();
+                for (int i = 0; i < InvalidDocuments.Count(); i++)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Clear();
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        string URL = BaseURL + "documents/" + InvalidDocuments[i].UUID + "/details";
+                        client.BaseAddress = new Uri(URL);
+                        var postTask = client.GetAsync(URL);
+                        postTask.Wait();
+                        var result = postTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var response = JsonConvert.DeserializeObject<GetDocumentResponse>(result.Content.ReadAsStringAsync().Result);
+                            AddorUpdateInvalidReasons(response);
+                        }
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void AddorUpdateInvalidReasons(GetDocumentResponse obj)
+        {
+            if (!_validationStepRepository.CheckReasonsInsertedBefore(obj.internalId))
+            {
+                var res = _validationStepRepository.AddRange(obj.ToValidationSteps());
+                Debug.WriteLine(res);
+            }
+            // first time will be in valid so we will ask the customer to modify then while syncing delete everything related to this document from validationsteps table.
+        }
+
+        public void UpdateDocumentByInternalId(string InternalId)
+        {
+            if (InternalId != null)
+            {
+                var entity = repository.Get(InternalId);
+                entity.Status = "New";
+                entity.submissionId = null;
+                entity.uuid = null;
+                entity.longId = null;
+                entity.SubmittedBy = null;
+                repository.Update(entity);
             }
         }
     }

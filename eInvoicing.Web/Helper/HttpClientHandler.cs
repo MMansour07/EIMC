@@ -15,7 +15,7 @@ namespace eInvoicing.Web.Helper
         {
             _userSession = userSession;
         }
-        public genericResponse GET(string url)
+        public genericResponse GET(string url, string Media = null)
         {
             var response = new genericResponse();
             try
@@ -23,7 +23,9 @@ namespace eInvoicing.Web.Helper
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
+                    client.Timeout = TimeSpan.FromMinutes(60);
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Media?? "application/json"));
                     client.BaseAddress = new Uri(_userSession.URL+url);
                     var postTask = Task.Run(() => client.GetAsync(_userSession.URL + url)).Result;
                     response.HttpStatusCode = postTask.StatusCode;
@@ -36,7 +38,7 @@ namespace eInvoicing.Web.Helper
                     else
                     {
                         response.Info = null;
-                        response.Message = Global.Failure.ToString(); 
+                        response.Message = postTask.Content.ReadAsStringAsync().Result; //Global.Failure.ToString(); 
                     }
                 }
                 return response;

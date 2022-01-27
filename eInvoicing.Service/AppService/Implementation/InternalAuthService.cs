@@ -8,6 +8,7 @@ using eInvoicing.Service.Helper;
 using DatingApp.API.Dtos;
 using eInvoicing.DTO;
 using eInvoicing.Service.Helper.Extension;
+using System.Diagnostics;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -39,9 +40,36 @@ namespace eInvoicing.Service.AppService.Implementation
                     return response;
                 return null;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return null;
+            }
+        }
+
+        public bool ChangePassword(ChangePasswordDTO model)
+        {
+            try
+            {
+                var _user = repository.Get(model.Username);
+                if (_user == null)
+                    return false;
+                if (!VerfiyPasswordHash(model.OldPassword, _user.PasswordHash, _user.PasswordSalt))
+                    return false;
+                byte[] PasswordHash, PasswordSalt;
+                CreatePasswordHash(model.NewPassword, out PasswordHash, out PasswordSalt);
+                _user.PasswordSalt = PasswordSalt;
+                _user.PasswordHash = PasswordHash;
+                var resposne = repository.Update(_user);
+                if (resposne == null)
+                    return false;
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return false;
             }
         }
         public bool Register(RegistrationModelDTO model)
@@ -63,6 +91,7 @@ namespace eInvoicing.Service.AppService.Implementation
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return false;
             }
         }
@@ -103,15 +132,24 @@ namespace eInvoicing.Service.AppService.Implementation
             }
         }
 
-        public IEnumerable<UserDTO> GetUsers()
+        public IEnumerable<UserDTO> GetUsers(string BusinessGroupId, string LoggedinUserName)
         {
             try
             {
-                var users = repository.GetAllIncluding(u => u.Email != "superadmin@eta-dt.com", null, "UserRoles.Role.RolePermissions.Permission").Select(i => i.ToUserDTO()).ToList();
-                return users;
+                if (LoggedinUserName.ToLower() == "superadmin")
+                {
+                    var users = repository.GetAllIncluding(null, null, "UserRoles.Role.RolePermissions.Permission, BusinessGroup").Select(i => i.ToUserDTO()).ToList();
+                    return users;
+                }
+                else
+                {
+                    var users = repository.GetAllIncluding(u => u.Email != "superadmin@eta-dt.com" && u.BusinessGroupId == BusinessGroupId, null, "UserRoles.Role.RolePermissions.Permission, BusinessGroup").Select(i => i.ToUserDTO()).ToList();
+                    return users;
+                }
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return new List<UserDTO>();
             }
         }
@@ -132,7 +170,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                return AutoMapperConfiguration.Mapper.Map<EditModelDTO>(repository.GetAllIncluding(i => i.Id == Id, null, "UserRoles.Role")?.Select(i => i.ToEditModelDTO()).FirstOrDefault());
+                return AutoMapperConfiguration.Mapper.Map<EditModelDTO>(repository.GetAllIncluding(i => i.Id == Id, null, "UserRoles.Role, BusinessGroup")?.Select(i => i.ToEditModelDTO()).FirstOrDefault());
             }
             catch
             {
@@ -150,6 +188,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 res.LastName = obj.LastName;
                 res.Title = obj.Title;
                 res.PhoneNumber = obj.PhoneNumber;
+                res.BusinessGroupId = string.IsNullOrEmpty(obj.BusinessGroupId) ? res.BusinessGroupId : obj.BusinessGroupId;
                 var _user = repository.Update(res);
                 RemoveRolesFromUser(_user.Id);
                 AddRolesToUser(_user.Id, obj.Roles);

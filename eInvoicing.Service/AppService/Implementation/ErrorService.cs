@@ -33,6 +33,10 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             _repository = repository;
         }
+        public void GetTheConnectionString(string ConnectionString)
+        {
+            this._repository.GetTheConnectionString(ConnectionString);
+        }
         public void InsertBulk(IEnumerable<DocumentRejectedDTO> dto)
         {
             try

@@ -1,6 +1,8 @@
 using System.Web.Mvc;
+using eInvoicing.Web.Controllers;
 using eInvoicing.Web.Helper;
 using eInvoicing.Web.Models;
+using Microsoft.Extensions.Logging;
 using Microsoft.Practices.Unity;
 using Unity.Mvc3;
 
@@ -21,6 +23,7 @@ namespace eInvoicing.Web
             var container = new UnityContainer();
 
             container.RegisterType<IUserSession, UserSession>();
+            //container.RegisterType<ILogger<AccountController>, Logger<AccountController>>();
             container.RegisterType<IHttpClientHandler, HttpClientHandler>();
             //container.RegisterType<DbContext, ApplicationDbContext>(
             //new HierarchicalLifetimeManager());

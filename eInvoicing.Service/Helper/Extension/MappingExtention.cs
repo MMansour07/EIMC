@@ -14,7 +14,6 @@ namespace eInvoicing.Service.Helper.Extension
 {
     internal static class MappingExtention
     {
-
         internal static TEntity ToEntity<TEntity>(this IDTO dto) where TEntity : IEntity
         {
             return AutoMapperConfiguration.Mapper.Map<TEntity>(dto);
@@ -38,7 +37,6 @@ namespace eInvoicing.Service.Helper.Extension
         {
             return AutoMapperConfiguration.Mapper.Map<IList<TDto>>(entity);
         }
-
         internal static CustomErrorDTO ToErrorDto(this DocumentRejectedDTO obj)
         {
             if (obj.Error.details != null)
@@ -70,6 +68,12 @@ namespace eInvoicing.Service.Helper.Extension
         {
             return new DocumentVM()
             {
+                isInternallyCreated = document.IsInternallyCreated,
+                IsCancelRequested = document.IsCancelRequested,
+                IsDeclineRequested = document.IsCancelRequested,
+                CanbeCancelledUntil = document.CanbeCancelledUntil,
+                CanbeRejectedUntil = document.CanbeRejectedUntil,
+                CancelRequestDate = document.CancelRequestDate,
                 dateTimeIssued = document.DateTimeIssued,
                 documentType = document.DocumentType,
                 documentTypeVersion = document.DocumentTypeVersion,
@@ -80,7 +84,7 @@ namespace eInvoicing.Service.Helper.Extension
                 internalID = document.Id,
                 recordID = document.Id,
                 status = document.Status,
-                taxAmount = (document.TotalAmount - document.NetAmount).ToString("N2"),
+                taxAmount = document.InvoiceLines?.SelectMany(b => b.TaxableItems)?.Sum(x => decimal.Round(x.Amount, 2, MidpointRounding.AwayFromZero)).ToString("N5"),
                 netAmount = document.NetAmount.ToString("N5"),
                 totalAmount = document.TotalAmount.ToString("N5"),
                 totalDiscountAmount = document.TotalDiscountAmount.ToString("N5"),
@@ -153,12 +157,12 @@ namespace eInvoicing.Service.Helper.Extension
                     internalId = i.Id,
                     taxableItems = i.TaxableItems.Select(x => new TAXABLEITEMSVM()
                     {
-                        amount = x.Amount.ToString("N2"),
+                        amount = x.Amount.ToString("N5"),
                         rate = x.Rate.ToString("N2"),
                         subType = x.SubType,
                         taxType = x.TaxType
                     }).ToList(),
-                    discount = new DISCOUNTSVM() { amount = i.DiscountAmount.ToString("N5"),rate = i.DiscountRate.ToString("N0") },
+                    discount = new DISCOUNTSVM() { amount = i.DiscountAmount.ToString("N5"),rate = i.DiscountRate.ToString("N2") },
                     unitValue = new UNITVALUESVM() { amountEGP = i.AmountEGP.ToString("N5"),amountSold = i.AmountSold.ToString("N5"),currencyExchangeRate = i.CurrencyExchangeRate.ToString("N5"), currencySold = i.CurrencySold }
                 }).ToList(),
                 taxTotals = document.InvoiceLines.SelectMany(b => b.TaxableItems)?.Distinct().GroupBy(o => o.TaxType).Select(x => new TAXTOTALSDTO() { amount = decimal.Round(x.Sum(y => y.Amount), 2, MidpointRounding.AwayFromZero), taxType = x.Select(e => e.TaxType).First() }).ToList(),
@@ -238,7 +242,6 @@ namespace eInvoicing.Service.Helper.Extension
                 //signatures = document.signatures
             };
         }
-
         internal static UserDTO ToUserDTO(this User obj)
         {
             return new UserDTO()
@@ -246,9 +249,13 @@ namespace eInvoicing.Service.Helper.Extension
                 Id = obj.Id,
                 FirstName = obj.FirstName,
                 Email = obj.Email,
+                BusinessGroup = obj.BusinessGroup?.GroupName,
                 LastName = obj.LastName,
                 PhoneNumber = obj.PhoneNumber,
                 UserName = obj.UserName,
+                IsDBSync = obj.BusinessGroup.IsDBSync,
+                BusinessGroupId = obj.BusinessGroup.Id,
+                Token = obj.BusinessGroup.Token,
                 Title = obj.Title,
                 Roles = obj.UserRoles.Select(i => new RoleDTO { Id = i.Role.Id, Name = i.Role.Name, Description = i.Role.Description }).ToList(),
                 Permissions = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePermissions).Select(p => new PermissionDTO { Id = p.Permission.Id, Action = p.Permission.Action}).ToList()
@@ -265,6 +272,7 @@ namespace eInvoicing.Service.Helper.Extension
                 PhoneNumber = obj.PhoneNumber,
                 UserName = obj.UserName,
                 Title = obj.Title,
+                BusinessGroupId = obj.BusinessGroupId,
                 Roles = obj.UserRoles.Select(i => i.Role.Id).ToList()
             };
         }
@@ -288,6 +296,43 @@ namespace eInvoicing.Service.Helper.Extension
                 Permissions = AutoMapperConfiguration.Mapper.Map <List<PermissionDTO>> (obj.RolePermissions.Select(p => p.Permission).ToList())
             };
         }
-        
+        internal static List<ValidationStep> ToValidationSteps(this GetDocumentResponse obj)
+        {
+            return obj.validationResults.validationSteps.Where(y => y.Status.ToLower() == "invalid").Select(x => new ValidationStep()
+            {
+                DocumentId = obj.internalID,
+                //DocumentId = obj.internalId,
+                Status = x.Status,
+                StepName = x.StepName,
+                StepId = x.StepId,
+                DateTimeIssued = !String.IsNullOrEmpty(obj.dateTimeIssued) ? DateTime.Parse(obj.dateTimeIssued) : DateTime.Now,
+                DateTimeReceived = !String.IsNullOrEmpty(obj.dateTimeRecevied) ? DateTime.Parse(obj.dateTimeRecevied) : DateTime.Now,
+                NetAmount = obj.netAmount,
+                TotalAmount = obj.totalAmount,
+                TotalSalesAmount = obj.totalSales,
+                TotalItemsDiscountAmount = obj.totalItemsDiscountAmount,
+                TotalDiscountAmount = obj.totalDiscount,
+                CreatedOn = DateTime.Now,
+                Id = Guid.NewGuid().ToString(),
+                IsDeleted = false,
+                StepErrors = new List<StepError>() { new StepError() {
+                    Id = Guid.NewGuid().ToString(),
+                    Error = x.Error?.error,
+                    ErrorCode = x.Error?.errorCode,
+                    PropertyName = x.Error?.propertyName,
+                    PropertyPath = x.Error?.propertyPath,
+                    ErrorAr = x.Error?.errorAr,
+                    InnerError = x.Error.innerError.Select(o => new StepError()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Error = o?.error,
+                        ErrorCode = o?.errorCode,
+                        PropertyName = o?.propertyName,
+                        PropertyPath = o?.propertyPath,
+                        ErrorAr = o?.errorAr
+                    }).ToList()
+                }}
+            }).ToList();
+        }
     }
 }

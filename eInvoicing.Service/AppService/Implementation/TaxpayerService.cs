@@ -58,7 +58,8 @@ namespace eInvoicing.Service.AppService.Implementation
                     IsDeleted = false,
                     Status = true,
                     token = obj.License,
-                    RegistrationDate = obj.RegistrationDate
+                    RegistrationDate = obj.RegistrationDate,
+                    BusinessGroupId = obj.BusinessGroupId
                 };
                 repository.Add(input);
             }
@@ -67,36 +68,75 @@ namespace eInvoicing.Service.AppService.Implementation
                 throw e;
             }
         }
-        public string token()
+        public string TokenByBusinessGroup(string BusinessGroup)
         {
             try
             {
-                return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.token;
+                return repository.Get(x => x.Status == true && 
+                x.BusinessGroup.GroupName == BusinessGroup, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.token;
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public string GetClientId(string Environment)
+
+        public string TokenByRegistrationNumber(string RegistrationNumber)
         {
             try
             {
-                if(Environment.ToLower() == "Prod")
-                    return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.ProdClientId;
-                else
-                    return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
+                return repository.Get(x => x.Status == true &&
+                x.RegistrationNumber == RegistrationNumber, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.token;
             }
             catch (Exception e)
             {
                 throw e;
             }
         }
-        public TaxpayerDTO getTaxpayerDetails()
+        //public string GetClientId(string Environment)
+        //{
+        //    try
+        //    {
+        //        if (Environment.ToLower() == "Prod")
+        //            return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.ProdClientId;
+        //        else
+        //            return repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        throw e;
+        //    }
+        //}
+
+        public string GetClientIdByBusinessGroup(string BusinessGroup)
         {
             try
             {
-                var taxpayer = repository.Get(x => x.Status == true, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault();
+                return repository.Get(x => x.Status == true && 
+                x.BusinessGroup.GroupName == BusinessGroup, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public string GetClientIdByRegistrationNumber(string RegistrationNumber)
+        {
+            try
+            {
+                return repository.Get(x => x.Status == true &&
+                x.RegistrationNumber == RegistrationNumber, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+        public TaxpayerDTO getTaxpayerDetails(string BusinessGroupId)
+        {
+            try
+            {
+                var taxpayer = repository.Get(x => x.Status == true && x.BusinessGroupId == BusinessGroupId, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault();
                 if (taxpayer != null)
                 {
                     var output = new TaxpayerDTO()
@@ -116,11 +156,65 @@ namespace eInvoicing.Service.AppService.Implementation
                         ERPName = taxpayer.ERPEn,
                         LicenseType = taxpayer.LicenseType,
                         RegistrationNumber = taxpayer.RegistrationNumber,
-                        RegistrationDate = taxpayer.RegistrationDate
+                        RegistrationDate = taxpayer.RegistrationDate,
+                        PIN = taxpayer.BusinessGroup.Token
                     };
                     return output;
                 }
                 return new TaxpayerDTO();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public TaxpayerDTO getTaxpayerDetailsByBusinessGroupName(string BusinessGroup)
+        {
+            try
+            {
+                var taxpayer = repository.Get(x => x.Status == true && x.BusinessGroup.GroupName == BusinessGroup, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault();
+                if (taxpayer != null)
+                {
+                    var output = new TaxpayerDTO()
+                    {
+                        TaxPayerNameEn = taxpayer.NameEn,
+                        TaxPayerNameAr = taxpayer.NameAr,
+                        IRN = taxpayer.IRN,
+                        ProdClientId = taxpayer.ProdClientId,
+                        PreProdClientId = taxpayer.PreProdClientId,
+                        ProdClientSecret = taxpayer.ProdClientSecret,
+                        PreProdClientSecret = taxpayer.PreProdClientSecret,
+                        ClientSecretExpirationDate = taxpayer.ClientSecretExpDate,
+                        CreatedBy = taxpayer.CreatedBy,
+                        LicenseCreationDate = taxpayer.CreationDate,
+                        LicenseExpirationDate = taxpayer.ExpirationDate,
+                        ERPAr = taxpayer.ERPAr,
+                        ERPName = taxpayer.ERPEn,
+                        LicenseType = taxpayer.LicenseType,
+                        RegistrationNumber = taxpayer.RegistrationNumber,
+                        RegistrationDate = taxpayer.RegistrationDate,
+                        PIN = taxpayer.BusinessGroup.Token
+                    };
+                    return output;
+                }
+                return new TaxpayerDTO();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+        }
+
+        public bool CheckIsDBSync(string BusinessGroup)
+        {
+            try
+            {
+                var taxpayer = repository.Get(x => x.Status == true && x.BusinessGroup.GroupName == BusinessGroup, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault();
+                if (taxpayer != null)
+                    return taxpayer.BusinessGroup.IsDBSync;
+                else
+                    return false;
             }
             catch (Exception e)
             {
@@ -136,6 +230,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 taxpayer.PreProdClientSecret = obj.PreProdClientSecret;
                 taxpayer.ProdClientId= obj.ProdClientId;
                 taxpayer.ProdClientSecret = obj.ProdClientSecret;
+                taxpayer.TokenPin = obj.PIN;
                 repository.Update(taxpayer);
             }
             catch (Exception e)

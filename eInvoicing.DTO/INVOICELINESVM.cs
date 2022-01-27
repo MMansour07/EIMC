@@ -33,6 +33,7 @@ namespace eInvoicing.DTO
         public UNITVALUESVM unitValue { get; set; }
         public DISCOUNTSVM discount { get; set; }
         public List<TAXABLEITEMSVM> taxableItems { get; set; }
+        public List<TAXABLEITEMSVM> lineTaxableItems { get; set; }
     }
       
 }

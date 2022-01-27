@@ -26,4 +26,10 @@ namespace eInvoicing.DTO
         public Meta meta { get; set; }
         public List<GoodsModel> data { get; set; }
     }
+
+    public class InvalidDocumentResponse
+    {
+        public Meta meta { get; set; }
+        public PagedList<InvalidDocumentsReasonsDTO> data { get; set; }
+    }
 }

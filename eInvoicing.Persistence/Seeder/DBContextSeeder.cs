@@ -402,7 +402,7 @@ namespace eInvoicing.Persistence.Seeder
             Role Role2 = new Role()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "IT Admin",
+                Name = "Administrator",
                 Description = "IT administrators oversee organizations' computer systems and manage IT teams. They maintain information systems and networks, upgrade and install new hardware and software, and perform troubleshooting. They also back up data and manage network security..",
                 RolePermissions = rolePermissions1
             };
@@ -416,6 +416,7 @@ namespace eInvoicing.Persistence.Seeder
             context.Roles.Add(Role1);
             context.Roles.Add(Role2);
             context.Roles.Add(Role3);
+
             UserRole userRole = new UserRole()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -424,9 +425,20 @@ namespace eInvoicing.Persistence.Seeder
             List<UserRole> userRoles = new List<UserRole>();
             userRoles.Add(userRole);
 
+            BusinessGroup BusinessGroup = new BusinessGroup()
+            {
+                Id = Guid.NewGuid().ToString(),
+                GroupName = "Product Owner",
+                BusinessType = "None",
+                IsDBSync = false,
+                CreatedOn = DateTime.Now,
+                SyncType = "NA",
+                Token = "13245678"
+            };
+
             byte[] PasswordHash,PasswordSalt;
             CreatePasswordHash("P@ssw0rd", out PasswordHash, out PasswordSalt);
-
+            
             User user1 = new User()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -439,23 +451,25 @@ namespace eInvoicing.Persistence.Seeder
                 UserName = "superadmin",
                 PasswordHash = PasswordHash,
                 PasswordSalt = PasswordSalt,
-                UserRoles = userRoles
+                UserRoles = userRoles,
+                BusinessGroup = BusinessGroup
             };
-            TaxPayer taxPayer = new TaxPayer()
-            {
-                Id = Guid.NewGuid().ToString(),
-                ClientSecretExpDate = DateTime.Now,
-                CreationDate = DateTime.Now,
-                ExpirationDate = DateTime.Now.AddDays(7),
-                RegistrationDate = DateTime.Now,
-                LicenseType = "Basic",
-                Status = true,
-                PreProdClientId = "5e287ddc-d504-42e5-977d-ffc609237d64",
-                token = "IYjB+HUrjKmTFFeCIng5o8QddjV0rGfwCuUK34Zhzg3v2iLmUJcge+vDfoRUOdYigZLx/dNNMVMEBf8uJPe5/GfMbp4ehCwvGxnMVl78e7Mi5FixZc7+9R0W//2ar2U9S7wbRRWN7e5jxc9KsV4IzYJMQ3Jy6PvuB1tNG2qNqtYo0kQTma1RUkNFriZBMSRXcoc6CpnNNQe1pkR6Sk2hu+GjU3i8yHFRw1/YTa2/iSeYk3J2kMcoTXsQyZe7Gq+Hz4c1Ku6H6Psb+uU63JnUqgdFldngbHkyt6lDalkvFXqRLSy3iYLablp5WKKJ8Ok+9YHXrjaqiPJDP1Q+cb56WpFvKdtOFy/TlO5SWzYPKl/Gx1yUQ3fzCAfERgPn8/7x/BEcNSMu7r0IKO7MWaoesQymwNj6pwRVG04plFnZGwMHj80lzslmxAWyxauMKNVvu/UI5Gi3tNi0o4V/3zTW7WOJ19rUq9KWyTXFV0QWs+5PE/cWre73OyNrjms3mtQB5LVJUIg3pWS0OcxfIaAz3Vcl7VePlAkdKdPjxkPCf9saHb46loFTnqPldLFaZEUY"
-            };
+            
+            //TaxPayer taxPayer = new TaxPayer()
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    ClientSecretExpDate = DateTime.Now,
+            //    CreationDate = DateTime.Now,
+            //    ExpirationDate = DateTime.Now.AddDays(7),
+            //    RegistrationDate = DateTime.Now,
+            //    LicenseType = "Basic",
+            //    Status = true,
+            //    PreProdClientId = "5e287ddc-d504-42e5-977d-ffc609237d64",
+            //    token = "IYjB+HUrjKmTFFeCIng5o8QddjV0rGfwCuUK34Zhzg3v2iLmUJcge+vDfoRUOdYigZLx/dNNMVMEBf8uJPe5/GfMbp4ehCwvGxnMVl78e7Mi5FixZc7+9R0W//2ar2U9S7wbRRWN7e5jxc9KsV4IzYJMQ3Jy6PvuB1tNG2qNqtYo0kQTma1RUkNFriZBMSRXcoc6CpnNNQe1pkR6Sk2hu+GjU3i8yHFRw1/YTa2/iSeYk3J2kMcoTXsQyZe7Gq+Hz4c1Ku6H6Psb+uU63JnUqgdFldngbHkyt6lDalkvFXqRLSy3iYLablp5WKKJ8Ok+9YHXrjaqiPJDP1Q+cb56WpFvKdtOFy/TlO5SWzYPKl/Gx1yUQ3fzCAfERgPn8/7x/BEcNSMu7r0IKO7MWaoesQymwNj6pwRVG04plFnZGwMHj80lzslmxAWyxauMKNVvu/UI5Gi3tNi0o4V/3zTW7WOJ19rUq9KWyTXFV0QWs+5PE/cWre73OyNrjms3mtQB5LVJUIg3pWS0OcxfIaAz3Vcl7VePlAkdKdPjxkPCf9saHb46loFTnqPldLFaZEUY"
+            //};
 
             context.AppUsers.Add(user1);
-            context.TaxPayers.Add(taxPayer);
+            //context.TaxPayers.Add(taxPayer);
             context.SaveChanges();
             base.Seed(context);
         }

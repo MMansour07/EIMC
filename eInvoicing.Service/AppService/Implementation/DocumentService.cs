@@ -23,17 +23,22 @@ namespace eInvoicing.Service.AppService.Implementation
     {
         private readonly IDocumentRepository repository;
         private readonly IValidationStepRepository _validationStepRepository;
+        private readonly IStepErrorRepository _stepErrorRepository;
         private List<string> IdsStack;
+        private List<string> IdsStack2;
 
-        public DocumentService(IDocumentRepository _repository, IValidationStepRepository validationStepRepository)
+        public DocumentService(IDocumentRepository _repository, IValidationStepRepository validationStepRepository,
+            IStepErrorRepository stepErrorRepository)
         {
             this.repository = _repository;
             this._validationStepRepository = validationStepRepository;
+            this._stepErrorRepository = stepErrorRepository;
         }
         public void GetTheConnectionString(string ConnectionString)
         {
             this.repository.GetTheConnectionString(ConnectionString);
             this._validationStepRepository.GetTheConnectionString(ConnectionString);
+            this._stepErrorRepository.GetTheConnectionString(ConnectionString);
         }
         public HttpResponseMessage GetDocumentPrintOut(string URL, string Key, string uuid)
         {
@@ -65,6 +70,7 @@ namespace eInvoicing.Service.AppService.Implementation
                     using (HttpClient client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Clear();
+                        client.Timeout = TimeSpan.FromMinutes(60);
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         client.BaseAddress = new Uri(URL + "documents/recent?pageNo=" + (i + 1) + "&pageSize=100");
@@ -75,6 +81,37 @@ namespace eInvoicing.Service.AppService.Implementation
                         {
                             var res = JsonConvert.DeserializeObject<GetRecentDocumentsResponse>(result.Content.ReadAsStringAsync().Result);
                             UpdateDocumentsStatus(res);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: {0}", ex.Message);
+            }
+        }
+
+        public void GetReceivedDocuments(string URL, string Key, int DailyInvoicesAverage)
+        {
+            try
+            {
+                IdsStack2 = new List<string>();
+                for (int i = 0; i < DailyInvoicesAverage / 100; i++)
+                {
+                    using (HttpClient client = new HttpClient())
+                    {
+                        client.DefaultRequestHeaders.Clear();
+                        client.Timeout = TimeSpan.FromMinutes(60);
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        client.BaseAddress = new Uri(URL + "documents/recent?pageNo=" + (i + 1) + "&pageSize=100");
+                        var postTask = client.GetAsync(URL + "documents/recent?pageNo=" + (i + 1) + "&pageSize=100");
+                        postTask.Wait();
+                        var result = postTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var res = JsonConvert.DeserializeObject<GetRecentDocumentsResponse>(result.Content.ReadAsStringAsync().Result);
+                            InsertReceivedDocuments(res, Key, URL);
                         }
                     }
                 }
@@ -121,6 +158,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
+                    client.Timeout = TimeSpan.FromMinutes(60);
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     URL += "documents/"+uuid+ "/details";
@@ -301,44 +339,103 @@ namespace eInvoicing.Service.AppService.Implementation
         }
         public int GetPendingCount()
         {
-            return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" || i.Status.ToLower() == "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines").Count();
+            return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" 
+            || i.Status.ToLower() == "updated", null, "").Count();
         }
         public int GetSubmittedCount()
         {
-            return repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated", m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines,Errors").Count();
+            return repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" 
+            && i.Status.ToLower() != "updated", null, "").Count();
+        }
+
+        public int GetReceivedCount()
+        {
+            return repository.Get(i => i.IsReceiver == true, null, "").Count();
         }
         public DashboardDTO GetMonthlyDocuments(DateTime _date)
         {
             try
             {
                 var Response = repository.Get(i => i.DateTimeIssued.Month == _date.Month && i.DateTimeIssued.Year == _date.Year, null, null).ToList();
-                var _Receivedvaliddocs = Response.Where(i => i.Status.ToLower() == "valid" );
-                var _Receivedinvaliddocs = Response.Where(i => i.Status.ToLower() == "invalid");
-                var _Receivedrejecteddocs = Response.Where(i => i.Status.ToLower() == "rejected");
-                var _Receivedcancelleddocs = Response.Where(i => i.Status.ToLower() == "cancelled");
-                var _Receivedsubmitteddocs = Response.Where(i => i.Status.ToLower() == "submitted");
-                var ReceivedInvoices = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "i");
-                var ReceivedCredits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "c");
-                var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d");
+                var _Receivedvaliddocs = Response.Where(i => i.Status.ToLower() == "valid" && i.IsReceiver != true);
+                var _Receivedinvaliddocs = Response.Where(i => i.Status.ToLower() == "invalid" && i.IsReceiver != true);
+                var _Receivedrejecteddocs = Response.Where(i => i.Status.ToLower() == "rejected" && i.IsReceiver != true);
+                var _Receivedcancelleddocs = Response.Where(i => i.Status.ToLower() == "cancelled" && i.IsReceiver != true);
+                var _Receivedsubmitteddocs = Response.Where(i => i.Status.ToLower() == "submitted" && i.IsReceiver != true);
+                var ReceivedInvoices = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "i" && i.IsReceiver != true);
+                var ReceivedCredits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "c" && i.IsReceiver != true);
+                var Receiveddebits = _Receivedvaliddocs.Where(i => i.DocumentType.ToLower() == "d" && i.IsReceiver != true);
+
+                var _Submittedvaliddocs = Response.Where(i => i.Status.ToLower() == "valid" && i.IsReceiver == true);
+                var _Submittedinvaliddocs = Response.Where(i => i.Status.ToLower() == "invalid" && i.IsReceiver == true);
+                var _Submittedrejecteddocs = Response.Where(i => i.Status.ToLower() == "rejected" && i.IsReceiver == true);
+                var _Submittedcancelleddocs = Response.Where(i => i.Status.ToLower() == "cancelled" && i.IsReceiver == true);
+                var _Submittedsubmitteddocs = Response.Where(i => i.Status.ToLower() == "submitted" && i.IsReceiver == true);
+                var SubmittedInvoices = _Submittedvaliddocs.Where(i => i.DocumentType.ToLower() == "i" && i.IsReceiver == true);
+                var SubmittedCredits = _Submittedvaliddocs.Where(i => i.DocumentType.ToLower() == "c" && i.IsReceiver == true);
+                var Submitteddebits = _Submittedvaliddocs.Where(i => i.DocumentType.ToLower() == "d" && i.IsReceiver == true);
+
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel() { totalAmount = x.Sum(y => y.Total).ToString("N2"),count = x.Sum(p => p.Quantity), itemCode = x.Select(e => e.ItemCode).FirstOrDefault(), itemDesc = x.Select(e => e.Description).FirstOrDefault(), totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N2") }).OrderByDescending(x => x.count).ToList(),
+                    goodsModel = Response.Where(x => x.IsReceiver != true).SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel()
+                    {
+                        totalAmount = x.Sum(y => y.Total).ToString("N2"),
+                        count = x.Sum(p => p.Quantity),
+                        itemCode = x.Select(e => e.ItemCode).FirstOrDefault(),
+                        itemDesc = x.Select(e => e.Description).FirstOrDefault(),
+                        totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N2")
+                    }).OrderByDescending(x => x.count).ToList(),
+                    receivedGoodsModel = Response.Where(x => x.IsReceiver == true).SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel()
+                    {
+                        totalAmount = x.Sum(y => y.Total).ToString("N2"),
+                        count = x.Sum(p => p.Quantity),
+                        itemCode = x.Select(e => e.ItemCode).FirstOrDefault(),
+                        itemDesc = x.Select(e => e.Description).FirstOrDefault(),
+                        totalTax = x.Sum(c => c.TaxableItems.Sum(u => u.Amount)).ToString("N2")
+                    }).OrderByDescending(x => x.count).ToList(),
                     ReceivedInvoiceTotalAmount = ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedInvoiceCount = ReceivedInvoices.Count(),
-                    ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    //ReceivedInvoiceTotalTax = (ReceivedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedInvoiceTotalTax = ReceivedInvoices.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
                     ReceivedCreditTotalAmount = ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedCreditCount = ReceivedCredits.Count(),
-                    ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    //ReceivedCreditTotalTax = (ReceivedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - ReceivedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedCreditTotalTax = ReceivedCredits.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
                     ReceivedDebitTotalAmount = Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
                     ReceivedDebitCount = Receiveddebits.Count(),
-                    ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    //ReceivedDebitTotalTax = (Receiveddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Receiveddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    ReceivedDebitTotalTax = Receiveddebits.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
                     ReceivedValidDocumentsCount = _Receivedvaliddocs.Count(),
                     ReceivedCanceledDocumentsCount = _Receivedcancelleddocs.Count(),
                     ReceivedRejectedDocumentsCount = _Receivedrejecteddocs.Count(),
                     ReceivedInValidDocumentsCount = _Receivedinvaliddocs.Count(),
-                    ReceivedSubmittedDocumentsCount = _Receivedsubmitteddocs.Count()
+                    ReceivedSubmittedDocumentsCount = _Receivedsubmitteddocs.Count(),
+
+
+                    SubmittedInvoiceTotalAmount = SubmittedInvoices.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
+                    SubmittedInvoiceCount = SubmittedInvoices.Count(),
+                    //SubmittedInvoiceTotalTax = (SubmittedInvoices.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - SubmittedInvoices.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    SubmittedInvoiceTotalTax = SubmittedInvoices.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
+                    SubmittedCreditTotalAmount = SubmittedCredits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
+                    SubmittedCreditCount = SubmittedCredits.Count(),
+                    //SubmittedCreditTotalTax = (SubmittedCredits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - SubmittedCredits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    SubmittedCreditTotalTax = SubmittedCredits.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
+                    SubmittedDebitTotalAmount = Submitteddebits.Sum(x => Convert.ToDecimal(x.TotalAmount)).ToString("N2"),
+                    SubmittedDebitCount = Submitteddebits.Count(),
+                    //SubmittedDebitTotalTax = (Submitteddebits.Sum(x => Convert.ToDecimal(x.TotalSalesAmount)) - Submitteddebits.Sum(x => Convert.ToDecimal(x.NetAmount))).ToString("N2"),
+                    SubmittedDebitTotalTax = Submitteddebits.SelectMany(o => o.InvoiceLines).SelectMany(i => i.TaxableItems).Sum(t => t.Amount).ToString("N2"),
+                    SubmittedValidDocumentsCount = _Submittedvaliddocs.Count(),
+                    SubmittedCanceledDocumentsCount = _Submittedcancelleddocs.Count(),
+                    SubmittedRejectedDocumentsCount = _Submittedrejecteddocs.Count(),
+                    SubmittedInValidDocumentsCount = _Submittedinvaliddocs.Count(),
+                    SubmittedDocumentsCount = _Submittedsubmitteddocs.Count()
                 };
-                response.ReceivedDocumentsCount = response.ReceivedValidDocumentsCount + response.ReceivedInValidDocumentsCount + response.ReceivedCanceledDocumentsCount + response.ReceivedRejectedDocumentsCount + response.ReceivedSubmittedDocumentsCount;
+                response.ReceivedDocumentsCount = response.ReceivedValidDocumentsCount + response.ReceivedInValidDocumentsCount 
+                    + response.ReceivedCanceledDocumentsCount + response.ReceivedRejectedDocumentsCount + response.ReceivedSubmittedDocumentsCount;
+
+                response.allSubmittedDocumentsCount = response.SubmittedValidDocumentsCount + response.SubmittedInValidDocumentsCount
+                + response.SubmittedCanceledDocumentsCount + response.SubmittedRejectedDocumentsCount + response.SubmittedDocumentsCount;
+
                 if (response.ReceivedDocumentsCount != 0)
                 {
                     response.ReceivedValidDocumentsCountPercentage = Math.Round((response.ReceivedValidDocumentsCount * 100.00) / response.ReceivedDocumentsCount, 2);
@@ -346,6 +443,15 @@ namespace eInvoicing.Service.AppService.Implementation
                     response.ReceivedRejectedDocumentsCountPercentage = Math.Round((response.ReceivedRejectedDocumentsCount * 100.00) / response.ReceivedDocumentsCount, 2);
                     response.ReceivedCanceledDocumentsCountPercentage = Math.Round((response.ReceivedCanceledDocumentsCount * 100.00) / response.ReceivedDocumentsCount, 2);
                     response.ReceivedSubmittedDocumentsCountPercentage = Math.Round((response.ReceivedSubmittedDocumentsCount * 100.00) / response.ReceivedDocumentsCount, 2);
+                }
+
+                if (response.allSubmittedDocumentsCount != 0)
+                {
+                    response.SubmittedValidDocumentsCountPercentage = Math.Round((response.SubmittedValidDocumentsCount * 100.00) / response.allSubmittedDocumentsCount, 2);
+                    response.SubmittedInValidDocumentsCountPercentage = Math.Round((response.SubmittedInValidDocumentsCount * 100.00) / response.allSubmittedDocumentsCount, 2);
+                    response.SubmittedRejectedDocumentsCountPercentage = Math.Round((response.SubmittedRejectedDocumentsCount * 100.00) / response.allSubmittedDocumentsCount, 2);
+                    response.SubmittedCanceledDocumentsCountPercentage = Math.Round((response.SubmittedCanceledDocumentsCount * 100.00) / response.allSubmittedDocumentsCount, 2);
+                    response.SubmittedDocumentsCountPercentage = Math.Round((response.SubmittedDocumentsCount * 100.00) / response.allSubmittedDocumentsCount, 2);
                 }
                 return response;
             }
@@ -361,19 +467,51 @@ namespace eInvoicing.Service.AppService.Implementation
             IQueryable<Document> docs;
             if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
             {
-                docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" 
-                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines,Errors");
+                docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" && i.IsReceiver != true
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "Errors");
             }
             else
             {
-                docs = repository.Get(i => i.Status.ToLower() == status.ToLower() 
-                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "InvoiceLines");
+                docs = repository.Get(i => i.Status.ToLower() == status.ToLower() && i.IsReceiver != true
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "");
             }
             if (!string.IsNullOrEmpty(searchValue))//filter
             {
                 searchValue = searchValue.ToLower().Replace("/", "");
                 docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) ||
                 DbFunctions.TruncateTime(x.DateTimeReceived).ToString().Replace("-", "").Contains(searchValue) || DbFunctions.TruncateTime(x.DateTimeIssued).ToString().Replace("-", "").Contains(searchValue) || 
+                searchValue.Contains(x.DocumentType.ToLower()) || x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
+                x.TotalItemsDiscountAmount.ToString().ToLower().Contains(searchValue) || x.TotalAmount.ToString().ToLower().Contains(searchValue) ||
+                x.ReceiverName.ToLower().Contains(searchValue) || x.ReceiverType.ToLower().Contains(searchValue));
+            }
+            if (!string.IsNullOrEmpty(sortColumnName))
+            {
+                docs = docs.OrderBy(sortColumnName + " " + sortDirection);
+            }
+            var temp = PagedList<Document>.Create(docs, pageNumber, pageSize, docs.Count());
+            return new PagedList<DocumentVM>(temp.Select(x => x.ToDocumentVM()).ToList(), docs.Count(), pageNumber, pageSize, docs.Count());
+        }
+
+        public PagedList<DocumentVM> GetReceivedDocuments(int pageNumber, int pageSize, DateTime fromDate,
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
+        {
+            toDate = toDate.AddDays(1);
+            IQueryable<Document> docs;
+            if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
+            {
+                docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" && i.IsReceiver == true
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "");
+            }
+            else
+            {
+                docs = repository.Get(i => i.Status.ToLower() == status.ToLower() && i.IsReceiver == true
+                && (i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeReceived), "");
+            }
+            if (!string.IsNullOrEmpty(searchValue))//filter
+            {
+                searchValue = searchValue.ToLower().Replace("/", "");
+                docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) ||
+                DbFunctions.TruncateTime(x.DateTimeReceived).ToString().Replace("-", "").Contains(searchValue) || DbFunctions.TruncateTime(x.DateTimeIssued).ToString().Replace("-", "").Contains(searchValue) ||
                 searchValue.Contains(x.DocumentType.ToLower()) || x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
                 x.TotalItemsDiscountAmount.ToString().ToLower().Contains(searchValue) || x.TotalAmount.ToString().ToLower().Contains(searchValue) ||
                 x.ReceiverName.ToLower().Contains(searchValue) || x.ReceiverType.ToLower().Contains(searchValue));
@@ -428,22 +566,31 @@ namespace eInvoicing.Service.AppService.Implementation
         }
         private void UpdateDocumentsStatus(GetRecentDocumentsResponse obj)
         {
-            foreach (var item in obj.result)
+            try
             {
-                if (!IdsStack.Contains(item.internalId))
+                foreach (var item in obj.result)
                 {
-                    var entity = repository.Get(item.internalId);
-                    if (entity != null && entity.Status.ToLower() != "valid")
+                    if (!IdsStack.Contains(item.internalId))
                     {
-                        entity.Status = item.status;
-                        entity.uuid = item.uuid;
-                        entity.submissionId = item.submissionUUID;
-                        entity.longId = item.longId;
-                        entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
-                        repository.UpdateBulk(entity);
+                        var entity = repository.Get(item.internalId);
+                        if (entity != null && ((entity.Status.ToLower() == "valid" && item.status.ToLower() != "invalid") 
+                            || (entity.Status.ToLower() == "submitted" && item.status.ToLower() == "invalid") || entity.Status.ToLower() == "submitted" || 
+                            item.status.ToLower() == "rejected" || item.status.ToLower() == "cancelled"))
+                        {
+                            entity.Status = item.status;
+                            entity.uuid = item.uuid;
+                            entity.submissionId = item.submissionUUID;
+                            entity.longId = item.longId;
+                            entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
+                            repository.UpdateBulk(entity);
+                            IdsStack.Add(item.internalId);
+                        }
                     }
                 }
-                IdsStack.Add(item.internalId);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
         private bool RequestDocumentCancellation(string uuid, string reason)
@@ -469,6 +616,37 @@ namespace eInvoicing.Service.AppService.Implementation
             {
                 obj.Id = Guid.NewGuid().ToString();
                 repository.Add(AutoMapperConfiguration.Mapper.Map<Document>(obj));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private void InsertReceivedDocuments(GetRecentDocumentsResponse obj, string key, string url)
+        {
+            try
+            {
+                foreach (var item in obj.result)
+                {
+                    if (!IdsStack2.Contains(item.internalId))
+                    {
+                        var entity = repository.Get(item.internalId);
+                        if (entity == null)
+                        {
+                            var result = GetDocument_ETA(url, key, item.uuid);
+                            if (result != null)
+                            {
+                                result.isReceiver = true;
+                                var res = repository.Add(result.ToDocument());
+                                if (res != null)
+                                {
+                                    IdsStack2.Add(item.internalId);
+                                }
+                            }
+                        }
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -510,11 +688,18 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
+                var response = _validationStepRepository.GetAllIncluding(v => v.DocumentId == Id).Select(d => d.Id).ToList();
+                if (response.Count() > 0)
+                {
+                    _stepErrorRepository.DeleteByValidationStepId(response);
+                }
                 var entity = repository.Delete(Id);
                 if (entity != null)
                     return true;
                 else
                     return false;
+
+                return false;
             }
             catch (Exception ex)
             {

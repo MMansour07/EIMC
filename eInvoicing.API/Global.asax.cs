@@ -25,9 +25,8 @@ namespace eInvoicing.API
 
             Database.SetInitializer(new DBContextSeeder());
 
-            RecurringJob.AddOrUpdate(() => HangfireManager.SpecifyWhichActionsChain(), "0 0 10 * * ?");
-            //RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), "0 0 */3 ? * *");
-            //RecurringJob.AddOrUpdate(() => HangfireManager.RetrieveDocumentInvalidityReasons(), "0 0 */5 ? * *");
+            //RecurringJob.AddOrUpdate(() => HangfireManager.SpecifyWhichActionsChain(), "0 0 10 * * ?");
+            RecurringJob.AddOrUpdate(() => HangfireManager.GetReceivedDocuments(), "0 0 8 * * ?");
             RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), Cron.Hourly());
             RecurringJob.AddOrUpdate(() => HangfireManager.RetrieveDocumentInvalidityReasons(), Cron.Hourly());
             RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), Cron.Daily);

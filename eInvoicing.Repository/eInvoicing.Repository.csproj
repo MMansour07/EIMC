@@ -55,6 +55,7 @@
     <Compile Include="Contract\Base\IRepository.cs" />
     <Compile Include="Contract\Base\IUnitOfWork.cs" />
     <Compile Include="Contract\IAuthRepository.cs" />
+    <Compile Include="Contract\IStepErrorRepository.cs" />
     <Compile Include="Contract\IValidationStepRepository.cs" />
     <Compile Include="Contract\ITaxpayerRepository.cs" />
     <Compile Include="Contract\IPermissionRepository.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Contract\IDocumentRepository.cs" />
     <Compile Include="Implementation\BusinessGroupRepository.cs" />
     <Compile Include="Implementation\Base\IdentityRepository.cs" />
+    <Compile Include="Implementation\StepErrorRepository.cs" />
     <Compile Include="Implementation\ValidationStepRepository.cs" />
     <Compile Include="Implementation\TaxpayerRepository.cs" />
     <Compile Include="Implementation\PermissionRepository.cs" />

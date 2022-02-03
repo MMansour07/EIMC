@@ -40,7 +40,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -125,12 +125,15 @@
                                     <span class="navi-text">Submit</span>
                                 </a>
                             </li>
-                            <li class="navi-item">
-                                <a href="#" onclick="EditDocument('@Model.internalID')" class="navi-link _do submitdoc">
-                                    <span class="navi-icon"><i class="la la-edit"></i></span>
-                                    <span class="navi-text">Edit</span>
-                                </a>
-                            </li>
+                            @if (Guid.TryParse(Model.internalID, out _))
+                            {
+                                <li class="navi-item">
+                                    <a href="#" onclick="EditDocument('@Model.internalID')" class="navi-link _do submitdoc">
+                                        <span class="navi-icon"><i class="la la-edit"></i></span>
+                                        <span class="navi-text">Edit</span>
+                                    </a>
+                                </li>
+                            }
                         </ul>
                         <!--end::Navigation-->
                     </div>

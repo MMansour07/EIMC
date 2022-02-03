@@ -44,7 +44,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -191,13 +191,19 @@
                                     @Html.TextBoxFor(model => model.Token, new { @class = "form-control", @placeholder = "Token", @name = "Token" })
                                     @Html.ValidationMessageFor(model => model.Token, "", new { @class = "text-danger" })
                                 </div>
+                               
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                 <div class="col-md-6">
                                     <label>Is DBSync *</label>
                                     @Html.CheckBoxFor(model => model.IsDBSync, new { @class = "form-control", @name = "IsDBSync", @id = "IsDBSync", @style = "width: 11% !important;" })
                                     @Html.ValidationMessageFor(model => model.IsDBSync, "", new { @class = "text-danger" })
                                 </div>
+                                @*<div class="col-md-6">
+                                    <label>Registration Number *</label>
+                                    @Html.TextBoxFor(model => model.RIN, new { @class = "form-control", @placeholder = "Registration Number", @name = "RIN" })
+                                    @Html.ValidationMessageFor(model => model.RIN, "", new { @class = "text-danger" })
+                                </div>*@
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">

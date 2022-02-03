@@ -17,10 +17,10 @@ namespace eInvoicing.DTO
         public string countryOfOrigin { get; set; }
         [RegularExpression(@"^\d+\.\d{0,5}$")]
         [Range(0, 9999999999999999.99999)]
-        public decimal grossWeight { get; set; }
+        public decimal? grossWeight { get; set; }
         [RegularExpression(@"^\d+\.\d{0,5}$")]
         [Range(0, 9999999999999999.99999)]
-        public decimal netWeight { get; set; }
+        public decimal? netWeight { get; set; }
         public string terms { get; set; }
     }
 }

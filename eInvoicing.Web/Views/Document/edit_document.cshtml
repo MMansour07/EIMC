@@ -9,6 +9,71 @@
 </style>
 <script>
     $(document).ready(function () {
+        debugger
+
+        @if (Model.ReceiverType == "B") {
+
+             @:$("#RGN").show();
+             @:$("#rgn").val("@Model.ReceiverId");
+
+            @:$("#NID").hide();
+            @:$("#PID").hide();
+
+            @:$("#name-lbl").html("Name *");
+            @:$("#country-lbl").html("Country *");
+            @:$("#governorate-lbl").html("Governorate *");
+            @:$("#city-lbl").html("City *");
+            @:$("#floor-lbl").html("Floor *");
+            @:$("#building-lbl").html("Building Name/No *");
+            @:$("#street-lbl").html("Street Name *");
+
+        }
+         else if (Model.ReceiverType == "P") {
+
+            @:var validator = _validations[1];
+            @:validator.validate();
+
+             @:$("#NID").show();
+             @:$("#nid").val("@Model.ReceiverId");
+
+            @:$("#RGN").hide();
+            @:$("#PID").hide();
+
+            @:$("#name-lbl").html("Name");
+            @:$("#country-lbl").html("Country");
+            @:$("#governorate-lbl").html("Governorate");
+            @:$("#city-lbl").html("City");
+            @:$("#floor-lbl").html("Floor");
+            @:$("#building-lbl").html("Building Name/No");
+            @:$("#street-lbl").html("Street Name");
+
+        }
+         else if (Model.ReceiverType == "F") {
+
+            @:var validator = _validations[1];
+            @:validator.validate();
+
+            @:$("#PID").show();
+            @:$("#pid").val("@Model.ReceiverId");
+
+            @:$("#RGN").hide();
+            @:$("#NID").hide();
+
+            @:$("#name-lbl").html("Name");
+            @:$("#country-lbl").html("Country");
+            @:$("#govenrorate-lbl").html("Governorate");
+            @:$("#city-lbl").html("City");
+            @:$("#floor-lbl").html("Floor");
+            @:$("#building-lbl").html("Building Name/No");
+            @:$("#street-lbl").html("Street Name");
+
+        }
+         else {
+            @:$("#RGN").hide();
+            @:$("#NID").hide();
+            @:$("#PID").hide();
+        }
+
         $("select[name=IssuerCountry").val("@Model.IssuerCountry").change();
         $("select[name=ReceiverCountry").val("@Model.ReceiverCountry").change();
         var arObj = {};
@@ -57,8 +122,6 @@
                 //@:i++;
                 @:arObj = {};
             }
-
-        console.log(Lines);
     });
 </script>
 <div class="container-fluid">
@@ -95,7 +158,7 @@
             <!--end::Info-->
         </div>
 
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -1634,12 +1697,13 @@
     });
 
     $("#dt_taxes").on('click', '.editCF', function () {
+        debugger;
         var tr = $(this).parent().parent();
         rowIndex = $('#dt_taxes tr').index($(this).parent().parent());
         $("[name=Rate]").val($(tr[0]).children('td').eq(2).html());
         $("[name=Amount]").val($(tr[0]).children('td').eq(3).html());
-        $("[select=TaxType]").val($(tr[0]).children('td').eq(0).html()).change();
-        $("[select=SubType]").val($(tr[0]).children('td').eq(1).html()).change();
+        $("select[name=TaxType]").val($(tr[0]).children('td').eq(0).html()).change();
+        $("select[name=SubType]").val($(tr[0]).children('td').eq(1).html()).change();
         editMode = true;
         $('#addtax').click();
     });
@@ -1657,24 +1721,24 @@
         lineRowIndex = $('#dt_lines tr').index($(this).parent().parent());
         var _line = Lines[lineRowIndex - 1];
 
-        $("input[name=ItemCode]").val(_line.ItemCode);
-        $("input[name=InternalCode]").val(_line.InternalCode);
-        $("input[name=InternalId]").val(_line.InternalId);
-        $("select[name=UnitType]").val(_line.UnitType).change();;
-        $("input[name=Quantity]").val(_line.Quantity);
-        $("input[name=SalesTotal]").val(_line.SalesTotal);
-        $("input[name=Total]").val(_line.Total);
-        $("input[name=ValueDifference]").val(_line.ValueDifference);
-        $("input[name=TotalTaxableFees]").val(_line.TotalTaxableFees);
-        $("input[name=NetTotal]").val(_line.NetTotal);
-        $("input[name=ItemsDiscount]").val(_line.ItemsDiscount);
-        $("textarea[name=Description]").val(_line.Description);
-        $("select[name=CurrencySold]").val(_line.CurrencySold).change();;
-        $("input[name=AmountEGP]").val(_line.AmountEGP);
-        $("input[name=AmountSold]").val(_line.AmountSold);
-        $("input[name=CurrencyExchangeRate]").val(_line.CurrencyExchangeRate);
-        $("input[name=DiscountRate]").val(_line.DiscountRate);
-        $("input[name=DiscountAmount]").val(_line.DiscountAmount);
+        $("input[name=ItemCode]").val(_line?.ItemCode);
+        $("input[name=InternalCode]").val(_line?.InternalCode);
+        $("input[name=InternalId]").val(_line?.InternalId);
+        $("select[name=UnitType]").val(_line?.UnitType).change();;
+        $("input[name=Quantity]").val(_line?.Quantity);
+        $("input[name=SalesTotal]").val(_line?.SalesTotal);
+        $("input[name=Total]").val(_line?.Total);
+        $("input[name=ValueDifference]").val(_line?.ValueDifference);
+        $("input[name=TotalTaxableFees]").val(_line?.TotalTaxableFees);
+        $("input[name=NetTotal]").val(_line?.NetTotal);
+        $("input[name=ItemsDiscount]").val(_line?.ItemsDiscount);
+        $("textarea[name=Description]").val(_line?.Description);
+        $("select[name=CurrencySold]").val(_line?.CurrencySold).change();;
+        $("input[name=AmountEGP]").val(_line?.AmountEGP);
+        $("input[name=AmountSold]").val(_line?.AmountSold);
+        $("input[name=CurrencyExchangeRate]").val(_line?.CurrencyExchangeRate);
+        $("input[name=DiscountRate]").val(_line?.DiscountRate);
+        $("input[name=DiscountAmount]").val(_line?.DiscountAmount);
 
         TaxableItems = _line.TaxableItems;
 
@@ -1682,10 +1746,10 @@
         for (var i = 0; i < _line.TaxableItems.length; i++) {
             $("#dt_taxes tbody").append(
                 $("<tr>\n" +
-                    "<td>" + _line.TaxableItems[i].TaxType + "</td>\n" +
-                    "<td>" + _line.TaxableItems[i].SubType + "</td>\n" +
-                    "<td>" + _line.TaxableItems[i].Rate + "</td>\n" +
-                    "<td>" + _line.TaxableItems[i].Amount + "</td>\n" +
+                    "<td>" + _line?.TaxableItems[i].TaxType + "</td>\n" +
+                    "<td>" + _line?.TaxableItems[i].SubType + "</td>\n" +
+                    "<td>" + _line?.TaxableItems[i].Rate + "</td>\n" +
+                    "<td>" + _line?.TaxableItems[i].Amount + "</td>\n" +
                     "<td><a href='javascript: void (0);' class='editCF'><i class = 'fa fa-info'></i></a> | <a href='javascript: void (0);' class='remCF'><i class = 'fa fa-trash'></i></a></td>\n" +
                     "</tr>\n")
             );

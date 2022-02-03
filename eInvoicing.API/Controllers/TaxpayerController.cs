@@ -50,12 +50,7 @@ namespace eInvoicing.API.Controllers
                 }
                 else
                 {
-                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
-                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
-                    if (identity != null)
-                        return _taxpayerService.TokenByRegistrationNumber("347383874")?.Replace("\r\n", "");
-                    else
-                        return null;
+                    return _taxpayerService.TokenByBusinessGroupId(objAppsettings.Settings["Current_BusinessGroupId"]?.Value?.Split('&')?[0]?.Replace("\r\n", ""))?.Replace("\r\n", "");
                 }
             }
             catch (Exception ex)
@@ -78,12 +73,7 @@ namespace eInvoicing.API.Controllers
                 }
                 else
                 {
-                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
-                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
-                    if (identity != null)
-                        return _taxpayerService.GetClientIdByRegistrationNumber("347383874")?.Replace("\r\n", "");
-                    else
-                        return null;
+                    return _taxpayerService.GetClientIdByBusinessGroupId(objAppsettings.Settings["Current_BusinessGroupId"]?.Value?.Split('&')?[0]?.Replace("\r\n", ""))?.Replace("\r\n", "");
                 }
             }
             catch (Exception ex)
@@ -134,6 +124,5 @@ namespace eInvoicing.API.Controllers
                 return ex.Message;
             }
         }
-
     }
 }

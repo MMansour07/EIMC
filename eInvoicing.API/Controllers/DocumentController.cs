@@ -156,6 +156,22 @@ namespace eInvoicing.API.Controllers
 
         [JwtAuthentication]
         [HttpGet]
+        [Route("api/document/receivedCount")]
+        public IHttpActionResult ReceivedCount()
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                return Ok(_documentService.GetReceivedCount());
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
         [Route("api/document/MonthlyDocuments")]
         public IHttpActionResult GetMonthlyDocuments(DateTime _date)
         {
@@ -179,6 +195,23 @@ namespace eInvoicing.API.Controllers
             {
                 _documentService.GetTheConnectionString(this.OnActionExecuting());
                 var docs = _documentService.GetSubmittedDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
+                return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/received")]
+        public IHttpActionResult Received(int pageNumber, int pageSize, DateTime fromDate, 
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                var docs = _documentService.GetReceivedDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
                 return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
             }
             catch (Exception ex)
@@ -491,16 +524,21 @@ namespace eInvoicing.API.Controllers
             oda.Fill(ds);
             DataTable Exceldt = null;
 
-            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalInvoiceLinesIds.Any(id => id == row["InternalInvoiceLineId"].ToString()) && InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()));
+            var NewRows = ds.Tables[0].AsEnumerable().Where(row => !InternalInvoiceLinesIds.Any(id => id == row["InternalInvoiceLineId"].ToString()) && 
+            InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()));
             foreach (var currentRow in NewRows)
             {
                 currentRow.BeginEdit();
-                currentRow["AmountEGP"] = Math.Round(Convert.ToDouble(currentRow["AmountEGP"]), 5);
-                currentRow["AmountSold"] = Math.Round(Convert.ToDouble(currentRow["AmountSold"]), 5);
-                currentRow["CurrencyExchangeRate"] = Math.Round(Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5);
+                currentRow["AmountEGP"]= Math.Round(Convert.ToDouble(currentRow["AmountEGP"]), 5);
+                currentRow["CurrencyExchangeRate"] =  Math.Round(Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5);
+                //currentRow["AmountEGP"]  = Math.Round((Math.Round(Convert.ToDouble(currentRow["AmountSold"]), 5) * 
+                //    Math.Round(Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5)), 5);
+                //currentRow["AmountSold"] = Math.Round(Convert.ToDouble(currentRow["AmountSold"]), 5);
+                currentRow["AmountSold"] = Convert.ToDouble(currentRow["CurrencyExchangeRate"])  != 0 ? 
+                    Math.Round(Convert.ToDouble(currentRow["AmountEGP"]) / Convert.ToDouble(currentRow["CurrencyExchangeRate"]), 5) : 0;
                 currentRow["SalesTotal"] = Math.Round(Convert.ToDouble(currentRow["SalesTotal"]), 5);
-                currentRow["NetTotal"] = Math.Round(Convert.ToDouble(currentRow["NetTotal"]), 5);
-                currentRow["Total"] = Math.Round(Convert.ToDouble(currentRow["Total"]), 5);
+                currentRow["NetTotal"]   = Math.Round(Convert.ToDouble(currentRow["NetTotal"]), 5);
+                currentRow["Total"]      = Math.Round(Convert.ToDouble(currentRow["Total"]), 5);
                 currentRow.EndEdit();
                 Lines.Add(currentRow);
             }
@@ -849,19 +887,42 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                var regEX = new Regex(@"
-                (?<=[A-Z])(?=[A-Z][a-z]) |
-                 (?<=[^A-Z])(?=[A-Z]) |
-                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                var regEX = new Regex(@"(?<!^)(?=[A-Z])", RegexOptions.IgnorePatternWhitespace);
                 foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
                 {
                     if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
                     {
                         _documentService.GetTheConnectionString(Item.ConnectionString);
-                        //_userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
-                        _userSession.SetBusinessGroup("Subsea7");
+                        _userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
+                        //_userSession.SetBusinessGroup("Subsea7");
                         var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
-                        _documentService.GetRecentDocuments_ETA(_userSession.submissionurl, auth.access_token, 2000);
+                        _documentService.GetRecentDocuments_ETA(_userSession.submissionurl, auth.access_token, 1000);
+                    }
+                }
+                return Ok();
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("api/document/getReceivedDocuments")]
+        public IHttpActionResult GetReceivedDocuments()
+        {
+            try
+            {
+                var regEX = new Regex(@"(?<!^)(?=[A-Z])", RegexOptions.IgnorePatternWhitespace);
+                foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
+                {
+                    if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
+                    {
+                        _documentService.GetTheConnectionString(Item.ConnectionString);
+                        _userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
+                        var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                        _documentService.GetReceivedDocuments(_userSession.submissionurl, auth.access_token, 1000);
                     }
                 }
                 return Ok();
@@ -879,17 +940,14 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                var regEX = new Regex(@"
-                (?<=[A-Z])(?=[A-Z][a-z]) |
-                 (?<=[^A-Z])(?=[A-Z]) |
-                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                var regEX = new Regex(@"(?<!^)(?=[A-Z])", RegexOptions.IgnorePatternWhitespace);
                 foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
                 {
                     if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
                     {
                         _documentService.GetTheConnectionString(Item.ConnectionString);
-                        _userSession.SetBusinessGroup("Subsea7");
-                        //_userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
+                        //_userSession.SetBusinessGroup("Subsea7");
+                        _userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
                         var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
                         _documentService.GetInvalidDocumentsReasone(_userSession.submissionurl, auth.access_token);
                     }
@@ -909,10 +967,7 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                var regEX = new Regex(@"
-                (?<=[A-Z])(?=[A-Z][a-z]) |
-                 (?<=[^A-Z])(?=[A-Z]) |
-                 (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                var regEX = new Regex(@"(?<!^)(?=[A-Z])", RegexOptions.IgnorePatternWhitespace);
                 foreach (ConnectionStringSettings Item in ConfigurationManager.ConnectionStrings)
                 {
                     if (Item.Name.StartsWith("EInvoice_") && Item.Name != "EInvoice_ProductOwner")
@@ -924,7 +979,7 @@ namespace eInvoicing.API.Controllers
                         }
                         else
                         {
-                            if (SubmitDocumentsPeriodically("BackGround_JOB",Item.ConnectionString, regEX.Replace(Item.Name, " ")))
+                            if (SubmitDocumentsPeriodically("BackGround_JOB", Item.ConnectionString, regEX.Replace(Item.Name, " ")))
                                 continue;
                             else
                                 break;
@@ -953,9 +1008,10 @@ namespace eInvoicing.API.Controllers
                     {
                         using (SqlConnection myConnection = new SqlConnection(Item.ConnectionString))
                         {
+                            string GroupName = Item.Name.Replace("EInvoice_", "");
                             myConnection.Open();
-                            string SQLQuery  = @"BACKUP DATABASE Subsea7_PreProd TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"]+ "PreProd" + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
-                            string SQLQuery2 = @"BACKUP DATABASE Subsea7 TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"] + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                            string SQLQuery  = @"BACKUP DATABASE " + GroupName + "_PreProd TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"] + GroupName + "PreProd" + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
+                            string SQLQuery2 = @"BACKUP DATABASE " + GroupName + " TO DISK = " + ConfigurationManager.AppSettings["Backup_Path"] + GroupName + DateTime.Now.ToString("yyyyMMdd") + ".bak'";
                             SqlCommand command = new SqlCommand(SQLQuery+SQLQuery2, myConnection);
                             command.CommandTimeout = 600;
                             var output = command.ExecuteReader();
@@ -966,8 +1022,9 @@ namespace eInvoicing.API.Controllers
                 }
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return InternalServerError();
             }
         }
@@ -1026,7 +1083,8 @@ namespace eInvoicing.API.Controllers
                     if (objAppsettings != null)
                     {
                         objAppsettings.Settings["IsExternal"].Value = "1";
-                        objAppsettings.Settings["Current_BusinessGroup"].Value = Name;
+                        objAppsettings.Settings["Current_BusinessGroup"].Value = Name.Replace("E Invoice_ ", "");
+                        objConfig.Save();
                     }
                     var _docs = _documentService.GetAllDocumentsToSubmit().ToList();
                     if (_docs.Count() > 0)

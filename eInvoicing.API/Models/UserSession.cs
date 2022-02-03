@@ -37,7 +37,7 @@ namespace eInvoicing.API.Models
         }
         public void SetBusinessGroup(string BusinessGroup)
         {
-            BusinessGroupName = BusinessGroup.Replace("E Invoice _ ", "");
+            BusinessGroupName = BusinessGroup.Replace("E Invoice_ ", "");
             var taxpayer = _taxpayerService.getTaxpayerDetailsByBusinessGroupName(BusinessGroupName);
             if (ConfigurationManager.AppSettings["Environment"].ToLower() == "preprod")
             {
@@ -63,7 +63,7 @@ namespace eInvoicing.API.Models
 
         public bool IsDBSync(string BusinessGroup)
         {
-            BusinessGroupName = BusinessGroup.Replace("E Invoice _ ", "");
+            BusinessGroupName = BusinessGroup.Replace("E Invoice_ ", "");
             return _taxpayerService.CheckIsDBSync(BusinessGroupName);
         }
         public UserSession(ITaxpayerService taxpayerService)

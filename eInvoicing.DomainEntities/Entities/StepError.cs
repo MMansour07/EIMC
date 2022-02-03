@@ -18,6 +18,8 @@ namespace eInvoicing.DomainEntities.Entities
         public string ErrorAr { get; set; }
         public string ValidationStepId { get; set; }
         public string ErrorId { get; set; }
+        public virtual StepError _StepError { get; set; }
+
         [ForeignKey("ErrorId")]
         public virtual List<StepError> InnerError { get; set; }
 

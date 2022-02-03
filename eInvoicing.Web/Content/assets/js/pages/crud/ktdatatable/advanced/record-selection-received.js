@@ -18,7 +18,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 source: {
                     read: {
                         method: 'POST',
-                        url: '/v1/document/ajax_submitted',
+                        url: '/v1/document/ajax_received',
                         map: function (raw) {
                             // 
                             // sample data mapping
@@ -53,7 +53,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 {
                     field: 'status',
                     title: 'Status',
-                    width: '135',
+                    width: '100',
                     // callback function support for column rendering
                     template: function (row) {
                         var status = {
@@ -77,7 +77,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     title: 'ID/Internal ID',
                     width:220,
                     template: function (row) {
-                        return "<a href='/v1/document/raw?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
+                        return "<a href='/v1/document/raw_received?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
                                 <span class='navi-text' style= 'float:left; clear:left;'>" + row.internalID + "</span>";
                     }
                 },
@@ -202,30 +202,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
                                                     </li>\
-                                                    <!--<li class='navi-item'>\
-                                                        <a href='#' class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-unlock'></i></span>\
-                                                            <span class='navi-text'>Decline</span>\
-                                                        </a>\
-                                                    </li>-->\
-                                                    <!--<li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-link'></i></span>\
-                                                            <span class='navi-text'>Get Public Link</span>\
-                                                        </a>\
-                                                    </li>\-->\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                                            <span class='navi-text'>Debit Note</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                                            <span class='navi-text'>Credit Note</span>\
-                                                        </a>\
-                                                    </li>\
                                                 </ul>\
                                             </div>\
                                         </div>";
@@ -255,18 +231,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                                         <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                                            <span class='navi-text'>Debit Note</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                                            <span class='navi-text'>Credit Note</span>\
                                                         </a>\
                                                     </li>\
                                                 </ul>\
@@ -299,30 +263,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                                         <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <li class='navi-item'>\
-                                                        <a href='#' onclick='CancelDocumentByUUID(\"" + row.uuid + "\")' class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-ban'></i></span>\
-                                                            <span class='navi-text'>Cancel</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <!--<li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-link'></i></span>\
-                                                            <span class='navi-text'>Get Public Link</span>\
-                                                        </a>\
-                                                    </li>\-->\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                                            <span class='navi-text'>Debit Note</span>\
-                                                        </a>\
-                                                    </li>\
-                                                    <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                                            <span class='navi-text'>Credit Note</span>\
                                                         </a>\
                                                     </li>\
                                                 </ul>\
@@ -360,36 +300,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                                 <span class='navi-text'>Print</span>\
                                             </a>\
                                         </li>\
-                                        <li class='navi-item'>\
-                                            <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-undo'></i></span>\
-                                                <span class='navi-text'>Recall</span>\
-                                            </a>\
-                                        </li>\
-                                        <!--<li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-link'></i></span>\
-                                                <span class='navi-text'>Get Public Link</span>\
-                                            </a>\
-                                        </li>\-->\
-                                        <li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                                <span class='navi-text'>Debit Note</span>\
-                                            </a>\
-                                        </li>\
-                                        <li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                                <span class='navi-text'>Credit Note</span>\
-                                            </a>\
-                                        </li>\
-                                        <li class='navi-item'>\
-                                        <a href='#' onclick='EditDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
-                                            <span class='navi-icon'><i class='la la-edit'></i></span>\
-                                                <span class='navi-text'>Edit</span>\
-                                            </a>\
-                                        </li>\
                                     </ul>\
                                 </div>\
                             </div>";
@@ -419,30 +329,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                     <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
-                                    </a>\
-                                </li>\
-                                <li class='navi-item'>\
-                                    <a href='#' onclick='CancelDocumentByUUID(\"" + row.uuid + "\")' class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-ban'></i></span>\
-                                        <span class='navi-text'>Cancel</span>\
-                                    </a>\
-                                </li>\
-                                <!--<li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-link'></i></span>\
-                                        <span class='navi-text'>Get Public Link</span>\
-                                    </a>\
-                                </li>\-->\
-                                <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                        <span class='navi-text'>Debit Note</span>\
-                                    </a>\
-                                </li>\
-                                <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                        <span class='navi-text'>Credit Note</span>\
                                     </a>\
                                 </li>\
                             </ul>\
@@ -479,30 +365,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                                 <span class="navi-text">Print</span>\
                                             </a>\
                                         </li>\
-                                        <li class="navi-item">\
-                                            <a href="#" onclick="UpdateDocumentByInternalId(' + row.internalID + ')" class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-undo"></i></span>\
-                                                <span class="navi-text">Recall</span>\
-                                            </a>\
-                                        </li>\
-                                        <!--<li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-link"></i></span>\
-                                                <span class="navi-text">Get Public Link</span>\
-                                            </a>\
-                                        </li>\-->\
-                                        <li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-plus-circle"></i></span>\
-                                                <span class="navi-text">Debit Note</span>\
-                                            </a>\
-                                        </li>\
-                                        <li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-minus-circle"></i></span>\
-                                                <span class="navi-text">Credit Note</span>\
-                                            </a>\
-                                        </li>\
                                     </ul>\
                                 </div>\
                             </div>';
@@ -532,30 +394,6 @@ var KTDatatableRecordSelectionDemo = function() {
                                     <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
-                                    </a>\
-                                </li>\
-                                <li class='navi-item'>\
-                                    <a href='#' onclick='CancelDocumentByUUID(\"" + row.uuid + "\")' class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-ban'></i></span>\
-                                        <span class='navi-text'>Cancel</span>\
-                                    </a>\
-                                </li>\
-                               <!--<li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-link'></i></span>\
-                                        <span class='navi-text'>Get Public Link</span>\
-                                    </a>\
-                                </li>\-->\
-                                <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
-                                        <span class='navi-text'>Debit Note</span>\
-                                    </a>\
-                                </li>\
-                                <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
-                                        <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
-                                        <span class='navi-text'>Credit Note</span>\
                                     </a>\
                                 </li>\
                             </ul>\
@@ -794,7 +632,7 @@ function EditDocument(InternalId) {
 }
 
 function ViewDocument(uuid) {
-    window.location.href = "/v1/document/raw?uuid=" + uuid;
+    window.location.href = "/v1/document/raw_received?uuid=" + uuid;
 }
 
 function CancelDocumentByUUID(uuid) {
@@ -827,7 +665,7 @@ function CancelDocumentByUUID(uuid) {
             else {
                 Swal.fire({
                     title: "Sorry, something went wrong!",
-                    text: "It might be not found, not signed, or you exceed limited time period since submission of the document on the eInvoicing system.",
+                    text: "It might be not found or you exceed the limit duration.",
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",

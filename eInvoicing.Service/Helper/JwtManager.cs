@@ -76,6 +76,7 @@ namespace eInvoicing.Service.Helper
                 claims.Add(new Claim("IsDBSync", obj.IsDBSync.ToString()));
                 claims.Add(new Claim("BusinessGroupId", obj.BusinessGroupId));
                 claims.Add(new Claim("Token", obj.Token));
+                //claims.Add(new Claim("RIN", obj.RIN));
                 //foreach (var item in obj.stringfiedRoles)
                 //{
                 //    claims.Add(new Claim(ClaimTypes.Role, item));

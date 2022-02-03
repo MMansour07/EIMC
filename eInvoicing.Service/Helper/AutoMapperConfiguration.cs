@@ -31,6 +31,9 @@ namespace eInvoicing.Service.Helper
                 cfg.CreateMap<Document, NewDocumentVM>().ReverseMap();
                 cfg.CreateMap<InvoiceLine, NewInvoiceLineVM>().ReverseMap();
                 cfg.CreateMap<TaxableItem, NewTaxableItem>().ReverseMap();
+                cfg.CreateMap<Document, GetDocumentResponse>().ReverseMap();
+                cfg.CreateMap<InvoiceLine, INVOICELINESVM>().ReverseMap();
+                cfg.CreateMap<TaxableItem, TAXABLEITEMSVM>().ReverseMap();
             });
             Mapper = MapperConfiguration.CreateMapper();
         }

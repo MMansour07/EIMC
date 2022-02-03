@@ -128,5 +128,36 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { status = "Failed", Message = 500 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        [ActionName("receivedCount")]
+        public ActionResult Received()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    var url = _userSession.URL + "api/document/receivedCount";
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        int docsCount = JsonConvert.DeserializeObject<int>(postTask.Content.ReadAsStringAsync().Result);
+                        var _response = new DashboardDTO()
+                        {
+                            ReceivedDocumentsCount = docsCount
+                        };
+                        return Json(_response, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new { status = "Failed", Message = postTask.StatusCode }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(new { status = "Failed", Message = 500 }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

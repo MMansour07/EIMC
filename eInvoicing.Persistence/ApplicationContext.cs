@@ -17,25 +17,25 @@ namespace eInvoicing.Persistence
                 .WithMany(g => g.InvoiceLines)
                 .HasForeignKey<string>(s => s.DocumentId).WillCascadeOnDelete(true);
 
-            //modelBuilder.Entity<ValidationStep>()
-            //    .HasRequired<Document>(s => s.Document)
-            //    .WithMany(g => g.ValidationSteps)
-            //    .HasForeignKey<string>(s => s.DocumentId).WillCascadeOnDelete(true);
+            modelBuilder.Entity<ValidationStep>()
+                .HasRequired<Document>(s => s.Document)
+                .WithMany(g => g.ValidationSteps)
+                .HasForeignKey<string>(s => s.DocumentId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<StepError>()
+                .HasOptional<ValidationStep>(s => s.ValidationStep)
+                .WithMany(g => g.StepErrors)
+                .HasForeignKey<string>(s => s.ValidationStepId).WillCascadeOnDelete(true);
 
             //modelBuilder.Entity<StepError>()
-            //    .HasRequired<ValidationStep>(s => s.ValidationStep)
-            //    .WithMany(g => g.StepErrors)
-            //    .HasForeignKey<string>(s => s.ValidationStepId).WillCascadeOnDelete(true);
+            //    .HasOptional<StepError>(s => s._StepError)
+            //    .WithMany(g => g.InnerError)
+            //    .HasForeignKey<string>(s => s.ErrorId).WillCascadeOnDelete(false);
 
-            //modelBuilder.Entity<StepError>()
-            //    .HasMany(x => x.InnerError)
-            //    .WithRequired(x => x._StepError)
-            //    .WillCascadeOnDelete(true);
-
-            //modelBuilder.Entity<Error>()
-            //    .HasRequired<Document>(s => s.Document)
-            //    .WithMany(g => g.Errors)
-            //    .HasForeignKey<string>(s => s.DocumentId).WillCascadeOnDelete(true);
+            modelBuilder.Entity<Error>()
+                .HasRequired<Document>(s => s.Document)
+                .WithMany(g => g.Errors)
+                .HasForeignKey<string>(s => s.DocumentId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<TaxableItem>()
                 .HasRequired<InvoiceLine>(s => s.InvoiceLine)

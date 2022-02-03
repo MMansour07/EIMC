@@ -26,9 +26,9 @@ namespace eInvoicing.DTO
         public string issuerName { get; set; }
         public string receiverId { get; set; }
         public string receiverName { get; set; }
-        public string dateTimeIssued { get; set; }
-        public string dateTimeReceived { get; set; }
-        public string dateTimeRecevied { get; set; }
+        public DateTime dateTimeIssued { get; set; }
+        public DateTime dateTimeReceived { get; set; }
+        public DateTime dateTimeRecevied { get; set; }
         public decimal totalSales { get; set; }
         public decimal totalDiscount { get; set; }
         public decimal netAmount { get; set; }
@@ -85,7 +85,8 @@ namespace eInvoicing.DTO
         //public string uuid { get; set; }
         //public string submissionUUID { get; set; }
         //public string longId { get; set; }
-        public bool isInternallyCreated { get; set; }
+        public bool? isInternallyCreated { get; set; }
+        public bool? isReceiver { get; set; }
         public bool? IsCancelRequested { get; set; }
         public bool? IsDeclineRequested { get; set; }
         //public string documentStatusReason { get; set; }

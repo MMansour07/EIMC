@@ -16,9 +16,9 @@ namespace eInvoicing.Service.AppService.Contract.Base
         TaxpayerDTO getTaxpayerDetails(string BusinessGroupId);
         TaxpayerDTO getTaxpayerDetailsByBusinessGroupName(string BusinessGroup);
         string TokenByBusinessGroup(string BusinessGroup);
-        string TokenByRegistrationNumber(string BusinessGroup);
+        string TokenByBusinessGroupId(string RegistrationNumber);
         string GetClientIdByBusinessGroup(string BusinessGroup);
-        string GetClientIdByRegistrationNumber(string BusinessGroupId);
+        string GetClientIdByBusinessGroupId(string BusinessGroupId);
         bool CheckIsDBSync(string BusinessGroup);
     }
 }

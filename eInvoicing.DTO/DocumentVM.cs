@@ -36,7 +36,8 @@ namespace eInvoicing.DTO
         public string uuid { get; set; }
         public string submissionUUID { get; set; }
         public string longId { get; set; }
-        public bool isInternallyCreated { get; set; }
+        public bool? isReceiver { get; set; }
+        public bool? isInternallyCreated { get; set; }
         public bool? IsCancelRequested { get; set; }
         public bool? IsDeclineRequested { get; set; }
         public string DocumentStatusReason { get; set; }

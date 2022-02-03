@@ -24,5 +24,13 @@ namespace eInvoicing.API.Controllers
             var identity = simplePrinciple?.Identity as ClaimsIdentity;
             return identity?.FindFirst("BusinessGroupId")?.Value;
         }
+
+        protected string GETRIN()
+        {
+            // pre processing
+            var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+            var identity = simplePrinciple?.Identity as ClaimsIdentity;
+            return identity?.FindFirst("RIN")?.Value;
+        }
     }
 }

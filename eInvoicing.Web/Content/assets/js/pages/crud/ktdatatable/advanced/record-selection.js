@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                    method: 'POST',
-                   url: '/eimc.hub/v1/document/ajax_pending',
+                   url: '/v1/document/ajax_pending',
                    map: function (raw) {
                         // 
                         // sample data mapping
@@ -413,7 +413,7 @@ jQuery(document).ready(function () {
         Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
         var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/eimc.hub/v1/documentsubmission/submit', { obj: FilteredDocuments },
+        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -538,7 +538,7 @@ jQuery(document).ready(function () {
         Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
         var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/eimc.hub/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
+        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
             KTUtil.btnRelease(btn);
             $('#kt_datatable_group_action_form').collapse('hide');
             KTApp.unblockPage();
@@ -658,7 +658,7 @@ jQuery(document).ready(function () {
         var btn = KTUtil.getById("kt_datatable_sendAll");
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
         // Ajax Call to Submit documnets Web Contoller
-        $.post('/eimc.hub/v1/documentsubmission/auto_submit',
+        $.post('/v1/documentsubmission/auto_submit',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -797,7 +797,7 @@ var func = function (input)
     Result = datatable.rows().data().KTDatatable.dataSet.where(p => p.internalID == id).map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     // Ajax Call to Submit documnets Web Contoller
     var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-    $.post('/eimc.hub/v1/documentsubmission/submit', { obj: FilteredDocuments },
+    $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
         function (returnedData) {
             datatable.reload();
             $('#cover-spin').hide(0);
@@ -833,7 +833,7 @@ function SubmitDocument(DocumentId) {
     Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     // Ajax Call to Submit documnets Web Contoller
     var FilteredDocuments = Result.filter(doc => doc.internalID == DocumentId);
-    $.post('/eimc.hub/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
+    $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
         KTApp.unblockPage();
         if (returnedData.status == "1") {
             Swal.fire({
@@ -945,15 +945,15 @@ function ViewDocument(DocumentId) {
     var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/eimc.hub/v1/document/details/" + DocumentId;
+    window.location.href = "/v1/document/details/" + DocumentId;
 }
 
 function ViewDocument_NewTab(DocumentId) {
     var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.open("/eimc.hub/v1/document/details/" + DocumentId, "_self")
-    //window.location.href = "/eimc.hub/v1/document/details/" + DocumentId;
+    window.open("/v1/document/details/" + DocumentId, "_self")
+    //window.location.href = "/v1/document/details/" + DocumentId;
 }
 
 var initSubDatatable = function (id) {
@@ -1067,5 +1067,5 @@ function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/eimc.hub/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
 }

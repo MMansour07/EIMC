@@ -11,6 +11,7 @@ namespace eInvoicing.DTO
     {
         public string Reason { get; set; }
         public List<GoodsModel> goodsModel { get; set; }
+        public List<GoodsModel> receivedGoodsModel { get; set; }
         public string SubmittedInvoiceTotalAmount { get; set; }
         public string SubmittedCreditTotalAmount { get; set; }
         public string SubmittedDebitTotalAmount { get; set; }

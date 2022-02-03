@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -62,6 +63,17 @@ namespace eInvoicing.API.Filters
             if (string.IsNullOrEmpty(username))
                 return false;
 
+            if (context.Request.RequestUri.AbsoluteUri.ToLower().Contains("_submit") || context.Request.RequestUri.AbsoluteUri.ToLower().Contains("_autosubmit"))
+            {
+                Configuration objConfig = System.Web.Configuration.WebConfigurationManager.OpenWebConfiguration("~");
+                AppSettingsSection objAppsettings = (AppSettingsSection)objConfig.GetSection("appSettings");
+                if (objAppsettings != null)
+                {
+                    objAppsettings.Settings["IsExternal"].Value = "0";
+                    objAppsettings.Settings["Current_BusinessGroupId"].Value = identity?.FindFirst("BusinessGroupId")?.Value;
+                    objConfig.Save();
+                }
+            }
             return true;
         }
 

@@ -26,6 +26,7 @@ namespace eInvoicing.DTO
         public string Email { get; set; }
         public string BusinessGroup { get; set; }
         public string BusinessGroupId { get; set; }
+        public string RIN { get; set; }
         public bool IsDBSync { get; set; }
 
         public string PhoneNumber { get; set; }

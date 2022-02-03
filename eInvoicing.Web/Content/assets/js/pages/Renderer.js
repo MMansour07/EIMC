@@ -4,8 +4,11 @@ jQuery(document).ready(function () {
 	KTApp.block('#Card4');
 	KTApp.block('#Card5');
 	KTApp.block('#Card6');
+	KTApp.block('#Card7');
+	KTApp.block('#Card8');
+	KTApp.block('#Card9');
     $.ajax({
-        url: "/eimc.hub/v1/master/renderer?_date=" + ModifyDate(new Date()),
+        url: "/v1/master/renderer?_date=" + ModifyDate(new Date()),
         type: "get", //send it through get method
         data: {},
 		success: function (response) {
@@ -25,17 +28,18 @@ jQuery(document).ready(function () {
 					}
 				}).then(function (result) {
 					if (result.value) {
-						window.location.href = "/ETA.Hub/einvoicing/v0";
+						window.location.href = "/v1/";
 						KTUtil.scrollTop();
 					} else if (result.dismiss === "cancel") {
-						window.location.href = "/eimc.hub/v1/appsetting";
+						window.location.href = "/v1/appsetting";
 					}
 				});
 			}
 			else
 			{
 				initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
-				$("#ReceivedValidDocumentsCount1").html('Monthly Received Valid Documents: (' + data.ReceivedValidDocumentsCount + ')');
+				//$("#ReceivedValidDocumentsCount1").html('Monthly Submitted Valid Documents: (' + data.ReceivedValidDocumentsCount + ')');
+				$("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedInvoiceTotalAmount").html(data.ReceivedInvoiceTotalAmount + ' EGP');
 				$("#ReceivedInvoiceCount").html('('+data.ReceivedInvoiceCount+')');
@@ -59,6 +63,31 @@ jQuery(document).ready(function () {
 				KTApp.unblock('#Card4');
 				KTApp.unblock('#Card5');
 				KTApp.unblock('#Card6');
+
+				initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				$("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
+				$("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
+				$("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');
+				$("#SubmittedInvoiceCount").html('(' + data.SubmittedInvoiceCount + ')');
+				$("#SubmittedInvoiceTotalTax").html(data.SubmittedInvoiceTotalTax + ' EGP');
+				$("#SubmittedCreditCount").html('(' + data.SubmittedCreditCount + ')');
+				$("#SubmittedCreditTotalAmount").html(data.SubmittedCreditTotalAmount + ' EGP');
+				$("#SubmittedCreditTotalTax").html(data.SubmittedCreditTotalTax + ' EGP');
+				$("#SubmittedDebitCount").html('(' + data.SubmittedDebitCount + ')');
+				$("#SubmittedDebitTotalAmount").html(data.SubmittedDebitTotalAmount + ' EGP');
+				$("#SubmittedDebitTotalTax").html(data.SubmittedDebitTotalTax + ' EGP');
+				$("#SubmittedValidDocumentsCountPercentage").css('width', data.SubmittedValidDocumentsCountPercentage + '%');
+				$("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
+				$("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
+				$("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
+				$("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+				$("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
+				$("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
+				$("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
+				$("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+				KTApp.unblock('#Card7');
+				KTApp.unblock('#Card8');
+				KTApp.unblock('#Card9');
 			}
             
         },
@@ -78,10 +107,10 @@ jQuery(document).ready(function () {
 				}
 			}).then(function (result) {
 				if (result.value) {
-					window.location.href = "/ETA.Hub/einvoicing/v0";
+					window.location.href = "/v1/";
 					KTUtil.scrollTop();
 				} else if (result.dismiss === "cancel") {
-					window.location.href = "/eimc.hub/v1/appsetting";
+					window.location.href = "/v1/appsetting";
 				}
 			});
         }
@@ -90,15 +119,18 @@ jQuery(document).ready(function () {
 	$("#kt_datepicker_2").on('change', function () {
         KTApp.block('#Card4');
         KTApp.block('#Card5');
-        KTApp.block('#Card6');
+		KTApp.block('#Card6');
+		KTApp.block('#Card7');
+		KTApp.block('#Card8');
+		KTApp.block('#Card9');
         $.ajax({
-            url: "/eimc.hub/v1/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
+            url: "/v1/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
             type: "get", //send it through get method
             data: {},
 			success: function (response) {
 				var data = response.data;
 				initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
-				$("#ReceivedValidDocumentsCount1").html('Monthly Received Valid Documents: ' + data.ReceivedValidDocumentsCount);
+				$("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedInvoiceTotalAmount").html(data.ReceivedInvoiceTotalAmount + ' EGP');
 				$("#ReceivedInvoiceCount").html('(' + data.ReceivedInvoiceCount + ')');
@@ -121,6 +153,31 @@ jQuery(document).ready(function () {
 				KTApp.unblock('#Card4');
 				KTApp.unblock('#Card5');
 				KTApp.unblock('#Card6');
+
+				initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				$("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
+				$("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
+				$("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');
+				$("#SubmittedInvoiceCount").html('(' + data.SubmittedInvoiceCount + ')');
+				$("#SubmittedInvoiceTotalTax").html(data.SubmittedInvoiceTotalTax + ' EGP');
+				$("#SubmittedCreditCount").html('(' + data.SubmittedCreditCount + ')');
+				$("#SubmittedCreditTotalAmount").html(data.SubmittedCreditTotalAmount + ' EGP');
+				$("#SubmittedCreditTotalTax").html(data.SubmittedCreditTotalTax + ' EGP');
+				$("#SubmittedDebitCount").html('(' + data.SubmittedDebitCount + ')');
+				$("#SubmittedDebitTotalAmount").html(data.SubmittedDebitTotalAmount + ' EGP');
+				$("#SubmittedDebitTotalTax").html(data.SubmittedDebitTotalTax + ' EGP');
+				$("#SubmittedValidDocumentsCountPercentage").css('width', data.SubmittedValidDocumentsCountPercentage + '%');
+				$("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
+				$("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
+				$("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
+				$("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+				$("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
+				$("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
+				$("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
+				$("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+				KTApp.unblock('#Card7');
+				KTApp.unblock('#Card8');
+				KTApp.unblock('#Card9');
 			},
 			error: function (xhr) {
 				//Do Something to handle error
@@ -141,7 +198,7 @@ jQuery(document).ready(function () {
 						window.location.href = "/ETA.Hub/einvoicing/v0";
 						KTUtil.scrollTop();
 					} else if (result.dismiss === "cancel") {
-						window.location.href = "/eimc.hub/v1/appsetting";
+						window.location.href = "/v1/appsetting";
 					}
 				});
 			}
@@ -169,7 +226,46 @@ var initTable1 = function (source) {
 	table.DataTable({
 		responsive: true,
 		lengthMenu: [10, 25, 50, 100],
-		pageLength: 10,
+		pageLength: 5,
+		language: {
+			'lengthMenu': 'Display _MENU_',
+		},
+		data: source,
+		order: [[2, 'desc']],
+		autoWidth: true,
+		autoFill: true,
+		columnDefs: [
+			{
+				targets: -5,
+				width: 200
+			},
+			{
+				targets: -4,
+				width: 200
+			},
+			{
+				targets: -3,
+				width: 50
+			},
+			{
+				targets: -2,
+				width: 50
+			},
+			{
+				targets: -4,
+				width: 50
+			}
+		],
+	});
+};
+
+var initTable2 = function (source) {
+	var table = $('#kt_datatable2');
+	table.DataTable().destroy();
+	table.DataTable({
+		responsive: true,
+		lengthMenu: [10, 25, 50, 100],
+		pageLength: 5,
 		language: {
 			'lengthMenu': 'Display _MENU_',
 		},

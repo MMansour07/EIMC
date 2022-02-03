@@ -10,7 +10,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/eimc.hub/v1/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
+                    url: '/v1/document/items/' + (getParameterByName("id") == null ? GetURLParameter() : getParameterByName("id"))
                 },
             },
             pageSize: 10,
@@ -113,7 +113,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 autoHide: false,
                 template: function (row) {
                     return '<button data-record-id="' + row.internalId + '" class="btn btn-sm btn-clean" title="View records">\
-		                      <i class="flaticon2-document"></i>Taxes</button>\'';
+		                      <i class="flaticon2-document"></i>Taxes</button>';
                 },
             }],
     };
@@ -250,7 +250,7 @@ function SubmitDocument() {
         state: 'primary',
         message: 'Please wait as this may take a few seconds'
     });
-    $.post('/eimc.hub/v1/documentsubmission/submit', { obj: JSON.parse(FilteredDocuments)}, function (returnedData) {
+    $.post('/v1/documentsubmission/submit', { obj: JSON.parse(FilteredDocuments)}, function (returnedData) {
         KTApp.unblockPage();
         if (returnedData.status == "1") {
             Swal.fire({
@@ -264,7 +264,7 @@ function SubmitDocument() {
                     confirmButton: "btn font-weight-bold btn-light-primary"
                 }
             }).then(function () {
-                window.location.href = "/eimc.hub/v1/document/pending";
+                window.location.href = "/v1/document/pending";
             });
         }
         else if (returnedData.status == "2") {
@@ -356,5 +356,5 @@ function SubmitDocument() {
 }
 
 function EditDocument(InternalId) {
-    window.location.href = "/eimc.hub/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
 }

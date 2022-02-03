@@ -87,6 +87,31 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
+        public static void GetReceivedDocuments()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                    var url = GetBaseURL() + "/api/document/getReceivedDocuments";
+                    client.BaseAddress = new Uri(url);
+                    var postTask = client.GetAsync(url);
+                    postTask.Wait();
+                    var result = postTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        // logs
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public static void RetrieveDocumentInvalidityReasons()
         {
             try

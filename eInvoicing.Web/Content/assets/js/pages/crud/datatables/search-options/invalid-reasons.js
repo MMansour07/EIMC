@@ -64,7 +64,7 @@ var initTable1 = function () {
             [2, "desc"]
         ],
         ajax: {
-            url: '/eimc.hub/v1/report/AjaxInvalidReasons',
+            url: '/v1/report/AjaxInvalidReasons',
             type: 'POST',
             data: function (post) {
                 post.fromDate = ModifyDate(fromDate);

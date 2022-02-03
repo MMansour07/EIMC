@@ -1,13 +1,8 @@
-﻿@model IEnumerable<eInvoicing.DTO.DocumentDTO>
+﻿@model eInvoicing.DTO.GetRecentDocumentsResponse
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<title>EInvoicing|Documents</title>
-<style>
-    .submitdoc {
-        cursor: pointer !important;
-    }
-</style>
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
@@ -19,7 +14,7 @@
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
                     <h5 class="text-light font-weight-bold my-1 mr-5">
-                        Draft
+                        Sent
                     </h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
@@ -30,8 +25,8 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("pending", "document")" class="text-muted">
-                                Draft
+                            <a href="@Url.Action("received", "document")" class="text-muted">
+                                Received
                             </a>
                         </li>
                     </ul>
@@ -41,7 +36,6 @@
             </div>
             <!--end::Info-->
         </div>
-
         <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
@@ -97,9 +91,56 @@
         <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">
-                    Recent Documents
-                    <span class="d-block text-primary pt-2 font-size-sm">Recently added documents from ERP system.</span>
+                    Received Documents
+                    <span class="d-block text-primary pt-2 font-size-sm">Received documents from ETA with different statuses.</span>
                 </h3>
+            </div>
+            <div class="card-toolbar">
+                <!--begin::Dropdown-->
+                <div class="dropdown dropdown-inline mr-2">
+                    <!--begin::Dropdown Menu-->
+                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+                        <!--begin::Navigation-->
+                        <ul class="navi flex-column navi-hover py-2">
+                            <li class="navi-header font-weight-bolder text-uppercase font-size-sm text-primary pb-2">
+                                Choose an option:
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="la la-print"></i></span>
+                                    <span class="navi-text">Print</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="la la-copy"></i></span>
+                                    <span class="navi-text">Copy</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="la la-file-excel-o"></i></span>
+                                    <span class="navi-text">Excel</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="la la-file-text-o"></i></span>
+                                    <span class="navi-text">CSV</span>
+                                </a>
+                            </li>
+                            <li class="navi-item">
+                                <a href="#" class="navi-link">
+                                    <span class="navi-icon"><i class="la la-file-pdf-o"></i></span>
+                                    <span class="navi-text">PDF</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <!--end::Navigation-->
+                    </div>
+                    <!--end::Dropdown Menu-->
+                </div>
+                <!--end::Dropdown-->
             </div>
         </div>
 
@@ -128,18 +169,18 @@
                             </div>
                         </div>
                     </div>
-                    <!--<div class="col-lg-10">-->
-                        @*<label>Issued On:</label>
+                    @*<div class="col-lg-10">
+            <label>Issued On:</label>
             <div class="input-daterange input-group">
                 <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
                 <div class="input-group-append">
                     <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
                 </div>
                 <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
-            </div>*@
-                    <!--</div>-->
+            </div>
+        </div>*@
                     <div class="col-lg-2">
-                        <a href="#" id="_find" class="btn btn btn-primary font-weight-bold btn-square">
+                        <a href="#" id="_find" class="btn btn-primary font-weight-bold btn-square">
                             <i class="flaticon-search"></i>
                             Find
                         </a>
@@ -159,37 +200,84 @@
                         <div class="d-flex align-items-center">
                             <select class="form-control" id="kt_datatable_search_status">
                                 <option value="">All</option>
-                                <option value="New">New</option>
-                                <option value="Failed">Failed</option>
+                                <option value="Submitted">Submitted</option>
+                                <option value="Valid">Valid</option>
+                                <option value="Invalid">Invalid</option>
+                                <option value="Cancelled">Cancelled</option>
+                                <option value="Rejected">Rejected</option>
                             </select>
                         </div>
                     </div>
                 </div>
             </div>
+            @*<div class="mb-7">
+                    <div class="row align-items-center">
+                        <div class="col-lg-9 col-xl-8">
+                            <div class="row align-items-center">
+                                <div class="col-md-4 my-2 my-md-0">
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 my-2 my-md-0">
+                                    <div class="d-flex align-items-center">
+                                        <label class="mr-3 mb-0 d-none d-md-block">Status:</label>
+                                        <select class="form-control" id="kt_datatable_search_status">
+                                            <option value="">All</option>
+                                            <option value="Submitted">Submitted</option>
+                                            <option value="Valid">Valid</option>
+                                            <option value="Invalid">Invalid</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                            <option value="Rejected">Rejected</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>*@
             <!--end::Search Form-->
             <!--end: Search Form-->
             <!--begin: Selected Rows Group Action Form-->
             <div class="mt-10 mb-5 collapse" id="kt_datatable_group_action_form">
                 <div class="d-flex align-items-center">
-                    <div class="font-weight-bold text-dark-75 mr-3">
+                    <div class="font-weight-bold text-danger mr-3">
                         Selected <span id="kt_datatable_selected_records">0</span> records:
                     </div>
-                    @*@using System.Security.Claims;
-                    @using Microsoft.AspNet.Identity;
-                    @if (Request.IsAuthenticated &&
-                    ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Permission")
-                    .Select(i => i.Value.ToLower()).Where(x => x == "submit" || x == "auto_submit").Count() > 0)
-                    {*@
-                        <button class="btn btn-sm btn-bg-light mr-2 btn-square" type="button" id="kt_datatable_send">
-                            Send <i class="far fa-arrow-alt-circle-right"></i>
+
+                    <div class="dropdown mr-2">
+                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">
+                            Update status
                         </button>
-                        <button class="btn btn-sm btn-bg-secondary  mr-2 btn-square" type="button" id="kt_datatable_fetch_modal">
-                            <i class="far fa-arrow-alt-circle-right"></i>
-                        </button>
-                        <button class="btn btn-sm btn-bg-light btn-square" type="button" id="kt_datatable_sendAll">
-                            Send All <i class="far fa-arrow-alt-circle-right"></i>
-                        </button>
-                   @* }*@
+                        <div class="dropdown-menu dropdown-menu-sm">
+                            <ul class="nav nav-hover flex-column">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <span class="nav-text">Pending</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <span class="nav-text">Delivered</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <span class="nav-text">Canceled</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-sm btn-danger mr-2" type="button" id="kt_datatable_delete_all">
+                        Delete All
+                    </button>
+
+                    <button class="btn btn-sm btn-success" type="button" data-toggle="modal" data-target="#kt_datatable_fetch_modal">
+                        Fetch Selected Records
+                    </button>
                 </div>
             </div>
             <!--end: Selected Rows Group Action Form-->
@@ -201,18 +289,36 @@
     <!--end::Card-->
     <!--begin::Modal-->
     <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="min-height: 400px;">
-                <div class="modal-header bg-warning" py-5">
-                    <h5 class="modal-title" style="color: #3F4254 !important">
-                        Errors
-                        <span style="color: #3F4254 !important" class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content" style="min-height: 500px;">
+                <div class="modal-header py-5">
+                    <h5 class="modal-title">
+                        Invoice Lines
+                        <span class="d-block text-muted font-size-sm">Products which relevants to this invoice</span>
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <!--begin: Search Form-->
+                    <!--begin::Search Form-->
+                    <div class="mb-5">
+                        <div class="row align-items-center">
+                            <div class="col-lg-9 col-xl-8">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query_2" />
+                                            <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--end::Search Form-->
+                    <!--end: Search Form-->
                     <!--begin: Datatable-->
                     <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
                     <!--end: Datatable-->
@@ -221,9 +327,51 @@
         </div>
     </div>
     <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="kt_datatable_fetch_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Selected Records</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="scroll" data-scroll="true" data-height="200">
+                        <ul id="kt_datatable_fetch_display"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
+    <!--begin::Modal-->
+    <div class="modal fade" id="kt_datatable_fetch_modal_2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Selected Records</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="scroll" data-scroll="true" data-height="200">
+                        <ul id="kt_datatable_fetch_display_2"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--end::Modal-->
 </div>
-
-<script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/record-selection.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>
+<script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/record-selection-received.js?v=7.0.6"></script>
 <script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

@@ -102,7 +102,7 @@ namespace eInvoicing.Service.Helper.Extension
                 invoiceLines = document.invoiceLines?.Select(i => new INVOICELINESDTO()
                 {
                     description = i.description ?? "",
-                    internalCode = i.internalCode,
+                    internalCode = i.internalCode ?? "",
                     itemCode = i.itemCode,
                     itemsDiscount = Convert.ToDecimal(i.itemsDiscount),
                     itemType = i.itemType ?? "" ,
@@ -129,19 +129,19 @@ namespace eInvoicing.Service.Helper.Extension
                     address = new RECEIVERADDRESSESDTO()
                     { 
                         additionalInformation = document.receiver.address.additionalInformation ?? "",
-                        buildingNumber = document.receiver.address.buildingNumber ?? "NA",
+                        buildingNumber = document.receiver.address.buildingNumber ?? "",
                         country = document.receiver.address.country ?? "" ,
                         floor = document.receiver.address.floor?? "",
                         governate = document.receiver.address.governate ?? "",
                         landmark = document.receiver.address.landmark ?? "",
                         postalCode = document.receiver.address.postalCode ?? "",
-                        regionCity = document.receiver.address.regionCity ?? "NA",
+                        regionCity = document.receiver.address.regionCity ?? "",
                         room = document.receiver.address.room ?? "",
-                        street = document.receiver.address.street ?? "NA"
+                        street = document.receiver.address.street ?? ""
                     },
                    id =   document.receiver.id ?? "",
-                   name = document.receiver.name,
-                   type = document.receiver.type
+                   name = document.receiver.name ?? "",
+                   type = document.receiver.type ?? "NA"
                 },
                //references = new List<string>() { document.parentId}
             };

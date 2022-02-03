@@ -175,6 +175,12 @@ namespace eInvoicing.Web.Controllers
         {
             return View();
         }
+        [HttpGet]
+        [ActionName("received")]
+        public ActionResult GetReceivedDocuments()
+        {
+            return View();
+        }
         [HttpPost]
         [ActionName("ajax_submitted")]
         public ActionResult AjaxSubmittedDocuments()
@@ -204,6 +210,36 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        [ActionName("ajax_received")]
+        public ActionResult AjaxReceivedDocuments()
+        {
+            try
+            {
+                var pageNumber = Request["pagination[page]"];
+                var pageSize = Request["pagination[perpage]"];
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                var sortDirection = Request["sort[sort]"];
+                var sortColumnName = Request["sort[field]"];
+                var searchValue = Request["query[generalSearch]"];
+                var status = Request["query[status]"];
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);  //Convert.ToDateTime(toDate);
+
+                string url = "api/document/received?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" + Convert.ToInt32(pageSize) + "&fromdate=" + _fromDate + "&todate=" + _toDate +
+                    "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
+                var response = _httpClient.GET(url);
+                return Json(JsonConvert.DeserializeObject<DocumentResponse>(response.Info), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpGet]
         [ActionName("raw")]
         public ActionResult GetDocumentbyuuid(string uuid)
@@ -217,8 +253,8 @@ namespace eInvoicing.Web.Controllers
                     result = JsonConvert.DeserializeObject<GetDocumentResponse>(obj);
                     if (result != null && result.StatusCode == HttpStatusCode.OK)
                     {
-                        result.dateTimeIssued = DateTime.Parse(result.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                        result.dateTimeRecevied = DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        result.dateTimeIssued = result.dateTimeIssued; //DateTime.Parse(result.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        result.dateTimeRecevied = result.dateTimeRecevied; //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
                         var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },
@@ -231,8 +267,16 @@ namespace eInvoicing.Web.Controllers
                              new Catalog(){ Value = "c", Text = "Credit" },
                              new Catalog(){ Value = "d", Text = "Debit" }
                             };
+                        var Types = new List<Catalog>()
+                            {
+                             new Catalog(){ Value = "0", Text = "B" },
+                             new Catalog(){ Value = "1", Text = "P" },
+                             new Catalog(){ Value = "2", Text = "F" }
+                            };
                         result.documentType = docType.FirstOrDefault(i => i.Value == result.documentType?.ToLower())?.Text;
                         result.statusClass = status.FirstOrDefault(i => i.Value == result.status?.ToLower())?.Text;
+                        result.issuer.type = Types.FirstOrDefault(i => i.Value == result.issuer.type?.ToLower())?.Text;
+                        result.receiver.type = Types.FirstOrDefault(i => i.Value == result.receiver.type?.ToLower())?.Text;
                         ViewBag.IsExist = true;
                     }
                     else
@@ -243,6 +287,61 @@ namespace eInvoicing.Web.Controllers
                     ViewBag.IsExist = false;
                 }
                 return View("raw", (object)result);
+            }
+            catch (Exception ex)
+            {
+                // display error page
+                return View(ex.Message.ToString());
+            }
+        }
+
+        [HttpGet]
+        [ActionName("raw_received")]
+        public ActionResult raw_received(string uuid)
+        {
+            try
+            {
+                GetDocumentResponse result = new GetDocumentResponse();
+                var obj = _httpClient.GET("api/document/raw?uuid=" + uuid)?.Info;
+                if (obj != null)
+                {
+                    result = JsonConvert.DeserializeObject<GetDocumentResponse>(obj);
+                    if (result != null && result.StatusCode == HttpStatusCode.OK)
+                    {
+                        result.dateTimeIssued = result.dateTimeIssued; //DateTime.Parse(result.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        result.dateTimeRecevied = result.dateTimeRecevied; //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        var status = new List<Catalog>() {
+                            new Catalog(){Value = "valid",    Text = "bg-success" },
+                            new Catalog(){Value = "invalid",  Text = "bg-danger" },
+                            new Catalog(){Value = "submitted",Text = "bg-primary" },
+                            new Catalog(){Value = "cancelled",Text = "bg-dark" },
+                            new Catalog(){Value = "rejected", Text = "bg-warning" } };
+                        var docType = new List<Catalog>()
+                            {
+                             new Catalog(){ Value = "i", Text = "Invoice" },
+                             new Catalog(){ Value = "c", Text = "Credit" },
+                             new Catalog(){ Value = "d", Text = "Debit" }
+                            };
+                        var Types = new List<Catalog>()
+                            {
+                             new Catalog(){ Value = "0", Text = "B" },
+                             new Catalog(){ Value = "1", Text = "P" },
+                             new Catalog(){ Value = "2", Text = "F" }
+                            };
+                        result.documentType = docType.FirstOrDefault(i => i.Value == result.documentType?.ToLower())?.Text;
+                        result.statusClass = status.FirstOrDefault(i => i.Value == result.status?.ToLower())?.Text;
+                        result.issuer.type = Types.FirstOrDefault(i => i.Value == result.issuer.type?.ToLower())?.Text;
+                        result.receiver.type = Types.FirstOrDefault(i => i.Value == result.receiver.type?.ToLower())?.Text;
+                        ViewBag.IsExist = true;
+                    }
+                    else
+                        ViewBag.IsExist = false;
+                }
+                else
+                {
+                    ViewBag.IsExist = false;
+                }
+                return View("raw_received", (object)result);
             }
             catch (Exception ex)
             {

@@ -81,12 +81,12 @@ namespace eInvoicing.Service.AppService.Implementation
             }
         }
 
-        public string TokenByRegistrationNumber(string RegistrationNumber)
+        public string TokenByBusinessGroupId(string BGID)
         {
             try
             {
                 return repository.Get(x => x.Status == true &&
-                x.RegistrationNumber == RegistrationNumber, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.token;
+                x.BusinessGroupId == BGID, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.token;
             }
             catch (Exception e)
             {
@@ -120,12 +120,12 @@ namespace eInvoicing.Service.AppService.Implementation
                 throw e;
             }
         }
-        public string GetClientIdByRegistrationNumber(string RegistrationNumber)
+        public string GetClientIdByBusinessGroupId(string BGID)
         {
             try
             {
                 return repository.Get(x => x.Status == true &&
-                x.RegistrationNumber == RegistrationNumber, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
+                x.BusinessGroupId == BGID, m => m.OrderByDescending(x => x.CreatedOn)).FirstOrDefault()?.PreProdClientId;
             }
             catch (Exception e)
             {

@@ -85,6 +85,7 @@ namespace eInvoicing.Web.Controllers
                             claims.Add(new Claim("FullName", response?.FullName));
                             claims.Add(new Claim("BusinessGroupId", response?.BusinessGroupId));
                             claims.Add(new Claim("Token", response?.Token));
+                            //claims.Add(new Claim("RIN", response?.RIN));
                             foreach (var item in response?.stringfiedRoles)
                             {
                                 claims.Add(new Claim("Role", item));

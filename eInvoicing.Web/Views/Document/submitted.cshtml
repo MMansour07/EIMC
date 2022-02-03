@@ -36,7 +36,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -92,7 +92,7 @@
             <div class="card-title">
                 <h3 class="card-label">
                     Delivered Documents
-                    <span class="d-block text-muted pt-2 font-size-sm">Latest documents sent or received</span>
+                    <span class="d-block text-primary pt-2 font-size-sm">Sent documents to ETA with different statuses.</span>
                 </h3>
             </div>
             <div class="card-toolbar">

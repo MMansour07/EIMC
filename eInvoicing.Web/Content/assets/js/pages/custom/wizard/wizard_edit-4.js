@@ -421,9 +421,9 @@ var KTWizard4 = function () {
 }();
 
 jQuery(document).ready(function () {
-	$("#RGN").hide();
-	$("#NID").hide();
-	$("#PID").hide();
+	//$("#RGN").hide();
+	//$("#NID").hide();
+	//$("#PID").hide();
 	KTWizard4.init();
 	$("#doc_submit").click(function (e) {
 		if (Lines.reduce((s, a) => s + parseFloat(a.SalesTotal), 0) < 50000 || validateForm()) {
@@ -435,7 +435,7 @@ jQuery(document).ready(function () {
 			obj.InvoiceLines = Lines;
 
 			$.ajax({
-				url: "/eimc.hub/v1/document/ajax_edit_document",
+				url: "/v1/document/ajax_edit_document",
 				type: "POST",
 				dataType: 'json',
 				contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -463,7 +463,7 @@ jQuery(document).ready(function () {
 							"hideMethod": "fadeOut"
 						};
 						toastr.success("Data has been saved successfully!");
-						setTimeout(function () { window.location.href = '/eimc.hub/v1/document/pending'; }, 500);
+						setTimeout(function () { window.location.href = '/v1/document/pending'; }, 500);
 					}
 					else {
 						toastr.options = {

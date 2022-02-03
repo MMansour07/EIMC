@@ -78,7 +78,8 @@ namespace eInvoicing.DomainEntities.Entities
         public string submissionId { get; set; }
         public string longId { get; set; }
         public string Status { get; set; }
-        public bool IsInternallyCreated { get; set; }
+        public bool? IsInternallyCreated { get; set; }
+        public bool? IsReceiver { get; set; }
         public bool? IsCancelRequested { get; set; }
         public bool? IsDeclineRequested { get; set; }
         public string DocumentStatusReason { get; set; }

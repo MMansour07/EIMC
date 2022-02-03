@@ -41,7 +41,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -129,13 +129,13 @@
                                             Choose an action:
                                         </li>
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
+                                            <a href="/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-download"></i></span>
                                                 <span class="navi-text">Download</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
+                                            <a href="/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-print"></i></span>
                                                 <span class="navi-text">Print</span>
                                             </a>
@@ -175,13 +175,13 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
+                                            <a href="/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-download"></i></span>
                                                 <span class="navi-text">Download</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
+                                            <a href="/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-print"></i></span>
                                                 <span class="navi-text">Print</span>
                                             </a>
@@ -221,13 +221,13 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
+                                            <a href="/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-download"></i></span>
                                                 <span class="navi-text">Download</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
+                                            <a href="/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-print"></i></span>
                                                 <span class="navi-text">Print</span>
                                             </a>
@@ -261,13 +261,13 @@
                                     <!--begin::Navigation-->
                                     <ul class="navi navi-hover">
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
+                                            <a href="/v1/document/printout?uuid=@Model.uuid" onclick="ShowSpinner()" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-download"></i></span>
                                                 <span class="navi-text">Download</span>
                                             </a>
                                         </li>
                                         <li class="navi-item">
-                                            <a href="/eimc.hub/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
+                                            <a href="/v1/document/print?uuid=@Model.uuid" target="_blank" class="navi-link">
                                                 <span class="navi-icon"><i class="la la-print"></i></span>
                                                 <span class="navi-text">Print</span>
                                             </a>
@@ -813,7 +813,7 @@ else if (Model.StatusCode == HttpStatusCode.NotFound || !ViewBag.IsExist)
                 </div>
                 <!--end::Info-->
             </div>
-            <div class="topbar-item" style="margin-right:25px !important">
+            <div class="topbar-item">
                 @using System.Security.Claims;
                 @using Microsoft.AspNet.Identity;
                 @if (Request.IsAuthenticated)

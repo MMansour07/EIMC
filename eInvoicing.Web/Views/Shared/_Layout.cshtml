@@ -27,6 +27,16 @@
 
     @RenderSection("scripts", required: false)
     <style>
+        td {
+            word-break: break-all !important;
+        }
+        .subheader .container {
+            width: 80% !important;
+        }
+
+        .topbar-item {
+            width: 20% !important;
+        }
         .was-validated .form-control:valid, .form-control.is-valid {
             background-position: right calc(1.375 em + 1.325 rem ) center !important;
         }
@@ -235,6 +245,13 @@
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Sent</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_sent"></span>
+                                            </a>
+                                        </li>
+                                    <li class="menu-item " aria-haspopup="true">
+                                            <a href="@Url.Action("received", "document")" class="menu-link ">
+                                                <i class="menu-bullet menu-bullet-dot"><span></span></i>
+                                                <span class="menu-text">Received</span>
+                                                <span class="font-weight-lighter" style="margin: auto !important;" id="_received"></span>
                                             </a>
                                         </li>
                                     </ul>
@@ -578,6 +595,7 @@
         jQuery(document).ready(function () {
             LoadDraft();
             LoadSent();
+            LoadReceived();
             $('.service_unavailable').on("click", function () {
 
                 Swal.fire({
@@ -594,7 +612,7 @@
         });
         function LoadDraft() {
             $.ajax({
-                url: "/eimc.hub/v1/master/DraftCount",
+                url: "/v1/master/DraftCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
@@ -607,11 +625,25 @@
         }
         function LoadSent() {
             $.ajax({
-                url: "/eimc.hub/v1/master/SentCount",
+                url: "/v1/master/SentCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
                     $("#_sent").text(response.allSubmittedDocumentsCount);
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                }
+            });
+        }
+
+        function LoadReceived() {
+            $.ajax({
+                url: "/v1/master/ReceivedCount",
+                type: "get", //send it through get method
+                data: {},
+                success: function (response) {
+                    $("#_received").text(response.ReceivedDocumentsCount);
                 },
                 error: function (xhr) {
                     //Do Something to handle error

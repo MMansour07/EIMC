@@ -44,7 +44,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item" style="margin-right:25px !important">
+        <div class="topbar-item">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -308,7 +308,7 @@
             var valdata = $("#_frm").serialize();
             //to get alert popup
             $.ajax({
-                url: "/eimc.hub/v1/appsetting/update",
+                url: "/v1/appsetting/update",
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

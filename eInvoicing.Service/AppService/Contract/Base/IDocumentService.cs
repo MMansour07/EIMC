@@ -14,6 +14,7 @@ namespace eInvoicing.Service.AppService.Contract.Base
         bool DeleteDocument(string Id);
         void CreateNewDocumentWithOldId(NewDocumentVM obj);
         NewDocumentVM GetDocumentByInternalId(string InternalId);
+        void GetReceivedDocuments(string URL, string Key, int DailyInvoicesAverage);
         bool EditDocument(NewDocumentVM obj);
         void GetTheConnectionString(string ConnectionString);
         void GetRecentDocuments_ETA(string URL, string Key, int DailyInvoicesAverage);
@@ -26,9 +27,12 @@ namespace eInvoicing.Service.AppService.Contract.Base
         int DeclineDocumentRejection(string URL, string Key, string uuid);
         PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status);
         PagedList<DocumentVM> GetSubmittedDocuments(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status);
+        PagedList<DocumentVM> GetReceivedDocuments(int pageNumber, int pageSize, DateTime fromDate,
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status);
         IEnumerable<DocumentVM> GetAllDocumentsToSubmit();
         int GetPendingCount();
         int GetSubmittedCount();
+        int GetReceivedCount();
         DashboardDTO GetMonthlyDocuments(DateTime _date);
         DocumentVM GetDocumentById(string Id);
         DocumentVM GetDocumentByuuid(string uuid);

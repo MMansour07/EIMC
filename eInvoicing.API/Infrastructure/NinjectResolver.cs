@@ -66,6 +66,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IRepository<User>>().To<Repository<User>>().InThreadScope();
             kernel.Bind<IDocumentRepository>().To<DocumentRepository>().InThreadScope();
             kernel.Bind<IValidationStepRepository>().To<ValidationStepRepository>().InThreadScope();
+            kernel.Bind<IStepErrorRepository>().To<StepErrorRepository>().InThreadScope();
             kernel.Bind<IAuthRepository>().To<AuthRepository>().InThreadScope();
             kernel.Bind<IRoleRepository>().To<RoleRepository>().InThreadScope();
             kernel.Bind<IPermissionRepository>().To<PermissionRepository>().InThreadScope();

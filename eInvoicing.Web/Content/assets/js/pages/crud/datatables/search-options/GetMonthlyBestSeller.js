@@ -55,7 +55,7 @@ var initTable1 = function () {
 				}
 			}
 		],
-		lengthMenu: [5, 10, 25, 50],
+		lengthMenu: [10, 50, 100, 200, 300],
 		pageLength: 10,
 		language: {
 			'lengthMenu': 'Display _MENU_',
@@ -122,5 +122,6 @@ function ModifyDate(date) {
 function searchData() {
 	specificDate = ($("#specificDate").val()) ? $("#specificDate").val() : '';
 	table.DataTable().destroy();
+	$("#GetMonthlyBestSeller tbody").empty();
 	initTable1();
 }

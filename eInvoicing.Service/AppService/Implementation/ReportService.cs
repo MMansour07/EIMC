@@ -26,8 +26,8 @@ namespace eInvoicing.Service.AppService.Implementation
         public PagedList<SubmittedDocumentsDTO> GetSubmittedDocumentsStats(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
         {
             toDate = toDate.AddDays(1);
-            var docs = repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" && i.Status.ToLower() != "updated" && 
-            i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date, null, null);
+            var docs = repository.Get(i => i.uuid != null && i.IsReceiver != true &&
+            i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued < toDate.Date, null, null);
             var result = docs.GroupBy(o => new { DateTimeReceived= o.DateTimeReceived.Day, DateTimeIssued = o.DateTimeIssued.Day}).Select(x => new SubmittedDocumentsDTO()
             {
                 validCount = x.Where(p => p.Status.ToLower() == "valid").Count(),

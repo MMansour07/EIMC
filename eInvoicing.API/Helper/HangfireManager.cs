@@ -162,5 +162,40 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
+
+        public static void CreateHangfireDB()
+        {
+            try
+            {
+                string commandText = "IF DB_ID('Hangfire') IS NULL CREATE DATABASE Hangfire";
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Identity_CS"]?.ConnectionString))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand(commandText, connection);
+                        connection.Open();
+                        var result = command.ExecuteReader();
+                        result.Close();
+                        connection.Close();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

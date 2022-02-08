@@ -37,7 +37,7 @@ jQuery(document).ready(function () {
 			}
 			else
 			{
-				initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				initTable1(data.goodsModel?.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
 				//$("#ReceivedValidDocumentsCount1").html('Monthly Submitted Valid Documents: (' + data.ReceivedValidDocumentsCount + ')');
 				$("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
@@ -80,11 +80,11 @@ jQuery(document).ready(function () {
 				$("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
 				$("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
 				$("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
-				$("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+				$("#SubmittedDocumentsCountPercentage").css('width', data.SubmittedDocumentsCountPercentage + '%');
 				$("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
 				$("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
 				$("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
-				$("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+				$("#SubmittedDocumentsCount").html(data.SubmittedDocumentsCount);
 				KTApp.unblock('#Card7');
 				KTApp.unblock('#Card8');
 				KTApp.unblock('#Card9');
@@ -129,7 +129,7 @@ jQuery(document).ready(function () {
             data: {},
 			success: function (response) {
 				var data = response.data;
-				initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				initTable1(data.goodsModel?.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
 				$("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
 				$("#ReceivedInvoiceTotalAmount").html(data.ReceivedInvoiceTotalAmount + ' EGP');
@@ -170,11 +170,11 @@ jQuery(document).ready(function () {
 				$("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
 				$("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
 				$("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
-				$("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+				$("#SubmittedDocumentsCountPercentage").css('width', data.SubmittedDocumentsCountPercentage + '%');
 				$("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
 				$("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
 				$("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
-				$("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+				$("#SubmittedDocumentsCount").html(data.SubmittedDocumentsCount);
 				KTApp.unblock('#Card7');
 				KTApp.unblock('#Card8');
 				KTApp.unblock('#Card9');

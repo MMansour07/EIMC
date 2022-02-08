@@ -356,7 +356,7 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                var Response = repository.Get(i => i.DateTimeIssued.Month == _date.Month && i.DateTimeIssued.Year == _date.Year, null, null).ToList();
+                var Response = repository.Get(i => i.DateTimeIssued.Month == _date.Month && i.DateTimeIssued.Year == _date.Year, null, "InvoiceLines.TaxableItems").ToList();
                 var _Receivedvaliddocs = Response.Where(i => i.Status.ToLower() == "valid" && i.IsReceiver != true);
                 var _Receivedinvaliddocs = Response.Where(i => i.Status.ToLower() == "invalid" && i.IsReceiver != true);
                 var _Receivedrejecteddocs = Response.Where(i => i.Status.ToLower() == "rejected" && i.IsReceiver != true);
@@ -455,7 +455,7 @@ namespace eInvoicing.Service.AppService.Implementation
                 }
                 return response;
             }
-            catch
+            catch (Exception ex)
             {
                 return new DashboardDTO();
             }
@@ -573,9 +573,12 @@ namespace eInvoicing.Service.AppService.Implementation
                     if (!IdsStack.Contains(item.internalId))
                     {
                         var entity = repository.Get(item.internalId);
-                        if (entity != null && ((entity.Status.ToLower() == "valid" && item.status.ToLower() != "invalid") 
-                            || (entity.Status.ToLower() == "submitted" && item.status.ToLower() == "invalid") || entity.Status.ToLower() == "submitted" || 
-                            item.status.ToLower() == "rejected" || item.status.ToLower() == "cancelled"))
+                        //if (entity != null && ((entity.Status.ToLower() == "valid" && item.status.ToLower() != "invalid") 
+                        //    || (entity.Status.ToLower() == "submitted" && item.status.ToLower() == "invalid") || (entity.Status.ToLower() == "invalid" && item.status.ToLower() == "valid")
+                        //    || entity.Status.ToLower() == "submitted" || 
+                        //    item.status.ToLower() == "rejected" || item.status.ToLower() == "cancelled"))
+                        //{
+                        if (entity != null)
                         {
                             entity.Status = item.status;
                             entity.uuid = item.uuid;
@@ -585,6 +588,7 @@ namespace eInvoicing.Service.AppService.Implementation
                             repository.UpdateBulk(entity);
                             IdsStack.Add(item.internalId);
                         }
+                        //}
                     }
                 }
             }

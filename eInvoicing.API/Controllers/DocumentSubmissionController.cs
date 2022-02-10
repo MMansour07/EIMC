@@ -59,11 +59,13 @@ namespace eInvoicing.API.Controllers
                     if (result.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
-                        if (response.rejectedDocuments == null && response.acceptedDocuments == null && response.submissionId == null)
+                        if (response.rejectedDocuments == null &&
+                            response.acceptedDocuments == null && response.submissionId == null)
                         {
                             return Ok(new DocumentSubmissionDTO() { statusCode = response.statusCode });
                         }
-                        else if (response.rejectedDocuments?.Count() == 0 && response.acceptedDocuments?.Count() == 0 && response.submissionId == null)
+                        else if (response.rejectedDocuments?.Count() == 0 && 
+                            response.acceptedDocuments?.Count() == 0 && response.submissionId == null)
                         {
                             return Ok(new DocumentSubmissionDTO() { statusCode = "UnProcessableEntity" });
                         }

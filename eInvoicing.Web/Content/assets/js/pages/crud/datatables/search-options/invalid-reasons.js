@@ -74,7 +74,7 @@ var initTable1 = function () {
         columns: [
             { data: "DocumentId", "name": "DocumentId" },
             { data: "DateTimeIssued", "name": "DateTimeIssued" },
-            { data: "DateTimeReceived", "name": "DateTimeReceived" },
+           /* { data: "DateTimeReceived", "name": "DateTimeReceived" },*/
             { data: "ValidationSteps", "name": "ValidationSteps" },
             { data: "Errors", "name": "Errors" },
             { data: "InnerErrors", "name": "InnerErrors" },
@@ -92,14 +92,14 @@ var initTable1 = function () {
                     var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
                     return '<span class="navi-text">' + temp + '</span>';
                 },
-            },
-            {
-                targets: -8,
-                render: function (data, type, full, meta) {
-                    var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
-                    return '<span class="navi-text">' + temp + '</span>';
-                },
-            },
+            }
+            //{
+            //    targets: -8,
+            //    render: function (data, type, full, meta) {
+            //        var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
+            //        return '<span class="navi-text">' + temp + '</span>';
+            //    },
+            //}
         ],
     });
 };

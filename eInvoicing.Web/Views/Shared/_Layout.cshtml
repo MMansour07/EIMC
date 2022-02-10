@@ -4,7 +4,7 @@
 <head>
     <base href="">
     <meta charset="utf-8" />
-    <title>E-Hub</title>
+    <title>E فاتورتي</title>
     <meta name="description" content="Updates and statistics" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" />
@@ -31,11 +31,11 @@
             word-break: break-all !important;
         }
         .subheader .container {
-            width: 80% !important;
+            width: 90% !important;
         }
 
         .topbar-item {
-            width: 20% !important;
+            width: 10% !important;
         }
         .was-validated .form-control:valid, .form-control.is-valid {
             background-position: right calc(1.375 em + 1.325 rem ) center !important;
@@ -43,17 +43,17 @@
 
         .subheader {
             top: 0 !important;
-            background-color: hsl(208, 33%, 24%) !important;
+            background-color: #02bda1 !important;
             /*background-color: hsl(210, 20%, 98%) !important;*/
         }
         .brand {
-            background-color: hsl(210, 20%, 98%) !important;
+            background-color: #f9f9f9 !important;
         }
         .aside-menu {
-            background-color: hsl(210, 20%, 98%) !important;
+            background-color: #f9f9f9 !important;
         }
         .aside {
-            background-color: hsl(210, 20%, 98%) !important;
+            background-color: #f9f9f9 !important;
         }
         .content {
             padding: 0 !important;
@@ -141,7 +141,7 @@
                 <!--begin::Brand-->
                 <div class="brand flex-column-auto " id="kt_brand">
                     <!--begin::Logo-->
-                    <a href="@Url.Action("Index", "Master")" class="brand-logo mt-10">
+                    <a href="@Url.Action("Index", "Master")" class="brand-logo mt-5">
                         <img alt="Logo" src="~/Content/images/E-Hub_logo_transparent.png"/>
                     </a>
                     <!--end::Logo-->
@@ -234,21 +234,21 @@
                                             </div>
                                         </li>
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="@Url.Action("pending", "document")" class="menu-link ">
+                                            <a href="@Url.Action("pending", "document")" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Draft</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_draft"></span>
                                             </a>
                                         </li>
                                         <li class="menu-item " aria-haspopup="true">
-                                            <a href="@Url.Action("submitted", "document")" class="menu-link ">
+                                            <a href="@Url.Action("submitted", "document")" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Sent</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_sent"></span>
                                             </a>
                                         </li>
-                                    <li class="menu-item " aria-haspopup="true">
-                                            <a href="@Url.Action("received", "document")" class="menu-link ">
+                                        <li class="menu-item " aria-haspopup="true">
+                                            <a href="@Url.Action("received", "document")" class="menu-link">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
                                                 <span class="menu-text">Received</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_received"></span>
@@ -315,7 +315,22 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Documents Statistics</span>
+                                    <span class="menu-text">Documents Statistics (Detailed)</span>
+                                </a>
+                            </li>
+                            <li class="menu-item" aria-haspopup="true">
+                                <a href="@Url.Action("documents_stats_overview", "report")" class="menu-link ">
+                                    <span class="svg-icon svg-icon-primary menu-icon">
+                                        <!--begin::Svg Icon | path:C:\wamp64\www\keenthemes\themes\metronic\theme\html\demo1\dist/../src/media/svg/icons\Files\Export.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                <rect x="0" y="0" width="24" height="24" />
+                                                <path d="M17,8 C16.4477153,8 16,7.55228475 16,7 C16,6.44771525 16.4477153,6 17,6 L18,6 C20.209139,6 22,7.790861 22,10 L22,18 C22,20.209139 20.209139,22 18,22 L6,22 C3.790861,22 2,20.209139 2,18 L2,9.99305689 C2,7.7839179 3.790861,5.99305689 6,5.99305689 L7.00000482,5.99305689 C7.55228957,5.99305689 8.00000482,6.44077214 8.00000482,6.99305689 C8.00000482,7.54534164 7.55228957,7.99305689 7.00000482,7.99305689 L6,7.99305689 C4.8954305,7.99305689 4,8.88848739 4,9.99305689 L4,18 C4,19.1045695 4.8954305,20 6,20 L18,20 C19.1045695,20 20,19.1045695 20,18 L20,10 C20,8.8954305 19.1045695,8 18,8 L17,8 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                                <rect fill="#000000" opacity="0.3" transform="translate(12.000000, 8.000000) scale(1, -1) rotate(-180.000000) translate(-12.000000, -8.000000) " x="11" y="2" width="2" height="12" rx="1" />
+                                                <path d="M12,2.58578644 L14.2928932,0.292893219 C14.6834175,-0.0976310729 15.3165825,-0.0976310729 15.7071068,0.292893219 C16.0976311,0.683417511 16.0976311,1.31658249 15.7071068,1.70710678 L12.7071068,4.70710678 C12.3165825,5.09763107 11.6834175,5.09763107 11.2928932,4.70710678 L8.29289322,1.70710678 C7.90236893,1.31658249 7.90236893,0.683417511 8.29289322,0.292893219 C8.68341751,-0.0976310729 9.31658249,-0.0976310729 9.70710678,0.292893219 L12,2.58578644 Z" fill="#000000" fill-rule="nonzero" transform="translate(12.000000, 2.500000) scale(1, -1) translate(-12.000000, -2.500000) " />
+                                            </g>
+                                        </svg><!--end::Svg Icon-->
+                                    </span>
+                                    <span class="menu-text">Documents Statistics (Overview)</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">

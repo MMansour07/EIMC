@@ -254,7 +254,7 @@ namespace eInvoicing.Web.Controllers
                     if (result != null && result.StatusCode == HttpStatusCode.OK)
                     {
                         result.dateTimeIssued = result.dateTimeIssued; //DateTime.Parse(result.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                        result.dateTimeRecevied = result.dateTimeRecevied; //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        result.dateTimeRecevied = result.dateTimeRecevied.AddHours(2); //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
                         var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },
@@ -309,7 +309,7 @@ namespace eInvoicing.Web.Controllers
                     if (result != null && result.StatusCode == HttpStatusCode.OK)
                     {
                         result.dateTimeIssued = result.dateTimeIssued; //DateTime.Parse(result.dateTimeIssued).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
-                        result.dateTimeRecevied = result.dateTimeRecevied; //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
+                        result.dateTimeRecevied = result.dateTimeRecevied.AddHours(2); //DateTime.Parse(result.dateTimeRecevied).ToString("dd-MMM-yyyy HH:mm tt", CultureInfo.InvariantCulture);
                         var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },

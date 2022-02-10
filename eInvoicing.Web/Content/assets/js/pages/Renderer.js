@@ -64,7 +64,7 @@ jQuery(document).ready(function () {
 				KTApp.unblock('#Card5');
 				KTApp.unblock('#Card6');
 
-				initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				initTable2(data.receivedGoodsModel?.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
 				$("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
 				$("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
 				$("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');
@@ -154,7 +154,7 @@ jQuery(document).ready(function () {
 				KTApp.unblock('#Card5');
 				KTApp.unblock('#Card6');
 
-				initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+				initTable2(data.receivedGoodsModel?.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
 				$("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
 				$("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
 				$("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');

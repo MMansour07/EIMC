@@ -41,6 +41,33 @@ namespace eInvoicing.API.Controllers
         }
 
         [HttpGet]
+        [Route("api/report/submitteddocumentsstatsoverview")]
+        public IHttpActionResult submitteddocumentsstatsoverview(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            try
+            {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
+                var response = _reportService.GetDocumentsStatsOverview(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
+                return Ok(new SubmittedDocumentResponse()
+                {
+                    meta = new Meta()
+                    {
+                        page = response.CurrentPage,
+                        pages = response.TotalPages,
+                        perpage = response.PageSize,
+                        total = response.TotalCount,
+                        totalFiltered = response.TotalFiltered
+                    },
+                    data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [HttpGet]
         [Route("api/report/invalidreasons")]
         public IHttpActionResult invalidreasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
         {

@@ -16,6 +16,7 @@ using System.Data.Entity;
 using eInvoicing.Service.Helper;
 using System.Diagnostics;
 using System.Text;
+using System.Globalization;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -24,7 +25,7 @@ namespace eInvoicing.Service.AppService.Implementation
         private readonly IDocumentRepository repository;
         private readonly IValidationStepRepository _validationStepRepository;
         private readonly IStepErrorRepository _stepErrorRepository;
-        private List<string> IdsStack;
+        //private List<string> IdsStack;
         private List<string> IdsStack2;
 
         public DocumentService(IDocumentRepository _repository, IValidationStepRepository validationStepRepository,
@@ -64,8 +65,9 @@ namespace eInvoicing.Service.AppService.Implementation
         {
             try
             {
-                IdsStack = new List<string>();
-                for (int i = 0; i < DailyInvoicesAverage/100; i++)
+                List<RecentDocumentDTO> GDR = new List<RecentDocumentDTO>();
+                //IdsStack = new List<string>();
+                for (int i = DailyInvoicesAverage/100; i > 0; i--)
                 {
                     using (HttpClient client = new HttpClient())
                     {
@@ -73,17 +75,18 @@ namespace eInvoicing.Service.AppService.Implementation
                         client.Timeout = TimeSpan.FromMinutes(60);
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        client.BaseAddress = new Uri(URL + "documents/recent?pageNo=" + (i + 1) + "&pageSize=100");
-                        var postTask = client.GetAsync(URL + "documents/recent?pageNo=" + (i + 1) + "&pageSize=100");
+                        client.BaseAddress = new Uri(URL + "documents/recent?pageNo=" + i + "&pageSize=100");
+                        var postTask = client.GetAsync(URL + "documents/recent?pageNo=" + i + "&pageSize=100");
                         postTask.Wait();
                         var result = postTask.Result;
                         if (result.IsSuccessStatusCode)
                         {
                             var res = JsonConvert.DeserializeObject<GetRecentDocumentsResponse>(result.Content.ReadAsStringAsync().Result);
-                            UpdateDocumentsStatus(res);
+                            GDR.AddRange(res.result);
                         }
                     }
                 }
+                UpdateDocumentsStatus(GDR.OrderBy(o => o.dateTimeReceived).ToList());
             }
             catch (Exception ex)
             {
@@ -339,24 +342,23 @@ namespace eInvoicing.Service.AppService.Implementation
         }
         public int GetPendingCount()
         {
-            return repository.Get(i => i.Status.ToLower() == "new" || i.Status.ToLower() == "failed" 
-            || i.Status.ToLower() == "updated", null, "").Count();
+            return repository.Get(i => i.uuid == null, null, "").Count();
         }
         public int GetSubmittedCount()
         {
-            return repository.Get(i => i.Status.ToLower() != "new" && i.Status.ToLower() != "failed" 
-            && i.Status.ToLower() != "updated", null, "").Count();
+            return repository.Get(i => i.uuid != null && i.IsReceiver == null, null, "").Count();
         }
 
         public int GetReceivedCount()
         {
-            return repository.Get(i => i.IsReceiver == true, null, "").Count();
+            return repository.Get(i => i.IsReceiver != null, null, "").Count();
         }
         public DashboardDTO GetMonthlyDocuments(DateTime _date)
         {
             try
             {
                 var Response = repository.Get(i => i.DateTimeIssued.Month == _date.Month && i.DateTimeIssued.Year == _date.Year, null, "InvoiceLines.TaxableItems").ToList();
+
                 var _Receivedvaliddocs = Response.Where(i => i.Status.ToLower() == "valid" && i.IsReceiver != true);
                 var _Receivedinvaliddocs = Response.Where(i => i.Status.ToLower() == "invalid" && i.IsReceiver != true);
                 var _Receivedrejecteddocs = Response.Where(i => i.Status.ToLower() == "rejected" && i.IsReceiver != true);
@@ -377,7 +379,8 @@ namespace eInvoicing.Service.AppService.Implementation
 
                 var response = new DashboardDTO()
                 {
-                    goodsModel = Response.Where(x => x.IsReceiver != true).SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel()
+                    goodsModel = Response.Where(x => x.IsReceiver != true).
+                    SelectMany(b => b.InvoiceLines)?.Distinct().GroupBy(o => o.ItemCode).Select(x => new GoodsModel()
                     {
                         totalAmount = x.Sum(y => y.Total).ToString("N2"),
                         count = x.Sum(p => p.Quantity),
@@ -564,31 +567,25 @@ namespace eInvoicing.Service.AppService.Implementation
                 }
             }
         }
-        private void UpdateDocumentsStatus(GetRecentDocumentsResponse obj)
+        private void UpdateDocumentsStatus(List<RecentDocumentDTO> obj)
         {
             try
             {
-                foreach (var item in obj.result)
+                foreach (var item in obj)
                 {
-                    if (!IdsStack.Contains(item.internalId))
+                    var entity = repository.Get(item.internalId);
+                    if (entity == null || (entity != null && entity.Status != "Submitted" && item.status == "Invalid"))
                     {
-                        var entity = repository.Get(item.internalId);
-                        //if (entity != null && ((entity.Status.ToLower() == "valid" && item.status.ToLower() != "invalid") 
-                        //    || (entity.Status.ToLower() == "submitted" && item.status.ToLower() == "invalid") || (entity.Status.ToLower() == "invalid" && item.status.ToLower() == "valid")
-                        //    || entity.Status.ToLower() == "submitted" || 
-                        //    item.status.ToLower() == "rejected" || item.status.ToLower() == "cancelled"))
-                        //{
-                        if (entity != null)
-                        {
-                            entity.Status = item.status;
-                            entity.uuid = item.uuid;
-                            entity.submissionId = item.submissionUUID;
-                            entity.longId = item.longId;
-                            entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
-                            repository.UpdateBulk(entity);
-                            IdsStack.Add(item.internalId);
-                        }
-                        //}
+                        continue;
+                    }
+                    else
+                    {
+                        entity.Status = item.status;
+                        entity.uuid = item.uuid;
+                        entity.submissionId = item.submissionUUID;
+                        entity.longId = item.longId;
+                        entity.DateTimeReceived = DateTime.Parse(item.dateTimeReceived);
+                        repository.UpdateBulk(entity);
                     }
                 }
             }
@@ -721,6 +718,7 @@ namespace eInvoicing.Service.AppService.Implementation
                     using (HttpClient client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Clear();
+                        client.Timeout = TimeSpan.FromMinutes(60);
                         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         string URL = BaseURL + "documents/" + InvalidDocuments[i].UUID + "/details";

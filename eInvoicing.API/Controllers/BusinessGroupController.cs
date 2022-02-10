@@ -41,7 +41,7 @@ namespace eInvoicing.API.Controllers
                             connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings()
                             {
                                 Name = "EInvoice_" + model.GroupName?.Replace(" ", ""),
-                                ConnectionString = "Data Source=.;Initial Catalog=" + model.GroupName?.Replace(" ", "") + ";User ID=sa;Password=123",
+                                ConnectionString = "Data Source=.;Initial Catalog=" + model.GroupName?.Replace(" ", "") + ";persist security info=True; Integrated Security=SSPI;",
                                 ProviderName = "System.Data.SqlClient"
                             });
                         }
@@ -50,7 +50,7 @@ namespace eInvoicing.API.Controllers
                             connectionStringsSection.ConnectionStrings.Add(new ConnectionStringSettings()
                             {
                                 Name = "EInvoice_" + model.GroupName?.Replace(" ", ""),
-                                ConnectionString = "Data Source=.;Initial Catalog=" + model.GroupName?.Replace(" ", "") + "_PreProd;User ID=sa;Password=123",
+                                ConnectionString = "Data Source=.;Initial Catalog=" + model.GroupName?.Replace(" ", "") + "_PreProd;persist security info=True; Integrated Security=SSPI;",
                                 ProviderName = "System.Data.SqlClient"
                             });
                         }
@@ -131,7 +131,7 @@ namespace eInvoicing.API.Controllers
                             connectionStringsSection.ConnectionStrings.Remove(new ConnectionStringSettings()
                             {
                                 Name = "EInvoice_" + GrpName,
-                                ConnectionString = "Data Source=.;Initial Catalog=" + GrpName + ";User ID=sa;Password=123",
+                                ConnectionString = "Data Source=.;Initial Catalog=" + GrpName + ";persist security info=True; Integrated Security=SSPI;",
                                 ProviderName = "System.Data.SqlClient"
                             });
                         }
@@ -140,7 +140,7 @@ namespace eInvoicing.API.Controllers
                             connectionStringsSection.ConnectionStrings.Remove(new ConnectionStringSettings()
                             {
                                 Name = "EInvoice_" + GrpName,
-                                ConnectionString = "Data Source=.;Initial Catalog=" + GrpName + "_PreProd;User ID=sa;Password=123",
+                                ConnectionString = "Data Source=.;Initial Catalog=" + GrpName + "_PreProd;persist security info=True; Integrated Security=SSPI;",
                                 ProviderName = "System.Data.SqlClient"
                             });
                         }

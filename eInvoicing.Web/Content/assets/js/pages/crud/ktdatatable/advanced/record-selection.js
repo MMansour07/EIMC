@@ -108,7 +108,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 sortable: false,
                 template: function (row) {
                     return '<span class="navi-text" style= "float:left; clear:left;">' + ((row.receiver.name) ? row.receiver.name : 'NA') + '</span>\
-                            <span class="navi-text" style= "float:left; clear:left; color:#3699FF;">' + ((row.receiver.id) ? row.receiver.id : 'NA') + '</span>';
+                            <span class="navi-text" style= "float:left; clear:left; color:#02bda1;">' + ((row.receiver.id) ? row.receiver.id : 'NA') + '</span>';
                 }
             },
             {

@@ -31,7 +31,7 @@
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto btn-hover-bg-dark d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                    <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
                             <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
                             <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
@@ -74,7 +74,7 @@
     </div>
     <!--end::Subheader-->
     <div class="form-group row mb-4">
-        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #3699FF !important;"><b>Activity Overview:</b></label>
+        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #02bda1 !important;"><b>Activity Overview:</b></label>
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="input-group date">
                 <input type="text" class="form-control" id="kt_datepicker_2" readonly="readonly" placeholder="Select date">

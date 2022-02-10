@@ -107,12 +107,12 @@ namespace eInvoicing.Service.AppService.Implementation
             try
             {
                 toDate = toDate.AddDays(1);
-                var validationSteps = _validationStepRepository.Get(i => i.DateTimeReceived >= fromDate.Date && i.DateTimeReceived <= toDate.Date, null, "StepErrors.InnerError").AsEnumerable();
+                var validationSteps = _validationStepRepository.Get(i => i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued < toDate.Date, null, "StepErrors.InnerError").AsEnumerable();
                 var result = validationSteps.GroupBy(o => o.DocumentId).Select(x => new InvalidDocumentsReasonsDTO()
                 {
                     DocumentId = x.Select(i => i.DocumentId).FirstOrDefault(),
                     DateTimeIssued = x.Select(i => i.DateTimeIssued).FirstOrDefault(),
-                    DateTimeReceived = x.Select(i => i.DateTimeReceived).FirstOrDefault(),
+                    //DateTimeReceived = x.Select(i => i.DateTimeReceived).FirstOrDefault(),
                     TotalAmount = x.Select(i => i.TotalAmount).FirstOrDefault(),
                     TotalDiscountAmount = x.Select(i => i.TotalDiscountAmount).FirstOrDefault(),
                     TotalItemsDiscountAmount = x.Select(i => i.TotalItemsDiscountAmount).FirstOrDefault(),
@@ -141,6 +141,42 @@ namespace eInvoicing.Service.AppService.Implementation
             }
             
         }
+
+        public PagedList<SubmittedDocumentsDTO> GetDocumentsStatsOverview(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate,
+            string searchValue, string sortColumnName, string sortDirection)
+        {
+            toDate = toDate.AddDays(1);
+            var docs = repository.Get(i => i.uuid != null && i.IsReceiver != true &&
+            i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued < toDate.Date, null, null);
+            var result = docs.GroupBy(o => o.DateTimeIssued.Day ).Select(x => new SubmittedDocumentsDTO()
+            {
+                validCount = x.Where(p => p.Status.ToLower() == "valid").Count(),
+                invalidCount = x.Where(p => p.Status.ToLower() == "invalid").Count(),
+                invoiceCount = x.Where(p => p.DocumentType.ToLower() == "i").Count(),
+                creditCount = x.Where(p => p.DocumentType.ToLower() == "c").Count(),
+                debitCount = x.Where(p => p.DocumentType.ToLower() == "d").Count(),
+                issuedOn = x.Select(i => i.DateTimeIssued).FirstOrDefault(),
+                totalCount = x.Count(),
+                totalSalesAmount = x.Sum(o => o.TotalSalesAmount),
+                totalAmount = x.Sum(o => o.TotalAmount),
+                netAmount = x.Sum(o => o.NetAmount),
+                totalDiscountAmount = x.Sum(o => o.TotalDiscountAmount),
+                totalItemsDiscountAmount = x.Sum(o => o.TotalItemsDiscountAmount),
+            });
+            int totalCount = result.Count();
+            if (!string.IsNullOrEmpty(searchValue))//filter
+            {
+                result = result.Where(x => x.issuedOn.ToString().ToLower().Contains(searchValue.ToLower()) || x.invalidCount.ToString().ToLower().Contains(searchValue.ToLower()) ||
+                                x.totalCount.ToString().ToLower().Contains(searchValue.ToLower()) || x.validCount.ToString().ToLower().Contains(searchValue.ToLower()));
+            }
+            if (!string.IsNullOrEmpty(sortColumnName))
+            {
+                result = result.OrderBy(sortColumnName + " " + sortDirection);
+            }
+            return PagedList<SubmittedDocumentsDTO>.Create(result, pageNumber, pageSize, totalCount);
+        }
+
+
     }
 }
 

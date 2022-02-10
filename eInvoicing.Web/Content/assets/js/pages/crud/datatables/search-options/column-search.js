@@ -143,6 +143,7 @@ var initTable1 = function () {
 				.reduce(function (a, b) {
 					return intVal(a) + intVal(b);
 				}, 0);
+			
 
 			// Update footer
 			$(api.column(1).footer()).html(

@@ -7,14 +7,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using eInvoicing.Service.Helper.Extension;
 using System.Security.Claims;
-using eInvoicing.Web.Filters;
 using System.Net;
-using System.Net.Http;
 using System.Diagnostics;
 
 namespace eInvoicing.Web.Controllers
@@ -29,7 +25,6 @@ namespace eInvoicing.Web.Controllers
             _httpClient = httpClient;
             _userSession = userSession;
         }
-        //[AllowAnonymous]
         [HttpGet]
         [ActionName("pending")]
         public ActionResult GetPendingDocuments()
@@ -168,7 +163,6 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
-        //[AllowAnonymous]
         [HttpGet]
         [ActionName("submitted")]
         public ActionResult GetSubmittedDocuments()
@@ -258,7 +252,7 @@ namespace eInvoicing.Web.Controllers
                         var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },
-                            new Catalog(){Value = "submitted",Text = "bg-primary" },
+                            new Catalog(){Value = "submitted",Text = "bg-info" },
                             new Catalog(){Value = "cancelled",Text = "bg-dark" },
                             new Catalog(){Value = "rejected", Text = "bg-warning" } };
                         var docType = new List<Catalog>()
@@ -313,7 +307,7 @@ namespace eInvoicing.Web.Controllers
                         var status = new List<Catalog>() {
                             new Catalog(){Value = "valid",    Text = "bg-success" },
                             new Catalog(){Value = "invalid",  Text = "bg-danger" },
-                            new Catalog(){Value = "submitted",Text = "bg-primary" },
+                            new Catalog(){Value = "submitted",Text = "bg-info" },
                             new Catalog(){Value = "cancelled",Text = "bg-dark" },
                             new Catalog(){Value = "rejected", Text = "bg-warning" } };
                         var docType = new List<Catalog>()

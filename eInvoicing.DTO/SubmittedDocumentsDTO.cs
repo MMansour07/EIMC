@@ -21,6 +21,7 @@ namespace eInvoicing.DTO
         public int invoiceCount { get; set; }
         public int creditCount { get; set; }
         public int debitCount { get; set; }
+        public int failedCount { get; set; }
         public decimal totalSalesAmount { get; set; }
         public decimal netAmount { get; set; }
         public decimal totalAmount { get; set; }

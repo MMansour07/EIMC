@@ -76,6 +76,7 @@ var initTable1 = function () {
 			{ data: "totalCount", "name": "TotalCount" },
 			{ data: "validCount", "name": "ValidCount" },
 			{ data: "invalidCount", "name": "InvalidCount" },
+			{ data: "failedCount", "name": "FailedCount" },
 			{ data: "submittedCount", "name": "SubmittedCount" },
 			{ data: "cancelledCount", "name": "CancelledCount" },
 			{ data: "rejectedCount", "name": "RejectedCount" },
@@ -173,7 +174,7 @@ var initTable1 = function () {
 		},
 		columnDefs: [
 			{
-				targets: -9,
+				targets: -10,
 				render: function (data, type, full, meta) {
 					var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6)))).split(" ");
 					return '<span class="navi-text">' + temp[0] + '</span>';

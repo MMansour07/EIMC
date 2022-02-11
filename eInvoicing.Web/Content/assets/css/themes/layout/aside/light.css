@@ -31,9 +31,10 @@
 
 .aside-menu {
   background-color: #ffffff ; }
-  .aside-menu .menu-nav > .menu-item > .menu-heading .menu-text,
-  .aside-menu .menu-nav > .menu-item > .menu-link .menu-text {
-    color: #02bda1 ; }
+    .aside-menu .menu-nav > .menu-item > .menu-heading .menu-text,
+    .aside-menu .menu-nav > .menu-item > .menu-link .menu-text {
+        color: #333;
+    }
     .aside-menu .menu-nav > .menu-item > .menu-heading .menu-icon,
     .aside-menu .menu-nav > .menu-item > .menu-link .menu-icon {
         color: #02bda1;
@@ -190,7 +191,7 @@
     border-bottom: 1px solid #EBEDF3 ; }
   .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-text,
   .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-text {
-    color: #02bda1 ; }
+    color: #333 ; }
   .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-heading .menu-icon,
   .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-icon {
     color: #B5B5C3 ; }

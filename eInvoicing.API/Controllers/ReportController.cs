@@ -139,5 +139,32 @@ namespace eInvoicing.API.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("api/report/failedreasons")]
+        public IHttpActionResult failedreasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection)
+        {
+            try
+            {
+                _reportService.GetTheConnectionString(this.OnActionExecuting());
+                var response = _reportService.GetFailedDocumentReasons(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection);
+                return Ok(new FailedDocumentResponse()
+                {
+                    meta = new Meta()
+                    {
+                        page = response.CurrentPage,
+                        pages = response.TotalPages,
+                        perpage = response.PageSize,
+                        total = response.TotalCount,
+                        totalFiltered = response.TotalFiltered
+                    },
+                    data = response
+                });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
     }
 }

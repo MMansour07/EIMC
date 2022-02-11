@@ -4,7 +4,7 @@ var date = new Date(), y = date.getFullYear(), m = date.getMonth();
 var fromDate = new Date(y, m, 1);
 var toDate = new Date();
 var initTable1 = function () {
-    KTApp.block('#InvalidReasons_crd');
+    KTApp.block('#FailedReasons_crd');
     // begin first table
     table.DataTable({
         responsive: true,
@@ -64,7 +64,7 @@ var initTable1 = function () {
             [2, "desc"]
         ],
         ajax: {
-            url: '/v1/report/AjaxInvalidReasons',
+            url: '/v1/report/AjaxFailedReasons',
             type: 'POST',
             data: function (post) {
                 post.fromDate = ModifyDate(fromDate);
@@ -72,34 +72,24 @@ var initTable1 = function () {
             }
         },
         columns: [
-            { data: "DocumentId", "name": "DocumentId", "width": "100"},
-            { data: "DateTimeIssued", "name": "DateTimeIssued", "width": "100" },
-           /* { data: "DateTimeReceived", "name": "DateTimeReceived" },*/
-            { data: "ValidationSteps", "name": "ValidationSteps" },
-            { data: "Errors", "name": "Errors" },
-            { data: "InnerErrors", "name": "InnerErrors" },
+            { data: "DocumentId", "name": "DocumentId" },
+            { data: "DateTimeIssued", "name": "DateTimeIssued" },
+            { data: "Error", "name": "Error" },
             { data: "TotalSalesAmount", "name": "TotalSalesAmount" },
             { data: "NetAmount", "name": "NetAmount" },
             { data: "TotalAmount", "name": "TotalAmount" },
         ],
         "fnDrawCallback": function () {
-            KTApp.unblock('#InvalidReasons_crd');
+            KTApp.unblock('#FailedReasons_crd');
         },
         columnDefs: [
             {
-                targets: -7,
+                targets: -5,
                 render: function (data, type, full, meta) {
                     var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
                     return '<span class="navi-text">' + temp + '</span>';
                 },
             }
-            //{
-            //    targets: -8,
-            //    render: function (data, type, full, meta) {
-            //        var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
-            //        return '<span class="navi-text">' + temp + '</span>';
-            //    },
-            //}
         ],
     });
 };

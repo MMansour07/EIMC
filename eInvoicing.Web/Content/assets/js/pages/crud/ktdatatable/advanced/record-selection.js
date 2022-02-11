@@ -72,7 +72,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 title: 'Internal Id',
                 name: "internalID",
                 sortable: false,
-                width: 120,
+                width: 135,
                 template: function (row) {
                     return "<a href='#' onclick='ViewDocument_NewTab(\"" + row.internalID + "\")' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
             },
@@ -773,6 +773,10 @@ jQuery(document).ready(function () {
         searchData();
     });
 
+    $("#_sync").on('click', function () {
+        syncData();
+    });
+
     //$('._do').on('click', function () { alert('11') });
     //$('._do').on('click', function () { alert('11') });
 });
@@ -952,7 +956,7 @@ function ViewDocument_NewTab(DocumentId) {
     var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.open("/v1/document/details/" + DocumentId, "_self")
+    window.open("/v1/document/details/" + DocumentId, "_self");
     //window.location.href = "/v1/document/details/" + DocumentId;
 }
 
@@ -1068,4 +1072,48 @@ function EditDocument(InternalId) {
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
     window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
+}
+
+function syncData() {
+    KTApp.blockPage({
+        overlayColor: '#000000',
+        state: 'primary',
+        message: 'Please wait as this may take a few seconds'
+    });
+    $.ajax({
+        url: "/v1/master/SyncCustomerDocumentsByCurrentloggedinOrg",
+        type: "GET",
+        dataType: 'json',
+        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        success: function (response) {
+            if (response.success) {
+                KTApp.unblockPage();
+                Swal.fire({
+                    text: 'Documents have been synced successfully, and all is up to date.',
+                    icon: "success",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    location.reload();
+                });
+            }
+            else {
+                Swal.fire({
+                    title: "Sorry, something went wrong!",
+                    text:  "It might happened becuase procedure doesn't exist, please make sure and try again.",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            }
+        }
+    });
 }

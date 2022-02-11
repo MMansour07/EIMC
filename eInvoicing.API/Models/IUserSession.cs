@@ -16,6 +16,7 @@ namespace eInvoicing.API.Models
         string client_secret { get; set; }
         string InternalAPIURL { get; set; }
         string pin { get; set; }
+        string SRN { get; set; }
         void GetBusinessGroupId(string BusinessGroupId);
         void SetBusinessGroup(string BusinessGroup);
         bool IsDBSync(string BusinessGroup);

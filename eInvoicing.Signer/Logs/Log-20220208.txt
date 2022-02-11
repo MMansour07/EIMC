@@ -1,0 +1,2 @@
+2022-02-08T23:02:40.8205138+02:00 80000129-0000-fc00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+2022-02-08T23:55:45.1184236+02:00 8000015e-0002-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)

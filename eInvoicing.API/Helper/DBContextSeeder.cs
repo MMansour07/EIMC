@@ -433,7 +433,8 @@ namespace eInvoicing.API.Helper
                 IsDBSync = true,
                 CreatedOn = DateTime.Now,
                 SyncType = "DB",
-                Token = "12345678"
+                Token = "12345678",
+                USB_SerialNumber = "12345678"
             };
 
             byte[] PasswordHash, PasswordSalt;

@@ -19,5 +19,7 @@ namespace eInvoicing.Service.AppService.Contract.Base
         PagedList<InvalidDocumentsReasonsDTO> GetInvalidDocumentReasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate, string searchValue, string sortColumnName, string sortDirection);
         PagedList<SubmittedDocumentsDTO> GetDocumentsStatsOverview(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate,
             string searchValue, string sortColumnName, string sortDirection);
+        PagedList<FailedDocumentsReasonsDTO> GetFailedDocumentReasons(int pageNumber, int pageSize, DateTime fromDate, DateTime toDate,
+            string searchValue, string sortColumnName, string sortDirection);
     }
 }

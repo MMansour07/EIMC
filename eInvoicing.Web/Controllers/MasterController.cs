@@ -159,5 +159,36 @@ namespace eInvoicing.Web.Controllers
                 return Json(new { status = "Failed", Message = 500 }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpGet]
+        [ActionName("SyncCustomerDocumentsByCurrentloggedinOrg")]
+        public ActionResult SyncCustomerDocumentsByCurrentloggedinOrg()
+        {
+            try
+            {
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    var url = _userSession.URL + "/api/document/SyncCustomerDocumentsByCurrentloggedinOrg";
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                    }
+                    else if (postTask.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        return Json(new { success = false, message = "400" }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = ex.Message.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

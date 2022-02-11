@@ -258,6 +258,7 @@ namespace eInvoicing.Service.Helper.Extension
                 BusinessGroupId = obj.BusinessGroup.Id,
                 Token = obj.BusinessGroup.Token,
                 Title = obj.Title,
+                SRN = obj.BusinessGroup.USB_SerialNumber,
                 Roles = obj.UserRoles.Select(i => new RoleDTO { Id = i.Role.Id, Name = i.Role.Name, Description = i.Role.Description }).ToList(),
                 Permissions = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePermissions).Select(p => new PermissionDTO { Id = p.Permission.Id, Action = p.Permission.Action}).ToList()
             };

@@ -25,11 +25,11 @@ namespace eInvoicing.API
             Database.SetInitializer(new DBContextSeeder());
             HangfireAspNet.Use(GetHangfireServers);
 
-            //RecurringJob.AddOrUpdate(() => HangfireManager.SpecifyWhichActionsChain(), "0 0 10 * * ?");
-            RecurringJob.AddOrUpdate(() => HangfireManager.GetReceivedDocuments(), "0 0 8 * * ?");
-            RecurringJob.AddOrUpdate(() => HangfireManager.UpdateDocumentsStatusFromETAToEIMC(), Cron.Hourly());
-            RecurringJob.AddOrUpdate(() => HangfireManager.RetrieveDocumentInvalidityReasons(), Cron.Hourly());
-            RecurringJob.AddOrUpdate(() => HangfireManager.EIMCBackupPeriodically(), Cron.Daily);
+            RecurringJob.AddOrUpdate(() => HangfireManager.GetandSendIssuedDocuments(), "0 0 13 * * ?");
+            RecurringJob.AddOrUpdate(() => HangfireManager.GetReceivedDocuments(), "0 0 11 * * ?");
+            RecurringJob.AddOrUpdate(() => HangfireManager.GetRecentDocumentsStatus(), Cron.HourInterval(6));
+            RecurringJob.AddOrUpdate(() => HangfireManager.GetInvalidityDocumentsReasons(), Cron.HourInterval(8));
+            RecurringJob.AddOrUpdate(() => HangfireManager.StoreDataBaseBackup(), Cron.Daily);
         }
         private IEnumerable<IDisposable> GetHangfireServers()
         {

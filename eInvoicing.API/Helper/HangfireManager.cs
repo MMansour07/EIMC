@@ -37,7 +37,7 @@ namespace eInvoicing.API.Helper
             }
             return null;
         }
-        public static void SpecifyWhichActionsChain()
+        public static void GetandSendIssuedDocuments()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void UpdateDocumentsStatusFromETAToEIMC()
+        public static void GetRecentDocumentsStatus()
         {
             try
             {
@@ -112,7 +112,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void RetrieveDocumentInvalidityReasons()
+        public static void GetInvalidityDocumentsReasons()
         {
             try
             {
@@ -137,7 +137,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void EIMCBackupPeriodically()
+        public static void StoreDataBaseBackup()
         {
             try
             {
@@ -162,7 +162,6 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-
         public static void CreateHangfireDB()
         {
             try

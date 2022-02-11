@@ -1,4 +1,5 @@
-﻿@model IEnumerable<eInvoicing.DTO.DocumentDTO>
+﻿
+@model IEnumerable<eInvoicing.DTO.DocumentDTO>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -14,7 +15,7 @@
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
                     <h5 class="text-light font-weight-bold my-1 mr-5">
-                        Documents Statistics
+                        Failed Documents Reasons
                     </h5>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
@@ -26,7 +27,7 @@
                         </li>
                         <li class="breadcrumb-item">
                             <a href="javascript:window.location.reload();" class="text-light">
-                                Documents Statistics
+                                Failed Documents Reasons
                             </a>
                         </li>
                     </ul>
@@ -113,7 +114,7 @@
         </a>
     </div>
     <hr />
-    <div class="card card-custom  gutter-b" id="SubmittedDocumentsStats_crd">
+    <div class="card card-custom bg-diagonal-light gutter-b" id="FailedReasons_crd">
         @*<div class="card-header bg-light">
                 <div class="card-title">
                     <span class="card-icon"><i class="flaticon2-layers text-primary"></i></span>
@@ -125,38 +126,20 @@
             <table class="table table-hover table-checkable" id="kt_datatable10">
                 <thead>
                     <tr>
+                        <th>Document No.</th>
                         <th>Issued On</th>
-                        <th>Total</th>
-                        <th>Valid</th>
-                        <th>Invalid</th>
-                        <th>Failed</th>
-                        <th>Submitted</th>
-                        <th>Cancelled</th>
-                        <th>Rejected</th>
-                        <th>Submitted On</th>
-                        <th>Submitted By</th>
+                        <th>Error</th>
+                        <th>Total Sales Amount</th>
+                        <th>Net Amount</th>
+                        <th>Total Amount</th>
                     </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>Total</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </tfoot>
             </table>
             <!--end: Datatable-->
         </div>
     </div>
 </div>
 <script src="~/Content/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/datatables/search-options/column-search.js?v=7.0.6"></script>
-<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+<script src="~/Content/assets/js/pages/crud/datatables/search-options/failed-reasons.js?v=7.0.6"></script>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar-failedreasons.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker-failedreasons.js"></script>

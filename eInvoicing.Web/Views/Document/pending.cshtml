@@ -1,8 +1,6 @@
-﻿@model IEnumerable<eInvoicing.DTO.DocumentDTO>
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<title>EInvoicing|Documents</title>
 <style>
     .submitdoc {
         cursor: pointer !important;
@@ -101,6 +99,17 @@
                     <span class="d-block text-primary pt-2 font-size-sm">Recently added documents from ERP system.</span>
                 </h3>
             </div>
+            @using System.Security.Claims;
+            @using Microsoft.AspNet.Identity;
+            @if (Request.IsAuthenticated && ((ClaimsPrincipal)HttpContext.Current.User).FindFirst("IsDBSync")?.Value == "True")
+            {
+                <div class="card-toolbar">
+                    <a href="#" id="_sync" class="btn btn-sm btn-primary font-weight-bold">
+                        <i class="flaticon2-refresh"></i> Sync
+                    </a>
+                </div>
+            }
+
         </div>
 
         <div class="card-body">
@@ -129,14 +138,14 @@
                         </div>
                     </div>
                     <!--<div class="col-lg-10">-->
-                        @*<label>Issued On:</label>
-            <div class="input-daterange input-group">
-                <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
-                <div class="input-group-append">
-                    <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
-                </div>
-                <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
-            </div>*@
+                    @*<label>Issued On:</label>
+        <div class="input-daterange input-group">
+            <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
+            <div class="input-group-append">
+                <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
+            </div>
+            <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
+        </div>*@
                     <!--</div>-->
                     <div class="col-lg-2">
                         <a href="#" id="_find" class="btn btn btn-primary font-weight-bold btn-square">

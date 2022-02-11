@@ -286,6 +286,14 @@ jQuery(document).ready(function () {
                             },
 
                         }
+                    },
+                    SRN: {
+                        validators: {
+                            notEmpty: {
+                                message: 'USB Serial Number is required'
+                            },
+
+                        }
                     }
                 }
             },

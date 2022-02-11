@@ -107,14 +107,16 @@ namespace eInvoicing.API.Controllers
                 {
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    client.BaseAddress = new Uri("http://worldclockapi.com/api/json/est/now");
-                    var postTask = client.GetAsync("http://worldclockapi.com/api/json/est/now");
+                    //client.BaseAddress = new Uri("http://worldclockapi.com/api/json/est/now");
+                    client.BaseAddress = new Uri("http://worldtimeapi.org/api/timezone/Africa/Cairo");
+                    //var postTask = client.GetAsync("http://worldclockapi.com/api/json/est/now"); 
+                    var postTask = client.GetAsync("http://worldtimeapi.org/api/timezone/Africa/Cairo"); 
                     postTask.Wait();
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<OnlineDateDTO>(result.Content.ReadAsStringAsync().Result);
-                        return response.currentDateTime.Split('T')[0];
+                        return response.datetime.Split('T')[0];
                     }
                     return null;
                 }

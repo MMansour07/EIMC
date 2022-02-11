@@ -3,20 +3,19 @@ using eInvoicing.Service.AppService.Contract.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Net.Http;
 using Newtonsoft.Json;
 using eInvoicing.DomainEntities.Entities;
 using eInvoicing.Repository.Contract;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
 using eInvoicing.Service.Helper.Extension;
 using System.Linq.Dynamic;
 using System.Data.Entity;
 using eInvoicing.Service.Helper;
 using System.Diagnostics;
 using System.Text;
-using System.Globalization;
+using System.Net.Mail;
+
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -763,5 +762,69 @@ namespace eInvoicing.Service.AppService.Implementation
                 repository.Update(entity);
             }
         }
+
+        public void NotifyBusinessGroupWithSubmissionStatus(EmailContentDTO obj)
+        {
+            string to = obj.To; //To address    
+            string from = "ultnoreply@gmail.com"; //From address    
+            MailMessage message = new MailMessage(from, "mmansour@ultimus.com");
+            string mailbody = "";
+            if (obj.FailedCount == 0 && obj.SentCount == 0)
+            {
+                mailbody = "Dear Customer, <br />" +
+                         "<br /> " +
+                         "We hope this email finds you well. <br />" +
+                         "<br />" +
+                         "The today's submission came as follows:  <br />" +
+                         "<br />" +
+                         "No available documents to be sent. <br />" +
+                         "<br />" +
+                         "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                         "<br />" +
+                         "<b>Thank you for using E فاتورني.</b> <br />" +
+                         "<br />" +
+                         "<br />" +
+                         "<b>This is an automated message. so, please don't reply.</b> <br />";
+            }
+            else
+            {
+                mailbody = "Dear Customer, <br />" +
+                           "<br /> " +
+                           "We hope this email finds you well. <br />" +
+                           "<br />" +
+                           "The today's submission came as follows:  <br />" +
+                           "<br />" +
+                           "Submitted Documents: " + obj.SentCount.ToString() + " <br />" +
+                           "<br />" +
+                           "Failed Documents: " + obj.FailedCount.ToString()  + " <br />" +
+                           "<br />" +
+                           "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                            "<br />" +
+                           "<b>Thank you for using E فاتورني.</b> <br />" +
+                           "<br />" +
+                           "<br />" +
+                           "<b>This is an automated message. so, please don't reply.</b> <br />";
+            }
+            message.Subject = "E فاتورتي - Documents Submission Status - " + DateTime.Now.ToString("dddd, MMMM d, yyyy");
+            message.Subject = "E فاتورتي - Documents Submission Status - " + DateTime.Now.ToString("dddd, MMMM d, yyyy");
+            message.Body = mailbody;
+            message.BodyEncoding = Encoding.UTF8;
+            message.IsBodyHtml = true;
+            SmtpClient client = new SmtpClient("smtp.gmail.com", 587); //Gmail smtp    
+            System.Net.NetworkCredential basicCredential1 = new
+            System.Net.NetworkCredential("ultnoreply@gmail.com", "fedcba@1234567");
+            client.EnableSsl = true;
+            client.UseDefaultCredentials = false;
+            client.Credentials = basicCredential1;
+            try
+            {
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+            }
+        }
+
     }
 }

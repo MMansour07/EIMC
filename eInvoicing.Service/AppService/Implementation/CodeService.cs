@@ -1,20 +1,8 @@
 ﻿using eInvoicing.DTO;
 using eInvoicing.Service.AppService.Contract.Base;
-using eInvoicing.Service.AppService.Implementation.Base;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Configuration;
 using System.Net.Http;
 using Newtonsoft.Json;
-using eInvoicing.Repository.Contract.Base;
-using eInvoicing.DomainEntities.Entities;
-using Ninject;
-using eInvoicing.Repository.Contract;
-using System.Reflection;
-using eInvoicing.Repository.Implementation;
 using System.Net.Http.Headers;
 using System.Net;
 
@@ -24,7 +12,6 @@ namespace eInvoicing.Service.AppService.Implementation
     {
         public CodeService()
         {
-
         }
         public CreateEGSResponseDTO CreateEGSCodeUsage(CreateEGSRequestDTO obj, string Token, string URL)
         {
@@ -138,30 +125,33 @@ namespace eInvoicing.Service.AppService.Implementation
             }
         }
 
-        public SearchEGSCodeResponseDTO SearchMyEGSCodeUsageRequests(SearchEGSCodeRequestDTO obj, string Token, string URL)
+        public SearchEGSCodeResponseDTO SearchMyEGSCodeUsageRequests(SearchEGSCodeRequestDTO obj, string Key, string URL)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    URL += "codetypes/requests/my?Status="+obj.status+"&PageSize="+obj.pageSize+"&PageNumber="+obj.pageNumber+"&OrderDirections="+obj.orderDirections+"&active="+obj.active;
+                    URL += "codetypes/requests/my";
                     client.BaseAddress = new Uri(URL);
                     var postTask = client.GetAsync(URL);
                     postTask.Wait();
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        return JsonConvert.DeserializeObject<SearchEGSCodeResponseDTO>(result.Content.ReadAsStringAsync().Result);
+                        var res = JsonConvert.DeserializeObject<SearchEGSCodeResponseDTO>(result.Content.ReadAsStringAsync().Result);
+                        res.StatusCode = HttpStatusCode.OK;
+                        return res;
                     }
-                    return new SearchEGSCodeResponseDTO() { /*Response = result */};
+                    return new SearchEGSCodeResponseDTO() { StatusCode = result.StatusCode };
                 }
             }
             catch (Exception ex)
             {
-                return new SearchEGSCodeResponseDTO() { /*ErrorMessage = ex.Message.ToString()*/ };
+                throw ex;
             }
         }
 

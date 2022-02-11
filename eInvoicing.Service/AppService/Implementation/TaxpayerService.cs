@@ -157,7 +157,8 @@ namespace eInvoicing.Service.AppService.Implementation
                         LicenseType = taxpayer.LicenseType,
                         RegistrationNumber = taxpayer.RegistrationNumber,
                         RegistrationDate = taxpayer.RegistrationDate,
-                        PIN = taxpayer.BusinessGroup.Token
+                        PIN = taxpayer.BusinessGroup.Token,
+                        SRN = taxpayer.BusinessGroup.USB_SerialNumber
                     };
                     return output;
                 }
@@ -194,7 +195,8 @@ namespace eInvoicing.Service.AppService.Implementation
                         LicenseType = taxpayer.LicenseType,
                         RegistrationNumber = taxpayer.RegistrationNumber,
                         RegistrationDate = taxpayer.RegistrationDate,
-                        PIN = taxpayer.BusinessGroup.Token
+                        PIN = taxpayer.BusinessGroup.Token,
+                        SRN = taxpayer.BusinessGroup.USB_SerialNumber
                     };
                     return output;
                 }

@@ -11,6 +11,7 @@ namespace eInvoicing.DTO
     public class UserDTO: BaseDTO
     {
         public string Token { get; set; }
+        public string SRN { get; set; }
         public string FullName
         {
             get

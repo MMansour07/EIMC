@@ -16,24 +16,25 @@
                     <!--begin::Page Heading-->
                     <div class="d-flex align-items-baseline flex-wrap mr-5">
                         <!--begin::Page Title-->
-                        <h5 class="text-light font-weight-bold my-1 mr-5">
+                        <h2 class="text-white font-weight-bold my-1 mr-5">
+                            <i class="flaticon-information header-icon"></i>
                             @Model.documentType | @Model.uuid
-                        </h5>
+                        </h2>
                         <!--end::Page Title-->
                         <!--begin::Breadcrumb-->
                         <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                             <li class="breadcrumb-item">
-                                <a href="@Url.Action("Index", "Master")" class="text-light">
+                                <a href="@Url.Action("Index", "Master")" class="text-white">
                                     Home
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="@Url.Action("received", "document")" class="text-light">
+                                <a href="@Url.Action("received", "document")" class="text-white">
                                     Received
                                 </a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="javascript:window.location.reload();" class="text-light">
+                                <a href="javascript:window.location.reload();" class="text-white">
                                     Details
                                 </a>
                             </li>
@@ -54,10 +55,10 @@
                         @Html.AntiForgeryToken()
                         <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                             <div class="d-flex flex-column text-right pr-3">
-                                <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                                <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                                <span class="text-white font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                                <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
                             </div>
-                            <span class="symbol symbol-lg-35 symbol-25 symbol-light">
+                            <span class="symbol symbol-lg-35 symbol-25 symbol-white">
                                 <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
                             </span>
                         </a>

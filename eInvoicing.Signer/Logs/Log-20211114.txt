@@ -1,1 +1,0 @@
-2021-11-14T16:01:45.9097438+02:00 80000004-0006-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)

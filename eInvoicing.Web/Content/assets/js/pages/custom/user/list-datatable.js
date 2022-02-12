@@ -53,7 +53,7 @@ var KTAppsUsersListDatatable = function () {
                         return '<div class="d-flex align-items-center">\
                                 <div class="symbol symbol-40 flex-shrink-0">\
                                     <div class="symbol-label">\
-                                       <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary-primary" >\
+                                       <span class="symbol symbol-lg-35 symbol-25 symbol-primary" >\
 								       <span class="symbol-label font-size-h5 font-weight-bold">'+ row.FirstName[0].toUpperCase() + '</span></span>\
                                     </div>\
                                 </div>\
@@ -100,8 +100,8 @@ var KTAppsUsersListDatatable = function () {
                     autoHide: false,
                     template: function (row) {
                         return "\
-	                        <a onclick='editUser(\"" + row.Id + "\")' class='btn btn-icon btn-light btn-hover-primary btn-sm mx-3' title='Edit'>\
-	                        <span class='svg-icon svg-icon-md svg-icon-primary'>\
+	                        <a onclick='editUser(\"" + row.Id + "\")' class='btn btn-icon btn-light btn-hover-info btn-sm mx-3' title='Edit'>\
+	                        <span class='svg-icon svg-icon-md svg-icon-info'>\
 							<svg xmlns = 'http://www.w3.org/2000/svg' xmlns: xlink = 'http://www.w3.org/1999/xlink' width = '24px' height = '24px' viewBox = '0 0 24 24' version = '1.1' >\
 							<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 								<rect x='0' y='0' width='24' height='24'></rect>\
@@ -110,8 +110,8 @@ var KTAppsUsersListDatatable = function () {
 							</g>\
 							</svg>\
 	                        </a>\
-	                        <a  onclick='deleteUser(\"" + row.Id + "\", \"" + row.UserName + "\")' class='btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon' title='Delete'>\
-								<span class='svg-icon svg-icon-md'>\
+	                        <a  onclick='deleteUser(\"" + row.Id + "\", \"" + row.UserName + "\")' class='btn btn-sm btn-light btn-hover-danger btn-icon' title='Delete'>\
+								<span class='svg-icon svg-icon-md svg-icon-danger'>\
 									<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24px' height='24px' viewBox='0 0 24 24' version='1.1'>\
 										<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 											<rect x='0' y='0' width='24' height='24'/>\
@@ -211,6 +211,7 @@ function deleteUser(id, username) {
 }
 
 function editUser(id) {
+    KTApp.blockPage();
     $.ajax({
         url: "/v1/user/editpartial?id=" + id,
         type: "GET",
@@ -218,6 +219,7 @@ function editUser(id) {
         success: function (response) {
             $("#userEdit").html(response);
             $("#editBtn").click();
+            KTApp.unblockPage();
         },
         error: function (xhr) {
         }

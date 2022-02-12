@@ -775,13 +775,13 @@ namespace eInvoicing.Service.AppService.Implementation
                          "<br /> " +
                          "We hope this email finds you well. <br />" +
                          "<br />" +
-                         "The today's submission came as follows:  <br />" +
+                         "The today's submission of "+ obj.BusinessGroup +" came as follows:  <br />" +
                          "<br />" +
                          "No available documents to be sent. <br />" +
                          "<br />" +
                          "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
                          "<br />" +
-                         "<b>Thank you for using E فاتورني.</b> <br />" +
+                         "<b>Thank you for using E فاتورتي.</b> <br />" +
                          "<br />" +
                          "<br />" +
                          "<b>This is an automated message. so, please don't reply.</b> <br />";
@@ -792,7 +792,7 @@ namespace eInvoicing.Service.AppService.Implementation
                            "<br /> " +
                            "We hope this email finds you well. <br />" +
                            "<br />" +
-                           "The today's submission came as follows:  <br />" +
+                           "The today's submission" + obj.BusinessGroup + "came as follows:  <br />" +
                            "<br />" +
                            "Submitted Documents: " + obj.SentCount.ToString() + " <br />" +
                            "<br />" +
@@ -800,7 +800,7 @@ namespace eInvoicing.Service.AppService.Implementation
                            "<br />" +
                            "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
                             "<br />" +
-                           "<b>Thank you for using E فاتورني.</b> <br />" +
+                           "<b>Thank you for using E فاتورتي.</b> <br />" +
                            "<br />" +
                            "<br />" +
                            "<b>This is an automated message. so, please don't reply.</b> <br />";

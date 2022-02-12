@@ -92,8 +92,8 @@ var KTAppsUsersListDatatable = function () {
                     autoHide: false,
                     template: function (row) {
                         return "\
-	                        <a onclick='editGroup(\"" + row.Id + "\")' class='btn btn-icon btn-light btn-hover-primary btn-sm mx-3' title='Edit'>\
-	                        <span class='svg-icon svg-icon-md svg-icon-primary'>\
+	                        <a onclick='editGroup(\"" + row.Id + "\")' class='btn btn-icon btn-light btn-hover-info btn-sm mx-3' title='Edit'>\
+	                        <span class='svg-icon svg-icon-md svg-icon-info'>\
 							<svg xmlns = 'http://www.w3.org/2000/svg' xmlns: xlink = 'http://www.w3.org/1999/xlink' width = '24px' height = '24px' viewBox = '0 0 24 24' version = '1.1' >\
 							<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 								<rect x='0' y='0' width='24' height='24'></rect>\
@@ -102,8 +102,8 @@ var KTAppsUsersListDatatable = function () {
 							</g>\
 							</svg>\
 	                        </a>\
-	                        <a  onclick='deleteGroup(\"" + row.Id + "\", \"" + row.GroupName + "\")' class='btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon' title='Delete'>\
-								<span class='svg-icon svg-icon-md'>\
+	                        <a  onclick='deleteGroup(\"" + row.Id + "\", \"" + row.GroupName + "\")' class='btn btn-sm btn-light btn-hover-danger btn-icon' title='Delete'>\
+								<span class='svg-icon svg-icon-md svg-icon-danger'>\
 									<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24px' height='24px' viewBox='0 0 24 24' version='1.1'>\
 										<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 											<rect x='0' y='0' width='24' height='24'/>\
@@ -203,6 +203,7 @@ function deleteGroup(id, GroupName) {
 }
 
 function editGroup(id) {
+    KTApp.blockPage();
     $.ajax({
         url: "/v1/BusinessGroup/editpartial?id=" + id,
         type: "GET",
@@ -210,6 +211,7 @@ function editGroup(id) {
         success: function (response) {
             $("#bgEdit").html(response);
             $("#editBtn").click();
+            KTApp.unblockPage();
         },
         error: function (xhr) {
         }

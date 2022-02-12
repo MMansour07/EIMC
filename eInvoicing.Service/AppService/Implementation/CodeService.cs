@@ -5,6 +5,7 @@ using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Net;
+using System.Globalization;
 
 namespace eInvoicing.Service.AppService.Implementation
 {
@@ -135,7 +136,11 @@ namespace eInvoicing.Service.AppService.Implementation
                     client.Timeout = TimeSpan.FromMinutes(60);
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    URL += "codetypes/requests/my";
+                    URL += "codetypes/requests/my?Active=" + (!string.IsNullOrEmpty(obj.active) ? (obj.active?.ToLower() == "yes" ? "true" : "false") : "") + "&Status=" + (obj.status??"") + "&PageSize=" +Convert.ToInt32(obj.pageSize)+ "&PageNumber=" + Convert.ToInt32(obj.pageNumber)+
+                           "&OrderDirections=" + (obj.orderDirections??"") + "&ItemCode=" + (obj.itemCode??"") + "&CodeName=" + (obj.codeName??"") + "&CodeDescription=" + (obj.codeDescription??"")+
+                           "&ActiveFrom="+ (!string.IsNullOrEmpty(obj.activeFrom) ? DateTime.ParseExact(obj.activeFrom, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString() : "") +
+                           "&ActiveTo="  + (!string.IsNullOrEmpty(obj.activeTo)   ? DateTime.ParseExact(obj.activeTo, "yyyy-MM-dd", CultureInfo.InvariantCulture).ToString():"");
+                    
                     client.BaseAddress = new Uri(URL);
                     var postTask = client.GetAsync(URL);
                     postTask.Wait();

@@ -9,15 +9,16 @@ namespace eInvoicing.DTO
 {
     public class SearchEGSCodeRequestDTO: BaseDTO
     {
-        public bool active { get; set; }
+        public string active { get; set; }
         public string status { get; set; }
-        public string ItemCode { get; set; }
-        public string CodeName { get; set; }
-        public string ParentLevelName { get; set; }
-        public string ParentItemCode { get; set; }
-        public string CodeDescription { get; set; }
-        public DateTime ActiveFrom { get; set; }
-        public DateTime ActiveTo { get; set; }
+        public string codeType { get; set; }
+        public string itemCode { get; set; }
+        public string codeName { get; set; }
+        public string parentLevelName { get; set; }
+        public string parentItemCode { get; set; }
+        public string codeDescription { get; set; }
+        public string activeFrom { get; set; }
+        public string activeTo { get; set; }
         public int pageSize { get; set; }
         public int pageNumber { get; set; }
         public string orderDirections { get; set; }

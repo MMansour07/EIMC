@@ -421,6 +421,7 @@
     <Content Include="Content\assets\js\pages\crud\forms\validation\form-widgets.min.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.min.js" />
+    <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-codeslist.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-failedreasons.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-invalidreasons.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker.js" />
@@ -2208,6 +2209,7 @@
     <Content Include="Content\assets\plugins\custom\flot\flot.bundle.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar-failedreasons.bundle.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar-invalidreasons.bundle.js" />
+    <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle-codeslist.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.css" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.js" />
     <Content Include="Content\assets\plugins\custom\gmaps\gmaps.js" />

@@ -4,11 +4,11 @@
 }
 <style>
     .select2-selection__rendered {
-        width: 740px !important;
+        width: 440px !important;
     }
 
     .select2-search__field {
-        width: 740px !important;
+        width: 440px !important;
     }
 </style>
 <div class="container-fluid">
@@ -20,20 +20,18 @@
 
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <!--begin::Page Title-->
-                    <h5 class="text-light font-weight-bold my-1 mr-5">
-                        Roles
-                    </h5>
-                    <!--end::Page Title-->
-                    <!--begin::Breadcrumb-->
+                    <h2 class="text-white font-weight-bold my-1 mr-5">
+                        <i class="flaticon-lock header-icon"></i>
+                        System Roles
+                    </h2>
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Master")" class="text-light">
+                            <a href="@Url.Action("Index", "Master")" class="text-white">
                                 Home
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="javascript:window.location.reload();" class="text-light">
+                            <a href="javascript:window.location.reload();" class="text-white">
                                 Roles
                             </a>
                         </li>
@@ -54,10 +52,10 @@
                     @Html.AntiForgeryToken()
                     <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
-                            <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                            <span class="text-white font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
                         </div>
-                        <span class="symbol symbol-lg-35 symbol-25 symbol-light">
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-white">
                             <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
                         </span>
                     </a>
@@ -97,13 +95,12 @@
     <!--begin::Card-->
     <div class="card card-custom">
         <!--begin::Header-->
-        <div class="card-header bg-secondary flex-wrap border-0 pt-6 pb-0">
+        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
-                <h6 class="">
-                    <i class="flaticon-lock mr-1">
-                    </i>
+                <h3 class="card-label">
                     System Roles
-                </h6>
+                    <span class="d-block text-primary pt-2 font-size-sm">The system role determines which set of permissions apply to the system user.</span>
+                </h3>
             </div>
             <div class="card-toolbar">
                 <a href="#RoleEditModal" id="editBtn" data-toggle="modal" hidden class="btn btn-primary font-weight-bolder">
@@ -130,8 +127,8 @@
             <div class="row align-items-center">
                 <div class="col-md-10 my-2 my-md-0">
                     <a href="#RoleCreation" data-toggle="modal" class="btn btn-primary font-weight-bold btn-square">
-                        <i class="flaticon-dashboard"></i>
-                        Create
+                        <i class="flaticon2-add-1"></i>
+                        Add Role
                     </a>
                 </div>
                 <div class="col-md-2 my-2 my-md-0">
@@ -153,20 +150,26 @@
     <!--end::Card-->
 
     <div class="modal fade modal-sticky-lg" id="RoleCreation" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 @using (Html.BeginForm("createrole", "role", FormMethod.Post, new { @class = "", role = "form", id = "_roleFrm" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="modal-header">
+                        <h5 class="modal-title"><i class="flaticon-lock"></i> New Role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
                     <div class="modal-body" style="padding: 0 !important;">
                         <!--begin::Form-->
                         <!--begin::Wizard Form-->
-                        <div class="card-body">
+                        <div class="card-body" data-scroll="true" data-height="400">
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Role Name *</label>
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name", @name ="Name"})
+                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name", @name = "Name" })
                                     @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                                 </div>
                             </div>
@@ -197,8 +200,14 @@
         </div>
     </div>
     <div class="modal fade" id="RoleEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-dialog modal-dialog-centered centered modal-dialog-scrollable" role="document">
             <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="flaticon-lock"></i> Edit Role</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
                 <div class="modal-body" style="padding: 0 !important;" id="RoleEdit">
                 </div>
                 <div class="modal-footer">

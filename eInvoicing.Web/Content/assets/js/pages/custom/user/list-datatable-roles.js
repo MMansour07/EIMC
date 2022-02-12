@@ -79,8 +79,8 @@ var KTAppsUsersListDatatable = function() {
 					autoHide: false,
 					template: function(row) {
 						return "\
-	                        <a onclick='editRole(\"" + row.Id + "\")' class='btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon mr-2'>\
-	                            <span class='svg-icon svg-icon-md svg-icon-primary'>\
+	                        <a onclick='editRole(\"" + row.Id + "\")' class='btn btn-icon btn-light btn-hover-info btn-sm mx-3' title='Edit'>\
+	                            <span class='svg-icon svg-icon-md svg-icon-info'>\
 								<svg xmlns = 'http://www.w3.org/2000/svg' xmlns: xlink = 'http://www.w3.org/1999/xlink' width = '24px' height = '24px' viewBox = '0 0 24 24' version = '1.1' >\
 								<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 									<rect x='0' y='0' width='24' height='24'></rect>\
@@ -89,8 +89,8 @@ var KTAppsUsersListDatatable = function() {
 								</g>\
 								</svg>\
 	                        </a>\
-	                        <a onclick='deleteRole(\"" + row.Id + "\", \"" + row.Name + "\")'  class='btn btn-sm btn-default btn-text-primary btn-hover-primary btn-icon'>\
-								<span class='svg-icon svg-icon-md'>\
+	                        <a onclick='deleteRole(\"" + row.Id + "\", \"" + row.Name + "\")'  class='btn btn-sm btn-light btn-hover-danger btn-icon' title='Delete'>\
+								<span class='svg-icon svg-icon-md svg-icon-danger'>\
 									<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='24px' height='24px' viewBox='0 0 24 24' version='1.1'>\
 										<g stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'>\
 											<rect x='0' y='0' width='24' height='24'/>\
@@ -194,6 +194,7 @@ function deleteRole(id, name) {
 }
 
 function editRole(id) {
+    KTApp.blockPage();
     $.ajax({
         url: "/v1/role/editpartial?id=" + id,
         type: "GET",
@@ -201,6 +202,7 @@ function editRole(id) {
         success: function (response) {
             $("#RoleEdit").html(response);
             $("#editBtn").click();
+            KTApp.unblockPage();
         },
         error: function (xhr) {
         }

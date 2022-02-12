@@ -33,11 +33,17 @@ var KTDatatableRecordSelectionDemo = function () {
            saveState: { cookie: false }
         },
         // layout definition
-        layout: {
-            scroll: true,
-            height: 800, // enable/disable datatable scroll both horizontal and vertical
-            footer: false // display/hide footer
-        },
+       layout: {
+           //icons: {
+           //    sort: {
+           //        asc: 'la la-arrow-up',
+           //        desc: 'la la-arrow-down'
+           //    }
+           //},
+           scroll: true,
+           height: 800, // enable/disable datatable scroll both horizontal and vertical
+           footer: false // display/hide footer
+       },
         // column sorting
         sortable: true,
         pagination: true,
@@ -60,11 +66,11 @@ var KTDatatableRecordSelectionDemo = function () {
                 // callback function support for column rendering
                 template: function (row) {
                     var status = {
-                        new:    { 'title': 'New', 'class': 'label-light-primary' },
-                        failed: { 'title': 'Failed', 'class': ' label-light-warning' },
-                        updated:{ 'title': 'Updated', 'class': ' label-light-info' }
+                        new:    { 'title': 'New',     'class': 'label-primary' },
+                        failed: { 'title': 'Failed',  'class': 'label-warning'},
+                        updated:{ 'title': 'Updated', 'class': 'label-info'   }
                     };
-                    return '<span class="label label-lg font-weight-bold' + status[row.status.toLowerCase()].class + ' label-inline">' + status[row.status.toLowerCase()].title + '</span>';
+                    return '<span class="label label-lg font-weight-bold ' + status[row.status.toLowerCase()].class + ' label-inline">' + status[row.status.toLowerCase()].title + '</span>';
                 }
             },
             {
@@ -95,6 +101,7 @@ var KTDatatableRecordSelectionDemo = function () {
 
                 field: 'dateTimeIssued',
                 title: 'Issued Date',
+                sortable: 'desc',
                 template: function (row) {
                     var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeIssued.substr(6)))).split(" ");
                     return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
@@ -344,7 +351,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 var checkedNodes = datatable.rows('.datatable-row-active').nodes();
                 var count = checkedNodes.length; 
                 $('#kt_datatable_selected_records').html(count);
-                $('#kt_datatable_fetch_modal').html("Send Top " + count + " <i class='far fa-arrow-alt-circle-right'></i>");
+                $('#kt_datatable_fetch_modal').html("Send Top " + count + " <i class='flaticon-paper-plane-1'></i>");
 
                 if (count !== options.data.pageSize && count !== 1 && 1 > count > options.data.pageSize) {
                     $("#kt_datatable_send").hide(); 

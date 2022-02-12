@@ -20,7 +20,7 @@ namespace eInvoicing.DTO
         {
             this.CurrentPage = pagenNumber;
             this.PageSize =  pageSize;
-            this.TotalFiltered= Count;
+            //this.TotalFiltered= Count;
             this.TotalCount = totalcount;
             this.TotalPages = (int)Math.Ceiling(Count /  (double)pageSize);
             this.AddRange(items);

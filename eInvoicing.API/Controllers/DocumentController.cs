@@ -1162,12 +1162,12 @@ namespace eInvoicing.API.Controllers
                             }
                         }
                         _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
-                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count() });
+                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count(), BusinessGroup = Name.Replace("E Invoice_ ", "") });
                     }
                     else
                     {
                         _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
-                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count() });
+                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count(), BusinessGroup = Name.Replace("E Invoice_ ", "")});
                     }
                 }
                 if (objAppsettings != null)

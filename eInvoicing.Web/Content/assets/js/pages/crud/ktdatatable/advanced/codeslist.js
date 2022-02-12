@@ -1,65 +1,72 @@
 "use strict";
-var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-var fromDate = new Date(y-2, m, 1);
-var toDate = new Date();
-var Result;
+var fromDate;
+var toDate;
+var active;
+var codeName;
+var itemCode;
+var codeDescription;
+var status;
+
 var datatable;
+
 var KTDatatableRecordSelectionDemo = function () {
-var options = {
-    data: {
-        type: 'remote',
-        source: {
-            read: {
-                method: 'POST',
-                url: '/v1/code/ajax_SearchMyEGSCodeUsageRequests',
-                map: function (raw) {
-                    // 
-                    // sample data mapping
-                    var dataSet = raw;
-                    if (typeof raw.data !== 'undefined') {
-                        dataSet = raw.data;
-                    }
-                    return dataSet;
+    var options = {
+        data: {
+            type: 'remote',
+            source: {
+                read: {
+                    method: 'POST',
+                    url: '/v1/code/ajax_SearchMyEGSCodeUsageRequests',
+                    map: function (raw) {
+                        // 
+                        // sample data mapping
+                        var dataSet = raw;
+                        if (typeof raw.data !== 'undefined') {
+                            dataSet = raw.data;
+                        }
+                        return dataSet;
+                    },
+                    timeout: 1000000
                 },
-                timeout: 1000000
             },
+            pageSize: 5,
+            serverPaging: true,
+            serverFiltering: true,
+            serverSorting: true,
+            saveState: { cookie: false }
         },
-        pageSize: 10,
-        serverPaging: true,
-        serverFiltering: true,
-        serverSorting: true,
-        saveState: { cookie: false }
-    },
-    layout: {
-        scroll: true,
-        height: 800,
-        footer: false
-    },
-    sortable:   true,
-    pagination: true,
-    columns: [{
-            field: 'status',
-            title: 'Status',
+        layout: {
+            scroll: true,
+            height: 800,
+            footer: false
+        },
+        sortable: true,
+        pagination: true,
+        columns: [
+        {
+            field: 'active',
+            title: 'Active',
+            sortable: false,
             width: 100,
             template: function (row) {
-                var status = {
-                    submitted: { 'title': 'Submitted', 'class': 'label-light-primary' },
-                    approved: { 'title': 'Approved', 'class': ' label-light-success' },
-                    rejected: { 'title': 'Rejected', 'class': ' label-light-danger' }
+                var active = {
+                    true: { 'title': 'Yes', 'class': 'label-success' },
+                    false: { 'title': 'No', 'class': 'label-primary' },
                 };
-                return '<span class="label label-lg font-weight-bold' + status[row.status.toLowerCase()].class + ' label-inline">' + status[row.status.toLowerCase()].title + '</span>';
+                return '<span class="label label-lg font-weight-bold ' + active[row.active].class + ' label-inline">' + active[row.active].title + '</span>';
             }
         },
         {
             field: 'codeTypeName',
             title: 'Code Type',
-            width:50
+            sortable: false,
+            width: 75
         },
         {
             field: 'itemCode',
             title: 'Item Code',
-            width: 170,
             sortable: false,
+            width: 170,
             template: function (row) {
                 return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
             },
@@ -67,38 +74,27 @@ var options = {
         {
             field: 'codeNamePrimaryLang',
             title: 'Name (English)/Name (Arabic)',
-            width: 200,
+            sortable: false,
+            width: 170,
             template: function (row) {
-                return '<span class="navi-text" style= "float:left; clear:left;">' + row.codeNamePrimaryLang   + '</span>\
-                        <span class="navi-text" style= "float:left; clear:left;">' + row.codeNameSecondaryLang +'</span>';
+                return '<span class="navi-text" style= "float:left; clear:left;">' + row.codeNamePrimaryLang + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + row.codeNameSecondaryLang + '</span>';
             }
         },
         {
             field: 'descriptionPrimaryLang',
             title: 'Description (English)/Description (Arabic)',
-            width: 200,
+            sortable: false,
+            width: 170,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.descriptionPrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.descriptionSecondaryLang + '</span>';
             }
         },
         {
-            field: 'parentItemCode',
-            title: 'GPC Linked Item',
-            width: 170,
-        },
-        {
-            field: 'parentCodeNamePrimaryLang',
-            title: 'GPC Name (English)/GPC Name (Arabic)',
-            width: 200,
-            template: function (row) {
-                return '<span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNamePrimaryLang + '</span>\
-                        <span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNameSecondaryLang + '</span>';
-            }
-        },
-        {
             field: 'activeFrom',
             title: 'Active From',
+            sortable: 'desc',
             template: function (row) {
                 var temp = convertToJavaScriptDate(new Date(row.activeFrom)).split(" ");
                 return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
@@ -108,88 +104,75 @@ var options = {
         {
             field: 'activeTo',
             title: 'Active To',
+            sortable: false,
             template: function (row) {
-                var temp = convertToJavaScriptDate(new Date(row.activeTo)).split(" ");
-                return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
+                if (row.activeTo != null && row.activeTo != "") {
+                    var temp = convertToJavaScriptDate(new Date(row.activeTo)).split(" ");
+                    return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
+                }
+                else {
+                    return '<span class="navi-text" style= "float:left; clear:left;"></span>';
+                }
+                
             }
-        }]   
-};
-var localSelectorDemo = function () {
-
-    options.data.source.read.params =
-    {
-        fromDate: ModifyDate(fromDate),
-        toDate: ModifyDate(toDate)
-    }
-    options.search = {
-        input: $('#kt_datatable_search_query'),
-        delay: 1000,
-        key: 'generalSearch'
+        },
+        {
+            field: 'parentItemCode',
+            title: 'GPC Linked Item',
+            sortable: false,
+            width: 170,
+        },
+        {
+            field: 'parentCodeNamePrimaryLang',
+            title: 'GPC Name (English)/GPC Name (Arabic)',
+            sortable: false,
+            width: 170,
+            template: function (row) {
+                return '<span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNamePrimaryLang + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNameSecondaryLang + '</span>';
+            }
+        }]
     };
-    datatable = $('#kt_datatable').KTDatatable(options);
+    var localSelectorDemo = function () {
 
-    $('#kt_datatable_search_status').on('change', function () {
-        datatable.search($(this).val(), 'status');
-    });
-
-    $('#kt_datatable_search_status, #kt_datatable_search_type').selectpicker();
-
-    //datatable.on('datatable-on-check datatable-on-uncheck',function (e) {
-    //        var checkedNodes = datatable.rows('.datatable-row-active').nodes();
-    //        var count = checkedNodes.length; 
-    //        $('#kt_datatable_selected_records').html(count);
-    //        $('#kt_datatable_fetch_modal').html("Send Top " + count + " <i class='far fa-arrow-alt-circle-right'></i>");
-
-    //        if (count !== options.data.pageSize && count !== 1 && 1 > count > options.data.pageSize) {
-    //            $("#kt_datatable_send").hide(); 
-    //            $("#kt_datatable_sendAll").hide();
-    //        }
-    //        else if (count === 1 || count < options.data.pageSize)
-    //        {
-    //            $("#kt_datatable_sendAll").hide();
-    //            $("#kt_datatable_fetch_modal").hide();
-    //            $("#kt_datatable_send").show(); 
-    //        }
-    //        else {
-    //            $("#kt_datatable_send").hide(); 
-    //            $("#kt_datatable_sendAll").show();
-    //            $("#kt_datatable_fetch_modal").show();
-    //        }
-    //        if (count > 0)
-    //        {
-    //            $('#kt_datatable_group_action_form').collapse('show');
-    //        }
-    //        else
-    //        {
-    //            $('#kt_datatable_group_action_form').collapse('hide');
-    //        }
-    //});
-    //datatable.on('click', '[data-record-id]', function () {
-    //    localStorage.clear();
-    //    Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-    //    initSubDatatable($(this).data('record-id'));
-    //    $('#kt_datatable_modal').modal('show');
-    //});
-};
-return {
-    // public functions
-    init: function () {
-        localStorage.clear();
-        localSelectorDemo();
-    },
-};
+        options.data.source.read.params =
+        {
+            fromDate: ModifyDate(fromDate),
+            toDate: ModifyDate(toDate),
+            active: active,
+            codeName: codeName,
+            itemCode: itemCode,
+            codeDescription: codeDescription,
+            status: status
+        }
+        datatable = $('#kt_datatable2').KTDatatable(options);
+    };
+    return {
+        // public functions
+        init: function () {
+            localStorage.clear();
+            localSelectorDemo();
+        },
+    };
 }();
 
 jQuery(document).ready(function () {
-    sessionStorage.removeItem("PendingDocs");
-    $("#pending_fromDate").val(((fromDate.getDate() > 9) ? fromDate.getDate() : ('0' + fromDate.getDate())) + '-' + monthNames[((fromDate.getMonth() > 8) ? (fromDate.getMonth()) : ((fromDate.getMonth())))] + '-' + fromDate.getFullYear());
-    $("#pending_toDate").val(((toDate.getDate() > 9) ? toDate.getDate() : ('0' + toDate.getDate())) + '-' + monthNames[((toDate.getMonth() > 8) ? (toDate.getMonth()) : ((toDate.getMonth())))] + '-' + toDate.getFullYear());
-    fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
-    toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
     KTDatatableRecordSelectionDemo.init();
+
     $("#_find").on('click', function () {
         searchData();
+    });
+    $("#_clear").on('click', function () {
+        clearFilterationData();
+    });
+    $("#tab_2").on('click', function () {
+        datatable.destroy();
+        KTDatatableRecordSelectionDemo2.init();
+    });
+    $("#tab_1").on('click', function () {
+        datatable.destroy();
+        KTDatatableRecordSelectionDemo.init();
     });
 });
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -204,7 +187,7 @@ function convertToJavaScriptDate(value) {
     hours = hours ? hours : 12; // the hour '0' should be '12'
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
-    return dt.getDate() + "-" + monthNames[(dt.getMonth())] + "-" + dt.getFullYear() + " "+ strTime;
+    return dt.getDate() + "-" + monthNames[(dt.getMonth())] + "-" + dt.getFullYear() + " " + strTime;
 }
 
 function ModifyDate(date) {
@@ -218,116 +201,179 @@ function ModifyDate(date) {
 
 }
 function searchData() {
-    fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
-    toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
+    fromDate = $("#pending_fromDate").val();
+    toDate = ($("#pending_toDate").val());
+    active = ($("#active").val());
+    codeName = ($("#codeName").val());
+    itemCode = ($("#itemCode").val());
+    codeDescription = ($("#codeDescription").val());
+    status = ($("#status").val());
+
     datatable.destroy();
-    KTDatatableRecordSelectionDemo.init();
+    if ($("#kt_tab_pane_2").hasClass('active'))
+        KTDatatableRecordSelectionDemo2.init();
+    else
+        KTDatatableRecordSelectionDemo.init();
 }
-var initSubDatatable = function (id) {
-    var el = $('#kt_datatable_sub');
-    var options_sub = {
+
+function clearFilterationData() {
+    $("#pending_fromDate").val("");
+    $("#pending_toDate").val("");
+    $("#active").val("")
+    $("#codeName").val("");
+    $("#itemCode").val("");
+    $("#codeDescription").val("");
+    $("#status").val("");
+
+    searchData();
+}
+var KTDatatableRecordSelectionDemo2 = function () {
+    var options = {
         data: {
-            type: 'local',
-            source: Result.find(x => x.internalID == id)?.errors,
+            type: 'remote',
+            source: {
+                read: {
+                    method: 'POST',
+                    url: '/v1/code/ajax_SearchMyEGSCodeUsageRequests',
+                    map: function (raw) {
+                        // 
+                        // sample data mapping
+                        var dataSet = raw;
+                        if (typeof raw.data !== 'undefined') {
+                            dataSet = raw.data;
+                        }
+                        return dataSet;
+                    },
+                    timeout: 1000000
+                },
+            },
             pageSize: 5,
+            serverPaging: true,
+            serverFiltering: true,
+            serverSorting: true,
+            saveState: { cookie: false }
         },
-        // layout definition
         layout: {
-            theme: 'default',
             scroll: true,
-            footer: false,
+            height: 800,
+            footer: false
         },
         sortable: true,
         pagination: true,
-        columns: [
-            {
-                field: 'id',
-                title: '#',
-                sortable: false,
-                width: 200,
-                type: 'number',
-                textAlign: 'left'
-            },
-            {
-                field: 'target',
-                title: 'Target',
-                sortable: false,
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'propertyPath',
-                title: 'Property Path',
-                sortable: false,
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'message',
-                title: 'Message',
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'CreatedOn',
-                title: 'Created On',
-                width: 200,
-                textAlign: 'left',
-                template: function (row) {
-                    if (row.CreatedOn) {
-                        var temp = convertToJavaScriptDate(new Date(parseInt(row.CreatedOn.substr(6)))).split(" ");
-                        return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
-                    }
-                    else {
-                        return '<span class="navi-text" style= "float:left; clear:left;">NA</span>\
-                                <span class="navi-text" style= "float:left; clear:left;">NA</span>';
-                    }
-
-                }
+        columns: [{
+            field: 'status',
+            title: 'Status',
+            sortable: false,
+            width: 100,
+            template: function (row) {
+                var status = {
+                    submitted: { 'title': 'Submitted', 'class': 'label-primary' },
+                    approved: { 'title': 'Approved', 'class': 'label-success' },
+                    rejected: { 'title': 'Rejected', 'class': 'label-danger' }
+                };
+                return '<span class="label label-lg font-weight-bold ' + status[row.status.toLowerCase()].class + ' label-inline">' + status[row.status.toLowerCase()].title + '</span>';
             }
-        ],
-    }
-    var datatable = el.KTDatatable(options_sub);
-    var modal = datatable.closest('.modal');
+        },
+        {
+            field: 'codeTypeName',
+            title: 'Code Type',
+            sortable: false,
+            width: 75
+        },
+        {
+            field: 'itemCode',
+            title: 'Item Code',
+            sortable: false,
+            width: 170,
+            template: function (row) {
+                return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
+            },
+        },
+        {
+            field: 'codeNamePrimaryLang',
+            title: 'Name (English)/Name (Arabic)',
+            sortable: false,
+            width: 170,
+            template: function (row) {
+                return '<span class="navi-text" style= "float:left; clear:left;">' + row.codeNamePrimaryLang + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + row.codeNameSecondaryLang + '</span>';
+            }
+        },
+        {
+            field: 'descriptionPrimaryLang',
+            title: 'Description (English)/Description (Arabic)',
+            sortable: false,
+            width: 170,
+            template: function (row) {
+                return '<span class="navi-text" style= "float:left; clear:left;">' + row.descriptionPrimaryLang + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + row.descriptionSecondaryLang + '</span>';
+            }
+        },
+        {
+            field: 'activeFrom',
+            title: 'Active From',
+            sortable: 'desc',
+            template: function (row) {
+                var temp = convertToJavaScriptDate(new Date(row.activeFrom)).split(" ");
+                return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
+            }
+        },
+        {
+            field: 'activeTo',
+            title: 'Active To',
+            sortable: false,
+            template: function (row) {
+                if (row.activeTo != null && row.activeTo != "") {
+                    var temp = convertToJavaScriptDate(new Date(row.activeTo)).split(" ");
+                    return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
+                }
+                else {
+                    return '<span class="navi-text" style= "float:left; clear:left;"></span>';
+                }
 
+            }
+        },
+        {
+            field: 'parentItemCode',
+            title: 'GPC Linked Item',
+            sortable: false,
+            width: 170
+        },
+        {
+            field: 'parentCodeNamePrimaryLang',
+            title: 'GPC Name (English)/GPC Name (Arabic)',
+            sortable: false,
+            width: 170,
+            template: function (row) {
+                return '<span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNamePrimaryLang + '</span>\
+                        <span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNameSecondaryLang + '</span>';
+            }
+        }]
 
-    // Fix datatable layout after modal shown
-    datatable.hide();
-    modal.on('shown.bs.modal', function () {
-        var modalContent = $(this).find('.modal-content');
-        datatable.spinnerCallback(true, modalContent);
-        datatable.spinnerCallback(false, modalContent);
-    }).on('hidden.bs.modal', function () {
-        el.KTDatatable('destroy');
-    });
+    };
+    var localSelectorDemo = function () {
 
-    datatable.on('datatable-on-layout-updated', function () {
-        datatable.show();
-        datatable.redraw();
-    });
-
-    // Fix datatable layout after modal shown
-    //datatable.hide();
-    //var alreadyReloaded = false;
-    //modal.on('shown.bs.modal', function () {
-    //    // 
-    //    if (!alreadyReloaded) {
-    //        var modalContent = $(this).find('.modal-content');
-    //        datatable.spinnerCallback(true, modalContent);
-
-    //        datatable.reload();
-
-    //        datatable.on('datatable-on-layout-updated', function () {
-    //            datatable.show();
-    //            datatable.spinnerCallback(false, modalContent);
-    //            datatable.redraw();
-    //        });
-
-    //        alreadyReloaded = true;
-    //    }
-    //});
-};
-
+        options.data.source.read.params =
+        {
+            fromDate: ModifyDate(fromDate),
+            toDate: ModifyDate(toDate),
+            active: active,
+            codeName: codeName,
+            itemCode: itemCode,
+            codeDescription: codeDescription,
+            status: status
+        }
+        datatable = $('#kt_datatable').KTDatatable(options);
+    };
+    return {
+        // public functions
+        init: function () {
+            localStorage.clear();
+            localSelectorDemo();
+        },
+    };
+}();
 
 

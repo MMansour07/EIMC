@@ -58,10 +58,10 @@ var KTDatatableRecordSelectionDemo = function() {
                     template: function (row) {
                         var status = {
                             Submitted: { 'title': 'Submitted', 'class': 'label-primary' },
-                            Valid: { 'title': 'Valid', 'class': ' label-success' },
-                            Invalid: { 'title': 'Invalid', 'class': ' label-danger' },
+                            Valid:     { 'title': 'Valid', 'class': ' label-success' },
+                            Invalid:   { 'title': 'Invalid', 'class': ' label-danger' },
                             Cancelled: { 'title': 'Cancelled', 'class': ' label-dark' },
-                            Rejected: { 'title': 'Rejected', 'class': ' label-warning' }
+                            Rejected:  { 'title': 'Rejected', 'class': ' label-warning' }
                         };
                         if (row.status.toLowerCase() == "valid" && row.IsCancelRequested) {
                             return '<span class="label label-lg font-weight-bold label-dark label-inline">Valid <i class = "la la-arrow-right"></i> Cancelled</span>';
@@ -92,7 +92,7 @@ var KTDatatableRecordSelectionDemo = function() {
                             d: { 'title': 'Debit Note' },
                         };
                         return '<span class="navi-text" style= "float:left; clear:left;">' + documentType[row.documentType.toLowerCase()].title + '</span>\
-                            <span class="navi-text" style= "float:left; clear:left;">' + row.documentTypeVersion + '</span>';
+                                <span class="navi-text" style= "float:left; clear:left;">' + row.documentTypeVersion + '</span>';
                     }
                 },
                 {
@@ -109,6 +109,7 @@ var KTDatatableRecordSelectionDemo = function() {
 
                     field: 'dateTimeReceived',
                     title: 'Received Date',
+                    sortable: 'desc',
                     template: function (row) {
                         var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeReceived.substr(6)))).split(" ");
                         return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\

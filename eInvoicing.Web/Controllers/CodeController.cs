@@ -43,39 +43,29 @@ namespace eInvoicing.Web.Controllers
         {
             try
             {
-                var pageNumber = Request["pagination[page]"];
-                var pageSize = Request["pagination[perpage]"];
-                string fromDate = Request["fromDate"];
-                string toDate = Request["toDate"];
-                var sortDirection = Request["sort[sort]"];
-                var status = Request["query[status]"];
-                var firstDayOfMonth = DateTime.Now.AddYears(-2);
-                var Today = DateTime.Now;
-                //DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-ddThh:mm:ssZ", CultureInfo.InvariantCulture);
-                //DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-ddThh:mm:ssZ", CultureInfo.InvariantCulture);
                 var req = new SearchEGSCodeRequestDTO()
                 {
-                    pageNumber = Convert.ToInt32(pageNumber),
-                    active = true,
-                    ActiveFrom = DateTime.UtcNow.AddYears(-2),
-                    ActiveTo = DateTime.UtcNow,
-                    CodeName = null,
-                    ItemCode = null,
-                    orderDirections = sortDirection,
-                    CodeDescription = null,
-                    pageSize = Convert.ToInt32(pageSize),
-                    status = status,
-                    ParentItemCode = null,
-                    ParentLevelName = null
+                    pageNumber = Convert.ToInt32(Request["pagination[page]"]),
+                    pageSize = Convert.ToInt32(Request["pagination[perpage]"]),
+                    orderDirections = Request["sort[sort]"],
+                    active = Request["active"],
+                    activeFrom = Request["fromDate"],
+                    activeTo = Request["toDate"],
+                    codeName = Request["codeName"],
+                    itemCode = Request["itemCode"],
+                    codeDescription = Request["codeDescription"],
+                    status = Request["status"]
                 };
                 string url = "api/code/SearchMyEGSCodeUsageRequests/";
                 var response = _httpClient.POST(url, req);
                 var Content = JsonConvert.DeserializeObject<SearchEGSCodeResponseDTO>(response.Info);
                 return Json(new SearchEGSCodeResponse()
                 {
-                    data = PagedList<SearchEGSCodeResultDTO>.Create(Content?.result, Convert.ToInt32(pageNumber), Convert.ToInt32(pageSize), Content?.metadata?.totalCount),
+                    data = PagedList<SearchEGSCodeResultDTO>.Create(Content?.result, Convert.ToInt32(Request["pagination[page]"]), Convert.ToInt32(Request["pagination[perpage]"]), Content?.metadata?.totalCount),
                     meta = new Meta()
                     {
+                        page = Convert.ToInt32(Request["pagination[page]"]),
+                        perpage = Convert.ToInt32(Request["pagination[perpage]"]),
                         pages = Content?.metadata?.totalPages,
                         total = Content?.metadata?.totalCount
                     }

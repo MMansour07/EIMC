@@ -53,22 +53,22 @@ var KTDatatableRecordSelectionDemo = function() {
                 {
                     field: 'status',
                     title: 'Status',
-                    width: '135',
+                    width: '100',
                     // callback function support for column rendering
                     template: function (row) {
                         var status = {
                             Submitted: { 'title': 'Submitted', 'class': 'label-primary' },
-                            Valid: { 'title': 'Valid', 'class': ' label-success' },
-                            Invalid: { 'title': 'Invalid', 'class': ' label-danger' },
-                            Cancelled: { 'title': 'Cancelled', 'class': ' label-dark' },
-                            Rejected: { 'title': 'Rejected', 'class': ' label-warning' }
+                            Valid:     { 'title': 'Valid',     'class': 'label-success' },
+                            Invalid:   { 'title': 'Invalid',   'class': 'label-danger' },
+                            Cancelled: { 'title': 'Cancelled', 'class': 'label-dark' },
+                            Rejected:  { 'title': 'Rejected',  'class': 'label-warning' }
                         };
                         if (row.status.toLowerCase() == "valid" && row.IsCancelRequested) {
                             return '<span class="label label-lg font-weight-bold label-dark label-inline">Valid <i class = "la la-arrow-right"></i> Cancelled</span>';
                         }
                         else
                         {
-                            return '<span class="label label-lg font-weight-bold' + status[row.status].class + ' label-inline">' + row.status + '</span>';
+                            return '<span class="label label-lg font-weight-bold ' + status[row.status].class + ' label-inline">' + row.status + '</span>';
                         }
                     }
                 },
@@ -109,6 +109,7 @@ var KTDatatableRecordSelectionDemo = function() {
 
                     field: 'dateTimeReceived',
                     title: 'Received Date',
+                    sortable: 'desc',
                     template: function (row) {
                         var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeReceived.substr(6)))).split(" ");
                         return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
@@ -119,7 +120,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     field: 'receiver.name',
                     title: 'Receiver/Id',
                     sortable: false,
-                    width: 170,
+                    width: 130,
                     template: function (row) {
                         return '<span class="navi-text" style= "float:left; clear:left;">' + ((row.receiver.name) ? row.receiver.name : 'NA') + '</span>\
                                 <span class="navi-text" style= "float:left; clear:left; color:#02bda1;">' + ((row.receiver.id) ? row.receiver.id : 'NA') + '</span>';

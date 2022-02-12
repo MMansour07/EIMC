@@ -6,7 +6,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<div class="card-body">
+<div class="card-body" data-scroll="true" data-height="200">
     <div class="form-group row">
         @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
     </div>
@@ -26,7 +26,6 @@
     </div>
     <div class="form-group row">
         <div class="col-md-12">
-            <label>Permissions *</label>
             @Html.ListBoxFor(model => model.Permissions, ViewBag.Permissions as SelectList, new { @class = "form-control select2", @id = "kt_select2_3", @name = "param", @multiple = "multiple", @placeholder = "Roles" })
             @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })
         </div>

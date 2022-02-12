@@ -16,19 +16,20 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h5 class="text-light font-weight-bold my-1 mr-5">
+                    <h2 class="text-white font-weight-bold my-1 mr-5">
+                        <i class="flaticon2-document header-icon"></i>
                         Draft
-                    </h5>
+                    </h2>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Master")" class="text-light">
+                            <a href="@Url.Action("Index", "Master")" class="text-white">
                                 Home
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("pending", "document")" class="text-light">
+                            <a href="@Url.Action("pending", "document")" class="text-white">
                                 Draft
                             </a>
                         </li>
@@ -50,10 +51,10 @@
                     @Html.AntiForgeryToken()
                     <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
-                            <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                            <span class="text-white font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
+                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
                         </div>
-                        <span class="symbol symbol-lg-35 symbol-25 symbol-light">
+                        <span class="symbol symbol-lg-35 symbol-25 symbol-white">
                             <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
                         </span>
                     </a>
@@ -91,146 +92,177 @@
     </div>
     <!--end::Subheader-->
     <!--begin::Card-->
-    <div class="card card-custom gutter-b">
-        <div class="card-header bg-secondary flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">
-                    Recent Documents
-                    <span class="d-block text-primary pt-2 font-size-sm">Recently added documents from ERP system.</span>
-                </h3>
+    @using System.Security.Claims;
+    @using Microsoft.AspNet.Identity;
+    @if (Request.IsAuthenticated && ((ClaimsPrincipal)HttpContext.Current.User).FindFirst("IsDBSync")?.Value == "True")
+    {
+        <div class="row mb-2">
+            <div class="col-lg-11">
+
             </div>
-            @using System.Security.Claims;
-            @using Microsoft.AspNet.Identity;
-            @if (Request.IsAuthenticated && ((ClaimsPrincipal)HttpContext.Current.User).FindFirst("IsDBSync")?.Value == "True")
-            {
-                <div class="card-toolbar">
-                    <a href="#" id="_sync" class="btn btn-sm btn-primary font-weight-bold">
-                        <i class="flaticon2-refresh"></i> Sync
+            <div class="col-lg-1">
+                <div class="d-flex align-items-center">
+                    <a href="#" class="btn btn-primary font-weight-bolder btn-sm">
+                        Actions
                     </a>
+                    <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Quick actions">
+                        <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                        <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                        <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                        <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000"></path>
+                                    </g>
+                                </svg><!--end::Svg Icon-->
+                            </span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right p-0 m-0">
+                            <!--begin::Navigation-->
+                            <ul class="navi navi-hover">
+                                <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                                    Choose an action:
+                                </li>
+                                <li class="navi-item">
+                                    <a href="#" id="_sync" class="navi-link">
+                                        <span class="navi-icon"><i class="flaticon-refresh"></i></span>
+                                        <span class="navi-text">Sync</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <!--end::Navigation-->
+                        </div>
+
+                    </div>
+                    <!--end::Dropdown-->
                 </div>
-            }
-
-        </div>
-
-        <div class="card-body">
-            <!--begin: Search Form-->
-            <!--begin::Search Form-->
-            <div class="mb-7">
-                <div class="row align-items-center mb-4">
-                    <div class="col-lg-5 col-md-6 col-sm-12">
-                        <div class="input-group date">
-                            <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="From Date">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="la la-calendar"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-5 col-md-6 col-sm-12">
-                        <div class="input-group date">
-                            <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="To Date">
-                            <div class="input-group-append">
-                                <span class="input-group-text">
-                                    <i class="la la-calendar"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <!--<div class="col-lg-10">-->
-                    @*<label>Issued On:</label>
-        <div class="input-daterange input-group">
-            <input type="text" id="pending_fromDate" class="form-control datatable-input" name="start" placeholder="From" data-col-index="5">
-            <div class="input-group-append">
-                <span class="input-group-text"><i class="la la-ellipsis-h"></i></span>
+                <!--end::Toolbar-->
             </div>
-            <input type="text" id="pending_toDate" class="form-control datatable-input" name="end" placeholder="To" data-col-index="5">
-        </div>*@
-                    <!--</div>-->
-                    <div class="col-lg-2">
-                        <a href="#" id="_find" class="btn btn btn-primary font-weight-bold btn-square">
-                            <i class="flaticon-search"></i>
-                            Find
+        </div>
+    }
+        <div class="card card-custom gutter-b">
+            <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Recent Documents
+                        <span class="d-block text-primary pt-2 font-size-sm">Recently added documents from ERP system.</span>
+                    </h3>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="mb-7">
+                    <div class="row">
+                        <div class="col-md-6" style="border-right: 1px solid #02bda1;">
+                            <div class="row mb-2">
+                                <div class="col-lg-12">
+                                    <label>Issued From:</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="From Date">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-lg-12">
+                                    <label>Issued To:</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="To Date">
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">
+                                                <i class="la la-calendar"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <label></label>
+                                    <a href="#" id="_find" class="btn btn btn-primary font-weight-bold mt-7" style="float: right;">
+                                        Find
+                                        <i class="flaticon-search ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label>General Search:</label>
+                                    <div class="input-icon">
+                                        <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-md-12">
+                                    <label>Status:</label>
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-control" id="kt_datatable_search_status">
+                                            <option value="">All</option>
+                                            <option value="New">New</option>
+                                            <option value="Failed">Failed</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div class="mt-10 mb-5 collapse" id="kt_datatable_group_action_form">
+                    <div class="d-flex align-items-center">
+                        <div class="font-weight-bold text-dark-75 mr-3">
+                            Selected <span id="kt_datatable_selected_records">0</span> records:
+                        </div>
+                        <a href="#" id="kt_datatable_send" class="btn btn btn-primary font-weight-bold mr-2">
+                            Send
+                            <i class="flaticon-paper-plane-1"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_fetch_modal" class="btn btn btn-primary font-weight-bold mr-2">
+                            <i class="flaticon-paper-plane-1"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_sendAll" class="btn btn btn-primary font-weight-bold">
+                            Send All <i class="flaticon-paper-plane-1"></i>
                         </a>
                     </div>
                 </div>
-
-                <div class="row align-items-center">
-                    <div class="col-md-5">
-                        <label>General Search:</label>
-                        <div class="input-icon">
-                            <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
-                            <span><i class="flaticon2-search-1 text-muted"></i></span>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
-                        <label>Status:</label>
-                        <div class="d-flex align-items-center">
-                            <select class="form-control" id="kt_datatable_search_status">
-                                <option value="">All</option>
-                                <option value="New">New</option>
-                                <option value="Failed">Failed</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
             </div>
-            <!--end::Search Form-->
-            <!--end: Search Form-->
-            <!--begin: Selected Rows Group Action Form-->
-            <div class="mt-10 mb-5 collapse" id="kt_datatable_group_action_form">
-                <div class="d-flex align-items-center">
-                    <div class="font-weight-bold text-dark-75 mr-3">
-                        Selected <span id="kt_datatable_selected_records">0</span> records:
-                    </div>
-                    @*@using System.Security.Claims;
-                    @using Microsoft.AspNet.Identity;
-                    @if (Request.IsAuthenticated &&
-                    ((ClaimsPrincipal)HttpContext.Current.User).FindAll("Permission")
-                    .Select(i => i.Value.ToLower()).Where(x => x == "submit" || x == "auto_submit").Count() > 0)
-                    {*@
-                        <button class="btn btn-sm btn-bg-light mr-2 btn-square" type="button" id="kt_datatable_send">
-                            Send <i class="far fa-arrow-alt-circle-right"></i>
-                        </button>
-                        <button class="btn btn-sm btn-bg-secondary  mr-2 btn-square" type="button" id="kt_datatable_fetch_modal">
-                            <i class="far fa-arrow-alt-circle-right"></i>
-                        </button>
-                        <button class="btn btn-sm btn-bg-light btn-square" type="button" id="kt_datatable_sendAll">
-                            Send All <i class="far fa-arrow-alt-circle-right"></i>
-                        </button>
-                   @* }*@
-                </div>
-            </div>
-            <!--end: Selected Rows Group Action Form-->
-            <!--begin: Datatable-->
-            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
-            <!--end: Datatable-->
         </div>
-    </div>
-    <!--end::Card-->
-    <!--begin::Modal-->
-    <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="min-height: 400px;">
-                <div class="modal-header bg-warning" py-5">
-                    <h5 class="modal-title" style="color: #3F4254 !important">
-                        Errors
-                        <span style="color: #3F4254 !important" class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!--begin: Datatable-->
-                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
-                    <!--end: Datatable-->
+        <!--end::Card-->
+        <!--begin::Modal-->
+        <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content" style="min-height: 400px;">
+                    <div class="modal-header bg-warning" py-5">
+                        <h5 class="modal-title" style="color: #3F4254 !important">
+                            Errors
+                            <span style="color: #3F4254 !important" class="d-block text-muted font-size-sm">The reasons why this document didn't be sent.</span>
+                        </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!--begin: Datatable-->
+                        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
+                        <!--end: Datatable-->
+                    </div>
                 </div>
             </div>
         </div>
+        <!--end::Modal-->
     </div>
-    <!--end::Modal-->
-</div>
 
 <script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/record-selection.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>

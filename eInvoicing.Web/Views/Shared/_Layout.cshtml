@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using eInvoicing.Web.Views.Shared
+<!DOCTYPE html>
 <html lang="en">
 <!--begin::Head-->
 <head>
@@ -142,7 +143,7 @@
                 <div class="brand flex-column-auto " id="kt_brand">
                     <!--begin::Logo-->
                     <a href="@Url.Action("Index", "Master")" class="brand-logo mt-10">
-                        <img alt="Logo" src="~/Content/images/E-Hub_logo_transparent.png"/>
+                        <img alt="Logo" src="~/Content/images/fatorti-logo.png"/>
                     </a>
                     <!--end::Logo-->
                     <!--begin::Toggle-->
@@ -180,11 +181,11 @@
                                                 <path d="M11.0563554,18.6706981 L5.33593024,14.122919 C4.94553994,13.8125559 4.37746707,13.8774308 4.06710397,14.2678211 C4.06471678,14.2708238 4.06234874,14.2738418 4.06,14.2768747 L4.06,14.2768747 C3.75257288,14.6738539 3.82516916,15.244888 4.22214834,15.5523151 C4.22358765,15.5534297 4.2250303,15.55454 4.22647627,15.555646 L11.0872776,20.8031356 C11.6250734,21.2144692 12.371757,21.2145375 12.909628,20.8033023 L19.7677785,15.559828 C20.1693192,15.2528257 20.2459576,14.6784381 19.9389553,14.2768974 C19.9376429,14.2751809 19.9363245,14.2734691 19.935,14.2717619 L19.935,14.2717619 C19.6266937,13.8743807 19.0546209,13.8021712 18.6572397,14.1104775 C18.654352,14.112718 18.6514778,14.1149757 18.6486172,14.1172508 L12.9235044,18.6705218 C12.377022,19.1051477 11.6029199,19.1052208 11.0563554,18.6706981 Z" fill="#000000" opacity="0.3" />
                                             </g>
                                         </svg><!--end::Svg Icon-->
-                                    </span><span class="menu-text">Dashboard</span>
+                                    </span><span class="menu-text">@SharedResources.Dashboard</span>
                                 </a>
                             </li>
                             <li class="menu-section ">
-                                <h3 class="menu-text" style="color: black !important;">Main</h3>
+                                <h3 class="menu-text" style="color: black !important;">@SharedResources.Main</h3>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             <li class="menu-item  menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover">
@@ -198,7 +199,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Documents</span><i class="menu-arrow"></i>
+                                    <span class="menu-text">@SharedResources.Documents</span><i class="menu-arrow"></i>
                                 </a>
                                 <div class="menu-submenu">
                                     <i class="menu-arrow"></i><ul class="menu-subnav">
@@ -206,7 +207,7 @@
                                         <li class="menu-item menu-item-submenu" aria-haspopup="true">
                                             <a href="javascript:;" class="menu-link menu-toggle">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text">Initiate</span>
+                                                <span class="menu-text">@SharedResources.Initiate</span>
                                                 <i class="menu-arrow"></i>
                                                 @*<span class="font-weight-lighter" style="margin: auto !important;"></span>*@
                                             </a>
@@ -217,14 +218,14 @@
                                                     <li class="menu-item " aria-haspopup="true">
                                                         <a href="@Url.Action("new_document", "document")" class="menu-link">
                                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                            <span class="menu-text">Create New Document</span>
+                                                            <span class="menu-text">@SharedResources.CreateDocument</span>
                                                             <span class="font-weight-lighter" style="margin: auto !important;"></span>
                                                         </a>
                                                     </li>
                                                     <li class="menu-item uppy" aria-haspopup="true" id="kt_uppy_6">
                                                         <a href="javascript:;" id="kt_uppy_layout" class="menu-link uppy-btn">
                                                             <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                            <span class="menu-text">Import a worksheet</span>
+                                                            <span class="menu-text">@SharedResources.ImportWorksheet</span>
                                                             <span class="font-weight-lighter" style="margin: auto !important;"></span>
                                                         </a>
                                                         <div class="uppy-dashboard"></div>
@@ -236,21 +237,21 @@
                                         <li class="menu-item " aria-haspopup="true">
                                             <a href="@Url.Action("pending", "document")" class="menu-link ">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text">Draft</span>
+                                                <span class="menu-text">@SharedResources.Draft</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_draft"></span>
                                             </a>
                                         </li>
                                         <li class="menu-item " aria-haspopup="true">
                                             <a href="@Url.Action("submitted", "document")" class="menu-link ">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text">Sent</span>
+                                                <span class="menu-text">@SharedResources.Sent</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_sent"></span>
                                             </a>
                                         </li>
                                     <li class="menu-item " aria-haspopup="true">
                                             <a href="@Url.Action("received", "document")" class="menu-link ">
                                                 <i class="menu-bullet menu-bullet-dot"><span></span></i>
-                                                <span class="menu-text">Received</span>
+                                                <span class="menu-text">@SharedResources.Received</span>
                                                 <span class="font-weight-lighter" style="margin: auto !important;" id="_received"></span>
                                             </a>
                                         </li>
@@ -268,7 +269,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Codes</span>
+                                    <span class="menu-text">@SharedResources.Codes</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -282,7 +283,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Packages</span>
+                                    <span class="menu-text">@SharedResources.Packages</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
@@ -295,11 +296,11 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Notifications</span>
+                                    <span class="menu-text">@SharedResources.Notifications</span>
                                 </a>
                             </li>
                             <li class="menu-section ">
-                                <h3 class="menu-text" style="color: black !important;">Reports</h3>
+                                <h3 class="menu-text" style="color: black !important;">@SharedResources.Reports</h3>
                                 <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -315,7 +316,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Documents Statistics</span>
+                                    <span class="menu-text">@SharedResources.DocumentsStatistics</span>
                                 </a>
                             </li>
                             <li class="menu-item" aria-haspopup="true">
@@ -330,7 +331,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Invalid Documents Reasons</span>
+                                    <span class="menu-text">@SharedResources.InvalidDocumentsReasons</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
@@ -344,7 +345,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Top Goods Usage</span>
+                                    <span class="menu-text">@SharedResources.TopGoodsUsage</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
@@ -358,7 +359,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Monthly Bestseller Items</span>
+                                    <span class="menu-text">@SharedResources.MonthlyBestseller</span>
                                 </a>
                             </li>
                             <li class="menu-item " aria-haspopup="true">
@@ -372,7 +373,7 @@
                                             </g>
                                         </svg><!--end::Svg Icon-->
                                     </span>
-                                    <span class="menu-text">Monthly Lowestseller Items</span>
+                                    <span class="menu-text">@SharedResources.MonthlyLowestseller</span>
                                 </a>
                             </li>
 
@@ -382,7 +383,7 @@
                             @if (Request.IsAuthenticated && (roles.Contains("superadmin") || roles.Contains("administrator")))
                             {
                                 <li class="menu-section ">
-                                    <h3 class="menu-text" style="color: black !important;">Application Settings</h3>
+                                    <h3 class="menu-text" style="color: black !important;">@SharedResources.ApplicationSettings</h3>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 <li class="menu-item " aria-haspopup="true">
@@ -396,7 +397,7 @@
                                                 </g>
                                             </svg><!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">Users</span>
+                                        <span class="menu-text">@SharedResources.Users</span>
                                     </a>
                                 </li>
                                 if (Request.IsAuthenticated && roles.Contains("superadmin"))
@@ -412,7 +413,7 @@
                                                     </g>
                                                 </svg><!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Business Groups</span>
+                                            <span class="menu-text">@SharedResources.BusinessGroups</span>
                                         </a>
                                     </li>
                                     <li class="menu-item " aria-haspopup="true">
@@ -426,7 +427,7 @@
                                                     </g>
                                                 </svg><!--end::Svg Icon-->
                                             </span>
-                                            <span class="menu-text">Roles</span>
+                                            <span class="menu-text">@SharedResources.Roles</span>
                                         </a>
                                     </li>
                                 }
@@ -441,7 +442,7 @@
                                                 </g>
                                             </svg><!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">General</span>
+                                        <span class="menu-text">@SharedResources.General</span>
                                     </a>
                                 </li>
                                 <li class="menu-item uppy" aria-haspopup="true" id="">
@@ -456,7 +457,7 @@
                                                 </g>
                                             </svg><!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">License</span>
+                                        <span class="menu-text">@SharedResources.License</span>
                                     </a>
                                 </li>
                             }
@@ -464,7 +465,7 @@
                             @if (Request.IsAuthenticated && roles.Contains("business user"))
                             {
                                 <li class="menu-section ">
-                                    <h3 class="menu-text" style="color: black !important;">Application Settings</h3>
+                                    <h3 class="menu-text" style="color: black !important;">@SharedResources.ApplicationSettings</h3>
                                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                                 </li>
                                 <li class="menu-item " aria-haspopup="true">
@@ -478,7 +479,7 @@
                                                 </g>
                                             </svg><!--end::Svg Icon-->
                                         </span>
-                                        <span class="menu-text">General</span>
+                                        <span class="menu-text">@SharedResources.General</span>
                                     </a>
                                 </li>
                             }

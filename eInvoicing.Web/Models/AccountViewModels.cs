@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using eInvoicing.Web.Views.User;
 
 namespace eInvoicing.Web.Models
 {
@@ -64,34 +65,41 @@ namespace eInvoicing.Web.Models
 
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Required Field.")]
-        [EmailAddress(ErrorMessage ="Invalid email address")]
-        [Display(Name = "Email")]
+        [Required(ErrorMessageResourceType = typeof(UserResources),ErrorMessageResourceName = "RequiredFieldMsg")]
+        [EmailAddress(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "InvalidEmailMsg")]
         public string Email { get; set; }
-
         public string UserName { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
+
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
         public string PhoneNumber { get; set; }
         public string Id { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
+
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
+        
         public string Title { get; set; }
 
-        [Required(ErrorMessage = "Required Field.")]
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
         //[StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         //[DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+       
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "NonmatchingPasswordMsg")]
         public string ConfirmPassword { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
+
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
+        
         public string FirstName { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
+
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
+        
         public string LastName { get; set; }
         public string FullName { get; set; }
-        [Required(ErrorMessage = "Required Field.")]
+
+        [Required(ErrorMessageResourceType = typeof(UserResources), ErrorMessageResourceName = "RequiredFieldMsg")]
+        //[Display(ResourceType = typeof(UserResources), Name = "Roles")]
         public List<string> Roles { get; set; }
         public string BusinessGroupId { get; set; }
         public string SlashSeparatedRoles { get; set; }

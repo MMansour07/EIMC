@@ -1,5 +1,5 @@
 ﻿@model eInvoicing.DTO.EditModelDTO
-
+@using eInvoicing.Web.Views.User;
 
 <!--begin::Form-->
 <!--begin::Wizard Form-->
@@ -13,33 +13,33 @@
     @Html.HiddenFor(model => model.Id)
     <div class="form-group row">
         <div class="col-md-6">
-            <label>First Name *</label>
+            <label>@UserResources.FirstName *</label>
             @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
             @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-6">
-            <label>Last Name *</label>
+            <label>@UserResources.LastName *</label>
             @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
             @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group row">
         <div class="col-md-12">
-            <label>Email *</label>
+            <label>@UserResources.Email *</label>
             @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group row">
         <div class="col-md-12">
-            <label>Title *</label>
+            <label>@UserResources.Title *</label>
             @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
             @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group row">
         <div class="col-md-12">
-            <label>Phone Number *</label>
+            <label>@UserResources.PhoneNumber *</label>
             @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
             @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
         </div>
@@ -52,7 +52,7 @@
     </div>
     <div class="form-group row">
         <div class="col-md-12">
-            <label>Business Group *</label>
+            <label>@UserResources.BusinessGroup *</label>
             @Html.DropDownListFor(model => model.BusinessGroupId, (List<SelectListItem>)ViewBag?.Groups, new { @class = "form-control", @name = "Group" })
             @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
         </div>
@@ -73,31 +73,31 @@
                     Email: {
                         validators: {
                             notEmpty: {
-                                message: 'Email is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             },
                             emailAddress: {
-                                message: 'The value is not a valid email address'
+                                message: '@UserResources.InvalidEmailMsg'
                             }
                         }
                     },
                     FirstName: {
                         validators: {
                             notEmpty: {
-                                message: 'First Name is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             },
                         }
                     },
                     LastName: {
                         validators: {
                             notEmpty: {
-                                message: 'Last Name is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             }
                         }
                     },
                     Title: {
                         validators: {
                             notEmpty: {
-                                message: 'Title is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             },
 
                         }
@@ -105,7 +105,7 @@
                     PhoneNumber: {
                         validators: {
                             notEmpty: {
-                                message: 'Phone Number is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             },
 
                         }
@@ -114,14 +114,14 @@
                         validators: {
                             choice: {
                                 min: 1,
-                                message: 'Please kindly select at least one role'
+                                message: '@UserResources.RequiredRolesMsg'
                             }
                         }
                     },
                     Group: {
                         validators: {
                             notEmpty: {
-                                message: 'Group is required'
+                                message: '@UserResources.RequiredFieldMsg'
                             },
                         }
                     }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using eInvoicing.Web.Views.Master
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container-fluid">
@@ -10,8 +11,8 @@
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h2 class="text-white font-weight-bold my-1 mr-5">
-                        <i class="flaticon-home-1 header-icon"></i>
+                    <i class="flaticon-home-1 header-icon"></i>
+                    <h2 class="text-white font-weight-bold my-1 icon-title">
                         Home
                     </h2>
                     <!--end::Page Title-->
@@ -49,7 +50,7 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
+                            <span class="menu-text" style="padding-top: 3px;">@MasterResources.MyProfileBtn</span>
                         </a>
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
                             <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
@@ -62,7 +63,7 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
+                            <span class="menu-text" style="padding-top: 3px;">@MasterResources.SignOutBtn</span>
                         </a>
                     </div>
                 }
@@ -72,10 +73,10 @@
     </div>
     <!--end::Subheader-->
     <div class="form-group row mb-4">
-        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #02bda1 !important;"><b>Activity Overview:</b></label>
+        <label class="col-form-label text-right text-overview  col-lg-9 col-sm-12 menu-text" style="color: #02bda1 !important;"><b>@MasterResources.ActivityOverviewLbl</b></label>
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="input-group date">
-                <input type="text" class="form-control" id="kt_datepicker_2" readonly="readonly" placeholder="Select date">
+                <input type="text" class="form-control" id="kt_datepicker_2" readonly="readonly" placeholder=@MasterResources.SelectDateLbl>
                 <div class="input-group-append">
                     <span class="input-group-text">
                         <i class="la la-calendar"></i>
@@ -99,7 +100,7 @@
                             </h3>*@
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-up text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>Submitted Valid Documents:</u> <span class="font-weight-bolder mt-3 font-size-lg ml-1" id="ReceivedValidDocumentsCount1"></span> </h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.SubmittedValidLbl</u> <span class="font-weight-bolder mt-3 font-size-lg ml-1" id="ReceivedValidDocumentsCount1"></span> </h3>
                                 <hr />
                                 <u></u>
                             </div>
@@ -139,19 +140,19 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder mb-1 font-size-lg">Invoice <span id="ReceivedInvoiceCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <a class="font-weight-bolder mb-1 font-size-lg">@MasterResources.InvoiceLbl <span id="ReceivedInvoiceCount"></span></a>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedInvoiceTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedInvoiceTotalTax">
                                                 </span>
@@ -174,19 +175,19 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder mb-1 font-size-lg">Credit Note <span id="ReceivedCreditCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <a class="font-weight-bolder mb-1 font-size-lg">@MasterResources.CreditNoteLbl <span id="ReceivedCreditCount"></span></a>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedCreditTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedCreditTotalTax">
                                                 </span>
@@ -209,19 +210,19 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder font-size-lg">Debit Note <span id="ReceivedDebitCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <a class="font-weight-bolder font-size-lg">@MasterResources.DebitNoteLbl <span id="ReceivedDebitCount"></span></a>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedDebitTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="ReceivedDebitTotalTax">
                                                 </span>
@@ -243,7 +244,7 @@
                         <div class="card-header bg-diagonal-secondary border-0 pt-5">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-up text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>States Statistics</u></h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.StatesStatisticsLbl</u></h3>
                             </div>
                             <span class="text-primary mt-3 font-weight-bold font-size-sm" id="ReceivedValidDocumentsCount1" style="display: none !important;"></span>
                         </div>
@@ -251,7 +252,7 @@
                         <div class="card-body pt-0">
                             <div class="">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-success font-weight-bold mr-2">Valid</div>
+                                    <div class="text-success font-weight-bold mr-2">@MasterResources.ValidLbl</div>
                                     <div class="text-success font-weight-bold" id="ReceivedValidDocumentsCount2"></div>
                                 </div>
                                 <div class="progress bg-light-success progress-xs">
@@ -260,7 +261,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-danger font-weight-bold mr-2">Invalid</div>
+                                    <div class="text-danger font-weight-bold mr-2">@MasterResources.InvalidLbl</div>
                                     <div class="text-danger font-weight-bold" id="ReceivedInValidDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-danger progress-xs">
@@ -269,7 +270,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-dark font-weight-bold mr-2">Cancelled</div>
+                                    <div class="text-dark font-weight-bold mr-2">@MasterResources.CancelledLbl</div>
                                     <div class="text-dark font-weight-bold" id="ReceivedCanceledDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-dark progress-xs">
@@ -278,7 +279,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-warning font-weight-bold mr-2">Rejected</div>
+                                    <div class="text-warning font-weight-bold mr-2">@MasterResources.RejectedLbl</div>
                                     <div class="text-warning font-weight-bold" id="ReceivedRejectedDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-warning progress-xs">
@@ -287,7 +288,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-info font-weight-bold mr-2">Submitted</div>
+                                    <div class="text-info font-weight-bold mr-2">@MasterResources.SubmittedLbl</div>
                                     <div class="text-info font-weight-bold" id="ReceivedSubmittedDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-info progress-xs">
@@ -305,7 +306,7 @@
                         <div class="card-header border-0 bg-white">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-up text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>Top Goods & Services Codes usage</u></h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.TopGoodsLbl</u></h3>
                             </div>
                         </div>
                         <div class="card-toolbar">
@@ -315,11 +316,11 @@
                             <table class="table  table-hover table-checkable" id="kt_datatable" style="margin-top: 13px !important">
                                 <thead>
                                     <tr>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Amount</th>
-                                        <th>Tax</th>
+                                        <th>@MasterResources.CodeLbl</th>
+                                        <th>@MasterResources.DescriptionLbl</th>
+                                        <th>@MasterResources.QuantityLbl</th>
+                                        <th>@MasterResources.AmountLbl</th>
+                                        <th>@MasterResources.TaxLbl</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -342,7 +343,7 @@
                         <div class="card-header bg-white border-0 pt-5">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-down text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>Received Valid Documents:</u> <span class="font-weight-bolder mt-3 font-size-lg ml-1" id="SubmittedValidDocumentsCount1"></span> </h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.ReceivedValidLbl</u> <span class="font-weight-bolder mt-3 font-size-lg ml-1" id="SubmittedValidDocumentsCount1"></span> </h3>
                                 <hr />
                                 <u></u>
                             </div>
@@ -383,18 +384,18 @@
                                             </td>
                                             <td class="pl-0">
                                                 <a class="font-weight-bolder font-size-lg">Invoice <span id="SubmittedInvoiceCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedInvoiceTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedInvoiceTotalTax">
                                                 </span>
@@ -417,19 +418,19 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder font-size-lg">Credit Note <span id="SubmittedCreditCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <a class="font-weight-bolder font-size-lg">@MasterResources.CreditNoteLbl <span id="SubmittedCreditCount"></span></a>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedCreditTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedCreditTotalTax">
                                                 </span>
@@ -452,19 +453,19 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder font-size-lg">Debit Note <span id="SubmittedDebitCount"></span></a>
-                                                <span class="text-success font-weight-bold d-block">Valid</span>
+                                                <a class="font-weight-bolder font-size-lg">@MasterResources.DebitNoteLbl <span id="SubmittedDebitCount"></span></a>
+                                                <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Amount
+                                                    @MasterResources.TotalAmountLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedDebitTotalAmount">
                                                 </span>
                                             </td>
                                             <td class="text-left">
                                                 <span class="text-primary font-weight-bold">
-                                                    Total Tax (VAT)
+                                                    @MasterResources.TotalTaxLbl
                                                 </span>
                                                 <span class="text-dark-75 font-weight-bolder d-block font-size-lg" id="SubmittedDebitTotalTax">
                                                 </span>
@@ -485,7 +486,7 @@
                         <div class="card-header bg-diagonal-secondary border-0 pt-5">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-down text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>States Statistics</u></h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.StatesStatisticsLbl</u></h3>
                             </div>
                             <span class="text-primary mt-3 font-weight-bold font-size-sm" id="SubmittedValidDocumentsCount1" style="display: none !important;"></span>
                         </div>
@@ -493,7 +494,7 @@
                         <div class="card-body pt-0">
                             <div class="">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-success font-weight-bold mr-2">Valid</div>
+                                    <div class="text-success font-weight-bold mr-2">@MasterResources.ValidLbl</div>
                                     <div class="text-success font-weight-bold" id="SubmittedValidDocumentsCount2"></div>
                                 </div>
                                 <div class="progress bg-light-success progress-xs">
@@ -502,7 +503,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-danger font-weight-bold mr-2">Invalid</div>
+                                    <div class="text-danger font-weight-bold mr-2">@MasterResources.InvalidLbl</div>
                                     <div class="text-danger font-weight-bold" id="SubmittedInValidDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-danger progress-xs">
@@ -511,7 +512,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-dark font-weight-bold mr-2">Cancelled</div>
+                                    <div class="text-dark font-weight-bold mr-2">@MasterResources.CancelledLbl</div>
                                     <div class="text-dark font-weight-bold" id="SubmittedCanceledDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-dark progress-xs">
@@ -520,7 +521,7 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-warning font-weight-bold mr-2">Rejected</div>
+                                    <div class="text-warning font-weight-bold mr-2">@MasterResources.RejectedLbl</div>
                                     <div class="text-warning font-weight-bold" id="SubmittedRejectedDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-warning progress-xs">
@@ -547,7 +548,7 @@
                         <div class="card-header border-0 bg-white">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-down text-primary" style="font-size: 2.25rem !important;"></i></span>
-                                <h3 class="card-label font-weight-bolder"><u>Top Goods & Services Codes usage</u></h3>
+                                <h3 class="card-label font-weight-bolder"><u>@MasterResources.TopGoodsLbl</u></h3>
                             </div>
                         </div>
                         <div class="card-toolbar">
@@ -557,11 +558,11 @@
                             <table class="table table-hover table-checkable" id="kt_datatable2" style="margin-top: 13px !important">
                                 <thead>
                                     <tr>
-                                        <th>Code</th>
-                                        <th>Description</th>
-                                        <th>Quantity</th>
-                                        <th>Amount</th>
-                                        <th>Tax</th>
+                                        <th>@MasterResources.CodeLbl</th>
+                                        <th>@MasterResources.DescriptionLbl</th>
+                                        <th>@MasterResources.QuantityLbl</th>
+                                        <th>@MasterResources.AmountLbl</th>
+                                        <th>@MasterResources.TaxLbl</th>
                                     </tr>
                                 </thead>
                             </table>
@@ -592,6 +593,211 @@
             $("#_import").css("display", "none");
             $('input[name=License]').val("");
         })
+
+        var data = { SubmittedInvoiceCount: 0, SubmittedCreditCount: 0, SubmittedDebitCount: 0, ReceivedInvoiceCount: 0, ReceivedCreditCount: 0, ReceivedDebitCount: 0 };
+        KTApp.block('#Card4');
+        KTApp.block('#Card5');
+        KTApp.block('#Card6');
+        KTApp.block('#Card7');
+        KTApp.block('#Card8');
+        KTApp.block('#Card9');
+        $.ajax({
+            url: "/v1/master/renderer?_date=" + ModifyDate(new Date()),
+            type: "get", //send it through get method
+            data: {},
+            success: function (response) {
+                var data = response.data;
+                if (!data) {
+                    Swal.fire({
+                        title: "@MasterResources.OoopsLbl",
+                        text: "@MasterResources.ConnectionErrorMsg",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "@MasterResources.TryAgainBtn",
+                        showCancelButton: true,
+                        cancelButtonText: "@MasterResources.SettingBtn",
+                        customClass: {
+                            confirmButton: "btn btn-danger",
+                            cancelButton: "btn btn-default"
+                        }
+                    }).then(function (result) {
+                        if (result.value) {
+                            window.location.href = "/v1/";
+                            KTUtil.scrollTop();
+                        } else if (result.dismiss === "cancel") {
+                            window.location.href = "/v1/appsetting";
+                        }
+                    });
+                }
+                else {
+                    initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+                    //$("#ReceivedValidDocumentsCount1").html('Monthly Submitted Valid Documents: (' + data.ReceivedValidDocumentsCount + ')');
+                    $("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
+                    $("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
+                    $("#ReceivedInvoiceTotalAmount").html(data.ReceivedInvoiceTotalAmount + ' EGP');
+                    $("#ReceivedInvoiceCount").html('(' + data.ReceivedInvoiceCount + ')');
+                    $("#ReceivedInvoiceTotalTax").html(data.ReceivedInvoiceTotalTax + ' EGP');
+                    $("#ReceivedCreditCount").html('(' + data.ReceivedCreditCount + ')');
+                    $("#ReceivedCreditTotalAmount").html(data.ReceivedCreditTotalAmount + ' EGP');
+                    $("#ReceivedCreditTotalTax").html(data.ReceivedCreditTotalTax + ' EGP');
+                    $("#ReceivedDebitCount").html('(' + data.ReceivedDebitCount + ')');
+                    $("#ReceivedDebitTotalAmount").html(data.ReceivedDebitTotalAmount + ' EGP');
+                    //$("#ReceivedDebitCount").html(data.ReceivedDebitCount);
+                    $("#ReceivedDebitTotalTax").html(data.ReceivedDebitTotalTax + ' EGP');
+                    $("#ReceivedValidDocumentsCountPercentage").css('width', data.ReceivedValidDocumentsCountPercentage + '%');
+                    $("#ReceivedInValidDocumentsCountPercentage").css('width', data.ReceivedInValidDocumentsCountPercentage + '%');
+                    $("#ReceivedCanceledDocumentsCountPercentage").css('width', data.ReceivedCanceledDocumentsCountPercentage + '%');
+                    $("#ReceivedRejectedDocumentsCountPercentage").css('width', data.ReceivedRejectedDocumentsCountPercentage + '%');
+                    $("#ReceivedSubmittedDocumentsCountPercentage").css('width', data.ReceivedSubmittedDocumentsCountPercentage + '%');
+                    $("#ReceivedInValidDocumentsCount").html(data.ReceivedInValidDocumentsCount);
+                    $("#ReceivedCanceledDocumentsCount").html(data.ReceivedCanceledDocumentsCount);
+                    $("#ReceivedRejectedDocumentsCount").html(data.ReceivedRejectedDocumentsCount);
+                    $("#ReceivedSubmittedDocumentsCount").html(data.ReceivedSubmittedDocumentsCount);
+                    KTApp.unblock('#Card4');
+                    KTApp.unblock('#Card5');
+                    KTApp.unblock('#Card6');
+
+                    initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+                    $("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
+                    $("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
+                    $("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');
+                    $("#SubmittedInvoiceCount").html('(' + data.SubmittedInvoiceCount + ')');
+                    $("#SubmittedInvoiceTotalTax").html(data.SubmittedInvoiceTotalTax + ' EGP');
+                    $("#SubmittedCreditCount").html('(' + data.SubmittedCreditCount + ')');
+                    $("#SubmittedCreditTotalAmount").html(data.SubmittedCreditTotalAmount + ' EGP');
+                    $("#SubmittedCreditTotalTax").html(data.SubmittedCreditTotalTax + ' EGP');
+                    $("#SubmittedDebitCount").html('(' + data.SubmittedDebitCount + ')');
+                    $("#SubmittedDebitTotalAmount").html(data.SubmittedDebitTotalAmount + ' EGP');
+                    $("#SubmittedDebitTotalTax").html(data.SubmittedDebitTotalTax + ' EGP');
+                    $("#SubmittedValidDocumentsCountPercentage").css('width', data.SubmittedValidDocumentsCountPercentage + '%');
+                    $("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
+                    $("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
+                    $("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
+                    $("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+                    $("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
+                    $("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
+                    $("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
+                    $("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+                    KTApp.unblock('#Card7');
+                    KTApp.unblock('#Card8');
+                    KTApp.unblock('#Card9');
+                }
+
+            },
+            error: function (xhr) {
+                //Do Something to handle error
+                Swal.fire({
+                    title: "@MasterResources.OoopsLbl",
+                    text: "@MasterResources.ConnectionErrorMsg",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "@MasterResources.TryAgainBtn",
+                    showCancelButton: true,
+                    cancelButtonText: "@MasterResources.SettingBtn",
+                    customClass: {
+                        confirmButton: "btn btn-danger",
+                        cancelButton: "btn btn-default"
+                    }
+                }).then(function (result) {
+                    if (result.value) {
+                        window.location.href = "/v1/";
+                        KTUtil.scrollTop();
+                    } else if (result.dismiss === "cancel") {
+                        window.location.href = "/v1/appsetting";
+                    }
+                });
+            }
+        });
+
+        $("#kt_datepicker_2").on('change', function () {
+            KTApp.block('#Card4');
+            KTApp.block('#Card5');
+            KTApp.block('#Card6');
+            KTApp.block('#Card7');
+            KTApp.block('#Card8');
+            KTApp.block('#Card9');
+            $.ajax({
+                url: "/v1/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
+                type: "get", //send it through get method
+                data: {},
+                success: function (response) {
+                    var data = response.data;
+                    initTable1(data.goodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+                    $("#ReceivedValidDocumentsCount1").html(data.ReceivedValidDocumentsCount);
+                    $("#ReceivedValidDocumentsCount2").html(data.ReceivedValidDocumentsCount);
+                    $("#ReceivedInvoiceTotalAmount").html(data.ReceivedInvoiceTotalAmount + ' EGP');
+                    $("#ReceivedInvoiceCount").html('(' + data.ReceivedInvoiceCount + ')');
+                    $("#ReceivedInvoiceTotalTax").html(data.ReceivedInvoiceTotalTax + ' EGP');
+                    $("#ReceivedCreditCount").html('(' + data.ReceivedCreditCount + ')');
+                    $("#ReceivedCreditTotalAmount").html(data.ReceivedCreditTotalAmount + ' EGP');
+                    $("#ReceivedCreditTotalTax").html(data.ReceivedCreditTotalTax + ' EGP');
+                    $("#ReceivedDebitCount").html('(' + data.ReceivedDebitCount + ')');
+                    $("#ReceivedDebitTotalAmount").html(data.ReceivedDebitTotalAmount + ' EGP');
+                    $("#ReceivedDebitTotalTax").html(data.ReceivedDebitTotalTax + ' EGP');
+                    $("#ReceivedValidDocumentsCountPercentage").css('width', data.ReceivedValidDocumentsCountPercentage + '%');
+                    $("#ReceivedInValidDocumentsCountPercentage").css('width', data.ReceivedInValidDocumentsCountPercentage + '%');
+                    $("#ReceivedCanceledDocumentsCountPercentage").css('width', data.ReceivedCanceledDocumentsCountPercentage + '%');
+                    $("#ReceivedRejectedDocumentsCountPercentage").css('width', data.ReceivedRejectedDocumentsCountPercentage + '%');
+                    $("#ReceivedSubmittedDocumentsCountPercentage").css('width', data.ReceivedSubmittedDocumentsCountPercentage + '%');
+                    $("#ReceivedInValidDocumentsCount").html(data.ReceivedInValidDocumentsCount);
+                    $("#ReceivedCanceledDocumentsCount").html(data.ReceivedCanceledDocumentsCount);
+                    $("#ReceivedRejectedDocumentsCount").html(data.ReceivedRejectedDocumentsCount);
+                    $("#ReceivedSubmittedDocumentsCount").html(data.ReceivedSubmittedDocumentsCount);
+                    KTApp.unblock('#Card4');
+                    KTApp.unblock('#Card5');
+                    KTApp.unblock('#Card6');
+
+                    initTable2(data.receivedGoodsModel.map(o => [o.itemCode, o.itemDesc, o.count, o.totalAmount, o.totalTax]));
+                    $("#SubmittedValidDocumentsCount1").html(data.SubmittedValidDocumentsCount);
+                    $("#SubmittedValidDocumentsCount2").html(data.SubmittedValidDocumentsCount);
+                    $("#SubmittedInvoiceTotalAmount").html(data.SubmittedInvoiceTotalAmount + ' EGP');
+                    $("#SubmittedInvoiceCount").html('(' + data.SubmittedInvoiceCount + ')');
+                    $("#SubmittedInvoiceTotalTax").html(data.SubmittedInvoiceTotalTax + ' EGP');
+                    $("#SubmittedCreditCount").html('(' + data.SubmittedCreditCount + ')');
+                    $("#SubmittedCreditTotalAmount").html(data.SubmittedCreditTotalAmount + ' EGP');
+                    $("#SubmittedCreditTotalTax").html(data.SubmittedCreditTotalTax + ' EGP');
+                    $("#SubmittedDebitCount").html('(' + data.SubmittedDebitCount + ')');
+                    $("#SubmittedDebitTotalAmount").html(data.SubmittedDebitTotalAmount + ' EGP');
+                    $("#SubmittedDebitTotalTax").html(data.SubmittedDebitTotalTax + ' EGP');
+                    $("#SubmittedValidDocumentsCountPercentage").css('width', data.SubmittedValidDocumentsCountPercentage + '%');
+                    $("#SubmittedInValidDocumentsCountPercentage").css('width', data.SubmittedInValidDocumentsCountPercentage + '%');
+                    $("#SubmittedCanceledDocumentsCountPercentage").css('width', data.SubmittedCanceledDocumentsCountPercentage + '%');
+                    $("#SubmittedRejectedDocumentsCountPercentage").css('width', data.SubmittedRejectedDocumentsCountPercentage + '%');
+                    $("#SubmittedSubmittedDocumentsCountPercentage").css('width', data.SubmittedSubmittedDocumentsCountPercentage + '%');
+                    $("#SubmittedInValidDocumentsCount").html(data.SubmittedInValidDocumentsCount);
+                    $("#SubmittedCanceledDocumentsCount").html(data.SubmittedCanceledDocumentsCount);
+                    $("#SubmittedRejectedDocumentsCount").html(data.SubmittedRejectedDocumentsCount);
+                    $("#SubmittedSubmittedDocumentsCount").html(data.SubmittedSubmittedDocumentsCount);
+                    KTApp.unblock('#Card7');
+                    KTApp.unblock('#Card8');
+                    KTApp.unblock('#Card9');
+                },
+                error: function (xhr) {
+                    //Do Something to handle error
+                    Swal.fire({
+                        title: "@MasterResources.OoopsLbl",
+                        text: "@MasterResources.ConnectionErrorMsg",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "@MasterResources.TryAgainBtn",
+                        showCancelButton: true,
+                        cancelButtonText: "@MasterResources.SettingBtn",
+                        customClass: {
+                            confirmButton: "btn btn-danger",
+                            cancelButton: "btn btn-default"
+                        }
+                    }).then(function (result) {
+                        if (result.value) {
+                            window.location.href = "/ETA.Hub/einvoicing/v0";
+                            KTUtil.scrollTop();
+                        } else if (result.dismiss === "cancel") {
+                            window.location.href = "/v1/appsetting";
+                        }
+                    });
+                }
+            });
+        });
+
     });
 </script>
 

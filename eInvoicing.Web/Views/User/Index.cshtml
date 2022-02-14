@@ -1,4 +1,5 @@
 ﻿@model eInvoicing.Web.Models.RegisterViewModel
+@using eInvoicing.Web.Views.User;
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -22,19 +23,19 @@
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <h2 class="text-white font-weight-bold my-1 mr-5">
                         <i class="flaticon-users header-icon"></i>
-                        System Users
+                        @UserResources.UsersLbl
                     </h2>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
                             <a href="@Url.Action("Index", "Master")" class="text-white">
-                                Home
+                                @UserResources.HomeLbl
                             </a>
                         </li>
                         <li class="breadcrumb-item">
                             <a href="javascript:window.location.reload();" class="text-white">
-                                Users
+                                @UserResources.UsersLbl
                             </a>
                         </li>
                     </ul>
@@ -72,7 +73,7 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
+                            <span class="menu-text" style="padding-top: 3px;">@UserResources.MyProfileLbl</span>
                         </a>
                         <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
                             <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
@@ -85,7 +86,7 @@
                                     </g>
                                 </svg>
                             </span>
-                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
+                            <span class="menu-text" style="padding-top: 3px;">@UserResources.SignOutLbl</span>
                         </a>
                     </div>
                 }
@@ -100,7 +101,7 @@
         <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">
-                    System Users
+                    @UserResources.UsersLbl
                     <span class="d-block text-primary pt-2 font-size-sm">The persons granted access to the Services and Accounts by a System Manager.</span>
                 </h3>
             </div>
@@ -117,7 +118,7 @@
                         </svg>
                         <!--end::Svg Icon-->
                     </span>
-                    New User
+                    @UserResources.NewUserLbl
                 </a>
                 <!--end::Button-->
             </div>
@@ -132,17 +133,17 @@
                             <div class="col-md-10 my-2 my-md-0">
                                 <a href="#userCreation" data-toggle="modal" class="btn btn-primary font-weight-bold btn-square">
                                     <i class="flaticon2-add-1"></i>
-                                    Add User
+                                    @UserResources.CreateBtn
                                 </a>
                             </div>
-                                <div class="col-md-2 my-2 my-md-0">
-                                    <div class="input-icon">
-                                        <input type="text" class="form-control" placeholder="Search..." id="kt_subheader_search_form">
-                                        <span><i class="flaticon2-search-1 text-muted"></i></span>
-                                    </div>
+                            <div class="col-md-2 my-2 my-md-0">
+                                <div  class="input-icon">
+                                    <input type="text" class="form-control" placeholder=@UserResources.SearchPlaceHolder id="kt_subheader_search_form">
+                                    <span><i class="flaticon2-search-1 text-muted"></i></span>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
                 </div>
             </div>
@@ -175,55 +176,55 @@
                             @Html.HiddenFor(model => model.Id)
                             <div class="form-group row">
                                 <div class="col-md-6">
-                                    <label>First Name *</label>
-                                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
+                                    <label>@UserResources.FirstName *</label>
+                                    @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = @UserResources.FirstName, @name = "FirstName" })
                                     @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
                                 </div>
                                 <div class="col-md-6">
-                                    <label>Last Name *</label>
-                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
+                                    <label>@UserResources.LastName *</label>
+                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = @UserResources.LastName, @name = "LastName" })
                                     @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Title *</label>
-                                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "Title", @name = "Title" })
+                                    <label>@UserResources.Title *</label>
+                                    @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @placeholder = "@UserResources.Title", @name = "Title" })
                                     @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Email *</label>
-                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email", @type = "text", @name = "Email" })
+                                    <label>@UserResources.Email *</label>
+                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "@UserResources.Email", @type = "text", @name = "Email" })
                                     @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Password *</label>
-                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @name = "Password", @id = "password" })
+                                    <label>@UserResources.Password *</label>
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = @UserResources.Password, @name = "Password", @id = "password" })
                                     <div data-field="Password" id="errpassword" data-validator="identical" class="fv-help-block" style="display: none;">Password must be at least 8 characters contains upper, lower case, numbers and special characters</div>
                                     @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Confirm Password *</label>
-                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = "Confirm Password", @name = "ConfirmPassword" })
+                                    <label>@UserResources.ConfirmPassword *</label>
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder = @UserResources.ConfirmPassword, @name = "ConfirmPassword" })
                                     @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Phone Number *</label>
-                                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "Phone Number", @maxlength = "11", @name = "PhoneNumber" })
+                                    <label>@UserResources.PhoneNumber *</label>
+                                    @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", @placeholder = "@UserResources.PhoneNumber", @maxlength = "11", @name = "PhoneNumber" })
                                     @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label>Roles *</label>
+                                    <label>@UserResources.Roles *</label>
                                     @Html.ListBoxFor(model => model.Roles, (List<SelectListItem>)ViewBag?.Roles, new { @class = "form-control select2", @id = "kt_select2_4", @name = "Roles", @multiple = "multiple" })
                                     @Html.ValidationMessageFor(model => model.Roles, "", new { @class = "text-danger" })
                                 </div>
@@ -235,7 +236,7 @@
                             {
                                 <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label>Business Group *</label>
+                                        <label>@UserResources.BusinessGroup *</label>
                                         @Html.DropDownListFor(model => model.BusinessGroupId, (List<SelectListItem>)ViewBag?.Groups, new { @class = "form-control", @name = "Group" })
                                         @Html.ValidationMessageFor(model => model.BusinessGroupId, "", new { @class = "text-danger" })
                                     </div>
@@ -246,8 +247,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal" data-dismiss="modal">Close</button>
-                        <button type="button" id="userSubmission" class="btn btn-primary font-weight-bold">Submit</button>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal" data-dismiss="modal">@UserResources.CloseBtn</button>
+                        <button type="button" id="userSubmission" class="btn btn-primary font-weight-bold">@UserResources.SubmitBtn</button>
                     </div>
                 }
             </div>
@@ -266,8 +267,8 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal2" data-dismiss="modal">Close</button>
-                    <button type="button" id="userEdition" class="btn btn-primary font-weight-bold">Save</button>
+                    <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal2" data-dismiss="modal">@UserResources.CloseBtn</button>
+                    <button type="button" id="userEdition" class="btn btn-primary font-weight-bold">@UserResources.SaveBtn</button>
                 </div>
             </div>
         </div>
@@ -276,5 +277,162 @@
 </div>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
 <script src="~/Content/assets/js/pages/custom/user/list-datatable.js?v=7.0.6"></script>
+<script>
+    jQuery(document).ready(function () {
+        var form = KTUtil.getById('_frm');
+        _frmvalidation = FormValidation.formValidation(
+            document.getElementById('_frm'),
+            {
+                form,
+                fields: {
+                Email: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        },
+                        emailAddress: {
+                            message: '@UserResources.InvalidEmailMsg'
+                        }
+                    }
+                },
+                FirstName: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        },
+                    }
+                },
+                LastName: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        }
+                    }
+                },
+                Title: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        },
+
+                    }
+                },
+                PhoneNumber: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        },
+
+                    }
+                },
+                Roles: {
+                    validators: {
+                        choice: {
+                            min: 1,
+                            message: '@UserResources.RequiredRolesMsg'
+                        }
+                    }
+                },
+                Group: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        },
+                    }
+                },
+                Password: {
+                    validators: {
+                        notEmpty: {
+                            message: '@UserResources.RequiredFieldMsg'
+                        }
+                    }
+                },
+                ConfirmPassword: {
+                    validators: {
+                        identical: {
+                            compare: function () {
+                                return form.querySelector('[name="Password"]').value;
+                            },
+                            message: '@UserResources.NonmatchingPasswordMsg'
+                        }
+                    }
+                }
+
+            },
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap(),
+                }
+            }
+        );
+    });
+
+    function deleteUser(id, username) {
+        Swal.fire({
+            title: "@UserResources.ConfirmDeleteMsg [" + username + "] @UserResources.QuestionMark",
+            text: "@UserResources.ConfirmDeleteDesc",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "@UserResources.DeleteBtn",
+            cancelButtonText: "@UserResources.CloseBtn",
+            reverseButtons: true
+        }).then(function (result) {
+            if (result.value) {
+                KTApp.blockPage();
+                $.ajax({
+                    url: "/v1/user/deleteuser?id=" + id,
+                    type: "POST",
+                    dataType: 'json',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    success: function (response) {
+                        KTApp.unblockPage();
+                        if (response.success) {
+                            datatable.reload();
+                            KTUtil.scrollTop();
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.success("data has been deleted successfully!");
+                        }
+                        else {
+                            toastr.options = {
+                                "closeButton": false,
+                                "debug": false,
+                                "newestOnTop": true,
+                                "progressBar": false,
+                                "positionClass": "toast-top-center",
+                                "preventDuplicates": false,
+                                "onclick": null,
+                                "showDuration": "300",
+                                "hideDuration": "1000",
+                                "timeOut": "5000",
+                                "extendedTimeOut": "1000",
+                                "showEasing": "swing",
+                                "hideEasing": "linear",
+                                "showMethod": "fadeIn",
+                                "hideMethod": "fadeOut"
+                            };
+                            toastr.error("Something went wrong!");
+                        }
+                    }
+                });
+            }
+        });
+    }
+</script>
 
 

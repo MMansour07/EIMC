@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+2022-02-03T14:09:16.9538705+02:00 40000006-0005-ff00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+=======
 2022-02-03T11:53:09.4157829+02:00 80000060-0000-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
 2022-02-03T11:54:54.3838481+02:00 800000fb-0002-f900-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
 2022-02-03T11:57:41.8452264+02:00 80000032-0000-fe00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
@@ -16,3 +19,4 @@
 2022-02-03T13:04:52.5633550+02:00 8000002d-0002-fc00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
 2022-02-03T13:05:36.2789123+02:00 8000002f-0002-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
 2022-02-03T13:06:10.3751931+02:00 80000031-0002-fd00-b63f-84710c7967bb [WRN] Failed to determine the https port for redirect. (ca76cc21)
+>>>>>>> d7306e5f7f881f948f8f780c677dbc834af6aa01

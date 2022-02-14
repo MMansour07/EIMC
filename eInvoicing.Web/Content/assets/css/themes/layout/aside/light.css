@@ -27,6 +27,7 @@
       opacity: 1; }
       .aside .aside-menu.ps > .ps__rail-y > .ps__thumb-y:hover, .aside .aside-menu.ps > .ps__rail-y > .ps__thumb-y:focus {
         opacity: 1;
+        opacity: 1;
         background: #e0e2f0; }
 
 .aside-menu {

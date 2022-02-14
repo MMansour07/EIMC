@@ -1,4 +1,5 @@
-﻿@model eInvoicing.DTO.DashboardResponseDTO
+﻿@using eInvoicing.Web.Views.Master 
+@model eInvoicing.DTO.DashboardResponseDTO
 <!--begin::Dashboard-->
 <!--begin::Card-->
 <div class="row">
@@ -528,16 +529,16 @@
 <script src="~/Scripts/jquery-3.6.0.js"></script>
 @if (Model.Message != "Success")
 {
-    <script>
+<script>
         jQuery(document).ready(function () {
             Swal.fire({
-                title: "Ooops!",
-                text: "Something went wrong. Please check connection and try again later.",
+                title: @MasterResources.OoopsLbl,
+                text: @MasterResources.OoopsLbl,
                 icon: "error",
                 buttonsStyling: false,
-                confirmButtonText: "Try Again",
+                confirmButtonText: @MasterResources.TryAgainBtn,
                 showCancelButton: true,
-                cancelButtonText: "Settings",
+                cancelButtonText: @MasterResources.SettingBtn,
                 customClass: {
                     confirmButton: "btn btn-danger",
                     cancelButton: "btn btn-default"
@@ -551,5 +552,5 @@
                 }
             });
         });
-    </script>
+</script>
 }

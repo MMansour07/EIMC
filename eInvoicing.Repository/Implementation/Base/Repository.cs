@@ -24,7 +24,7 @@ namespace eInvoicing.Repository.Implementation.Base
         public void GetTheConnectionString(string ConnectionString)
         {
             this.ConnectionString = ConnectionString;
-            Context.Database.Connection.ConnectionString = ConnectionString?? "Data Source=.;Initial Catalog=EIMC_Preprod;User ID=sa;Password=123";
+            Context.Database.Connection.ConnectionString = ConnectionString?? "Data Source=.;Initial Catalog=EIMC_Preprod;persist security info=True; Integrated Security=SSPI;";
         }
 
         public IQueryable<TEntity> All { get { return DbSet.AsNoTracking(); } }

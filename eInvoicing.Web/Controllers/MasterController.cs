@@ -49,7 +49,8 @@ namespace eInvoicing.Web.Controllers
                 {
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
-                    var url = _userSession.URL + "api/document/MonthlyDocuments?_date=" + DateTime.ParseExact(_date, "yyyy-MM-dd", CultureInfo.InvariantCulture);
+                    var url = _userSession.URL + "api/document/MonthlyDocuments?_date=" + DateTime.ParseExact(_date, "yyyy-MM-dd",CultureInfo.InvariantCulture);
+                    
                     logger.Info(url);
                     client.BaseAddress = new Uri(url);
                     var postTask = Task.Run(() => client.GetAsync(url)).Result;

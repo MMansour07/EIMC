@@ -6045,7 +6045,7 @@ Docs & License: https://fullcalendar.io/
                         var buttonEl;
                         var buttonAriaAttr;
                         if (buttonName === 'title') {
-                            groupChildren.push(htmlToElement('<h2>&nbsp;</h2>')); // we always want it to take up height
+                            groupChildren.push(htmlToElement('<h3>&nbsp;</h3>')); // we always want it to take up height
                             isOnlyButtons = false;
                         }
                         else {

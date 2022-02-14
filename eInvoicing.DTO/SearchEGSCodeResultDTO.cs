@@ -9,9 +9,9 @@ namespace eInvoicing.DTO
 {
     public class SearchEGSCodeResultDTO : BaseDTO
     {
-        public int codeUsageRequestID { get; set; }
+        public string codeUsageRequestID { get; set; }
         public string codeTypeName { get; set; }
-        public int codeID { get; set; }
+        public string codeID { get; set; }
         public string itemCode { get; set; }
         public string codeNamePrimaryLang { get; set; }
         public string codeNameSecondaryLang { get; set; }
@@ -20,7 +20,7 @@ namespace eInvoicing.DTO
         public string parentCodeNamePrimaryLang { get; set; }
         public string parentCodeNameSecondaryLang { get; set; }
         public string description { get; set; }
-        public int parentCodeID { get; set; }
+        public string parentCodeID { get; set; }
         public string parentItemCode { get; set; }
         public string parentLevelName { get; set; }
         public string levelName { get; set; }

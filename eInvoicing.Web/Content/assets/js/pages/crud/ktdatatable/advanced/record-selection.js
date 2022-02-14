@@ -78,7 +78,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 title: 'Internal Id',
                 name: "internalID",
                 sortable: false,
-                width: 135,
+                width: 200,
                 template: function (row) {
                     return "<a href='#' onclick='ViewDocument_NewTab(\"" + row.internalID + "\")' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
             },
@@ -102,6 +102,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 field: 'dateTimeIssued',
                 title: 'Issued Date',
                 sortable: 'desc',
+                width: 125,
                 template: function (row) {
                     var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeIssued.substr(6)))).split(" ");
                     return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\

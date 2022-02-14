@@ -144,6 +144,9 @@
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
   <data name="ImportWorksheet" xml:space="preserve">
     <value>Import a Worksheet</value>
   </data>

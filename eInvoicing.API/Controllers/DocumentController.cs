@@ -929,7 +929,7 @@ namespace eInvoicing.API.Controllers
                         _documentService.GetTheConnectionString(Item.ConnectionString);
                         _userSession.SetBusinessGroup(regEX.Replace(Item.Name, " "));
                         var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
-                        _documentService.GetReceivedDocuments(_userSession.submissionurl, auth.access_token, 1000);
+                        _documentService.GetReceivedDocuments(_userSession.submissionurl, auth.access_token, 5000);
                     }
                 }
                 return Ok();

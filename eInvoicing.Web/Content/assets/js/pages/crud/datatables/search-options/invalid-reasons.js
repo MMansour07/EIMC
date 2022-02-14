@@ -7,7 +7,7 @@ var initTable1 = function () {
     KTApp.block('#InvalidReasons_crd');
     // begin first table
     table.DataTable({
-        responsive: true,
+        "scrollX": true,
         dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
@@ -26,17 +26,6 @@ var initTable1 = function () {
                 footer: true,
                 title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
             },
-            //{
-            //	orientation: 'portrait',
-            //	pageSize: 'LEGAL',
-            //	extend: 'csv',
-            //	footer: true,
-            //	title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
-            //	//customize: function (win) {
-            //	//	$body = $(win.document.body);
-            //	//	$body.find('h1').css('text-align', 'center');
-            //	//}
-            //},
             {
                 orientation: 'portrait',
                 pageSize: 'LEGAL',
@@ -61,7 +50,7 @@ var initTable1 = function () {
         searchDelay: 500,
         serverSide: true,
         order: [
-            [2, "desc"]
+            [1, "desc"]
         ],
         ajax: {
             url: '/v1/report/AjaxInvalidReasons',

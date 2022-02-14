@@ -156,7 +156,7 @@ pre,
 code,
 kbd,
 samp {
-  font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", cursive;
+  font-family: madaregular;
   font-size: 1em; }
 
 pre {
@@ -206,7 +206,7 @@ select,
 optgroup,
 textarea {
   margin: 0;
-  font-family: inherit;
+  font-family: madaregular;
   font-size: inherit;
   line-height: inherit; }
 
@@ -2025,7 +2025,7 @@ pre {
     border: 0; }
 
 .form-control {
-  font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+  font-family: madaregular;
   display: block;
   width: 100%;
   height: calc(1.5em + 1.3rem + 2px);
@@ -5528,7 +5528,7 @@ a.close.disabled {
   z-index: 1070;
   display: block;
   margin: 0;
-  font-family: Poppins, Helvetica, "sans-serif";
+  font-family: madaregular;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -5613,7 +5613,7 @@ a.close.disabled {
   z-index: 1060;
   display: block;
   max-width: 276px;
-  font-family: Poppins, Helvetica, "sans-serif";
+  font-family: madaregular;
   font-style: normal;
   font-weight: 400;
   line-height: 1.5;
@@ -36580,7 +36580,7 @@ button {
 
 .dropdown-toggle.nav-link:after, .dropdown-toggle.btn:after {
   margin-right: 0.5rem/*rtl:ignore*/;
-  font-family: Ki;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -36595,7 +36595,7 @@ button {
 
 .dropdown-toggle.nav-link:before, .dropdown-toggle.btn:before {
   margin-right: 0.5rem/*rtl:ignore*/;
-  font-family: Ki;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -36624,7 +36624,7 @@ button {
   opacity: 1 !important; }
 
 .btn-group.dropup > .btn.dropdown-toggle:after {
-  font-family: Ki;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -36638,7 +36638,7 @@ button {
   content: ""; }
 
 .btn-group.dropright > .btn.dropdown-toggle:after {
-  font-family: Ki;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -44746,7 +44746,7 @@ code {
     -webkit-transition: all 0.15s ease;
     transition: all 0.15s ease;
     position: absolute;
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -44766,7 +44766,7 @@ code {
       -webkit-transition: all 0.15s ease;
       transition: all 0.15s ease;
       color: #7E8299;
-      font-family: Ki;
+      font-family: madaregular;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -44784,7 +44784,7 @@ code {
   position: relative; }
   .accordion.accordion-toggle-arrow .card .card-header .card-title:after {
     position: absolute;
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -45013,7 +45013,7 @@ code {
       transition: background 0.3s ease; }
       .datatable.datatable-default > .datatable-table > .datatable-body .datatable-row > .datatable-cell > span {
         color: #3F4254; 
-		font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+		font-family: madaregular;
 		}
       .datatable.datatable-default > .datatable-table > .datatable-body .datatable-row > .datatable-cell.datatable-cell-check > span > .checkbox {
         top: 1px; }
@@ -45088,7 +45088,7 @@ code {
     text-transform: uppercase;
     font-weight: 600;
     letter-spacing: 0rem;
-font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+font-family: madaregular;
 	}
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-head .datatable-row > .datatable-cell.datatable-cell-sorted > span,
   .datatable.datatable-default.datatable-head-custom > .datatable-table > .datatable-foot .datatable-row > .datatable-cell.datatable-cell-sorted > span {
@@ -46832,7 +46832,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
       cursor: not-allowed;
       opacity: 0.5; }
   .switch.switch-icon input:checked ~ span:after {
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -54089,7 +54089,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
         color: #7E8299; }
         .navi .navi-item .navi-link .navi-arrow:before {
           line-height: 0;
-          font-family: Ki;
+          font-family: madaregular;
           font-style: normal;
           font-weight: normal;
           font-variant: normal;
@@ -55010,7 +55010,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
   box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
   border-radius: 0.42rem;
   border: 0;
-  font-family: Poppins, Helvetica, "sans-serif";
+  font-family: madaregular;
   z-index: 98; }
   .modal-open .daterangepicker {
     z-index: 1051; }
@@ -55417,7 +55417,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
       opacity: 0.7;
       -webkit-transition: all 0.15s ease;
       transition: all 0.15s ease;
-      font-family: Ki;
+      font-family: madaregular;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -55477,7 +55477,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
     margin-right: -2px;
     font-size: 0.6rem;
     display: inline-block;
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -55539,7 +55539,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
     font-size: 0.7rem;
     right: 1rem; }
     .bootstrap-select .dropdown-menu.inner > li.selected > a .check-mark:before {
-      font-family: Ki;
+      font-family: madaregular;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -55850,7 +55850,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
     margin: 1rem 0 !important;
     border-radius: 0.42rem; }
     .dataTables_wrapper .dataTable th, .dataTables_wrapper .dataTable td {
-      font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+      font-family: madaregular;
       font-weight: 400;
       font-size: 1rem;
       vertical-align: middle;
@@ -55893,7 +55893,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
         text-transform: uppercase;
         font-weight: 600;
         letter-spacing: 0rem;
-    font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+    font-family: madaregular;
     }
     .dataTables_wrapper .dataTable thead th {
       border-top: 0; }
@@ -56089,7 +56089,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
     color: #02bda1;
     border: 0;
     background-color: transparent;
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -56104,7 +56104,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
   .dataTables_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before {
     color: #02bda1;
     background-color: transparent;
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -56536,7 +56536,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
       .fc-unthemed .fc-toolbar .fc-button .fc-icon:after {
         display: none; }
       .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-right-single-arrow {
-        font-family: Ki;
+        font-family: madaregular;
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -56549,7 +56549,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
         font-smoothing: antialiased;
         content: ""; }
       .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-right-single-arrow {
-        font-family: Ki;
+        font-family: madaregular;
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -57249,7 +57249,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
   padding: 0.5rem 0;
   min-width: 150px;
   font-size: 1rem;
-  font-family: Poppins, Helvetica, "sans-serif";
+  font-family: madaregular;
   background: #ffffff;
   -webkit-box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
   box-shadow: 0px 0px 50px 0px rgba(82, 63, 105, 0.15);
@@ -57694,7 +57694,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
         background: #fff4ec; }
 
 .ql-toolbar {
-  font-family: Poppins, Helvetica, "sans-serif"; }
+  font-family: madaregular; }
   .ql-toolbar.ql-snow {
     border: 1px solid #EBEDF3;
     border-top-right-radius: 0.42rem;
@@ -57882,7 +57882,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
   margin-right: 1rem; }
   .select2-container--default .select2-selection--single .select2-selection__arrow:after,
   .select2-container--default .select2-selection--multiple .select2-selection__arrow:after {
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -57927,7 +57927,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
     position: absolute;
     right: 0; }
     .select2-container--default .select2-selection--single .select2-selection__rendered .select2-selection__clear:after {
-      font-family: Ki;
+      font-family: madaregular;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -57969,7 +57969,7 @@ font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans
       margin-right: 0.5rem;
       position: relative; }
       .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove:before {
-        font-family: Ki;
+        font-family: madaregular;
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -58280,7 +58280,7 @@ body.swal2-height-auto {
         transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
         transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
         line-height: 0;
-        font-family: Ki;
+        font-family: madaregular;
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -58632,7 +58632,7 @@ body.swal2-height-auto {
     outline: none !important;
     font-size: 0; }
     .toast .toast-close-button:before {
-      font-family: Ki;
+      font-family: madaregular;
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -58695,7 +58695,7 @@ body.swal2-height-auto {
       background: #f9f9f9; }
 
 .uppy .uppy-Root {
-  font-family: Poppins, Helvetica, "sans-serif"; }
+  font-family: madaregular; }
   .uppy .uppy-Root.uppy-DragDrop--is-dragdrop-supported {
     border: 2px dashed #EBEDF3; }
 
@@ -59032,7 +59032,7 @@ body.swal2-height-auto {
 .example .example-toggle {
   font-size: 1.35rem; }
   .example .example-toggle:after {
-    font-family: Ki;
+    font-family: madaregular;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -59058,7 +59058,7 @@ body.swal2-height-auto {
   border-radius: 0.42rem; }
 
 .example .example-copy:after {
-  font-family: Ki;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -59156,7 +59156,7 @@ body.swal2-height-auto {
 .apexcharts-text,
 .apexcharts-title-text,
 .apexcharts-legend-text {
-  font-family: Poppins, Helvetica, "sans-serif" !important; }
+  font-family: madaregular; }
 
 .apexcharts-title-text {
   font-weight: 400; }
@@ -59236,7 +59236,7 @@ body.swal2-height-auto {
   -webkit-box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075) !important;
   box-shadow: 0 0.5rem 1.5rem 0.5rem rgba(0, 0, 0, 0.075) !important; }
   .leaflet-container .leaflet-popup-content-wrapper .leaflet-popup-content {
-    font-family: Poppins, Helvetica, "sans-serif";
+    font-family: madaregular;
     font-size: 1rem; }
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
@@ -59255,7 +59255,7 @@ body {
   padding: 0px;
   font-size: 13px !important;
   font-weight: 400;
-  font-family: 'Calibri Light','Gill Sans','Open Sans',Geneva,Helvetica,Arial,sans-serif;
+  font-family: madaregular;
   -ms-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale; }
@@ -59744,7 +59744,7 @@ body {
           -ms-flex-pack: end;
           justify-content: flex-end; }
         .header-menu .menu-nav > .menu-item > .menu-link .menu-arrow:before {
-          font-family: Ki;
+          font-family: madaregular;
           font-style: normal;
           font-weight: normal;
           font-variant: normal;
@@ -59808,7 +59808,7 @@ body {
               justify-content: flex-end;
               padding: 0px 0px 0px 10px; }
             .header-menu .menu-nav > .menu-item .menu-submenu > .menu-subnav > .menu-item > .menu-link .menu-arrow:before {
-              font-family: Ki;
+              font-family: madaregular;
               font-style: normal;
               font-weight: normal;
               font-variant: normal;
@@ -59897,7 +59897,7 @@ body {
                   justify-content: flex-end;
                   padding: 0px 0px 0px 10px; }
                 .header-menu .menu-nav > .menu-item .menu-submenu > .menu-subnav .menu-content .menu-inner > .menu-item > .menu-link .menu-arrow:before {
-                  font-family: Ki;
+                  font-family: madaregular;
                   font-style: normal;
                   font-weight: normal;
                   font-variant: normal;
@@ -60282,7 +60282,7 @@ body {
           .header-menu-mobile .menu-nav > .menu-item > .menu-link .menu-arrow:before {
             -webkit-transition: all 0.3s ease;
             transition: all 0.3s ease;
-            font-family: Ki;
+            font-family: madaregular;
             font-style: normal;
             font-weight: normal;
             font-variant: normal;
@@ -60359,7 +60359,7 @@ body {
             .header-menu-mobile .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-arrow:before {
               -webkit-transition: all 0.3s ease;
               transition: all 0.3s ease;
-              font-family: Ki;
+              font-family: madaregular;
               font-style: normal;
               font-weight: normal;
               font-variant: normal;
@@ -60936,7 +60936,7 @@ body {
         .aside-menu .menu-nav > .menu-item > .menu-link .menu-arrow:before {
           -webkit-transition: all 0.3s ease;
           transition: all 0.3s ease;
-          font-family: Ki;
+          font-family: madaregular;
           font-style: normal;
           font-weight: normal;
           font-variant: normal;
@@ -61015,7 +61015,7 @@ body {
           .aside-menu .menu-nav > .menu-item .menu-submenu .menu-item > .menu-link .menu-arrow:before {
             -webkit-transition: all 0.3s ease;
             transition: all 0.3s ease;
-            font-family: Ki;
+            font-family: madaregular;
             font-style: normal;
             font-weight: normal;
             font-variant: normal;
@@ -61275,7 +61275,7 @@ body {
               .aside-menu.aside-menu-dropdown .menu-nav .menu-item:not([data-menu-submenu-mode=accordion]).menu-item-hover > .menu-submenu .menu-subnav > .menu-item > .menu-link .menu-arrow:before {
                 -webkit-transition: all 0.3s ease;
                 transition: all 0.3s ease;
-                font-family: Ki;
+                font-family: madaregular;
                 font-style: normal;
                 font-weight: normal;
                 font-variant: normal;

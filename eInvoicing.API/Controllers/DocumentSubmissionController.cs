@@ -30,7 +30,7 @@ namespace eInvoicing.API.Controllers
             _auth = auth;
             _userSession = userSession;
         }
-        
+
         [LicenseAuthorization]
         [HttpPost, ActionName("_submit")]
         public IHttpActionResult SubmitDocument(SubmitDocumentRqDTO obj)
@@ -45,11 +45,11 @@ namespace eInvoicing.API.Controllers
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
-                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.Timeout = TimeSpan.FromMinutes(120);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     var url = _userSession.submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
                     client.BaseAddress = new Uri(url);
-                    SubmitInput paramaters = new SubmitInput() { documents = obj.documents.ToList(), token = auth.access_token, pin = _userSession.pin,
+                    SubmitInput paramaters = new SubmitInput() { documents = obj.documents.ToList(), token = auth.access_token, pin = _userSession.pin, SRN = _userSession.SRN,
                         url = _userSession.submissionurl, docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
                     };
                     var stringContent = new StringContent(JsonConvert.SerializeObject(paramaters), Encoding.UTF8, "application/json");
@@ -59,11 +59,13 @@ namespace eInvoicing.API.Controllers
                     if (result.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
-                        if (response.rejectedDocuments == null && response.acceptedDocuments == null && response.submissionId == null)
+                        if (response.rejectedDocuments == null &&
+                            response.acceptedDocuments == null && response.submissionId == null)
                         {
                             return Ok(new DocumentSubmissionDTO() { statusCode = response.statusCode });
                         }
-                        else if (response.rejectedDocuments?.Count() == 0 && response.acceptedDocuments?.Count() == 0 && response.submissionId == null)
+                        else if (response.rejectedDocuments?.Count() == 0 && 
+                            response.acceptedDocuments?.Count() == 0 && response.submissionId == null)
                         {
                             return Ok(new DocumentSubmissionDTO() { statusCode = "UnProcessableEntity" });
                         }
@@ -107,7 +109,7 @@ namespace eInvoicing.API.Controllers
                     using (HttpClient client = new HttpClient())
                     {
                         client.DefaultRequestHeaders.Clear();
-                        client.Timeout = TimeSpan.FromMinutes(60);
+                        client.Timeout = TimeSpan.FromMinutes(120);
                         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                         var url = _userSession.submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
                         client.BaseAddress = new Uri(url);
@@ -118,6 +120,7 @@ namespace eInvoicing.API.Controllers
                                 documents = _internalDocs.ToList(),
                                 token = auth.access_token,
                                 pin = _userSession.pin,
+                                SRN = _userSession.SRN,
                                 url = _userSession.submissionurl,
                                 docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
                             };
@@ -128,6 +131,7 @@ namespace eInvoicing.API.Controllers
                                 documents = _internalDocs.Take(100).ToList(),
                                 token = auth.access_token,
                                 pin = _userSession.pin,
+                                SRN = _userSession.SRN,
                                 url = _userSession.submissionurl,
                                 docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
                             };

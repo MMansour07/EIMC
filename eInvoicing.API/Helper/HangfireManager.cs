@@ -37,7 +37,7 @@ namespace eInvoicing.API.Helper
             }
             return null;
         }
-        public static void SpecifyWhichActionsChain()
+        public static void GetandSendIssuedDocuments()
         {
             try
             {
@@ -62,7 +62,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void UpdateDocumentsStatusFromETAToEIMC()
+        public static void GetRecentDocumentsStatus()
         {
             try
             {
@@ -112,7 +112,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void RetrieveDocumentInvalidityReasons()
+        public static void GetInvalidityDocumentsReasons()
         {
             try
             {
@@ -137,7 +137,7 @@ namespace eInvoicing.API.Helper
                 throw ex;
             }
         }
-        public static void EIMCBackupPeriodically()
+        public static void StoreDataBaseBackup()
         {
             try
             {
@@ -154,6 +154,40 @@ namespace eInvoicing.API.Helper
                     if (result.IsSuccessStatusCode)
                     {
 
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public static void CreateHangfireDB()
+        {
+            try
+            {
+                string commandText = "IF DB_ID('Hangfire') IS NULL CREATE DATABASE Hangfire";
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Identity_CS"]?.ConnectionString))
+                {
+                    try
+                    {
+                        SqlCommand command = new SqlCommand(commandText, connection);
+                        connection.Open();
+                        var result = command.ExecuteReader();
+                        result.Close();
+                        connection.Close();
+                    }
+                    catch (SqlException ex)
+                    {
+                        Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex.Message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error: {0}", ex.Message);
                     }
                 }
             }

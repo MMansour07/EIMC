@@ -102,9 +102,9 @@ namespace eInvoicing.Web.Controllers
                             }
                             else
                             {
-                                if (!string.IsNullOrEmpty(response.statusCode))
+                                if (string.IsNullOrEmpty(response.statusCode))
                                 {
-                                    return Json(new { message = postTask.StatusCode.ToString(), status = "1", data = response }, JsonRequestBehavior.AllowGet);
+                                    return Json(new { message = postTask.StatusCode, status = "1", data = response }, JsonRequestBehavior.AllowGet);
                                 }
                                 else
                                 {

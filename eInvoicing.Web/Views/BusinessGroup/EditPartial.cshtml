@@ -42,6 +42,11 @@
                 @Html.CheckBoxFor(model => model.IsDBSync, new { @class = "form-control", @name = "IsDBSync", @id = "IsDBSync", @style = "width: 11% !important;" })
                 @Html.ValidationMessageFor(model => model.IsDBSync, "", new { @class = "text-danger" })
             </div>
+            <div class="col-md-6">
+                <label>USB Serial Number *</label>
+                @Html.TextBoxFor(model => model.USB_SerialNumber, new { @class = "form-control", @placeholder = "USB Serial Number", @name = "SRN" })
+                @Html.ValidationMessageFor(model => model.USB_SerialNumber, "", new { @class = "text-danger" })
+            </div>
         </div>
         <div class="form-group row">
             <div class="col-md-12">
@@ -138,6 +143,13 @@
                                 message: 'Token is required'
                             },
 
+                        }
+                    },
+                    Token: {
+                        validators: {
+                            notEmpty: {
+                                message: 'USB Serial Number is required'
+                            },
                         }
                     }
                 },

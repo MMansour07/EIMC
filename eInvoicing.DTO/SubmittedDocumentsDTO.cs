@@ -18,6 +18,15 @@ namespace eInvoicing.DTO
         public int submittedCount { get; set; }
         public int cancelledCount { get; set; }
         public int rejectedCount { get; set; }
+        public int invoiceCount { get; set; }
+        public int creditCount { get; set; }
+        public int debitCount { get; set; }
+        public int failedCount { get; set; }
+        public decimal totalSalesAmount { get; set; }
+        public decimal netAmount { get; set; }
+        public decimal totalAmount { get; set; }
+        public decimal totalDiscountAmount { get; set; }
+        public decimal totalItemsDiscountAmount { get; set; }
         public string submittedBy { get; set; }
         public string reason { get; set; }
     }

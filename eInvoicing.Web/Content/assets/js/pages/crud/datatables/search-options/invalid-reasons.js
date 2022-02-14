@@ -53,8 +53,8 @@ var initTable1 = function () {
                 }
             }
         ],
-        lengthMenu: [10, 15, 25, 50],
-        pageLength: 15,
+        lengthMenu: [10, 50, 100, 200, 300],
+        pageLength: 10,
         language: {
             'lengthMenu': 'Display _MENU_',
         },
@@ -72,9 +72,9 @@ var initTable1 = function () {
             }
         },
         columns: [
-            { data: "DocumentId", "name": "DocumentId" },
-            { data: "DateTimeIssued", "name": "DateTimeIssued" },
-            { data: "DateTimeReceived", "name": "DateTimeReceived" },
+            { data: "DocumentId", "name": "DocumentId", "width": "100"},
+            { data: "DateTimeIssued", "name": "DateTimeIssued", "width": "100" },
+           /* { data: "DateTimeReceived", "name": "DateTimeReceived" },*/
             { data: "ValidationSteps", "name": "ValidationSteps" },
             { data: "Errors", "name": "Errors" },
             { data: "InnerErrors", "name": "InnerErrors" },
@@ -92,14 +92,14 @@ var initTable1 = function () {
                     var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
                     return '<span class="navi-text">' + temp + '</span>';
                 },
-            },
-            {
-                targets: -8,
-                render: function (data, type, full, meta) {
-                    var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
-                    return '<span class="navi-text">' + temp + '</span>';
-                },
-            },
+            }
+            //{
+            //    targets: -8,
+            //    render: function (data, type, full, meta) {
+            //        var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
+            //        return '<span class="navi-text">' + temp + '</span>';
+            //    },
+            //}
         ],
     });
 };
@@ -143,5 +143,6 @@ function searchData() {
     fromDate = ($("#fromDate").val()) ? $("#fromDate").val() : '';
     toDate = ($("#toDate").val()) ? $("#toDate").val() : '';
     table.DataTable().destroy();
+    $("#kt_datatable10 tbody").empty();
     initTable1();
 }

@@ -53,7 +53,7 @@ var KTAppsUsersListDatatable = function () {
                         return '<div class="d-flex align-items-center">\
                                 <div class="symbol symbol-40 flex-shrink-0">\
                                     <div class="symbol-label">\
-                                       <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary" >\
+                                       <span class="symbol symbol-lg-35 symbol-25 symbol-light-primary-primary" >\
 								       <span class="symbol-label font-size-h5 font-weight-bold">'+ row.FirstName[0].toUpperCase() + '</span></span>\
                                     </div>\
                                 </div>\

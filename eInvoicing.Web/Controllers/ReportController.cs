@@ -28,7 +28,19 @@ namespace eInvoicing.Web.Controllers
         }
 
         [HttpGet]
+        public ActionResult documents_stats_overview()
+        {
+            return View();
+        }
+
+        [HttpGet]
         public ActionResult invalidreasons()
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public ActionResult failedreasons()
         {
             return View();
         }
@@ -243,6 +255,96 @@ namespace eInvoicing.Web.Controllers
             catch
             {
                 return Json(new InvalidDocumentResponse(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        [ActionName("AjaxFailedReasons")]
+        public ActionResult AjaxFailedReasons()
+        {
+            try
+            {
+                int start = Convert.ToInt32(Request["start"]);
+                int length = Convert.ToInt32(Request["length"]);
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                string searchValue = Request["search[value]"];
+                string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string sortDirection = Request["order[0][dir]"];
+
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
+                if (start == 0)
+                    start = 1;
+                else
+                    start = (start / length) + 1;
+
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    var url = _userSession.URL + "api/report/failedreasons?pageNumber=" + Convert.ToInt32(start) + "&pageSize=" + Convert.ToInt32(length) +
+                        "&fromdate=" + _fromDate + "&todate=" + _toDate + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection;
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<FailedDocumentResponse>(postTask.Content.ReadAsStringAsync().Result);
+                        return Json(new { recordsTotal = response.meta.total, recordsFiltered = response.meta.totalFiltered, data = response.data }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new FailedDocumentResponse(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(new FailedDocumentResponse(), JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpPost]
+        [ActionName("AjaxGetSubmittedDocumentsStatsOverview")]
+        public ActionResult AjaxGetSubmittedDocumentsStatsOverview()
+        {
+            try
+            {
+                int start = Convert.ToInt32(Request["start"]);
+                int length = Convert.ToInt32(Request["length"]);
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                string searchValue = Request["search[value]"];
+                string sortColumnName = Request["columns[" + Request["order[0][column]"] + "][name]"];
+                string sortDirection = Request["order[0][dir]"];
+
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture);//Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
+                if (start == 0)
+                    start = 1;
+                else
+                    start = (start / length) + 1;
+                using (HttpClient client = new HttpClient())
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    var url = _userSession.URL + "api/report/submitteddocumentsstatsoverview?pageNumber=" + Convert.ToInt32(start) + "&pageSize=" + Convert.ToInt32(length) +
+                        "&fromdate=" + _fromDate + "&todate=" + _toDate + "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection;
+                    client.BaseAddress = new Uri(url);
+                    var postTask = Task.Run(() => client.GetAsync(url)).Result;
+                    if (postTask.IsSuccessStatusCode)
+                    {
+                        var response = JsonConvert.DeserializeObject<SubmittedDocumentResponse>(postTask.Content.ReadAsStringAsync().Result);
+                        return Json(new { recordsTotal = response.meta.total, recordsFiltered = response.meta.totalFiltered, data = response.data }, JsonRequestBehavior.AllowGet);
+                    }
+                    return Json(new SubmittedDocumentResponse(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+                return Json(new SubmittedDocumentResponse(), JsonRequestBehavior.AllowGet);
             }
         }
     }

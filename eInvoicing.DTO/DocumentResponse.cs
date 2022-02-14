@@ -32,4 +32,15 @@ namespace eInvoicing.DTO
         public Meta meta { get; set; }
         public PagedList<InvalidDocumentsReasonsDTO> data { get; set; }
     }
+
+    public class FailedDocumentResponse
+    {
+        public Meta meta { get; set; }
+        public PagedList<FailedDocumentsReasonsDTO> data { get; set; }
+    }
+    public class SearchEGSCodeResponse
+    {
+        public Meta meta { get; set; }
+        public PagedList<SearchEGSCodeResultDTO> data { get; set; }
+    }
 }

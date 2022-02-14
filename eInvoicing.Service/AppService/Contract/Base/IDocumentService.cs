@@ -41,5 +41,6 @@ namespace eInvoicing.Service.AppService.Contract.Base
         void GetInvalidDocumentsReasone(string URL, string Key);
         void UpdateDocumentByInternalId(string InternalId);
         //bool RequestDocumentCancellation(string uuid, string reason);
+        void NotifyBusinessGroupWithSubmissionStatus(EmailContentDTO obj);
     }
 }

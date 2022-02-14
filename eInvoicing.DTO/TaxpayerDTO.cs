@@ -21,6 +21,7 @@ namespace eInvoicing.DTO
         public DateTime RegistrationDate { get; set; }
         public string LicenseType { get; set; }
         public string PIN { get; set; }
+        public string SRN { get; set; }
         public string PreProdClientId { get; set; }
         public string PreProdClientSecret { get; set; }
         public string ProdClientId { get; set; }

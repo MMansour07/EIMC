@@ -20,12 +20,12 @@
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Master")" class="text-muted">
+                            <a href="@Url.Action("Index", "Master")" class="text-light">
                                 Home
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="@Url.Action("submitted", "document")" class="text-muted">
+                            <a href="@Url.Action("submitted", "document")" class="text-light">
                                 Sent
                             </a>
                         </li>
@@ -44,7 +44,7 @@
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto btn-hover-bg-dark d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                    <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
                             <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
                             <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
@@ -88,7 +88,7 @@
     <!--end::Subheader-->
     <!--begin::Card-->
     <div class="card card-custom gutter-b">
-        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
+        <div class="card-header bg-secondary flex-wrap border-0 pt-6 pb-0">
             <div class="card-title">
                 <h3 class="card-label">
                     Delivered Documents

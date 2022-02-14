@@ -258,6 +258,7 @@ namespace eInvoicing.Service.Helper.Extension
                 BusinessGroupId = obj.BusinessGroup.Id,
                 Token = obj.BusinessGroup.Token,
                 Title = obj.Title,
+                SRN = obj.BusinessGroup.USB_SerialNumber,
                 Roles = obj.UserRoles.Select(i => new RoleDTO { Id = i.Role.Id, Name = i.Role.Name, Description = i.Role.Description }).ToList(),
                 Permissions = obj.UserRoles.Select(i => i.Role).SelectMany(x => x.RolePermissions).Select(p => new PermissionDTO { Id = p.Permission.Id, Action = p.Permission.Action}).ToList()
             };
@@ -306,8 +307,8 @@ namespace eInvoicing.Service.Helper.Extension
                 Status = x.Status,
                 StepName = x.StepName,
                 StepId = x.StepId,
-                DateTimeIssued = obj.dateTimeIssued, //!String.IsNullOrEmpty(obj.dateTimeIssued) ? DateTime.Parse(obj.dateTimeIssued) : DateTime.Now,
-                DateTimeReceived = obj.dateTimeRecevied, //!String.IsNullOrEmpty(obj.dateTimeRecevied) ? DateTime.Parse(obj.dateTimeRecevied) : DateTime.Now,
+                DateTimeIssued = obj.dateTimeIssued.AddHours(2), //!String.IsNullOrEmpty(obj.dateTimeIssued) ? DateTime.Parse(obj.dateTimeIssued) : DateTime.Now,
+                DateTimeReceived = obj.dateTimeRecevied.AddHours(2), //!String.IsNullOrEmpty(obj.dateTimeRecevied) ? DateTime.Parse(obj.dateTimeRecevied) : DateTime.Now,
                 NetAmount = obj.netAmount,
                 TotalAmount = obj.totalAmount,
                 TotalSalesAmount = obj.totalSales,

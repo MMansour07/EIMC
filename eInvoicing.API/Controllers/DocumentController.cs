@@ -409,11 +409,13 @@ namespace eInvoicing.API.Controllers
         }
         private int InsertDocuments()
         {
-            Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
+            Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], " +
+                "                         [TotalDiscountAmount], [TotalItemsDiscountAmount], " +
                                          "[ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
                                          "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
                                          "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], " +
-                                         "[NetWeight], [InternalDocumentStatus], 0 as [IsInternallyCreated], 'New' as [NewStatus], #" + DateTime.Now +"# as [DateTimeReceived] FROM [{0}]", "Documents$");
+                                         "[NetWeight], [InternalDocumentStatus], 0 as [IsInternallyCreated], 'New' as [NewStatus], #" + DateTime.Now +"# as [DateTimeReceived] FROM [{0}]",
+                                         "Documents$");
 
             // select document by id
             string SQLQuery = "SELECT [Id] FROM DOCUMENTS ";
@@ -423,7 +425,6 @@ namespace eInvoicing.API.Controllers
             while (output.Read())
             {
                 InternalDocumentIds.Add(output[0].ToString());
-
             }
             output.Close();
 
@@ -503,8 +504,8 @@ namespace eInvoicing.API.Controllers
         {
             List<DataRow> Lines = new List<DataRow>();
             Query = string.Format("Select [InternalInvoiceLineId],[ItemType], [ItemCode], [UnitType], [InternalCode], [Quantity], [AmountEGP], [AmountSold], " +
-                "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
-                " [NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Invoice Lines$");
+                                  "[CurrencySold], [CurrencyExchangeRate], [SalesTotal], [DiscountRate], [DiscountAmount], [ItemsDiscount], [TotalTaxableFees], [ValueDifference]," +
+                                  "[NetTotal], [Total], [Description], [InternalDocumentId] FROM [{0}]", "Invoice Lines$");
             
             string SQLQuery = "SELECT [Id] FROM INVOICELINES";
             if (con.State == ConnectionState.Closed)
@@ -636,10 +637,10 @@ namespace eInvoicing.API.Controllers
             try
             {
                 Query = string.Format("Select [DocumentType],[DocumentTypeVersion], [TaxpayerActivityCode], [DateTimeIssued], [InternalDocumentId], [TotalSalesAmount], [TotalDiscountAmount], " +
-                                  "[TotalItemsDiscountAmount], [ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
-                                  "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
-                                  "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], [NetWeight], [InternalDocumentStatus], " +
-                                  "'New' as [NewStatus], #" + DateTime.Now + "# as [DateTimeReceived] FROM [{0}]", "Documents$");
+                                      "[TotalItemsDiscountAmount], [ExtraDiscountAmount], [NetAmount], [TotalAmount], [IssuerId], [IssuerName], [IssuerType], [IssuerBranchId], [IssuerCountry], [IssuerGovernorate]," +
+                                      "[IssuerRegionCity], [IssuerStreet], [IssuerBuildingNumber], [ReceiverId], [ReceiverName], [ReceiverType], [ReceiverCountry]," +
+                                      "[ReceiverGovernorate], [ReceiverRegionCity], [ReceiverStreet], [ReceiverBuildingNumber], [GrossWeight], [NetWeight], [InternalDocumentStatus], " +
+                                      "'New' as [NewStatus], #" + DateTime.Now + "# as [DateTimeReceived] FROM [{0}]", "Documents$");
 
                 string SQLQuery = "SELECT [Id] FROM DOCUMENTS";
                 List<string> InternalDocumentIds = new List<string>();
@@ -659,16 +660,19 @@ namespace eInvoicing.API.Controllers
                 oda.Fill(ds);
                 if (ds.Tables[0].Rows.Count > 0)
                 {
-                    var UpdatedRows = ds.Tables[0].AsEnumerable().Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
+                    var UpdatedRows = ds.Tables[0].AsEnumerable()
+                        .Where(row => InternalDocumentIds.Any(id => id == row["InternalDocumentId"].ToString()) && row["InternalDocumentStatus"].ToString().ToLower() == "updated").ToList();
 
                     if (UpdatedRows.Any())
                     {
                         UpdatedDocumentsIds = new List<string>();
-                        UpdatedDocumentsIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Select(row => row["InternalDocumentId"].ToString()).ToList();
+                        UpdatedDocumentsIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated")
+                            .Select(row => row["InternalDocumentId"].ToString()).ToList();
 
                         for (int i = 0; i < UpdatedRows.Count; i++)
                         {
-                            string SqlQuery = @"UPDATE DOCUMENTS SET [DocumentType] = @DocumentType ,[DocumentTypeVersion] = @DocumentTypeVersion, [DateTimeIssued] = @DateTimeIssued 
+                            string SqlQuery = @"
+                                        UPDATE DOCUMENTS SET [DocumentType] = @DocumentType ,[DocumentTypeVersion] = @DocumentTypeVersion, [DateTimeIssued] = @DateTimeIssued 
                                       , [TaxpayerActivityCode] = @TaxpayerActivityCode, [TotalSalesAmount]  = @TotalSalesAmount , [TotalDiscountAmount]  = @TotalDiscountAmount
                                       , [TotalItemsDiscountAmount]  = @TotalItemsDiscountAmount ,[ExtraDiscountAmount]  = @ExtraDiscountAmount
                                       , [NetAmount]  = @NetAmount , [TotalAmount]  = @TotalAmount
@@ -678,7 +682,8 @@ namespace eInvoicing.API.Controllers
                                       , [ReceiverId] = @ReceiverId, [ReceiverGovernorate] = @ReceiverGovernorate, [ReceiverRegionCity] = @ReceiverRegionCity
                                       , [ReceiverStreet] = @ReceiverStreet, [ReceiverBuildingNumber] = @ReceiverBuildingNumber
                                       , [ReceiverName]  = @ReceiverName , [ReceiverType]  = @ReceiverType , [ReceiverCountry]  = @ReceiverCountry
-                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight, [Status] = @Status  WHERE Id = @InternalDocumentId";
+                                      , [GrossWeight]  = @GrossWeight, [NetWeight]  = @NetWeight, [Status] = @Status  
+                                        WHERE Id = @InternalDocumentId AND (STATUS = 'Failed' OR Status = 'Invalid')";
 
                             SqlCommand SqlCommand = new SqlCommand(SqlQuery, con);
                             SqlCommand.Parameters.AddWithValue("@DocumentType", UpdatedRows[i]["DocumentType"]);
@@ -722,7 +727,8 @@ namespace eInvoicing.API.Controllers
                     else
                     {
                         NonExistingDocumentIds = new List<string>();
-                        NonExistingDocumentIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated").Select(row => row["InternalDocumentId"].ToString()).ToList();
+                        NonExistingDocumentIds = ds.Tables[0].AsEnumerable().Where(row => row["InternalDocumentStatus"].ToString().ToLower() == "updated")
+                            .Select(row => row["InternalDocumentId"].ToString()).ToList();
                     }
                 }
                 
@@ -762,11 +768,12 @@ namespace eInvoicing.API.Controllers
             if (Lines.Any())
             {
                 UpdatedInvoiceLinesIds = new List<string>();
-                UpdatedInvoiceLinesIds = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString())).Select(row => row["InternalInvoiceLineId"].ToString()).ToList();
+                UpdatedInvoiceLinesIds = ds.Tables[0].AsEnumerable().Where(row => UpdatedDocumentsIds.Any(id => id == row["InternalDocumentId"].ToString()))
+                    .Select(row => row["InternalInvoiceLineId"].ToString()).ToList();
                 for (int i = 0; i < UpdatedRows.Count; i++)
                 {
                     string SqlQuery = @"UPDATE INVOICELINES SET [ItemType] = @ItemType, [ItemCode] = @ItemCode
-                                       , [UnitType] = @UnitType, [InternalCode] = @InternalCode , [Quantity] = @Quantity , [AmountEGP] = @AmountEGP, [AmountSold] = @AmountSold
+                                       ,[UnitType] = @UnitType, [InternalCode] = @InternalCode , [Quantity] = @Quantity , [AmountEGP] = @AmountEGP, [AmountSold] = @AmountSold
                                        ,[CurrencySold] = @CurrencySold, [CurrencyExchangeRate] = @CurrencyExchangeRate, [SalesTotal] = @SalesTotal
                                        ,[DiscountRate] = @DiscountRate, [DiscountAmount] = @DiscountAmount, [ItemsDiscount] = @ItemsDiscount
                                        ,[TotalTaxableFees] = @TotalTaxableFees, [ValueDifference] = @ValueDifference , [ModifiedOn] = GETDATE()
@@ -1077,6 +1084,7 @@ namespace eInvoicing.API.Controllers
                 _documentService.GetTheConnectionString(CS);
                 _errorService.GetTheConnectionString(CS);
                 _userSession.SetBusinessGroup(Name);
+                DocumentSubmissionDTO Temp = new DocumentSubmissionDTO() { acceptedDocuments = new List<DocumentAcceptedDTO>(), rejectedDocuments = new List<DocumentRejectedDTO>() };
                 var auth = _auth.token(_userSession.url, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
                 if(!string.IsNullOrEmpty(auth.access_token))
                 {
@@ -1097,7 +1105,7 @@ namespace eInvoicing.API.Controllers
                             using (HttpClient client = new HttpClient())
                             {
                                 client.DefaultRequestHeaders.Clear();
-                                client.Timeout = TimeSpan.FromMinutes(60);
+                                client.Timeout = TimeSpan.FromMinutes(120);
                                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                                 var url = _userSession.submitServiceUrl + "api/InvoiceHasher/SubmitDocument";
                                 client.BaseAddress = new Uri(url);
@@ -1109,6 +1117,7 @@ namespace eInvoicing.API.Controllers
                                         documents = _internalDocs.ToList(),
                                         token = auth.access_token,
                                         pin = _userSession.pin,
+                                        SRN = _userSession.SRN,
                                         url = _userSession.submissionurl,
                                         docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
                                     };
@@ -1120,6 +1129,7 @@ namespace eInvoicing.API.Controllers
                                         documents = _internalDocs.Take(100).ToList(),
                                         token = auth.access_token,
                                         pin = _userSession.pin,
+                                        SRN = _userSession.SRN,
                                         url = _userSession.submissionurl,
                                         docuemntTypeVersion = ConfigurationManager.AppSettings["TypeVersion"].ToLower()
                                     };
@@ -1133,6 +1143,14 @@ namespace eInvoicing.API.Controllers
                                     var response = JsonConvert.DeserializeObject<DocumentSubmissionDTO>(result.Content.ReadAsStringAsync().Result);
                                     if (response != null)
                                     {
+                                        //Temp.submissionId = response.submissionId;
+                                        if (response.acceptedDocuments != null)
+                                            Temp.acceptedDocuments.AddRange(response.acceptedDocuments);
+                                        if (response?.rejectedDocuments != null)
+                                        {
+                                            Temp.rejectedDocuments.AddRange(response.rejectedDocuments);
+                                            _errorService.InsertBulk(response.rejectedDocuments);
+                                        }
                                         _errorService.InsertBulk(response.rejectedDocuments);
                                         _documentService.UpdateDocuments(response, submittedBy);
                                     }
@@ -1143,8 +1161,14 @@ namespace eInvoicing.API.Controllers
                                 objAppsettings.Settings["IsExternal"].Value = "0";
                             }
                         }
+                        _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
+                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count() });
                     }
-                    
+                    else
+                    {
+                        _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
+                        { SentCount = Temp.acceptedDocuments.Count(), FailedCount = Temp.rejectedDocuments.Count() });
+                    }
                 }
                 if (objAppsettings != null)
                 {
@@ -1161,5 +1185,68 @@ namespace eInvoicing.API.Controllers
                 return false;
             }
         }
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/SyncCustomerDocumentsByCurrentloggedinOrg")]
+        public IHttpActionResult SyncCustomerDocumentsByCurrentloggedinOrg()
+        {
+            try
+            {
+                string commandText = "EXEC [dbo].[SP_SyncDataFromViewsToTBLs]";
+                if (RunCommandwithoutSubmitAsynchronously(commandText, this.OnActionExecuting()))
+                    return Ok();
+                else
+                    return InternalServerError();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        private bool RunCommandwithoutSubmitAsynchronously(string commandText, string connectionString)
+        {
+            // Given command text and connection string, asynchronously execute
+            // the specified command against the connection. For this example,
+            // the code displays an indicator as it is working, verifying the
+            // asynchronous behavior.
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    int count = 0;
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    connection.Open();
+
+                    IAsyncResult result = command.BeginExecuteNonQuery();
+                    while (!result.IsCompleted)
+                    {
+                        Console.WriteLine("Waiting ({0})", count++);
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
+                    connection.Close();
+                    return true;
+                    //SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                    return false;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+            }
+        }
+
     }
 }

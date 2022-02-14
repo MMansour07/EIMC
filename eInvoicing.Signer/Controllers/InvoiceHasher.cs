@@ -50,12 +50,12 @@ namespace eInvoicing.Signer.Controllers
                 var docs = paramaters.documents.Select(d=> d.ToDocumentWithoutSignatureDTO()).ToList();
                 Temp docsFormatted = new Temp() { documents = docs };
                 string docsJsonStr = JsonConvert.SerializeObject(docsFormatted);
-                var SignedDocuments = SignDocument(TokenPin, docsJsonStr, paramaters.docuemntTypeVersion);
+                var SignedDocuments = SignDocument(paramaters.SRN,  docsJsonStr, paramaters.docuemntTypeVersion);
                 _logger.LogInformation("Info: Here are the submitted documents of date [" + DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")+ "] --> " + SignedDocuments);
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
-                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.Timeout = TimeSpan.FromMinutes(120);
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", paramaters.token);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                     paramaters.url += "documentsubmissions";
@@ -143,7 +143,7 @@ namespace eInvoicing.Signer.Controllers
 
             return serialized;
         }
-        private string SignDocument(string pin,string docsJsonStr, string documentTypeVersion)
+        private string SignDocument(string SRN, string docsJsonStr, string documentTypeVersion)
         {
             JObject request = JsonConvert.DeserializeObject<JObject>(docsJsonStr, new JsonSerializerSettings()
             {
@@ -161,7 +161,7 @@ namespace eInvoicing.Signer.Controllers
                 if (documentTypeVersion == "1.0")
                 {
                     var serializedString = Serialize(document);
-                    var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString));
+                    var signatureString = SignWithCMS(Encoding.UTF8.GetBytes(serializedString), SRN);
                     var signatures = new List<SIGNATURESDTO>();
                     signatures.Add(new SIGNATURESDTO
                     {
@@ -198,12 +198,14 @@ namespace eInvoicing.Signer.Controllers
                 return output;
             }
         }
-        private string SignWithCMS(byte[] data)
+        private string SignWithCMS(byte[] data, string USB_SerialNumber)
         {
             Pkcs11InteropFactories factories = new Pkcs11InteropFactories();
             using (IPkcs11Library pkcs11Library = factories.Pkcs11LibraryFactory.LoadPkcs11Library(factories, DllLibPath, AppType.MultiThreaded))
             {
-                ISlot slot = pkcs11Library.GetSlotList(SlotsType.WithTokenPresent).FirstOrDefault();
+                //var slots = pkcs11Library.GetSlotList(SlotsType.WithTokenPresent);
+
+                ISlot slot = pkcs11Library.GetSlotList(SlotsType.WithTokenPresent)?.SingleOrDefault(i => i.GetTokenInfo().SerialNumber == USB_SerialNumber);
 
                 if (slot is null)
                 {

@@ -50,6 +50,8 @@
     <Compile Include="CancelDocumentRq.cs" />
     <Compile Include="ChangePasswordDTO.cs" />
     <Compile Include="CurrencyDTO.cs" />
+    <Compile Include="EmailContentDTO.cs" />
+    <Compile Include="FailedDocumentsReasonsDTO.cs" />
     <Compile Include="InvalidDocumentsReasonsDTO.cs" />
     <Compile Include="SubTypeDTO.cs" />
     <Compile Include="TaxTypeDTO.cs" />

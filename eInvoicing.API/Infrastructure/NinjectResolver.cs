@@ -79,6 +79,7 @@ namespace eInvoicing.API.Infrastructure
             kernel.Bind<IBusinessGroupRepository>().To<BusinessGroupRepository>().InThreadScope();
             kernel.Bind<IErrorReposistory>().To<ErrorRepository>().InThreadScope();
             kernel.Bind<IDocumentService>().To<DocumentService>().InThreadScope();
+            kernel.Bind<ICodeService>().To<CodeService>().InThreadScope();
             kernel.Bind<IReportService>().To<ReportService>().InThreadScope();
             kernel.Bind<IErrorService>().To<ErrorService>().InThreadScope();
             kernel.Bind<IUserSession>().To<UserSession>().InThreadScope();

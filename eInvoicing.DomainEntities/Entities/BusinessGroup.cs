@@ -11,6 +11,7 @@ namespace eInvoicing.DomainEntities.Entities
         public string BusinessType { get; set; }
         public string SyncType { get; set; }
         public string Token { get; set; }
+        public string USB_SerialNumber { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }

@@ -1,13 +1,45 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Web.Http;
+using eInvoicing.API.Filters;
+using eInvoicing.API.Models;
+using eInvoicing.DTO;
+using eInvoicing.Service.AppService.Contract.Base;
 
 namespace eInvoicing.API.Controllers
 {
-    public class CodeController : ApiController
+    [JwtAuthentication]
+    public class CodeController : BaseController
     {
+        private readonly ICodeService _codeService;
+        private readonly IAuthService _auth;
+        private readonly IUserSession _userSession;
+
+        public CodeController(ICodeService codeService, IAuthService auth, IUserSession userSession)
+        {
+            _codeService = codeService;
+            _auth = auth;
+            _userSession = userSession;
+        }
+
+        [HttpPost]
+        [Route("api/code/SearchMyEGSCodeUsageRequests")]
+        public IHttpActionResult SearchMyEGSCodeUsageRequests(SearchEGSCodeRequestDTO req)
+        {
+            try
+            {
+                _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+                var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                var result = _codeService.SearchMyEGSCodeUsageRequests(req, auth.access_token, _userSession.submissionurl);
+                if (result != null && result.StatusCode == HttpStatusCode.OK)
+                    return Ok(result);
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }

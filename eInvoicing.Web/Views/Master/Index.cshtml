@@ -32,7 +32,7 @@
                 using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                 {
                     @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto btn-hover-bg-dark d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
+                    <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
                             <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
                             <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
@@ -75,7 +75,7 @@
     </div>
     <!--end::Subheader-->
     <div class="form-group row mb-4">
-        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #3699FF !important;"><b>@MasterResources.ActivityOverviewLbl</b></label>
+        <label class="col-form-label text-right col-lg-9 col-sm-12 menu-text" style="color: #02bda1 !important;"><b>@MasterResources.ActivityOverviewLbl</b></label>
         <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="input-group date">
                 <input type="text" class="form-control" id="kt_datepicker_2" readonly="readonly" placeholder=@MasterResources.SelectDateLbl>
@@ -304,7 +304,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <div class="card card-custom card-stretch gutter-b" id="Card4" style=" height: 100% !important;">
+                    <div class="card card-custom card-stretch gutter-b" id="Card4">
                         <div class="card-header border-0 bg-white">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-up text-primary" style="font-size: 2.25rem !important;"></i></span>
@@ -532,11 +532,11 @@
                             </div>
                             <div class="pt-8">
                                 <div class="d-flex align-items-center justify-content-between mb-3">
-                                    <div class="text-info font-weight-bold mr-2">@MasterResources.SubmittedLbl</div>
-                                    <div class="text-info font-weight-bold" id="SubmittedSubmittedDocumentsCount"></div>
+                                    <div class="text-info font-weight-bold mr-2">Submitted</div>
+                                    <div class="text-info font-weight-bold" id="SubmittedDocumentsCount"></div>
                                 </div>
                                 <div class="progress bg-light-info progress-xs">
-                                    <div class="progress-bar bg-info" role="progressbar" id="SubmittedSubmittedDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-info" role="progressbar" id="SubmittedDocumentsCountPercentage" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
@@ -546,7 +546,7 @@
             </div>
             <div class="row">
                 <div class="col-xl-12">
-                    <div class="card card-custom card-stretch gutter-b" id="Card9" style=" height: 95% !important;">
+                    <div class="card card-custom card-stretch gutter-b" id="Card9">
                         <div class="card-header border-0 bg-white">
                             <div class="card-title">
                                 <span class="card-icon"><i class="la la-arrow-alt-circle-down text-primary" style="font-size: 2.25rem !important;"></i></span>

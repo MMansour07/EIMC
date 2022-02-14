@@ -33,6 +33,7 @@ namespace eInvoicing.API.Models
                 InternalAPIURL = ConfigurationManager.AppSettings["InternalAPIURL_IIS"];
             }
             pin = taxpayer.PIN;
+            SRN = taxpayer.SRN;
             submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
         }
         public void SetBusinessGroup(string BusinessGroup)
@@ -58,6 +59,7 @@ namespace eInvoicing.API.Models
                 InternalAPIURL = ConfigurationManager.AppSettings["InternalAPIURL_IIS"];
             }
             pin = taxpayer.PIN;
+            SRN = taxpayer.SRN;
             submitServiceUrl = ConfigurationManager.AppSettings["submitSrvBaseUrl"];
         }
 
@@ -96,6 +98,7 @@ namespace eInvoicing.API.Models
         public string submitServiceUrl { get ; set ; }
         public string submissionurl { get ; set ; }
         public string pin { get ; set ; }
+        public string SRN { get ; set ; }
         public string client_id { get ; set ; }
         public string client_secret { get ; set ; }
     }

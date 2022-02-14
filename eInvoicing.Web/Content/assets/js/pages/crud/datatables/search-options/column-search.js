@@ -53,8 +53,8 @@ var initTable1 = function () {
 				}
 			}
 		],
-		lengthMenu: [5, 10, 25, 50],
-		pageLength: 30,
+		lengthMenu: [10, 50, 100, 200, 300],
+		pageLength: 10,
 		language: {
 			'lengthMenu': 'Display _MENU_',
 		},
@@ -76,6 +76,7 @@ var initTable1 = function () {
 			{ data: "totalCount", "name": "TotalCount" },
 			{ data: "validCount", "name": "ValidCount" },
 			{ data: "invalidCount", "name": "InvalidCount" },
+			{ data: "failedCount", "name": "FailedCount" },
 			{ data: "submittedCount", "name": "SubmittedCount" },
 			{ data: "cancelledCount", "name": "CancelledCount" },
 			{ data: "rejectedCount", "name": "RejectedCount" },
@@ -143,6 +144,7 @@ var initTable1 = function () {
 				.reduce(function (a, b) {
 					return intVal(a) + intVal(b);
 				}, 0);
+			
 
 			// Update footer
 			$(api.column(1).footer()).html(
@@ -172,7 +174,7 @@ var initTable1 = function () {
 		},
 		columnDefs: [
 			{
-				targets: -9,
+				targets: -10,
 				render: function (data, type, full, meta) {
 					var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6)))).split(" ");
 					return '<span class="navi-text">' + temp[0] + '</span>';
@@ -228,5 +230,6 @@ function searchData() {
 	fromDate = ($("#fromDate").val()) ? $("#fromDate").val() : '';
 	toDate = ($("#toDate").val()) ? $("#toDate").val() : '';
 	table.DataTable().destroy();
+	$("#kt_datatable10 tbody").empty();
 	initTable1();
 }

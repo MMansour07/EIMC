@@ -226,6 +226,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CodeController.cs" />
     <Compile Include="Controllers\TaxpayerController.cs" />
     <Compile Include="Controllers\AppSettingController.cs" />
     <Compile Include="Controllers\ReportController.cs" />
@@ -411,6 +412,8 @@
     <Content Include="Content\assets\js\pages\crud\datatables\extensions\select.min.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\advanced-search.min.js" />
+    <Content Include="Content\assets\js\pages\crud\datatables\search-options\documents_stats_overview.js" />
+    <Content Include="Content\assets\js\pages\crud\datatables\search-options\failed-reasons.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\invalid-reasons.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\TopGoods.js" />
     <Content Include="Content\assets\js\pages\crud\datatables\search-options\GetMonthlyLowestSeller.js" />
@@ -448,6 +451,7 @@
     <Content Include="Content\assets\js\pages\crud\forms\validation\form-widgets.min.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\autosize.min.js" />
+    <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-failedreasons.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker-invalidreasons.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker.js" />
     <Content Include="Content\assets\js\pages\crud\forms\widgets\bootstrap-datepicker.min.js" />
@@ -493,6 +497,7 @@
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\horizontal.min.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\modal.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\modal.min.js" />
+    <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\codeslist.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection-received.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection-delivered.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection.js" />
@@ -2231,6 +2236,7 @@
     <Content Include="Content\assets\plugins\custom\datatables\datatables.bundle.js" />
     <Content Include="Content\assets\plugins\custom\draggable\draggable.bundle.js" />
     <Content Include="Content\assets\plugins\custom\flot\flot.bundle.js" />
+    <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar-failedreasons.bundle.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar-invalidreasons.bundle.js" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.css" />
     <Content Include="Content\assets\plugins\custom\fullcalendar\fullcalendar.bundle.js" />
@@ -2644,6 +2650,9 @@
     <Content Include="NLog.config" />
     <Content Include="Views\Document\received.cshtml" />
     <Content Include="Views\Document\raw_received.cshtml" />
+    <Content Include="Views\Report\documents_stats_overview.cshtml" />
+    <Content Include="Views\Report\failedreasons.cshtml" />
+    <Content Include="Views\Code\codeslist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

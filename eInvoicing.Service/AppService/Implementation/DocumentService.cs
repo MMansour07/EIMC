@@ -780,7 +780,7 @@ namespace eInvoicing.Service.AppService.Implementation
                          "<br />" +
                          "No available documents to be sent. <br />" +
                          "<br />" +
-                         "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                         "For further information please visit <b><a href = 'http://localhost/efatorty/'>E فاتورتي</a><b>. <br />" +
                          "<br />" +
                          "<b>Thank you for using E فاتورتي.</b> <br />" +
                          "<br />" +
@@ -799,7 +799,7 @@ namespace eInvoicing.Service.AppService.Implementation
                            "<br />" +
                            "Failed Documents: " + obj.FailedCount.ToString()  + " <br />" +
                            "<br />" +
-                           "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                           "For further information please visit <b><a href = 'http://localhost/efatorty/'>E فاتورتي</a><b>. <br />" +
                             "<br />" +
                            "<b>Thank you for using E فاتورتي.</b> <br />" +
                            "<br />" +

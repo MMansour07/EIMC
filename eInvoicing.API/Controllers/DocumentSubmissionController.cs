@@ -12,6 +12,8 @@ using System.Text;
 using eInvoicing.API.Filters;
 using eInvoicing.API.Models;
 using ProductLicense;
+using System.Security.Claims;
+using System.Web;
 
 namespace eInvoicing.API.Controllers
 {
@@ -73,6 +75,12 @@ namespace eInvoicing.API.Controllers
                         {
                             _errorService.InsertBulk(response.rejectedDocuments);
                             _documentService.UpdateDocuments(response, obj.submittedBy);
+                            var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                            var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                            _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
+                            { SentCount = response.acceptedDocuments.Count(), FailedCount =response.rejectedDocuments.Count(), 
+                                BusinessGroup = identity?.FindFirst("BusinessGroup")?.Value
+                            });
                             return Ok(response);
                         }
                     }
@@ -162,6 +170,14 @@ namespace eInvoicing.API.Controllers
                                 }
                                 _errorService.InsertBulk(response.rejectedDocuments);
                                 _documentService.UpdateDocuments(response, submittedBy);
+                                var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                                var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                                _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
+                                {
+                                    SentCount = response.acceptedDocuments.Count(),
+                                    FailedCount = response.rejectedDocuments.Count(),
+                                    BusinessGroup = identity?.FindFirst("BusinessGroup")?.Value
+                                });
                             }
                         }
                         else

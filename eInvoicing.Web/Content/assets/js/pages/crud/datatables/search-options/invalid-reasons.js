@@ -7,7 +7,7 @@ var initTable1 = function () {
     KTApp.block('#InvalidReasons_crd');
     // begin first table
     table.DataTable({
-        "scrollX": true,
+        responsive: true,
         dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
@@ -49,9 +49,6 @@ var initTable1 = function () {
         },
         searchDelay: 500,
         serverSide: true,
-        order: [
-            [1, "desc"]
-        ],
         ajax: {
             url: '/v1/report/AjaxInvalidReasons',
             type: 'POST',
@@ -61,9 +58,8 @@ var initTable1 = function () {
             }
         },
         columns: [
-            { data: "DocumentId", "name": "DocumentId", "width": "100"},
-            { data: "DateTimeIssued", "name": "DateTimeIssued", "width": "100" },
-           /* { data: "DateTimeReceived", "name": "DateTimeReceived" },*/
+            { data: "DateTimeIssued", "name": "DateTimeIssued" },
+            { data: "DocumentId", "name": "DocumentId"},
             { data: "ValidationSteps", "name": "ValidationSteps" },
             { data: "Errors", "name": "Errors" },
             { data: "InnerErrors", "name": "InnerErrors" },
@@ -76,19 +72,12 @@ var initTable1 = function () {
         },
         columnDefs: [
             {
-                targets: -7,
+                targets: 0,
                 render: function (data, type, full, meta) {
                     var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
                     return '<span class="navi-text">' + temp + '</span>';
                 },
             }
-            //{
-            //    targets: -8,
-            //    render: function (data, type, full, meta) {
-            //        var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
-            //        return '<span class="navi-text">' + temp + '</span>';
-            //    },
-            //}
         ],
     });
 };

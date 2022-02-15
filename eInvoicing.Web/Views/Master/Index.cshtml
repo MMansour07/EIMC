@@ -2,9 +2,10 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <div class="container-fluid">
     <div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
-        <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="container d-flex align-items-center subheader-custom justify-content-between flex-wrap flex-sm-nowrap">
             <div class="d-flex align-items-center flex-wrap mr-1">
                 <div class="d-flex align-items-baseline flex-wrap mr-10">
                     <h3 class="text-white icon-title">
@@ -15,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <div class="topbar-item">
+        <div class="topbar-item topbar-custom">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)

@@ -7,8 +7,8 @@ var initTable1 = function () {
 	KTApp.block('#SubmittedDocumentsStats_crd');
 	// begin first table
 	table.DataTable({
-		"scrollX": true,
-		//responsive: true,
+		//"scrollX": true,
+		responsive: true,
 		dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
 			<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7 dataTables_pager'lp>>`,
@@ -235,13 +235,6 @@ var initTable1 = function () {
 					return '<span class="navi-text">' + temp[0] + '</span>';
 				},
 			}
-			//{
-			//	targets: -2,
-			//	render: function (data, type, full, meta) {
-			//		var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6)))).split(" ");
-			//		return '<span class="navi-text">' + temp[0] + '</span>';
-			//	},
-			//},
 		],
 	});
 };

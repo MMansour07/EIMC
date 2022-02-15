@@ -95,6 +95,18 @@ address {
   font-style: normal;
   line-height: inherit; }
 
+.topbar-custom {
+    position: absolute;
+    top: 0;
+    left: 15px;
+}
+
+.subheader-custom {
+    position: absolute;
+    top: 4px;
+    right: 0;
+}
+
 ol,
 ul,
 dl {
@@ -56104,7 +56116,7 @@ font-family: madaregular;
   .dataTables_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before {
     color: #02bda1;
     background-color: transparent;
-    font-family: madaregular;
+    font-family: 'ki';
     font-style: normal;
     font-weight: normal;
     font-variant: normal;

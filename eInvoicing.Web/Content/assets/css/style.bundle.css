@@ -110,9 +110,22 @@ ul ol {
 dt {
   font-weight: 500; }
 
+.subheader-custom {
+    position: absolute;
+    top: 4px;
+    left: 0;
+}
+
+.topbar-custom {
+    position: absolute;
+    top: 0;
+    right: 15px;
+}
+
 dd {
-  margin-bottom: .5rem;
-  margin-left: 0; }
+    margin-bottom: .5rem;
+    margin-left: 0;
+}
 
 blockquote {
   margin: 0 0 1rem; }
@@ -36582,7 +36595,7 @@ button {
   position: relative; }
 
 .dropdown-toggle.nav-link:after, .dropdown-toggle.btn:after {
-  margin-left: 0.5rem/*rtl:ignore*/;
+  /*margin-left: 0.5rem*//*rtl:ignore*//*;*/
   font-family: madaregular;
   font-style: normal;
   font-weight: normal;
@@ -36593,12 +36606,12 @@ button {
   text-transform: none;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-smoothing: antialiased;
+  /*font-smoothing: antialiased;*/
   content: ""; }
 
 .dropdown-toggle.nav-link:before, .dropdown-toggle.btn:before {
   margin-right: 0.5rem/*rtl:ignore*/;
-  font-family: madaregular;
+  font-family: 'ki';
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -45321,7 +45334,7 @@ font-family: madaregular;
         margin-right: 10px; }
         .datatable.datatable-default > .datatable-pager > .datatable-pager-info .datatable-pager-size .btn.dropdown-toggle {
           height: 2.25rem;
-          padding: 0.45rem 1rem;
+          padding: 0.45rem 0.8rem;
           font-size: 1rem;
           font-weight: 500;
           border: 0 !important;
@@ -46835,7 +46848,7 @@ font-family: madaregular;
       cursor: not-allowed;
       opacity: 0.5; }
   .switch.switch-icon input:checked ~ span:after {
-    font-family: madaregular;
+    font-family: 'ki';
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -54092,7 +54105,7 @@ font-family: madaregular;
         color: #7E8299; }
         .navi .navi-item .navi-link .navi-arrow:before {
           line-height: 0;
-          font-family: madaregular;
+          font-family: 'ki';
           font-style: normal;
           font-weight: normal;
           font-variant: normal;
@@ -55542,7 +55555,7 @@ font-family: madaregular;
     font-size: 0.7rem;
     right: 1rem; }
     .bootstrap-select .dropdown-menu.inner > li.selected > a .check-mark:before {
-      font-family: madaregular;
+      font-family: 'ki';
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -56107,7 +56120,7 @@ font-family: madaregular;
   .dataTables_wrapper table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before {
     color: #02bda1;
     background-color: transparent;
-    font-family: madaregular;
+    font-family: 'ki';
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -57972,7 +57985,7 @@ font-family: madaregular;
       margin-right: 0.5rem;
       position: relative; }
       .select2-container--default .select2-selection--multiple .select2-selection__rendered .select2-selection__choice .select2-selection__choice__remove:before {
-        font-family: madaregular;
+        font-family: 'ki';
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -58635,7 +58648,7 @@ body.swal2-height-auto {
     outline: none !important;
     font-size: 0; }
     .toast .toast-close-button:before {
-      font-family: madaregular;
+      font-family: 'ki';
       font-style: normal;
       font-weight: normal;
       font-variant: normal;
@@ -59746,7 +59759,7 @@ body {
           -ms-flex-pack: end;
           justify-content: flex-end; }
         .header-menu .menu-nav > .menu-item > .menu-link .menu-arrow:before {
-          font-family: madaregular;
+          font-family: 'ki';
           font-style: normal;
           font-weight: normal;
           font-variant: normal;
@@ -61277,7 +61290,7 @@ body {
               .aside-menu.aside-menu-dropdown .menu-nav .menu-item:not([data-menu-submenu-mode=accordion]).menu-item-hover > .menu-submenu .menu-subnav > .menu-item > .menu-link .menu-arrow:before {
                 -webkit-transition: all 0.3s ease;
                 transition: all 0.3s ease;
-                font-family: madaregular;
+                font-family: 'ki';
                 font-style: normal;
                 font-weight: normal;
                 font-variant: normal;

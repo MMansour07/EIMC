@@ -2,7 +2,6 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<title>EInvoicing|Documents</title>
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
@@ -115,20 +114,13 @@
     </div>
     <hr />
     <div class="card card-custom bg-diagonal-light gutter-b" id="InvalidReasons_crd">
-        @*<div class="card-header bg-light">
-                <div class="card-title">
-                    <span class="card-icon"><i class="flaticon2-layers text-primary"></i></span>
-                    <h3 class="card-label">Submitted Documents Analytics & Stats</h3>
-                </div>
-            </div>*@
         <div class="card-body">
             <!--begin: Datatable-->
-            <table class="table table-hover display nowrap" id="kt_datatable10" style="width:100%">
+            <table class="table table-striped table-bordered table-hover display nowrap"  id="kt_datatable10" style="width:100%">
                 <thead>
                     <tr>
-                        <th>Document No.</th>
                         <th>Issued On</th>
-                        @*<th>Submitted On</th>*@
+                        <th>Document No.</th>
                         <th>Validtion Steps</th>
                         <th>Main Error</th>
                         <th>Inner Errors</th>
@@ -144,5 +136,5 @@
 </div>
 <script src="~/Content/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/crud/datatables/search-options/invalid-reasons.js?v=7.0.6"></script>
-<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar-invalidreasons.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker-invalidreasons.js"></script>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

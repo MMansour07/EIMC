@@ -60,13 +60,13 @@ var KTDatatableRecordSelectionDemo = function () {
             field: 'codeTypeName',
             title: 'Code Type',
             sortable: false,
-            width: 75
+            width: 100
         },
         {
             field: 'itemCode',
             title: 'Item Code',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
             },
@@ -75,7 +75,7 @@ var KTDatatableRecordSelectionDemo = function () {
             field: 'codeNamePrimaryLang',
             title: 'Name (English)/Name (Arabic)',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.codeNamePrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.codeNameSecondaryLang + '</span>';
@@ -85,7 +85,7 @@ var KTDatatableRecordSelectionDemo = function () {
             field: 'descriptionPrimaryLang',
             title: 'Description (English)/Description (Arabic)',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.descriptionPrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.descriptionSecondaryLang + '</span>';
@@ -121,13 +121,13 @@ var KTDatatableRecordSelectionDemo = function () {
             field: 'parentItemCode',
             title: 'GPC Linked Item',
             sortable: false,
-            width: 170,
+            width: 200,
         },
         {
             field: 'parentCodeNamePrimaryLang',
             title: 'GPC Name (English)/GPC Name (Arabic)',
             sortable: false,
-            width: 170,
+            width: 200,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNamePrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNameSecondaryLang + '</span>';
@@ -278,13 +278,13 @@ var KTDatatableRecordSelectionDemo2 = function () {
             field: 'codeTypeName',
             title: 'Code Type',
             sortable: false,
-            width: 75
+            width: 100
         },
         {
             field: 'itemCode',
             title: 'Item Code',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
             },
@@ -293,7 +293,7 @@ var KTDatatableRecordSelectionDemo2 = function () {
             field: 'codeNamePrimaryLang',
             title: 'Name (English)/Name (Arabic)',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.codeNamePrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.codeNameSecondaryLang + '</span>';
@@ -303,7 +303,7 @@ var KTDatatableRecordSelectionDemo2 = function () {
             field: 'descriptionPrimaryLang',
             title: 'Description (English)/Description (Arabic)',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.descriptionPrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.descriptionSecondaryLang + '</span>';
@@ -339,13 +339,13 @@ var KTDatatableRecordSelectionDemo2 = function () {
             field: 'parentItemCode',
             title: 'GPC Linked Item',
             sortable: false,
-            width: 170
+            width: 220
         },
         {
             field: 'parentCodeNamePrimaryLang',
             title: 'GPC Name (English)/GPC Name (Arabic)',
             sortable: false,
-            width: 170,
+            width: 220,
             template: function (row) {
                 return '<span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNamePrimaryLang + '</span>\
                         <span class="navi-text" style= "float:left; clear:left;">' + row.parentCodeNameSecondaryLang + '</span>';

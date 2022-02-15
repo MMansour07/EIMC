@@ -5,21 +5,25 @@
     .submitdoc {
         cursor: pointer !important;
     }
+    .dropdown-menu.dropdown-menu-sm {
+        transform: translate3d(-195px, 46px, 0px) !important;
+        width: 230px !important;
+    }
 </style>
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class=" container  d-flex align-items-center subheader-custom justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
 
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
+                    <i class="flaticon-menu-1 header-icon"></i>
                     <!--begin::Page Title-->
-                    <h2 class="text-white font-weight-bold my-1 mr-5">
-                        <i class="flaticon-menu-1 header-icon"></i>
+                    <h3 class="text-white icon-title">
                         ERP Codes
-                    </h2>
+                    </h3>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -41,7 +45,7 @@
             <!--end::Info-->
         </div>
 
-        <div class="topbar-item">
+        <div class="topbar-item topbar-custom">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)

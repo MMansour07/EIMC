@@ -7,6 +7,7 @@ var initTable1 = function () {
 	KTApp.block('#SubmittedDocumentsStats_crd');
 	// begin first table
 	table.DataTable({
+		//"scrollX": true,
 		responsive: true,
 		dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
 			<'row'<'col-sm-12'tr>>
@@ -169,6 +170,13 @@ var initTable1 = function () {
 					return intVal(a) + intVal(b);
 				}, 0);
 
+			var pageTotal12 = api
+				.column(12, { page: 'current' })
+				.data()
+				.reduce(function (a, b) {
+					return intVal(a) + intVal(b);
+				}, 0);
+
 			// Update footer
 			$(api.column(1).footer()).html(
 				pageTotal1 
@@ -214,6 +222,10 @@ var initTable1 = function () {
 				pageTotal11
 				//'$' + pageTotal + ' ( $' + total + ' total)'
 			);
+			$(api.column(12).footer()).html(
+				pageTotal12
+				//'$' + pageTotal + ' ( $' + total + ' total)'
+			);
 		},
 		columnDefs: [
 			{
@@ -223,13 +235,6 @@ var initTable1 = function () {
 					return '<span class="navi-text">' + temp[0] + '</span>';
 				},
 			}
-			//{
-			//	targets: -2,
-			//	render: function (data, type, full, meta) {
-			//		var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6)))).split(" ");
-			//		return '<span class="navi-text">' + temp[0] + '</span>';
-			//	},
-			//},
 		],
 	});
 };

@@ -723,7 +723,8 @@ namespace eInvoicing.Service.AppService.Implementation
                         string URL = BaseURL + "documents/" + InvalidDocuments[i].UUID + "/details";
                         client.BaseAddress = new Uri(URL);
                         var postTask = client.GetAsync(URL);
-                        postTask.Wait();
+                        TimeSpan ts = TimeSpan.FromMilliseconds(3000);
+                        postTask.Wait(ts);
                         var result = postTask.Result;
                         if (result.IsSuccessStatusCode)
                         {
@@ -779,7 +780,7 @@ namespace eInvoicing.Service.AppService.Implementation
                          "<br />" +
                          "No available documents to be sent. <br />" +
                          "<br />" +
-                         "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                         "For further information please visit <b><a href = 'http://localhost/efatorty/'>E فاتورتي</a><b>. <br />" +
                          "<br />" +
                          "<b>Thank you for using E فاتورتي.</b> <br />" +
                          "<br />" +
@@ -792,13 +793,13 @@ namespace eInvoicing.Service.AppService.Implementation
                            "<br /> " +
                            "We hope this email finds you well. <br />" +
                            "<br />" +
-                           "The today's submission" + obj.BusinessGroup + "came as follows:  <br />" +
+                           "The today's submission of " + obj.BusinessGroup + " came as follows:  <br />" +
                            "<br />" +
                            "Submitted Documents: " + obj.SentCount.ToString() + " <br />" +
                            "<br />" +
                            "Failed Documents: " + obj.FailedCount.ToString()  + " <br />" +
                            "<br />" +
-                           "For further information please visit <b><a href = 'http://localhost/eimc.hub/'>E فاتورتي</a><b>. <br />" +
+                           "For further information please visit <b><a href = 'http://localhost/efatorty/'>E فاتورتي</a><b>. <br />" +
                             "<br />" +
                            "<b>Thank you for using E فاتورتي.</b> <br />" +
                            "<br />" +

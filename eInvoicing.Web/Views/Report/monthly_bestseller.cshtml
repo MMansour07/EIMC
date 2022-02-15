@@ -7,17 +7,17 @@
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="">
-        <div class=" container  d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class=" container  d-flex align-items-center subheader-custom justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
 
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
                     <!--begin::Page Title-->
-                    <h2 class="text-white font-weight-bold my-1 mr-5">
+                    <h3 class="text-white icon-title">
                         <i class="flaticon-statistics header-icon"></i>
                         Monthly Bestseller Item
-                    </h2>
+                    </h3>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -38,7 +38,7 @@
             </div>
             <!--end::Info-->
         </div>
-        <div class="topbar-item">
+        <div class="topbar-item topbar-custom">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
             @if (Request.IsAuthenticated)
@@ -115,7 +115,7 @@
             </div>*@
         <div class="card-body">
             <!--begin: Datatable-->
-            <table class="table  table-hover table-checkable" id="GetMonthlyBestSeller">
+            <table class="table table-striped table-bordered table-hover display nowrap" id="GetMonthlyBestSeller">
                 <thead>
                     <tr>
                         <th>Month</th>

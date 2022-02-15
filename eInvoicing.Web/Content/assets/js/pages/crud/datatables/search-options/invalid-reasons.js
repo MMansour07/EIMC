@@ -26,17 +26,6 @@ var initTable1 = function () {
                 footer: true,
                 title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
             },
-            //{
-            //	orientation: 'portrait',
-            //	pageSize: 'LEGAL',
-            //	extend: 'csv',
-            //	footer: true,
-            //	title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
-            //	//customize: function (win) {
-            //	//	$body = $(win.document.body);
-            //	//	$body.find('h1').css('text-align', 'center');
-            //	//}
-            //},
             {
                 orientation: 'portrait',
                 pageSize: 'LEGAL',
@@ -60,9 +49,6 @@ var initTable1 = function () {
         },
         searchDelay: 500,
         serverSide: true,
-        order: [
-            [2, "desc"]
-        ],
         ajax: {
             url: '/v1/report/AjaxInvalidReasons',
             type: 'POST',
@@ -72,9 +58,8 @@ var initTable1 = function () {
             }
         },
         columns: [
-            { data: "DocumentId", "name": "DocumentId", "width": "100"},
-            { data: "DateTimeIssued", "name": "DateTimeIssued", "width": "100" },
-           /* { data: "DateTimeReceived", "name": "DateTimeReceived" },*/
+            { data: "DateTimeIssued", "name": "DateTimeIssued" },
+            { data: "DocumentId", "name": "DocumentId"},
             { data: "ValidationSteps", "name": "ValidationSteps" },
             { data: "Errors", "name": "Errors" },
             { data: "InnerErrors", "name": "InnerErrors" },
@@ -87,19 +72,12 @@ var initTable1 = function () {
         },
         columnDefs: [
             {
-                targets: -7,
+                targets: 0,
                 render: function (data, type, full, meta) {
                     var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
                     return '<span class="navi-text">' + temp + '</span>';
                 },
             }
-            //{
-            //    targets: -8,
-            //    render: function (data, type, full, meta) {
-            //        var temp = convertToJavaScriptDate(new Date(parseInt(data.substr(6))));
-            //        return '<span class="navi-text">' + temp + '</span>';
-            //    },
-            //}
         ],
     });
 };

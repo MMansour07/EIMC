@@ -63,6 +63,9 @@ var initTable1 = function () {
 		order: [
 			[7, "desc"]
 		],
+		layout: {
+			customScrollbar: true
+		},
 		ajax: {
 			url: '/v1/report/AjaxGetSubmittedDocumentsStats',
 			type: 'POST',

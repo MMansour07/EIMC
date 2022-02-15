@@ -57,7 +57,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     // callback function support for column rendering
                     template: function (row) {
                         var status = {
-                            Submitted: { 'title': 'Submitted', 'class': 'label-primary' },
+                            Submitted: { 'title': 'Submitted', 'class': 'label-info' },
                             Valid:     { 'title': 'Valid', 'class': ' label-success' },
                             Invalid:   { 'title': 'Invalid', 'class': ' label-danger' },
                             Cancelled: { 'title': 'Cancelled', 'class': ' label-dark' },
@@ -75,7 +75,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 {
                     field: 'internalID',
                     title: 'ID/Internal ID',
-                    width:220,
+                    width:270,
                     template: function (row) {
                         return "<a href='/v1/document/raw_received?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
                                 <span class='navi-text' style= 'float:left; clear:left;'>" + row.internalID + "</span>";
@@ -110,6 +110,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     field: 'dateTimeReceived',
                     title: 'Received Date',
                     sortable: 'desc',
+                    width: 125,
                     template: function (row) {
                         var temp = convertToJavaScriptDate(new Date(parseInt(row.dateTimeReceived.substr(6)))).split(" ");
                         return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\

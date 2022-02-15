@@ -138,8 +138,17 @@
   <data name="DocumentsStatistics" xml:space="preserve">
     <value>إحصائيات الوثائق</value>
   </data>
+  <data name="DocumentStatisticsDetailed" xml:space="preserve">
+    <value>إحصائيات الوثائق (بالتفصيل)</value>
+  </data>
+  <data name="DocumentStatisticsOverview" xml:space="preserve">
+    <value>إحصائيات الوثائق (نظرة عامة)</value>
+  </data>
   <data name="Draft" xml:space="preserve">
     <value>مسودة</value>
+  </data>
+  <data name="FailedDocumentReason" xml:space="preserve">
+    <value>أسباب فشل الوثائق</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>عام</value>
@@ -151,7 +160,7 @@
     <value>ابدأ</value>
   </data>
   <data name="InvalidDocumentsReasons" xml:space="preserve">
-    <value>أسباب الوثائق الخاطئة</value>
+    <value>أسباب رفض الوثائق</value>
   </data>
   <data name="License" xml:space="preserve">
     <value>التصريح</value>

@@ -115,11 +115,20 @@ namespace eInvoicing.Web.Views.Shared {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Documents Statistics.
+        ///   Looks up a localized string similar to Documents Statistics (Detailed).
         /// </summary>
-        public static string DocumentsStatistics {
+        public static string DocumentStatisticsDetailed {
             get {
-                return ResourceManager.GetString("DocumentsStatistics", resourceCulture);
+                return ResourceManager.GetString("DocumentStatisticsDetailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Documents Statistics (Overview).
+        /// </summary>
+        public static string DocumentStatisticsOverview {
+            get {
+                return ResourceManager.GetString("DocumentStatisticsOverview", resourceCulture);
             }
         }
         
@@ -129,6 +138,15 @@ namespace eInvoicing.Web.Views.Shared {
         public static string Draft {
             get {
                 return ResourceManager.GetString("Draft", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed Documents Reasons.
+        /// </summary>
+        public static string FailedDocumentReason {
+            get {
+                return ResourceManager.GetString("FailedDocumentReason", resourceCulture);
             }
         }
         

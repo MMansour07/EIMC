@@ -5,7 +5,6 @@ var fromDate = new Date(y, m, 1);
 var toDate = new Date();
 var initTable1 = function () {
     KTApp.block('#FailedReasons_crd');
-    // begin first table
     table.DataTable({
         responsive: true,
         dom: `<'row'<'col-sm-6 text-left'f><'col-sm-6 text-right'B>>
@@ -16,7 +15,7 @@ var initTable1 = function () {
                 orientation: 'portrait',
                 extend: 'print',
                 footer: true,
-                title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
+                title: "Failed Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
             },
             'copyHtml5',
             {
@@ -24,25 +23,14 @@ var initTable1 = function () {
                 pageSize: 'LEGAL',
                 extend: 'excel',
                 footer: true,
-                title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
+                title: "Failed Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
             },
-            //{
-            //	orientation: 'portrait',
-            //	pageSize: 'LEGAL',
-            //	extend: 'csv',
-            //	footer: true,
-            //	title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + ""
-            //	//customize: function (win) {
-            //	//	$body = $(win.document.body);
-            //	//	$body.find('h1').css('text-align', 'center');
-            //	//}
-            //},
             {
                 orientation: 'portrait',
                 pageSize: 'LEGAL',
                 extend: 'pdfHtml5',
                 footer: true,
-                title: "Invalid Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + "",
+                title: "Failed Document Reasons from " + $("#fromDate").val() + " to " + $("#toDate").val() + "",
                 customize: function (doc) {
                     doc.content[1].layout = "Borders";
                     doc.content.splice(0, 0, {
@@ -121,8 +109,6 @@ function convertToJavaScriptDate(value) {
 function ModifyDate(date) {
     if (date) {
         date = date.toString().split("-");
-        // After this construct a string with the above results as below
-        //return date[2] + "-" + date[0] + "-" + date[1];
         return date[2] + "-" + ((monthNames.indexOf(date[1]) < 9) ? ("0" + (parseInt(monthNames.indexOf(date[1])) + 1)) : (parseInt(monthNames.indexOf(date[1])) + 1)) + "-" + date[0];
     }
     else

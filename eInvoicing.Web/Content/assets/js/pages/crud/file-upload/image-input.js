@@ -22,7 +22,7 @@ var KTImageInputDemo = function () {
                 type: 'success',
                 buttonsStyling: false,
                 confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 
@@ -32,7 +32,7 @@ var KTImageInputDemo = function () {
                 type: 'success',
                 buttonsStyling: false,
                 confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 
@@ -42,7 +42,7 @@ var KTImageInputDemo = function () {
                 type: 'error',
                 buttonsStyling: false,
                 confirmButtonText: 'Got it!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 
@@ -55,7 +55,7 @@ var KTImageInputDemo = function () {
                 type: 'success',
                 buttonsStyling: false,
                 confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 
@@ -65,7 +65,7 @@ var KTImageInputDemo = function () {
                 type: 'success',
                 buttonsStyling: false,
                 confirmButtonText: 'Awesome!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 
@@ -75,7 +75,7 @@ var KTImageInputDemo = function () {
                 type: 'error',
                 buttonsStyling: false,
                 confirmButtonText: 'Got it!',
-                confirmButtonClass: 'btn btn-primary font-weight-bold'
+                confirmButtonClass: 'btn btn-sm btn-primary font-weight-bold'
             });
 		});
 	}

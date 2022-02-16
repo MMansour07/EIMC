@@ -1,23 +1,23 @@
-﻿
-@model IEnumerable<eInvoicing.DTO.DocumentDTO>
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<title>EInvoicing|Documents</title>
+<style>
+    .submitdoc {
+        cursor: pointer !important;
+    }
+</style>
 <div class="container-fluid">
-    <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
+    <div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
+        <div class="container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
 
                 <!--begin::Page Heading-->
                 <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <i class="flaticon-warning header-icon"></i>
-
+                    <i class="flaticon2-cancel header-icon"></i>
                     <!--begin::Page Title-->
                     <h3 class="text-white icon-title">
-                        Failed Documents Reasons
+                        Invalid & Failed Documents
                     </h3>
                     <!--end::Page Title-->
                     <!--begin::Breadcrumb-->
@@ -28,8 +28,8 @@
                             </a>
                         </li>
                         <li class="breadcrumb-item">
-                            <a href="javascript:window.location.reload();" class="text-white">
-                                Failed Documents Reasons
+                            <a href="@Url.Action("pending", "document")" class="text-white">
+                                Draft
                             </a>
                         </li>
                     </ul>
@@ -39,6 +39,7 @@
             </div>
             <!--end::Info-->
         </div>
+
         <div class="topbar-item topbar-custom">
             @using System.Security.Claims;
             @using Microsoft.AspNet.Identity;
@@ -88,60 +89,107 @@
             }
         </div>
     </div>
-    <!--end::Subheader-->
-    <div class="form-group row mb-4">
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="input-group date">
-                <input type="text" class="form-control" id="fromDate" readonly="readonly" placeholder="From Date">
-                <div class="input-group-append">
-                    <span class="input-group-text">
-                        <i class="la la-calendar"></i>
-                    </span>
-                </div>
+    <div class="card card-custom gutter-b">
+        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
+            <div class="card-title">
+                <h3 class="card-label">
+                    Invalid & Failed Documents
+                    <span class="d-block text-primary pt-2 font-size-sm">Documents which have an issue whether were sent or not yet.</span>
+                </h3>
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
-            <div class="input-group date">
-                <input type="text" class="form-control" id="toDate" readonly="readonly" placeholder="To Date">
-                <div class="input-group-append">
-                    <span class="input-group-text">
-                        <i class="la la-calendar"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <a href="#" id="_find" class="btn btn-sm btn-primary font-weight-bold">
-            Find
-            <i class="flaticon-search ml-1"></i>
-        </a>
-    </div>
-    <hr />
-    <div class="card card-custom bg-diagonal-light gutter-b" id="FailedReasons_crd">
-        @*<div class="card-header bg-light">
-                <div class="card-title">
-                    <span class="card-icon"><i class="flaticon2-layers text-primary"></i></span>
-                    <h3 class="card-label">Submitted Documents Analytics & Stats</h3>
-                </div>
-            </div>*@
         <div class="card-body">
-            <!--begin: Datatable-->
-            <table class="table table-striped table-bordered table-hover display nowrap" id="kt_datatable10">
-                <thead>
-                    <tr>
-                        <th>Document No.</th>
-                        <th>Issued On</th>
-                        <th>Error</th>
-                        <th>Total Sales Amount</th>
-                        <th>Net Amount</th>
-                        <th>Total Amount</th>
-                    </tr>
-                </thead>
-            </table>
-            <!--end: Datatable-->
+            <div class="mb-7">
+                <div class="row">
+                    <div class="col-md-6" style="border-right: 3px solid #f9f9f9;">
+                        <div class="row mb-2">
+                            <div class="col-lg-12">
+                                <label>Issued From:</label>
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="From Date">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-lg-12">
+                                <label>Issued To:</label>
+                                <div class="input-group date">
+                                    <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="To Date">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">
+                                            <i class="la la-calendar"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <label></label>
+                                <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold mt-7" style="float: right;">
+                                    Find
+                                    <i class="flaticon-search ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label>General Search:</label>
+                                <div class="input-icon">
+                                    <input type="text" class="form-control" placeholder="Search..." id="kt_datatable_search_query" />
+                                    <span><i class="flaticon2-search-1 text-muted"></i></span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <label>Status:</label>
+                                <div class="d-flex align-items-center">
+                                    <select class="form-control" id="kt_datatable_search_status">
+                                        <option value="">All</option>
+                                        <option value="Invalid">Invalid</option>
+                                        <option value="Failed">Failed</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <hr />
+            <div class="mt-10 mb-5 collapse" id="kt_datatable_group_action_form">
+                <div class="d-flex align-items-center">
+                    <div class="font-weight-bold text-dark-75 mr-3">
+                        Selected <span id="kt_datatable_selected_records">0</span> records:
+                    </div>
+                    <a href="#" id="kt_datatable_sync" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
+                        Sync
+                        <i class="flaticon-paper-plane-1"></i>
+                    </a>
+                    <a href="#" id="kt_datatable_fetch_modal" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
+                        <i class="flaticon-paper-plane-1"></i>
+                    </a>
+                    <a href="#" id="kt_datatable_syncAll" class="btn btn btn-sm btn-primary font-weight-bold">
+                        Sync All <i class="flaticon-paper-plane-1"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
         </div>
     </div>
 </div>
-<script src="~/Content/assets/plugins/custom/datatables/datatables.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/datatables/search-options/failed-reasons.js?v=7.0.6"></script>
-<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar-failedreasons.bundle.js?v=7.0.6"></script>
-<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker-failedreasons.js"></script>
+
+<script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/invalid_failed.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>
+<script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle.js?v=7.0.6"></script>
+<script src="~/Content/assets/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>

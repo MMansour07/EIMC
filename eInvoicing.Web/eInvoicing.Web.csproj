@@ -500,6 +500,7 @@
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\modal.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\modal.min.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\codeslist.js" />
+    <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\invalid_failed.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection-received.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection-delivered.js" />
     <Content Include="Content\assets\js\pages\crud\ktdatatable\advanced\record-selection.js" />
@@ -2453,7 +2454,6 @@
     <Content Include="Content\images\drag-move.png" />
     <Content Include="Content\images\E-Hub_logo.png" />
     <Content Include="Content\images\E-Hub_logo_transparent.png" />
-    <Content Include="Content\images\EIMC-logo1.png" />
     <Content Include="Content\images\faces\face1.jpg" />
     <Content Include="Content\images\faces\face10.jpg" />
     <Content Include="Content\images\faces\face11.jpg" />
@@ -2571,20 +2571,6 @@
     <Content Include="Content\uploads\SubTypes.json" />
     <Content Include="Content\uploads\TaxTypes.json" />
     <Content Include="Content\images\E-Hub-logo %284%29.zip" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Black-1.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Black.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Bold-1.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Bold.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-ExtraLight.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Light-1.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Light.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Medium-1.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Medium.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Regular-1.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Regular-2.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-Regular.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada-SemiBold.ttf" />
-    <Content Include="Content\assets\plugins\global\fonts\ArbFonts.com-%2818%29\ArbFONTS-Mada.ttf" />
     <Content Include="Content\assets\plugins\global\fonts\webfontkit-20220214-154516\arbfonts-mada-black.woff" />
     <Content Include="Content\assets\plugins\global\fonts\webfontkit-20220214-154516\arbfonts-mada-black.woff2" />
     <Content Include="Content\assets\plugins\global\fonts\webfontkit-20220214-155632\arbfonts-mada-regular-webfont.woff" />
@@ -2684,6 +2670,7 @@
     <Content Include="Views\Report\documents_stats_overview.cshtml" />
     <Content Include="Views\Report\failedreasons.cshtml" />
     <Content Include="Views\Code\codeslist.cshtml" />
+    <Content Include="Views\Document\invalid_failed.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

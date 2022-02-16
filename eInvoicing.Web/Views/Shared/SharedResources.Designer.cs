@@ -169,6 +169,15 @@ namespace eInvoicing.Web.Views.Shared {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  Invalid &amp; Failed.
+        /// </summary>
+        public static string invalid_failed {
+            get {
+                return ResourceManager.GetString("invalid_failed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Invalid Documents Reasons.
         /// </summary>
         public static string InvalidDocumentsReasons {

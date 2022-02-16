@@ -172,20 +172,24 @@ namespace eInvoicing.API.Controllers
                                 _documentService.UpdateDocuments(response, submittedBy);
                                 var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
                                 var identity = simplePrinciple?.Identity as ClaimsIdentity;
-                                _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
-                                {
-                                    SentCount = response.acceptedDocuments.Count(),
-                                    FailedCount = response.rejectedDocuments.Count(),
-                                    BusinessGroup = identity?.FindFirst("BusinessGroup")?.Value
-                                });
                             }
                         }
                         else
                         {
                             IsSignerError = true;
                         }
-                        //return Ok(new DocumentSubmissionDTO() { statusCode = result.ReasonPhrase });
                     }
+                }
+                if (!IsSignerError)
+                {
+                    var simplePrinciple = (ClaimsPrincipal)HttpContext.Current.User;
+                    var identity = simplePrinciple?.Identity as ClaimsIdentity;
+                    _documentService.NotifyBusinessGroupWithSubmissionStatus(new EmailContentDTO()
+                    {
+                        SentCount = Temp.acceptedDocuments.Count(),
+                        FailedCount = Temp.rejectedDocuments.Count(),
+                        BusinessGroup = identity?.FindFirst("BusinessGroup")?.Value
+                    });
                 }
                 return Ok(!IsSignerError ? Temp : new DocumentSubmissionDTO() { statusCode = "-1"});
             }

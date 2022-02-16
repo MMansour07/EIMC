@@ -156,6 +156,9 @@
   <data name="InvalidDocumentsReasons" xml:space="preserve">
     <value>أسباب الوثائق الخاطئة</value>
   </data>
+  <data name="invalid_failed" xml:space="preserve">
+    <value>الغير صالحة</value>
+  </data>
   <data name="License" xml:space="preserve">
     <value>التصريح</value>
   </data>

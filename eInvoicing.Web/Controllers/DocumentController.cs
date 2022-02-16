@@ -12,6 +12,9 @@ using System.Web.Mvc;
 using System.Security.Claims;
 using System.Net;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace eInvoicing.Web.Controllers
 {
@@ -31,6 +34,15 @@ namespace eInvoicing.Web.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        [ActionName("invalid_failed")]
+        public ActionResult GetInvalidandFailedDocuments()
+        {
+            return View();
+        }
+
+
         [HttpPost]
         [ActionName("ajax_pending")]
         public ActionResult AjaxPendingDocuments()
@@ -60,6 +72,37 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        [ActionName("ajax_invalidandfailed")]
+        public ActionResult ajax_invalidandfailed()
+        {
+            try
+            {
+                var pageNumber = Request["pagination[page]"];
+                var pageSize = Request["pagination[perpage]"];
+                string fromDate = Request["fromDate"];
+                string toDate = Request["toDate"];
+                var sortDirection = Request["sort[sort]"];
+                var sortColumnName = Request["sort[field]"];
+                var searchValue = Request["query[generalSearch]"];
+                var status = Request["query[status]"];
+                var firstDayOfMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var Today = DateTime.Now;
+                DateTime _fromDate = string.IsNullOrEmpty(fromDate) ? firstDayOfMonth : DateTime.ParseExact(fromDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(fromDate);
+                DateTime _toDate = string.IsNullOrEmpty(toDate) ? Today : DateTime.ParseExact(toDate, "yyyy-MM-dd", CultureInfo.InvariantCulture); //Convert.ToDateTime(toDate);
+
+                string url = "api/document/InvalidandFailed?pageNumber=" + Convert.ToInt32(pageNumber) + "&pageSize=" + Convert.ToInt32(pageSize) + "&fromdate=" + _fromDate + "&todate=" + _toDate +
+                    "&searchValue=" + searchValue + "&sortColumnName=" + sortColumnName + "&sortDirection=" + sortDirection + "&status=" + status;
+                var response = _httpClient.GET(url);
+                return Json(JsonConvert.DeserializeObject<DocumentResponse>(response.Info), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         [HttpPost]
         [ActionName("UploadFile")]
         public ActionResult ImportFromExcel()
@@ -615,8 +658,45 @@ namespace eInvoicing.Web.Controllers
                 var response = _httpClient.GET("api/document/printout?uuid=" + uuid, "application/pdf");
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-
                     return File(response.HttpResponseMessage.Content.ReadAsByteArrayAsync().Result, "application/pdf");
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        [ActionName("ResyncDocuments")]
+        public ActionResult ResyncDocuments(List<string> DocumentIds)
+        {
+            try
+            {
+                var response = _httpClient.POST("api/document/ResyncInvalidandFailedDocuments", DocumentIds);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        [ActionName("ResyncAllDocuments")]
+        public ActionResult ResyncAllDocuments()
+        {
+            try
+            {
+                var response = _httpClient.GET("api/document/ResyncAllInvalidandFailedDocuments");
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
                 }
                 return null;
             }

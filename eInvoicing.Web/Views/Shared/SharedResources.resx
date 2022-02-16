@@ -156,6 +156,9 @@
   <data name="InvalidDocumentsReasons" xml:space="preserve">
     <value>Invalid Documents Reasons</value>
   </data>
+  <data name="invalid_failed" xml:space="preserve">
+    <value> Invalid &amp; Failed</value>
+  </data>
   <data name="License" xml:space="preserve">
     <value>License</value>
   </data>

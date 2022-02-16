@@ -6,7 +6,7 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<div class="card-body" data-scroll="true" data-height="200">
+<div class="card-body">
     <div class="form-group row">
         @Html.HiddenFor(m => m.Id, new { @class = "form-control" })
     </div>

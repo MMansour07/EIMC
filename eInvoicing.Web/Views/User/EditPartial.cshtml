@@ -7,17 +7,19 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-<div class="card-body" data-scroll="true" data-height="500">
+<div class="card-body">
     <!--begin::Group-->
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     @Html.HiddenFor(model => model.Id)
     <div class="form-group row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label>@UserResources.FirstName *</label>
             @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control", @placeholder = "First Name", @name = "FirstName" })
             @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
         </div>
-        <div class="col-md-6">
+    </div>
+    <div class="form-group row">
+        <div class="col-md-12">
             <label>@UserResources.LastName *</label>
             @Html.TextBoxFor(model => model.LastName, new { @class = "form-control", @placeholder = "Last Name", @name = "LastName" })
             @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })

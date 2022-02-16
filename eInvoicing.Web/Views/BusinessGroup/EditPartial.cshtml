@@ -7,42 +7,47 @@
 {
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="card-body" data-scroll="true" data-height="500">
+    <div class="card-body">
         <!--begin::Group-->
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
         <div class="form-group row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label>Group Name *</label>
                 @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @placeholder = "Group Name", @name = "GroupName" })
                 @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-6">
+        </div>
+         <div class="form-group row">
+            <div class="col-md-12">
                 <label>Business Type *</label>
                 @Html.TextBoxFor(model => model.BusinessType, new { @class = "form-control", @placeholder = "Business Type", @name = "BusinessType" })
                 @Html.ValidationMessageFor(model => model.BusinessType, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label>Sync Type *</label>
                 @Html.TextBoxFor(model => model.SyncType, new { @class = "form-control", @placeholder = "Sync Type", @name = "SyncType" })
                 @Html.ValidationMessageFor(model => model.SyncType, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-6">
+        </div>
+        <div class="form-group row">
+            <div class="col-md-12">
                 <label>Token Pin *</label>
                 @Html.TextBoxFor(model => model.Token, new { @class = "form-control", @placeholder = "Token", @name = "Token" })
                 @Html.ValidationMessageFor(model => model.Token, "", new { @class = "text-danger" })
             </div>
-            
         </div>
         <div class="form-group row">
-            <div class="col-md-6">
+            <div class="col-md-12">
                 <label>USB Serial Number *</label>
                 @Html.TextBoxFor(model => model.USB_SerialNumber, new { @class = "form-control", @placeholder = "USB Serial Number", @name = "SRN" })
                 @Html.ValidationMessageFor(model => model.USB_SerialNumber, "", new { @class = "text-danger" })
             </div>
-            <div class="col-md-6">
+        </div>
+         <div class="form-group row">
+            <div class="col-md-12">
                 <label>Is DBSync *</label>
                 @Html.CheckBoxFor(model => model.IsDBSync, new { @class = "form-control", @name = "IsDBSync", @id = "IsDBSync", @style = "width: 11% !important;" })
                 @Html.ValidationMessageFor(model => model.IsDBSync, "", new { @class = "text-danger" })

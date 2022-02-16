@@ -79,6 +79,15 @@ namespace eInvoicing.Web.Views.Master {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Arabic.
+        /// </summary>
+        public static string ArabicLbl {
+            get {
+                return ResourceManager.GetString("ArabicLbl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancelled.
         /// </summary>
         public static string CancelledLbl {
@@ -138,6 +147,24 @@ namespace eInvoicing.Web.Views.Master {
         public static string DescriptionLbl {
             get {
                 return ResourceManager.GetString("DescriptionLbl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string EnglishLbl {
+            get {
+                return ResourceManager.GetString("EnglishLbl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Home.
+        /// </summary>
+        public static string HomeLbl {
+            get {
+                return ResourceManager.GetString("HomeLbl", resourceCulture);
             }
         }
         

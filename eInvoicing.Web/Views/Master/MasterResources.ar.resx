@@ -123,6 +123,9 @@
   <data name="AmountLbl" xml:space="preserve">
     <value>الكمية</value>
   </data>
+  <data name="ArabicLbl" xml:space="preserve">
+    <value>العربية</value>
+  </data>
   <data name="CancelledLbl" xml:space="preserve">
     <value>الملغية</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="DescriptionLbl" xml:space="preserve">
     <value>التفصيل</value>
+  </data>
+  <data name="EnglishLbl" xml:space="preserve">
+    <value>الإنجليزية</value>
+  </data>
+  <data name="HomeLbl" xml:space="preserve">
+    <value>الرئيسية</value>
   </data>
   <data name="InvalidLbl" xml:space="preserve">
     <value>الخاطئة</value>

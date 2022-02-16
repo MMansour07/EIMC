@@ -16,6 +16,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -37,7 +38,20 @@ namespace eInvoicing.Web.Controllers
         }
         public ActionResult Index()
         {
+            if(Request.Cookies["Language"] == null)
+            {
+                HttpCookie cookie = new HttpCookie("Language");
+                cookie.Value = "en";
+                Response.Cookies.Add(cookie);
+            }
             return View();
+        }
+        public ActionResult ChangeLanguage(string language)
+        {
+            Request.Cookies["Language"].Value = language;
+            Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
+            Response.Cookies.Add(Request.Cookies["Language"]);
+            return View("Index");
         }
         [HttpGet]
         [ActionName("renderer")]

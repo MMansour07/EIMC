@@ -1,6 +1,15 @@
 ﻿@using eInvoicing.Web.Views.Master
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string LanguageImgSrc;
+    if (Request.Cookies["Language"].Value == "en")
+    {
+        LanguageImgSrc = "/Content/images/226-united-states.svg";
+    }
+    else
+    {
+        LanguageImgSrc = "/Content/images/158-egypt.svg";
+    }
 }
 
 <div class="container-fluid">
@@ -8,12 +17,58 @@
         <div class="container d-flex align-items-center subheader-custom justify-content-between flex-wrap flex-sm-nowrap">
             <div class="d-flex align-items-center flex-wrap mr-1">
                 <div class="d-flex align-items-baseline flex-wrap mr-10">
+                    <i class="flaticon-home-1 header-icon"></i>
                     <h3 class="text-white icon-title">
-
-                        <i class="flaticon-home-1 header-icon"></i>
-                        Home
+                        @MasterResources.HomeLbl
                     </h3>
                 </div>
+            </div>
+        </div>
+        <div class="topbar-item language-item">
+            <div class="dropdown">
+                <!--begin::Toggle-->
+                <div class="topbar-item" data-toggle="dropdown" aria-expanded="false">
+                    <div class="btn btn-icon btn-clean btn-dropdown btn-lg mr-1">
+                        <img class="h-20px w-20px rounded-sm" src="@LanguageImgSrc" alt="">
+                    </div>
+                </div>
+                <!--end::Toggle-->
+                <!--begin::Dropdown-->
+                <div class="dropdown-menu p-0 m-0 dropdown-menu-anim-up dropdown-menu-sm dropdown-menu-right">
+                    <!--begin::Nav-->
+                    <ul class="navi navi-hover py-4">
+                        <!--begin::Item-->
+                        @if (Request.Cookies["Language"].Value == "en")
+                        {
+                        <li class="navi-item">
+                            <a href="@Url.Action("ChangeLanguage", "Master", new {language = "ar"})"  class="navi-link">
+                                <span class="symbol symbol-20 mr-3">
+                                    <img src="~/Content/images/158-egypt.svg" alt="">
+                                </span>
+                                <span class="navi-text language-item-label">@MasterResources.ArabicLbl</span>
+                            </a>
+                        </li>
+                        }
+                        else
+                        {
+                        <!--end::Item-->
+                        <!--begin::Item-->
+
+                        <li class="navi-item active">
+                            <a href="@Url.Action("ChangeLanguage", "Master", new {language = "en"})"  class="navi-link">
+                                <span class="symbol symbol-20 mr-3">
+                                    <img src="~/Content/images/226-united-states.svg" alt="">
+                                </span>
+                                <span class="navi-text language-item-label">@MasterResources.EnglishLbl</span>
+                            </a>
+                        </li>
+                        }
+                        <!--end::Item-->
+
+                    </ul>
+                    <!--end::Nav-->
+                </div>
+                <!--end::Dropdown-->
             </div>
         </div>
         <div class="topbar-item topbar-custom">
@@ -27,7 +82,7 @@
                     <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
                         <div class="d-flex flex-column text-right pr-3">
                             <span class="text-light font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
+                            <span class="text-light font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: right;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
                         </div>
                         <span class="symbol symbol-lg-35 symbol-25 symbol-light">
                             <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
@@ -375,7 +430,7 @@
                                                 </div>
                                             </td>
                                             <td class="pl-0">
-                                                <a class="font-weight-bolder font-size-lg">Invoice <span id="SubmittedInvoiceCount"></span></a>
+                                                <a class="font-weight-bolder font-size-lg">@MasterResources.InvoiceLbl <span id="SubmittedInvoiceCount"></span></a>
                                                 <span class="text-success font-weight-bold d-block">@MasterResources.ValidLbl</span>
                                             </td>
                                             <td class="text-left">
@@ -789,7 +844,6 @@
                 }
             });
         });
-
     });
 </script>
 

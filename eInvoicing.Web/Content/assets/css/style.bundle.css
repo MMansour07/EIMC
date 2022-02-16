@@ -63,8 +63,27 @@ body {
   text-align: left;
   background-color: #ffffff; }
 
+.language-item {
+    position: absolute;
+    top: 0px;
+    right: 210px;
+}
+
+.language-item-label {
+    margin-left: 0px;
+}
+
+.language-dropdown {
+    position: absolute;
+    will-change: transform;
+    top: 0px;
+    left: -11px;
+    transform: translate3d(-107px, 54px, 0px);
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
-  outline: 0 !important; }
+    outline: 0 !important;
+}
 
 hr {
   -webkit-box-sizing: content-box;

@@ -2445,6 +2445,8 @@
     <Content Include="Content\assets\plugins\global\fonts\webfontkit-20220214-155632\stylesheet_reg.css" />
     <Content Include="Content\assets\plugins\global\plugins.bundle.css" />
     <Content Include="Content\assets\plugins\global\plugins.bundle.js" />
+    <Content Include="Content\images\158-egypt.svg" />
+    <Content Include="Content\images\226-united-states.svg" />
     <Content Include="Content\images\auth\lockscreen-bg.jpg" />
     <Content Include="Content\images\auth\login-bg.jpg" />
     <Content Include="Content\images\auth\register-bg.jpg" />

@@ -123,6 +123,9 @@
   <data name="AmountLbl" xml:space="preserve">
     <value>Amount</value>
   </data>
+  <data name="ArabicLbl" xml:space="preserve">
+    <value>Arabic</value>
+  </data>
   <data name="CancelledLbl" xml:space="preserve">
     <value>Cancelled</value>
   </data>
@@ -143,6 +146,12 @@
   </data>
   <data name="DescriptionLbl" xml:space="preserve">
     <value>Description</value>
+  </data>
+  <data name="EnglishLbl" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="HomeLbl" xml:space="preserve">
+    <value>Home</value>
   </data>
   <data name="InvalidLbl" xml:space="preserve">
     <value>Invalid</value>

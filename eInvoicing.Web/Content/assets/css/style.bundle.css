@@ -91,6 +91,11 @@ hr {
   height: 0;
   overflow: visible; }
 
+.header-icon {
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
 h1, h2, h3, h4, h5, h6 {
   margin-top: 0;
   margin-bottom: 0.5rem; }
@@ -129,7 +134,7 @@ ul ol {
 dt {
   font-weight: 500; }
 
-.subheader-custom {
+.subheader-custom{
     position: absolute;
     top: 4px;
     left: 0;
@@ -36485,12 +36490,19 @@ button {
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease; }
-  .btn:not(:disabled):not(.disabled):active:not(.btn-text), .btn:not(:disabled):not(.disabled).active,
-  .show > .btn.dropdown-toggle {
-    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease; }
+
+.brand-toggle:not(:disabled):not(.disabled):active:not(.brand-toggle-text), .brand-toggle:not(:disabled):not(.disabled).active,
+.show > .brand-toggle.dropdown-toggle {
+    padding-right:85px;
+}
+    .btn:not(:disabled):not(.disabled):active:not(.btn-text), .btn:not(:disabled):not(.disabled).active,
+    .show > .btn.dropdown-toggle {
+        /*padding-right:85px;*/
+        -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
+    }
     .btn:not(:disabled):not(.disabled):active:not(.btn-text) i, .btn:not(:disabled):not(.disabled).active i,
     .show > .btn.dropdown-toggle i {
       -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
@@ -57923,7 +57935,7 @@ font-family: madaregular;
   margin-right: 1rem; }
   .select2-container--default .select2-selection--single .select2-selection__arrow:after,
   .select2-container--default .select2-selection--multiple .select2-selection__arrow:after {
-    font-family: madaregular;
+    font-family: 'ki';
     font-style: normal;
     font-weight: normal;
     font-variant: normal;
@@ -61554,22 +61566,29 @@ body {
   .aside {
     width: 90% !important; } }
 
+.brand-light {
+    border-bottom: 3px solid #f9f9f9;
+}
+
 .brand {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: justify;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
-  -webkit-box-align: center;
-  -ms-flex-align: center;
-  align-items: center;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -ms-flex-direction: row;
-  flex-direction: row;
-  padding: 0 25px;
-  height: 65px; }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    /*padding: 0 25px;*/
+    height: 50px;
+    border-bottom: 1px solid #f9f9f9;
+    padding: 26px;
+}
   .brand .brand-logo {
     display: -webkit-box;
     display: -ms-flexbox;

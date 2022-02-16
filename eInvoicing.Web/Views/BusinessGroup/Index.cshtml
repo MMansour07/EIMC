@@ -14,7 +14,7 @@
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center subheader-custom justify-content-between  flex-wrap flex-sm-nowrap">
+        <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
 
@@ -132,7 +132,7 @@
                     <div class="col-lg-12 col-xl-12">
                         <div class="row align-items-center">
                             <div class="col-md-10 my-2 my-md-0">
-                                <a href="#bgCreation" data-toggle="modal" class="btn btn-primary font-weight-bold btn-square">
+                                <a href="#bgCreation" data-toggle="modal" class="btn btn-sm btn-primary font-weight-bold btn-square">
                                     <i class="flaticon2-add-1"></i>
                                     Add Business Group
                                 </a>
@@ -170,43 +170,48 @@
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
-                    <div class="modal-body" style="padding: 0 !important;">
-                        <div class="card-body" data-height="600">
+                    <div class="modal-body" style="padding: 0 !important; height: 500px;">
+                        <div class="card-body">
                             <!--begin::Group-->
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             @Html.HiddenFor(model => model.Id)
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>Group Name *</label>
                                     @Html.TextBoxFor(model => model.GroupName, new { @class = "form-control", @placeholder = "Group Name", @name = "GroupName" })
                                     @Html.ValidationMessageFor(model => model.GroupName, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
                                     <label>Business Type *</label>
                                     @Html.TextBoxFor(model => model.BusinessType, new { @class = "form-control", @placeholder = "Business Type", @name = "BusinessType" })
                                     @Html.ValidationMessageFor(model => model.BusinessType, "", new { @class = "text-danger" })
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>Sync Type *</label>
                                     @Html.TextBoxFor(model => model.SyncType, new { @class = "form-control", @placeholder = "Sync Type", @name = "SyncType" })
                                     @Html.ValidationMessageFor(model => model.SyncType, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
                                     <label>Token Pin *</label>
                                     @Html.TextBoxFor(model => model.Token, new { @class = "form-control", @placeholder = "Token", @name = "Token" })
                                     @Html.ValidationMessageFor(model => model.Token, "", new { @class = "text-danger" })
                                 </div>
-
                             </div>
                             <div class="form-group row">
-                                <div class="col-md-6">
+                                <div class="col-md-12">
                                     <label>USB Serial Number *</label>
                                     @Html.TextBoxFor(model => model.USB_SerialNumber, new { @class = "form-control", @placeholder = "USB Serial Number", @name = "SRN" })
                                     @Html.ValidationMessageFor(model => model.USB_SerialNumber, "", new { @class = "text-danger" })
                                 </div>
-                                <div class="col-md-6">
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
                                     <label>Is DBSync *</label>
                                     @Html.CheckBoxFor(model => model.IsDBSync, new { @class = "form-control", @name = "IsDBSync", @id = "IsDBSync", @style = "width: 11% !important;" })
                                     @Html.ValidationMessageFor(model => model.IsDBSync, "", new { @class = "text-danger" })
@@ -235,17 +240,17 @@
                             </div>
                             <!--end::Group-->
                         </div>
-                    </div>
+                        </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal" data-dismiss="modal">Close</button>
-                        <button type="button" id="bgSubmission" class="btn btn-primary font-weight-bold">Submit</button>
+                        <button type="button" id="bgSubmission" class="btn btn-sm btn-primary font-weight-bold">Submit</button>
                     </div>
                 }
             </div>
         </div>
     </div>
     <div class="modal fade modal-sticky-lg" id="bgEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="flaticon2-group"></i> Edit Group</h5>
@@ -253,12 +258,12 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 0 !important;" id="bgEdit">
+                <div class="modal-body" style="padding: 0 !important; height: 500px" id="bgEdit">
 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" id="closeModal2" data-dismiss="modal">Close</button>
-                    <button type="button" id="bgEdition" class="btn btn-primary font-weight-bold">Save</button>
+                    <button type="button" id="bgEdition" class="btn btn-sm btn-primary font-weight-bold">Save</button>
                 </div>
             </div>
         </div>

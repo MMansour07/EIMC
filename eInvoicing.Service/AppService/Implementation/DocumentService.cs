@@ -310,6 +310,11 @@ namespace eInvoicing.Service.AppService.Implementation
             i.Status.ToLower() == "updated", m => m.OrderBy(x => x.DateTimeIssued), "InvoiceLines").ToList().Select(x => x.ToDocumentVM());
         }
 
+        public List<string> GetAllInvalidandFailedDocumentsIds()
+        {
+            return repository.Get(i => i.Status.ToLower() == "failed" || i.Status.ToLower() == "invalid", null, null).Select(i => i.Id).ToList();
+        }
+
         public PagedList<DocumentVM> GetPendingDocuments(int pageNumber, int pageSize, DateTime fromDate, 
             DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
         {
@@ -342,6 +347,11 @@ namespace eInvoicing.Service.AppService.Implementation
         public int GetPendingCount()
         {
             return repository.Get(i => i.uuid == null, null, "").Count();
+        }
+
+        public int InvalidandFailedCount()
+        {
+            return repository.Get(i => i.Status.ToLower() == "invalid" || i.Status.ToLower() == "failed", null, "").Count();
         }
         public int GetSubmittedCount()
         {
@@ -825,6 +835,36 @@ namespace eInvoicing.Service.AppService.Implementation
             {
                 //throw ex;
             }
+        }
+
+        public PagedList<DocumentVM> GetInvalidandFailedDocuments(int pageNumber, int pageSize, DateTime fromDate,
+    DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
+        {
+            toDate = toDate.AddDays(1);
+            IQueryable<Document> docs;
+            if (string.IsNullOrEmpty(status) || status.ToLower() == "all")
+            {
+                docs = repository.Get(i => (i.Status.ToLower() == "invalid" || i.Status.ToLower() == "failed")
+                && (i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
+            }
+            else
+            {
+                docs = repository.Get(i => i.Status.ToLower() == status.ToLower() && (i.DateTimeIssued >= fromDate.Date && i.DateTimeIssued <= toDate.Date), m => m.OrderByDescending(x => x.DateTimeIssued), "InvoiceLines");
+            }
+            if (!string.IsNullOrEmpty(searchValue))//filter
+            {
+                searchValue = searchValue.ToLower().Replace("/", "");
+                docs = docs.Where(x => x.Id.ToString().Contains(searchValue) || x.Status.ToString().ToLower().Contains(searchValue) || searchValue.Contains(x.DocumentType.ToLower()) ||
+                x.DocumentTypeVersion.ToLower().Contains(searchValue) || x.TotalSalesAmount.ToString().ToLower().Contains(searchValue) ||
+                x.TotalItemsDiscountAmount.ToString().ToLower().Contains(searchValue) || x.TotalAmount.ToString().ToLower().Contains(searchValue) ||
+                x.ReceiverName.ToLower().Contains(searchValue) || x.ReceiverType.ToLower().Contains(searchValue));
+            }
+            if (!string.IsNullOrEmpty(sortColumnName))
+            {
+                docs = docs.OrderBy(sortColumnName + " " + sortDirection);
+            }
+            var temp = PagedList<Document>.Create(docs, pageNumber, pageSize, docs.Count());
+            return new PagedList<DocumentVM>(temp.Select(x => x.ToDocumentVM()).ToList(), docs.Count(), pageNumber, pageSize, docs.Count());
         }
 
     }

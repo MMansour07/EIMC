@@ -201,7 +201,7 @@ namespace eInvoicing.Service.AppService.Implementation
                     NetAmount = x.Select(i => i.Document.NetAmount).FirstOrDefault(),
                     TotalSalesAmount = x.Select(i => i.Document.TotalSalesAmount).FirstOrDefault(),
                     ExtraDiscountAmount = x.Select(i => i.Document.ExtraDiscountAmount).FirstOrDefault(),
-                    Error =x.Select(p => p.message).FirstOrDefault()
+                    Error =x.Select(p => p.target).FirstOrDefault()
                 });
                 int totalCount = erros.Count();
                 if (!string.IsNullOrEmpty(searchValue))//filter

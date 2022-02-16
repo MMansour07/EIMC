@@ -156,6 +156,22 @@ namespace eInvoicing.API.Controllers
 
         [JwtAuthentication]
         [HttpGet]
+        [Route("api/document/InvalidandFailedCount")]
+        public IHttpActionResult InvalidandFailedCount()
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                return Ok(_documentService.InvalidandFailedCount());
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpGet]
         [Route("api/document/receivedCount")]
         public IHttpActionResult ReceivedCount()
         {
@@ -1248,5 +1264,118 @@ namespace eInvoicing.API.Controllers
             }
         }
 
+
+        [JwtAuthentication]
+        [HttpGet]
+        [Route("api/document/InvalidandFailed")]
+        public IHttpActionResult InvalidandFailed(int pageNumber, int pageSize, DateTime fromDate, 
+            DateTime toDate, string searchValue, string sortColumnName, string sortDirection, string status)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                var docs = _documentService.GetInvalidandFailedDocuments(pageNumber, pageSize, fromDate, toDate, searchValue, sortColumnName, sortDirection, status);
+                return Ok(new DocumentResponse() { meta = new Meta() { page = docs.CurrentPage, pages = docs.TotalPages, perpage = docs.PageSize, total = docs.TotalCount }, data = docs });
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+        
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("api/document/ResyncInvalidandFailedDocuments")]
+        public bool ResyncInvalidandFailedDocuments(List<string> DocumentIds)
+        {
+            string commandText = "EXEC [dbo].[SP_ReSyncDataFromViewsToTBLs]";
+            using (SqlConnection connection = new SqlConnection(this.OnActionExecuting()))
+            {
+                try
+                {
+                    int count = 0;
+                    SqlCommand command = new SqlCommand(commandText, connection);
+
+                    command.Parameters.Add(new SqlParameter("@Doc_Id_List", SqlDbType.Structured)
+                    {
+                        TypeName = "dbo.InvalideandFailedDocumentsLst",
+                        Value = DocumentIds.Select(i => new {DocumentId = i}).AsEnumerable()
+                    });
+                    connection.Open();
+
+                    IAsyncResult result = command.BeginExecuteNonQuery();
+                    while (!result.IsCompleted)
+                    {
+                        Console.WriteLine("Waiting ({0})", count++);
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
+                    connection.Close();
+                    return true;
+                    //SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                    return false;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("api/document/ResyncAllInvalidandFailedDocuments")]
+        public bool ResyncAllInvalidandFailedDocuments()
+        {
+            _documentService.GetTheConnectionString(this.OnActionExecuting());
+            var DocumentIds = _documentService.GetAllInvalidandFailedDocumentsIds();
+            string commandText = "EXEC [dbo].[SP_ReSyncDataFromViewsToTBLs]";
+            using (SqlConnection connection = new SqlConnection(this.OnActionExecuting()))
+            {
+                try
+                {
+                    int count = 0;
+                    SqlCommand command = new SqlCommand(commandText, connection);
+                    command.Parameters.AddWithValue("@Doc_Id_List", DocumentIds);
+                    connection.Open();
+
+                    IAsyncResult result = command.BeginExecuteNonQuery();
+                    while (!result.IsCompleted)
+                    {
+                        Console.WriteLine("Waiting ({0})", count++);
+                        System.Threading.Thread.Sleep(100);
+                    }
+                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
+                    connection.Close();
+                    return true;
+                    //SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
+                }
+                catch (SqlException ex)
+                {
+                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                    return false;
+                }
+                catch (InvalidOperationException ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error: {0}", ex.Message);
+                    return false;
+                }
+            }
+        }
     }
 }

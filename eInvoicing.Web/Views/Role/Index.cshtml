@@ -4,17 +4,17 @@
 }
 <style>
     .select2-selection__rendered {
-        width: 440px !important;
+        width: 408px !important;
     }
 
     .select2-search__field {
-        width: 440px !important;
+        width: 408px !important;
     }
 </style>
 <div class="container-fluid">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center subheader-custom justify-content-between  flex-wrap flex-sm-nowrap">
+        <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
 
@@ -127,7 +127,7 @@
         <div class="mb-7">
             <div class="row align-items-center">
                 <div class="col-md-10 my-2 my-md-0">
-                    <a href="#RoleCreation" data-toggle="modal" class="btn btn-primary font-weight-bold btn-square">
+                    <a href="#RoleCreation" data-toggle="modal" class="btn btn-sm btn-primary font-weight-bold btn-square">
                         <i class="flaticon2-add-1"></i>
                         Add Role
                     </a>
@@ -163,10 +163,10 @@
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
-                    <div class="modal-body" style="padding: 0 !important;">
+                    <div class="modal-body" style="padding: 0 !important; height: 300px;">
                         <!--begin::Form-->
                         <!--begin::Wizard Form-->
-                        <div class="card-body" data-scroll="true" data-height="400">
+                        <div class="card-body">
                             <div class="form-group row">
                                 <div class="col-md-12">
                                     <label>Role Name *</label>
@@ -194,7 +194,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModal" data-dismiss="modal">Close</button>
-                        <button type="button" id="RoleSubmission" class="btn btn-primary font-weight-bold">Submit</button>
+                        <button type="button" id="RoleSubmission" class="btn btn-sm btn-primary font-weight-bold">Submit</button>
                     </div>
                 }
             </div>
@@ -209,11 +209,11 @@
                         <i aria-hidden="true" class="ki ki-close"></i>
                     </button>
                 </div>
-                <div class="modal-body" style="padding: 0 !important;" id="RoleEdit">
+                <div class="modal-body" style="padding: 0 !important; height:300px" id="RoleEdit">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModalEdit" data-dismiss="modal">Close</button>
-                    <button type="button" id="roleEdition" class="btn btn-primary font-weight-bold">Save</button>
+                    <button type="button" id="roleEdition" class="btn btn-sm btn-primary font-weight-bold">Save</button>
                 </div>
             </div>
         </div>

@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                    method: 'POST',
-                   url: '/v1/document/ajax_pending',
+                   url: '/v1/document/ajax_invalidandfailed',
                    map: function (raw) {
                         // 
                         // sample data mapping
@@ -34,13 +34,11 @@ var KTDatatableRecordSelectionDemo = function () {
         },
        layout: {
            scroll: true,
-           height: 800, // enable/disable datatable scroll both horizontal and vertical
-           footer: false // display/hide footer
+           height: 800,
+           footer: false
        },
-        // column sorting
         sortable: true,
         pagination: true,
-        // columns definition
         columns: [
             {
                 field: 'recordID',
@@ -56,12 +54,10 @@ var KTDatatableRecordSelectionDemo = function () {
                 field: 'status',
                 title: 'Status',
                 width:80,
-                // callback function support for column rendering
                 template: function (row) {
                     var status = {
-                        new:    { 'title': 'New',     'class': 'label-primary' },
-                        failed: { 'title': 'Failed',  'class': 'label-warning'},
-                        updated:{ 'title': 'Updated', 'class': 'label-info'   }
+                        invalid: { 'title': 'Invalid', 'class': 'label-danger' },
+                        failed:  { 'title': 'Failed',  'class': 'label-warning'},
                     };
                     return '<span class="label label-lg font-weight-bold ' + status[row.status.toLowerCase()].class + ' label-inline">' + status[row.status.toLowerCase()].title + '</span>';
                 }
@@ -144,7 +140,7 @@ var KTDatatableRecordSelectionDemo = function () {
             {
                 field: 'Actions',
                 title: 'Actions',
-                width: 175,
+                width: 125,
                 sortable: false,
                 overflow: 'visible',
                 textAlign: 'left',
@@ -176,12 +172,6 @@ var KTDatatableRecordSelectionDemo = function () {
                                         </a>\
                                     </li>\
                                     <li class='navi-item'>\
-                                        <a onclick='SubmitDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
-                                            <span class='navi-icon'><i class='la la-paper-plane-o'></i></span>\
-                                            <span class='navi-text'>Submit</span>\
-                                        </a>\
-                                    </li>\
-                                    <li class='navi-item'>\
                                         <a onclick='EditDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
                                             <span class='navi-icon'><i class='la la-edit'></i></span>\
                                             <span class='navi-text'>Edit</span>\
@@ -189,10 +179,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     </li>\
                                 </ul>\
                             </div>\
-                    </div>\
-                        <button data-record-id='" + row.internalID + "' class='btn btn-sm btn-clean' title = 'View records'>\
-                        <i class='flaticon-close'></i> Why?\
-		                </button >";
+                    </div>";
                         }
                         else {
                             return "\
@@ -219,10 +206,10 @@ var KTDatatableRecordSelectionDemo = function () {
                                     </a>\
                                 </li>\
                                 <li class='navi-item'>\
-                                    <a onclick='SubmitDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
-                                        <span class='navi-icon'><i class='la la-paper-plane-o'></i></span>\
-                                        <span class='navi-text'>Submit</span>\
-                                    </a>\
+                                            <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
+                                                <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                <span class='navi-text'>Recall</span>\
+                                            </a>\
                                 </li>\
                                 <li class='navi-item'>\
                                         <a onclick='EditDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
@@ -262,17 +249,14 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 </a>\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a onclick='SubmitDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
-                                                    <span class='navi-icon'><i class='la la-paper-plane-o'></i></span>\
-                                                    <span class='navi-text'>Submit</span>\
+                                                <a onclick='Resync(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
+                                                    <span class='navi-icon'><i class='la la-refresh'></i></span>\
+                                                    <span class='navi-text'>Resync</span>\
                                                 </a>\
                                             </li>\
                                         </ul>\
                                     </div>\
-                                </div>\
-                        <button data-record-id='" + row.internalID + "' class='btn btn-sm btn-clean submitdoc' title = 'View records'>\
-                        <i class='flaticon-close'></i> Why?\
-		                </button >";
+                                </div>";
                         }
                         else
                         {
@@ -300,16 +284,23 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 </a>\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a onclick='SubmitDocument(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
-                                                    <span class='navi-icon'><i class='la la-paper-plane-o'></i></span>\
-                                                    <span class='navi-text'>Submit</span>\
+                                                <a onclick='Resync(\"" + row.internalID + "\")' class='navi-link _do submitdoc'>\
+                                                    <span class='navi-icon'><i class='la la-refresh'></i></span>\
+                                                    <span class='navi-text'>Resync</span>\
                                                 </a>\
+                                            </li>\
+                                         <li class='navi-item'>\
+                                                        <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
+                                                            <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                            <span class='navi-text'>Recall</span>\
+                                                        </a>\
                                             </li>\
                                         </ul>\
                                     </div>\
                                 </div>";
                         }
                     }
+                    
                 },
             }],
     };
@@ -321,9 +312,7 @@ var KTDatatableRecordSelectionDemo = function () {
             fromDate: ModifyDate(fromDate),
             toDate: ModifyDate(toDate)
         }
-        // enable extension
         options.extensions = {
-            // boolean or object (extension options)
             checkbox: true,
         };
         options.search = {
@@ -343,21 +332,21 @@ var KTDatatableRecordSelectionDemo = function () {
                 var checkedNodes = datatable.rows('.datatable-row-active').nodes();
                 var count = checkedNodes.length; 
                 $('#kt_datatable_selected_records').html(count);
-                $('#kt_datatable_fetch_modal').html("Send Top " + count + " <i class='flaticon-paper-plane-1'></i>");
+                $('#kt_datatable_fetch_modal').html("Sync Top " + count + " <i class='flaticon-paper-plane-1'></i>");
 
                 if (count !== options.data.pageSize && count !== 1 && 1 > count > options.data.pageSize) {
-                    $("#kt_datatable_send").hide(); 
-                    $("#kt_datatable_sendAll").hide();
+                    $("#kt_datatable_sync").hide(); 
+                    $("#kt_datatable_syncAll").hide();
                 }
                 else if (count === 1 || count < options.data.pageSize)
                 {
-                    $("#kt_datatable_sendAll").hide();
+                    $("#kt_datatable_syncAll").hide();
                     $("#kt_datatable_fetch_modal").hide();
-                    $("#kt_datatable_send").show(); 
+                    $("#kt_datatable_sync").show(); 
                 }
                 else {
-                    $("#kt_datatable_send").hide(); 
-                    $("#kt_datatable_sendAll").show();
+                    $("#kt_datatable_sync").hide(); 
+                    $("#kt_datatable_syncAll").show();
                     $("#kt_datatable_fetch_modal").show();
                 }
                 if (count > 0)
@@ -369,13 +358,6 @@ var KTDatatableRecordSelectionDemo = function () {
                     $('#kt_datatable_group_action_form').collapse('hide');
                 }
         });
-        datatable.on('click', '[data-record-id]', function () {
-            localStorage.clear();
-            Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-            initSubDatatable($(this).data('record-id'));
-            $('#kt_datatable_modal').modal('show');
-        });
-
         
     };
     
@@ -387,8 +369,10 @@ var KTDatatableRecordSelectionDemo = function () {
         },
     };
 }();
+
 jQuery(document).ready(function () {
     sessionStorage.removeItem("PendingDocs");
+
     $("#pending_fromDate").val(((fromDate.getDate() > 9) ? fromDate.getDate() : ('0' + fromDate.getDate())) + '-' + monthNames[((fromDate.getMonth() > 8) ? (fromDate.getMonth()) : ((fromDate.getMonth())))] + '-' + fromDate.getFullYear());
     $("#pending_toDate").val(((toDate.getDate() > 9) ? toDate.getDate() : ('0' + toDate.getDate())) + '-' + monthNames[((toDate.getMonth() > 8) ? (toDate.getMonth()) : ((toDate.getMonth())))] + '-' + toDate.getFullYear());
     fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
@@ -401,27 +385,26 @@ jQuery(document).ready(function () {
             state: 'primary',
             message: 'Please wait as this may take a few seconds'
         });
+
         var ids = datatable.rows('.datatable-row-active').
             nodes().
             find('.checkbox > [type="checkbox"]').
             map(function (i, chk) {
                 return $(chk).val();
             }).toArray();
+
+
         var btn = KTUtil.getById("kt_datatable_fetch_modal");
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
-        Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-        // Ajax Call to Submit documnets Web Contoller
-        var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "syncing...");
+
+        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
                 KTApp.unblockPage();
-                if (returnedData.status == "1") {
+                if (returnedData) {
                     Swal.fire({
-                        title: 'Process has been executed successfully! with the below results.',
-                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                       <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                        text: 'Documents have been resynced successfullt.',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -435,66 +418,9 @@ jQuery(document).ready(function () {
                     LoadDraft();
                     LoadSent();
                 }
-                else if (returnedData.status == "2") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "ETA & Signer Integration Failure, Please check logs.",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "3") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Internal Integration Failure due to the following: " + returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "5") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text:  returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "401") {
-                    Swal.fire({
-                        title: "Your license has expired. You can no longer use this product.",
-                        text:  "To purchase a new license of this product, Contact the product owner.",
-                        icon: "info",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
                 else  {
                     Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Inner Exception Failure due to the following: " + returnedData.message,
+                        text: "Sorry, something went wrong, please try again.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -509,8 +435,7 @@ jQuery(document).ready(function () {
                 KTUtil.btnRelease(btn);
                 KTApp.unblockPage();
                 Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: "Internal Server Error: " + returnedData.message,
+                    text: "Sorry, something went wrong, please try again.",
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -523,118 +448,64 @@ jQuery(document).ready(function () {
             });
     });
 
-    $('#kt_datatable_send').on('click', function (e) {
+    $('#kt_datatable_sync').on('click', function (e) {
         KTApp.blockPage({
             overlayColor: '#000000',
             state: 'primary',
             message: 'Please wait as this may take a few seconds'
         });
+
         var ids = datatable.rows('.datatable-row-active').nodes().find('.checkbox > [type="checkbox"]').map(function (i, chk) {
             return $(chk).val();
         }).toArray();
-        var btn = KTUtil.getById("kt_datatable_send");
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Sending...");
-        Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
+
+        var btn = KTUtil.getById("kt_datatable_sync");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "syncing...");
+
+        //Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
-        var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-        $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
+        //var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
+
+        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
+            function (returnedData) {
             KTUtil.btnRelease(btn);
             $('#kt_datatable_group_action_form').collapse('hide');
             KTApp.unblockPage();
-            if (returnedData.status == "1") {
-                Swal.fire({
-                    title: 'Process has been executed successfully! with the below results.',
-                    html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
-                    icon: "success",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-                datatable.reload();
-                LoadDraft();
-                LoadSent();
-            }
-            else if (returnedData.status == "2") {
-                Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: "ETA & Signer Integration Failure, Please check logs.",
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-            }
-            else if (returnedData.status == "3") {
-                Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: "Internal Integration Failure due to the following: " + returnedData.message,
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-            }
-            else if (returnedData.status == "5") {
-                Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: returnedData.message,
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-            }
-            else if (returnedData.status == "401") {
-                Swal.fire({
-                    title: "Your license has expired. You can no longer use this product.",
-                    text: "To purchase a new license of this product, Contact the product owner.",
-                    icon: "info",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-            }
-            else {
-                Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: "Inner Exception due to the following: " + returnedData.message,
-                    icon: "error",
-                    buttonsStyling: false,
-                    confirmButtonText: "Ok, got it!",
-                    customClass: {
-                        confirmButton: "btn font-weight-bold btn-light-primary"
-                    }
-                }).then(function () {
-                    KTUtil.scrollTop();
-                });
-            }
+                if (returnedData) {
+                    Swal.fire({
+                        text: 'Documents have been resynced successfullt.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadSent();
+                }
+                else {
+                    Swal.fire({
+                        text: "Sorry, something went wrong, please try again.",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
         }).fail(function () {
             KTUtil.btnRelease(btn);
             KTApp.unblockPage();
             Swal.fire({
-                title: "Sorry, something went wrong, please try again.",
-                text: "Internal Server Error: " + returnedData.message,
+                text: "Sorry, something went wrong, please try again.",
                 icon: "error",
                 buttonsStyling: false,
                 confirmButtonText: "Ok, got it!",
@@ -647,26 +518,26 @@ jQuery(document).ready(function () {
         });
     });
 
-    // Send All Documents in one shot
-    $('#kt_datatable_sendAll').on('click', function (e) {
+    $('#kt_datatable_syncAll').on('click', function (e) {
         KTApp.blockPage({
             overlayColor: '#000000',
             state: 'primary',
             message: 'Please wait as this may take a few seconds'
         });
-        var btn = KTUtil.getById("kt_datatable_sendAll");
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Sending...");
+
+        var btn = KTUtil.getById("kt_datatable_syncAll");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "syncing...");
         // Ajax Call to Submit documnets Web Contoller
-        $.post('/v1/documentsubmission/auto_submit',
+
+        $.post('/v1/document/ResyncAllDocuments',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
                 KTApp.unblockPage();
-                if (returnedData.status == "1") {
+                if (returnedData) {
                     Swal.fire({
-                        title: 'Process has been executed successfully! with the below results.',
-                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
+                        text: 'Documents have been resynced successfullt.',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -680,66 +551,9 @@ jQuery(document).ready(function () {
                     LoadDraft();
                     LoadSent();
                 }
-                else if (returnedData.status == "2") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "ETA & Signer Integration Failure, Please check logs.",
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "3") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Internal Integration Failure due to the following: " + returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "5") {
-                    Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: returnedData.message,
-                        icon: "error",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
-                else if (returnedData.status == "401") {
-                    Swal.fire({
-                        title: "Your license has expired. You can no longer use this product.",
-                        text: "To purchase a new license of this product, Please contact the product owner.",
-                        icon: "info",
-                        buttonsStyling: false,
-                        confirmButtonText: "Ok, got it!",
-                        customClass: {
-                            confirmButton: "btn font-weight-bold btn-light-primary"
-                        }
-                    }).then(function () {
-                        KTUtil.scrollTop();
-                    });
-                }
                 else {
                     Swal.fire({
-                        title: "Sorry, something went wrong, please try again.",
-                        text: "Inner Exception due to the following: " + returnedData.message,
+                        text: "Sorry, something went wrong, please try again.",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -754,8 +568,7 @@ jQuery(document).ready(function () {
                 KTUtil.btnRelease(btn);
                 KTApp.unblockPage();
                 Swal.fire({
-                    title: "Sorry, something went wrong, please try again.",
-                    text: "Internal Server Error: " + returnedData.message,
+                    text: "Sorry, something went wrong, please try again.",
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -771,17 +584,12 @@ jQuery(document).ready(function () {
     $("#_find").on('click', function () {
         searchData();
     });
-
-    $("#_sync").on('click', function () {
-        syncData();
-    });
-
-    //$('._do').on('click', function () { alert('11') });
-    //$('._do').on('click', function () { alert('11') });
 });
+
 const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 ];
+
 function convertToJavaScriptDate(value) {
     var dt = value;
     var hours = dt.getHours();
@@ -793,22 +601,7 @@ function convertToJavaScriptDate(value) {
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return dt.getDate() + "-" + monthNames[(dt.getMonth())] + "-" + dt.getFullYear() + " "+ strTime;
 }
-var func = function (input)
-{
-    alert(input);
-    $('#cover-spin').show(0);
-    Result = datatable.rows().data().KTDatatable.dataSet.where(p => p.internalID == id).map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-    // Ajax Call to Submit documnets Web Contoller
-    var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
-    $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments },
-        function (returnedData) {
-            datatable.reload();
-            $('#cover-spin').hide(0);
-        }).fail(function () {
-            $('#cover-spin').hide(0);
-        });
-    return true;
-}
+
 function ModifyDate(date) {
     if (date) {
         date = date.toString().split("-");
@@ -819,129 +612,12 @@ function ModifyDate(date) {
         return null;
 
 }
+
 function searchData() {
     fromDate = ($("#pending_fromDate").val()) ? $("#pending_fromDate").val() : '';
     toDate = ($("#pending_toDate").val()) ? $("#pending_toDate").val() : '';
     datatable.destroy();
-    //localStorage.clear();
     KTDatatableRecordSelectionDemo.init();
-}
-
-function SubmitDocument(DocumentId) {
-    KTApp.blockPage({
-        overlayColor: '#000000',
-        state: 'primary',
-        message: 'Please wait as this may take a few seconds'
-    });
-    Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-    // Ajax Call to Submit documnets Web Contoller
-    var FilteredDocuments = Result.filter(doc => doc.internalID == DocumentId);
-    $.post('/v1/documentsubmission/submit', { obj: FilteredDocuments }, function (returnedData) {
-        KTApp.unblockPage();
-        if (returnedData.status == "1") {
-            Swal.fire({
-                title: 'Process has been executed successfully! with the below results.',
-                html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Submitted Documents: [' + returnedData.data.acceptedDocuments.length + ']</span>\
-                                   <span class="navi-text" style= "float:left; clear:left;">Failed Documents: ['+ returnedData.data.rejectedDocuments.length + ']</span>',
-                icon: "success",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-            datatable.reload();
-            LoadDraft();
-            LoadSent();
-        }
-        else if (returnedData.status == "2") {
-            Swal.fire({
-                title: "Sorry, something went wrong, please try again.",
-                text: "ETA & Signer Integration Failure, Please check logs.",
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-        }
-        else if (returnedData.status == "3") {
-            Swal.fire({
-                title: "Sorry, something went wrong, please try again.",
-                text: "Internal Integration Failure due to the following: " + returnedData.message,
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-        }
-        else if (returnedData.status == "5") {
-            Swal.fire({
-                title: "Sorry, something went wrong, please try again.",
-                text: returnedData.message,
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-        }
-        else if (returnedData.status == "401") {
-            Swal.fire({
-                title: "Your license has expired. You can no longer use this product.",
-                text: "To purchase a new license of this product, Contact the product owner.",
-                icon: "info",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-        }
-        else {
-            Swal.fire({
-                title: "Sorry, something went wrong, please try again.",
-                text: "Inner Exception due to the following: " + returnedData.message,
-                icon: "error",
-                buttonsStyling: false,
-                confirmButtonText: "Ok, got it!",
-                customClass: {
-                    confirmButton: "btn font-weight-bold btn-light-primary"
-                }
-            }).then(function () {
-                KTUtil.scrollTop();
-            });
-        }
-    }).fail(function () {
-        KTUtil.btnRelease(btn);
-        KTApp.unblockPage();
-        Swal.fire({
-            title: "Sorry, something went wrong, please try again.",
-            text: "Internal Server Error: " + returnedData.message,
-            icon: "error",
-            buttonsStyling: false,
-            confirmButtonText: "Ok, got it!",
-            customClass: {
-                confirmButton: "btn font-weight-bold btn-light-primary"
-            }
-        }).then(function () {
-            KTUtil.scrollTop();
-        });
-    });
 }
 
 function ViewDocument(DocumentId) {
@@ -959,113 +635,6 @@ function ViewDocument_NewTab(DocumentId) {
     //window.location.href = "/v1/document/details/" + DocumentId;
 }
 
-var initSubDatatable = function (id) {
-    var el = $('#kt_datatable_sub');
-    var options_sub = {
-        data: {
-            type: 'local',
-            source: Result.find(x => x.internalID == id)?.errors,
-            pageSize: 5,
-        },
-        // layout definition
-        layout: {
-            theme: 'default',
-            scroll: true,
-            footer: false,
-        },
-        sortable: true,
-        pagination: true,
-        columns: [
-            {
-                field: 'id',
-                title: '#',
-                sortable: false,
-                width: 200,
-                type: 'number',
-                textAlign: 'left'
-            },
-            {
-                field: 'target',
-                title: 'Target',
-                sortable: false,
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'propertyPath',
-                title: 'Property Path',
-                sortable: false,
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'message',
-                title: 'Message',
-                width: 200,
-                textAlign: 'left'
-            },
-            {
-                field: 'CreatedOn',
-                title: 'Created On',
-                width: 200,
-                textAlign: 'left',
-                template: function (row) {
-                    if (row.CreatedOn) {
-                        var temp = convertToJavaScriptDate(new Date(parseInt(row.CreatedOn.substr(6)))).split(" ");
-                        return '<span class="navi-text" style= "float:left; clear:left;">' + temp[0] + '</span>\
-                                <span class="navi-text" style= "float:left; clear:left;">' + temp[1] + ' ' + temp[2] + '</span>';
-                    }
-                    else {
-                        return '<span class="navi-text" style= "float:left; clear:left;">NA</span>\
-                                <span class="navi-text" style= "float:left; clear:left;">NA</span>';
-                    }
-
-                }
-            }
-        ],
-    }
-    var datatable = el.KTDatatable(options_sub);
-    var modal = datatable.closest('.modal');
-
-
-    // Fix datatable layout after modal shown
-    datatable.hide();
-    modal.on('shown.bs.modal', function () {
-        var modalContent = $(this).find('.modal-content');
-        datatable.spinnerCallback(true, modalContent);
-        datatable.spinnerCallback(false, modalContent);
-    }).on('hidden.bs.modal', function () {
-        el.KTDatatable('destroy');
-    });
-
-    datatable.on('datatable-on-layout-updated', function () {
-        datatable.show();
-        datatable.redraw();
-    });
-
-    // Fix datatable layout after modal shown
-    //datatable.hide();
-    //var alreadyReloaded = false;
-    //modal.on('shown.bs.modal', function () {
-    //    // 
-    //    if (!alreadyReloaded) {
-    //        var modalContent = $(this).find('.modal-content');
-    //        datatable.spinnerCallback(true, modalContent);
-
-    //        datatable.reload();
-
-    //        datatable.on('datatable-on-layout-updated', function () {
-    //            datatable.show();
-    //            datatable.spinnerCallback(false, modalContent);
-    //            datatable.redraw();
-    //        });
-
-    //        alreadyReloaded = true;
-    //    }
-    //});
-};
-
-
 function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
@@ -1073,22 +642,21 @@ function EditDocument(InternalId) {
     window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
 }
 
-function syncData() {
+function UpdateDocumentByInternalId(InternalId) {
     KTApp.blockPage({
         overlayColor: '#000000',
-        state: 'primary',
-        message: 'Please wait as this may take a few seconds'
+        state: 'primary'
     });
     $.ajax({
-        url: "/v1/master/SyncCustomerDocumentsByCurrentloggedinOrg",
-        type: "GET",
-        dataType: 'json',
-        contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        type: "get", //send it through get method
+        data: {},
         success: function (response) {
-            if (response.success) {
-                KTApp.unblockPage();
+            datatable.reload();
+            KTApp.unblockPage();
+            if (response.status == "Success") {
                 Swal.fire({
-                    text: 'Documents have been synced successfully, and all is up to date.',
+                    text: 'Document has been recalled successfully, Now you can send it agian.',
                     icon: "success",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -1096,13 +664,14 @@ function syncData() {
                         confirmButton: "btn font-weight-bold btn-light-primary"
                     }
                 }).then(function () {
-                    location.reload();
+                    KTUtil.scrollTop();
+                    window.location.href = "/v1/document/pending";
                 });
             }
             else {
                 Swal.fire({
-                    title: "Sorry, something went wrong!",
-                    text:  "It might happened becuase procedure doesn't exist, please make sure and try again.",
+                    text: "Sorry, something went wrong, please try again.",
+                    //text: "Internal Server Error: " + result.message,
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -1113,6 +682,23 @@ function syncData() {
                     KTUtil.scrollTop();
                 });
             }
+
+        },
+        error: function (xhr) {
+            KTApp.unblockPage();
+            //Do Something to handle error
+            Swal.fire({
+                text: "Sorry, something went wrong, please try again.",
+                //text: "Internal Server Error: " + res,
+                icon: "error",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn font-weight-bold btn-light-primary"
+                }
+            }).then(function () {
+                KTUtil.scrollTop();
+            });
         }
     });
 }

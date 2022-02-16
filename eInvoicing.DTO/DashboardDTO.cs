@@ -53,6 +53,7 @@ namespace eInvoicing.DTO
         public double ReceivedRejectedDocumentsCountPercentage { get; set; }
         public int ReceivedSubmittedDocumentsCount { get; set; }
         public double ReceivedSubmittedDocumentsCountPercentage { get; set; }
+        public int InvalidandFailedCount { get; set; }
     }
     public class GoodsModel
     {

@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ActivityOverviewLbl" xml:space="preserve">
-    <value>: نظرة عامة على النشاط</value>
+    <value> نظرة عامة على النشاط :</value>
   </data>
   <data name="AmountLbl" xml:space="preserve">
     <value>الكمية</value>
@@ -157,10 +157,10 @@
     <value>! خطأ</value>
   </data>
   <data name="QuantityLbl" xml:space="preserve">
-    <value>الكمية</value>
+    <value>العدد</value>
   </data>
   <data name="ReceivedValidLbl" xml:space="preserve">
-    <value>: الوثائق المستلمة الصالحة</value>
+    <value> الوثائق المستلمة الصالحة :</value>
   </data>
   <data name="RejectedLbl" xml:space="preserve">
     <value>المرفوضة</value>
@@ -181,7 +181,7 @@
     <value>المرسلة</value>
   </data>
   <data name="SubmittedValidLbl" xml:space="preserve">
-    <value>: الوثائق المرسلة الصالحة</value>
+    <value> الوثائق المرسلة الصالحة :</value>
   </data>
   <data name="TaxLbl" xml:space="preserve">
     <value>الضريبة</value>

@@ -135,11 +135,17 @@
   <data name="Documents" xml:space="preserve">
     <value>Documents</value>
   </data>
-  <data name="DocumentsStatistics" xml:space="preserve">
-    <value>Documents Statistics</value>
+  <data name="DocumentStatisticsDetailed" xml:space="preserve">
+    <value>Documents Statistics (Detailed)</value>
+  </data>
+  <data name="DocumentStatisticsOverview" xml:space="preserve">
+    <value>Documents Statistics (Overview)</value>
   </data>
   <data name="Draft" xml:space="preserve">
     <value>Draft</value>
+  </data>
+  <data name="FailedDocumentReason" xml:space="preserve">
+    <value>Failed Documents Reasons</value>
   </data>
   <data name="General" xml:space="preserve">
     <value>General</value>

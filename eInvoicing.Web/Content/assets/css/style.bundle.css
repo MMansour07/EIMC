@@ -204,6 +204,12 @@ caption {
   text-align: left;
   caption-side: bottom; }
 
+loggedindropdown {
+    width: 10.5% !important;
+    font-size: smaller !important;
+    top: 3px !important;
+    margin-left: -40px !important;
+}
 th {
   text-align: inherit; }
 

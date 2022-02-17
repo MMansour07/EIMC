@@ -6,7 +6,7 @@
         cursor: pointer !important;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid mt-65">
     <div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
         <div class="container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
             <!--begin::Info-->
@@ -101,7 +101,7 @@
         <div class="card-body">
             <div class="mb-7">
                 <div class="row">
-                    <div class="col-md-6" style="border-right: 3px solid #f9f9f9;">
+                    <div class="col-md-6 border-custom">
                         <div class="row mb-2">
                             <div class="col-lg-12">
                                 <label>Issued From:</label>
@@ -172,26 +172,30 @@
                     <div class="font-weight-bold text-dark-75 mr-3">
                         Selected <span id="kt_datatable_selected_records">0</span> records:
                     </div>
-                    <a href="#" id="kt_datatable_sync" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
-                        Resync
-                        <i class="flaticon-refresh"></i>
-                    </a>
-                    <a href="#" id="kt_datatable_Recall" class="btn btn btn-sm btn-info font-weight-bold mr-2">
-                        Recall
-                        <i class="flaticon2-refresh-arrow"></i>
-                    </a>
-                    <a href="#" id="kt_datatable_fetch_modal" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
-                        <i class="flaticon-refresh"></i>
-                    </a>
-                    <a href="#" id="kt_datatable_fetch_modal_recallAll" class="btn btn btn-sm btn-info font-weight-bold mr-2">
-                        <i class="flaticon2-refresh-arrow"></i>
-                    </a>
-                    <a href="#" id="kt_datatable_syncAll" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
-                        Resync All <i class="flaticon-refresh"></i>
-                    </a>
-                    <a href="#" id="kt_datatable_recallAll" class="btn btn btn-sm btn-info font-weight-bold">
-                        Recall All <i class="flaticon2-refresh-arrow"></i>
-                    </a>
+                    <div class="font-weight-bold text-dark-75 mr-3 border-custom">
+                        <a href="#" id="kt_datatable_sync" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
+                            Resync
+                            <i class="flaticon-refresh"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_fetch_modal" class="btn btn btn-sm btn-primary font-weight-bold mr-2">
+                            <i class="flaticon-refresh"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_syncAll" class="btn btn btn-sm btn-primary font-weight-bold mr-2 border-custom">
+                            Resync All <i class="flaticon-refresh"></i>
+                        </a>
+                    </div>
+                    <div class="font-weight-bold text-dark-75 mr-3">
+                        <a href="#" id="kt_datatable_Recall" class="btn btn btn-sm btn-info font-weight-bold mr-2">
+                            Recall
+                            <i class="flaticon2-refresh-arrow"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_fetch_modal_recallAll" class="btn btn btn-sm btn-info font-weight-bold mr-2">
+                            <i class="flaticon2-refresh-arrow"></i>
+                        </a>
+                        <a href="#" id="kt_datatable_recallAll" class="btn btn btn-sm btn-info font-weight-bold">
+                            Recall All <i class="flaticon2-refresh-arrow"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>

@@ -867,5 +867,27 @@ namespace eInvoicing.Service.AppService.Implementation
             return new PagedList<DocumentVM>(temp.Select(x => x.ToDocumentVM()).ToList(), docs.Count(), pageNumber, pageSize, docs.Count());
         }
 
+        public bool UpdateBulkDocumentsByIds(List<string> Documentsids)
+        {
+            try {
+                return repository.UpdateBulkDocumentsByIds(Documentsids);
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool UpdateBulkDocumentsByStatus()
+        {
+            try
+            {
+                return repository.UpdateBulkDocumentsByStatus();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
     }
 }

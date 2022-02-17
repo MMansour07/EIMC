@@ -58,22 +58,26 @@ namespace eInvoicing.Web.Controllers
                 };
                 string url = "api/code/SearchMyEGSCodeUsageRequests/";
                 var response = _httpClient.POST(url, req);
-                var Content = JsonConvert.DeserializeObject<SearchEGSCodeResponseDTO>(response.Info);
-                return Json(new SearchEGSCodeResponse()
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    data = PagedList<SearchEGSCodeResultDTO>.Create(Content?.result, Convert.ToInt32(Request["pagination[page]"]), Convert.ToInt32(Request["pagination[perpage]"]), Content?.metadata?.totalCount),
-                    meta = new Meta()
+                    var Content = JsonConvert.DeserializeObject<SearchEGSCodeResponseDTO>(response.Info);
+                    return Json(new SearchEGSCodeResponse()
                     {
-                        page = Convert.ToInt32(Request["pagination[page]"]),
-                        perpage = Convert.ToInt32(Request["pagination[perpage]"]),
-                        pages = Content?.metadata?.totalPages,
-                        total = Content?.metadata?.totalCount
-                    }
-                }, JsonRequestBehavior.AllowGet);
+                        data = PagedList<SearchEGSCodeResultDTO>.Create(Content?.result, Convert.ToInt32(Request["pagination[page]"]), Convert.ToInt32(Request["pagination[perpage]"]), Content?.metadata?.totalCount),
+                        meta = new Meta()
+                        {
+                            page = Convert.ToInt32(Request["pagination[page]"]),
+                            perpage = Convert.ToInt32(Request["pagination[perpage]"]),
+                            pages = Content?.metadata?.totalPages,
+                            total = Content?.metadata?.totalCount
+                        }
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new genericResponse() { Message = response.HttpResponseMessage.ToString() }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(new genericResponse() { Message = "Calling Preparation error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
+                return Json(new genericResponse() { Message = "Internal Error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
     }

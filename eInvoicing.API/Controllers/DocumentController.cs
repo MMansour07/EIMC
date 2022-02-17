@@ -1409,5 +1409,39 @@ namespace eInvoicing.API.Controllers
             }
 
         }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("api/document/RecallInvalidandFailedDocuments")]
+        public IHttpActionResult RecallInvalidandFailedDocuments(List<string> DocumentIds)
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                _documentService.UpdateBulkDocumentsByIds(DocumentIds);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+        [JwtAuthentication]
+        [HttpPost]
+        [Route("api/document/RecallAllInvalidandFailedDocuments")]
+        public IHttpActionResult RecallAllInvalidandFailedDocuments()
+        {
+            try
+            {
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                _documentService.UpdateBulkDocumentsByStatus();
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
     }
 }

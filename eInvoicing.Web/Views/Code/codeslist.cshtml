@@ -10,7 +10,7 @@
         width: 230px !important;
     }
 </style>
-<div class="container-fluid">
+<div class="container-fluid mt-65">
     <!--begin::Subheader-->
     <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
         <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
@@ -130,7 +130,7 @@
                                 </a>
                             </li>
                             <li class="navi-item">
-                                <a href="#" class="navi-link">
+                                <a href="#" class="navi-link" data-toggle="modal" data-target="#register_code">
                                     <span class="navi-icon"><i class="flaticon2-add-1"></i></span>
                                     <span class="navi-text">Register Code Usage</span>
                                 </a>
@@ -391,6 +391,36 @@
         </div>
     </div>
     <!--end::Modal-->
+    <div class="modal fade" id="register_code" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <i class="flaticon2-add-1"></i>
+                    <h3 class="modal-title" id="register_codelbl">Register Code Usage</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i aria-hidden="true" class="ki ki-close"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5>Popover in a modal</h5>
+                    <p>
+                        This <a href="#" role="button" class="btn btn-secondary" data-toggle="popover" title="Popover title" data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.
+                    </p>
+                    <hr>
+
+                    <h5>Tooltips in a modal</h5>
+                    <p>
+                        <a href="#" title="Tooltip" data-toggle="tooltip">This link</a> and
+                        <a href="#" title="Tooltip" data-toggle="tooltip">that link</a> have tooltips on hover.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary font-weight-bold"><i class="flaticon2-add-1"></i> Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/codeslist.js?v=7.0.6"></script>

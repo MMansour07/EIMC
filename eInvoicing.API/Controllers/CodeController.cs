@@ -33,6 +33,8 @@ namespace eInvoicing.API.Controllers
                 var result = _codeService.SearchMyEGSCodeUsageRequests(req, auth.access_token, _userSession.submissionurl);
                 if (result != null && result.StatusCode == HttpStatusCode.OK)
                     return Ok(result);
+                else if (result != null && result.StatusCode == HttpStatusCode.Unauthorized)
+                    return Unauthorized();
                 else
                     return NotFound();
             }

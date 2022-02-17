@@ -413,7 +413,7 @@ jQuery(document).ready(function () {
                 KTApp.unblockPage();
                 if (returnedData != -1) {
                     Swal.fire({
-                        title: 'The process been resynced successfully with the below results.',
+                        title: 'The documents have been resynced successfully with the below results.',
                         html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
                                <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
                         icon: "success",
@@ -487,7 +487,7 @@ jQuery(document).ready(function () {
             KTApp.unblockPage();
                 if (returnedData != -1) {
                     Swal.fire({
-                        title: 'The process been resynced successfully with the below results.',
+                        title: 'The documents have been resynced successfully with the below results.',
                         html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
                                <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
                         icon: "success",
@@ -554,9 +554,214 @@ jQuery(document).ready(function () {
                 KTApp.unblockPage();
                 if (returnedData != -1) {
                     Swal.fire({
-                        title: 'The process been resynced successfully with the below results.',
+                        title: 'The documents have been resynced successfully with the below results.',
                         html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
                                <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+
+    $('#kt_datatable_fetch_modal_recallAll').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var ids = datatable.rows('.datatable-row-active').
+            nodes().
+            find('.checkbox > [type="checkbox"]').
+            map(function (i, chk) {
+                return $(chk).val();
+            }).toArray();
+
+
+        var btn = KTUtil.getById("kt_datatable_fetch_modal_recallAll");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
+
+        $.post('/v1/document/RecallDocuments', { DocumentIds: ids },
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        title: 'The documents have been recalled successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $('#kt_datatable_Recall').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var ids = datatable.rows('.datatable-row-active').nodes().find('.checkbox > [type="checkbox"]').map(function (i, chk) {
+            return $(chk).val();
+        }).toArray();
+
+        var btn = KTUtil.getById("kt_datatable_Recall");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
+
+
+        $.post('/v1/document/RecallDocuments', { DocumentIds: ids },
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        text: 'The documents have been recalled successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $('#kt_datatable_recallAll').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var btn = KTUtil.getById("kt_datatable_recallAll");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Recalling...");
+        // Ajax Call to Submit documnets Web Contoller
+
+        $.post('/v1/document/RecallAllDocuments',
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        text: 'The documents have been recalled successfully.',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",

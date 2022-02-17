@@ -1286,96 +1286,128 @@ namespace eInvoicing.API.Controllers
         [JwtAuthentication]
         [HttpPost]
         [Route("api/document/ResyncInvalidandFailedDocuments")]
-        public bool ResyncInvalidandFailedDocuments(List<string> DocumentIds)
+        public int ResyncInvalidandFailedDocuments(List<string> DocumentIds)
         {
-            string commandText = "EXEC [dbo].[SP_ReSyncDataFromViewsToTBLs]";
-            using (SqlConnection connection = new SqlConnection(this.OnActionExecuting()))
+            try
             {
-                try
+                //int count = 0;
+                DocumentCollection docColl = new DocumentCollection();
+                docColl.AddRange(DocumentIds.Select(i => new DocumentDetail() { DocumentId = i }).ToList());
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "@Doc_Id_List";
+                param.SqlDbType = SqlDbType.Structured;
+                param.Value = docColl;
+                param.Direction = ParameterDirection.Input;
+
+                SqlParameter outparam = new SqlParameter();
+                outparam.ParameterName = "@DocumentsAffetced";
+                outparam.SqlDbType = SqlDbType.Int;
+                outparam.Direction = ParameterDirection.Output;
+
+                SqlConnection conn = null;
+
+                using (conn = new SqlConnection(this.OnActionExecuting()))
                 {
-                    int count = 0;
-                    SqlCommand command = new SqlCommand(commandText, connection);
-
-                    command.Parameters.Add(new SqlParameter("@Doc_Id_List", SqlDbType.Structured)
-                    {
-                        TypeName = "dbo.InvalideandFailedDocumentsLst",
-                        Value = DocumentIds.Select(i => new {DocumentId = i}).AsEnumerable()
-                    });
-                    connection.Open();
-
-                    IAsyncResult result = command.BeginExecuteNonQuery();
+                    SqlCommand sqlCmd = new SqlCommand("[dbo].[SP_ReSyncDataFromViewsToTBLs]");
+                    conn.Open();
+                    sqlCmd.Connection = conn;
+                    sqlCmd.CommandType = CommandType.StoredProcedure;
+                    sqlCmd.Parameters.Add(param);
+                    sqlCmd.Parameters.Add(outparam);
+                    sqlCmd.CommandTimeout = 3600;
+                    IAsyncResult result = sqlCmd.ExecuteNonQueryAsync();
                     while (!result.IsCompleted)
                     {
-                        Console.WriteLine("Waiting ({0})", count++);
+                        //Console.WriteLine("Waiting ({0})", count++);
                         System.Threading.Thread.Sleep(100);
                     }
-                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
-                    connection.Close();
-                    return true;
-                    //SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
+                    int res = Convert.ToInt32(sqlCmd.Parameters["@DocumentsAffetced"].Value);
+                    //Console.WriteLine("Command complete. Affected {0} rows.", sqlCmd.EndExecuteNonQuery(result));
+                    conn.Close();
+                    return res;
                 }
-                catch (SqlException ex)
-                {
-                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
-                    return false;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine("Error: {0}", ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: {0}", ex.Message);
-                    return false;
-                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                return -1;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Error: {0}", ex.Message);
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: {0}", ex.Message);
+                return -1;
             }
         }
 
         [JwtAuthentication]
         [HttpPost]
         [Route("api/document/ResyncAllInvalidandFailedDocuments")]
-        public bool ResyncAllInvalidandFailedDocuments()
+        public int ResyncAllInvalidandFailedDocuments()
         {
-            _documentService.GetTheConnectionString(this.OnActionExecuting());
-            var DocumentIds = _documentService.GetAllInvalidandFailedDocumentsIds();
-            string commandText = "EXEC [dbo].[SP_ReSyncDataFromViewsToTBLs]";
-            using (SqlConnection connection = new SqlConnection(this.OnActionExecuting()))
+            try
             {
-                try
-                {
-                    int count = 0;
-                    SqlCommand command = new SqlCommand(commandText, connection);
-                    command.Parameters.AddWithValue("@Doc_Id_List", DocumentIds);
-                    connection.Open();
+                _documentService.GetTheConnectionString(this.OnActionExecuting());
+                var DocumentIds = _documentService.GetAllInvalidandFailedDocumentsIds();
 
-                    IAsyncResult result = command.BeginExecuteNonQuery();
+                DocumentCollection docColl = new DocumentCollection();
+                docColl.AddRange(DocumentIds.Select(i => new DocumentDetail() { DocumentId = i }).ToList());
+
+                SqlParameter param = new SqlParameter();
+                param.ParameterName = "Doc_Id_List";
+                param.SqlDbType = SqlDbType.Structured;
+                param.Value = docColl;
+                param.Direction = ParameterDirection.Input;
+
+                SqlParameter outparam = new SqlParameter();
+                outparam.ParameterName = "DocumentsAffetced";
+                outparam.SqlDbType = SqlDbType.Int;
+                outparam.Direction = ParameterDirection.Output;
+
+                SqlConnection conn = null;
+
+                using (conn = new SqlConnection(this.OnActionExecuting()))
+                {
+                    SqlCommand sqlCmd = new SqlCommand("[dbo].[SP_ReSyncDataFromViewsToTBLs]");
+                    conn.Open();
+                    sqlCmd.Connection = conn;
+                    sqlCmd.CommandType = CommandType.StoredProcedure;
+                    sqlCmd.Parameters.Add(param);
+                    sqlCmd.Parameters.Add(outparam);
+                    sqlCmd.CommandTimeout = 3600;
+                    IAsyncResult result = sqlCmd.ExecuteNonQueryAsync();
                     while (!result.IsCompleted)
                     {
-                        Console.WriteLine("Waiting ({0})", count++);
+                        //Console.WriteLine("Waiting ({0})", count++);
                         System.Threading.Thread.Sleep(100);
                     }
-                    Console.WriteLine("Command complete. Affected {0} rows.", command.EndExecuteNonQuery(result));
-                    connection.Close();
-                    return true;
-                    //SubmitDocumentsPeriodically("BackGround_JOB", connectionString, Name);
-                }
-                catch (SqlException ex)
-                {
-                    Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
-                    return false;
-                }
-                catch (InvalidOperationException ex)
-                {
-                    Console.WriteLine("Error: {0}", ex.Message);
-                    return false;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error: {0}", ex.Message);
-                    return false;
+                    //Console.WriteLine("Command complete. Affected {0} rows.", sqlCmd.EndExecuteNonQuery(result));
+                    conn.Close();
+                    dynamic res = result;
+                    return res.Result;
                 }
             }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error ({0}): {1}", ex.Number, ex.Message);
+                return -1;
+            }
+            catch (InvalidOperationException ex)
+            {
+                Console.WriteLine("Error: {0}", ex.Message);
+                return -1;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: {0}", ex.Message);
+                return - 1;
+            }
+
         }
     }
 }

@@ -364,7 +364,7 @@ var KTDatatableRecordSelectionDemo = function() {
                                         </li>\
                                         <li class='navi-item'>\
                                             <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                <span class='navi-icon'><i class='la la-undo-alt'></i></span>\
                                                 <span class='navi-text'>Recall</span>\
                                             </a>\
                                         </li>\
@@ -483,7 +483,7 @@ var KTDatatableRecordSelectionDemo = function() {
                                         </li>\
                                         <li class="navi-item">\
                                             <a href="#" onclick="UpdateDocumentByInternalId(' + row.internalID + ')" class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-undo"></i></span>\
+                                                <span class="navi-icon"><i class="la la-undo-alt"></i></span>\
                                                 <span class="navi-text">Recall</span>\
                                             </a>\
                                         </li>\

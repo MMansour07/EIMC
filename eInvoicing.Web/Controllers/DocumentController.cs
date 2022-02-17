@@ -677,9 +677,9 @@ namespace eInvoicing.Web.Controllers
                 var response = _httpClient.POST("api/document/ResyncInvalidandFailedDocuments", DocumentIds);
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
+                    return Json(JsonConvert.DeserializeObject<int>(response.Info), JsonRequestBehavior.AllowGet);
                 }
-                return null;
+                return Json(-1, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -696,7 +696,7 @@ namespace eInvoicing.Web.Controllers
                 var response = _httpClient.GET("api/document/ResyncAllInvalidandFailedDocuments");
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
+                    return Json(JsonConvert.DeserializeObject<int>(response.Info), JsonRequestBehavior.AllowGet);
                 }
                 return null;
             }

@@ -580,19 +580,24 @@ pre {
 
 @media (min-width: 1400px) {
   .container, .container-sm, .container-md, .container-lg, .container-xl, .container-xxl {
-    /*max-width: 1340px;*/ 
-    max-width: 1500px; 
+    max-width: 1340px; 
+    /*max-width: 1500px; */
   }
 }
 
+.activity-overviw {
+    width: 100% !important;
+}
+
 .row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -12.5px;
-  margin-left: -12.5px; }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin-right: -12.5px;
+    margin-left: -12.5px;
+}
 
 .no-gutters {
   margin-right: 0;

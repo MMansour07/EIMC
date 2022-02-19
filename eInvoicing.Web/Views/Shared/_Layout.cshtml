@@ -538,9 +538,8 @@
                             <div id="kt_header_menu" class="header-menu header-menu-mobile  header-menu-layout-default ">
                                 <div class="d-flex align-items-center flex-wrap">
                                     <div class="d-flex align-items-baseline flex-wrap mt-3">
-                                        <i class="flaticon-home-1 header-icon"></i>
-                                        <h3 class="text-white icon-title">
-                                            @MasterResources.HomeLbl
+                                        <i class="header-icon" id="header-flaticon"></i>
+                                        <h3 class="text-white icon-title" id="header-title">
                                         </h3>
                                     </div>
                                 </div>
@@ -733,25 +732,32 @@
     <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
 
     <script>
-        //var pages = {
-        //    v1:   {  'title': 'Home', 'URL': ''},
-        //    pending: { 'title': 'Draft', 'URL': 'pending' },
-        //    submitted: { 'title': 'Sent', 'URL': 'submitted' },
-        //    received: { 'title': 'Received', 'URL': 'received' },
-        //    invalid_failed: { 'title': 'Invalid_Failed ', 'URL': 'invalid_failed' },
-        //    documents_stats: { 'title': 'documents_stats', 'URL': 'documents_stats' },
-        //    documents_stats_overview: { 'title': 'documents_stats_overview', 'URL': 'documents_stats_overview' },
-        //    top_goods_usage: { 'title': 'top_goods_usage', 'URL': 'top_goods_usage' },
-        //    monthly_bestseller: { 'title': 'monthly_bestseller', 'URL': 'monthly_bestseller' },
-        //    monthly_lowestseller: { 'title': 'monthly_lowestseller', 'URL': 'monthly_lowestseller' },
-        //    failedreasons: { 'title': 'failedreasons', 'URL': 'failedreasons' },
-        //    invalidreasons: { 'title': 'invalidreasons', 'URL': 'invalidreasons' },
-        //    user: { 'title': 'user', 'URL': 'user' },
-        //    new_document: { 'title': 'new_document', 'URL': 'new_document' },
-        //    codeslist: { 'title': 'codeslist', 'URL': 'codeslist' },
-        //    taxpayer_details: { 'title': 'taxpayer_details', 'URL': 'taxpayer_details' },
-        //    appsetting: { 'title': 'General', 'URL': 'appsetting' }
-        //};
+        var pages = {
+            v1: { 'title': '@MasterResources.HomeLbl', 'icon': 'flaticon-home-1'},
+            index: { 'title': '@MasterResources.HomeLbl', 'icon': 'flaticon-home-1'},
+            pending: { 'title': 'Draft', 'icon': 'flaticon2-document' },
+            submitted: { 'title': 'Sent', 'icon': 'flaticon-paper-plane' },
+            received: { 'title': 'Received', 'icon': 'flaticon-envelope' },
+            invalid_failed: { 'title': 'Invalid & Failed Documents ', 'icon': 'flaticon2-cancel' },
+            details: { 'title': 'Details ', 'icon': 'flaticon-information' },
+            raw: { 'title': 'Details ', 'icon': 'flaticon-information' },
+            raw_received: { 'title': 'Details ', 'icon': 'flaticon-information' },
+            documents_stats: { 'title': 'Documents Statistics (Detailed)', 'icon': 'flaticon-statistics' },
+            documents_stats_overview: { 'title': 'Documents Statistics (overview)', 'icon': 'flaticon-statistics' },
+            top_goods_usage: { 'title': 'Top Goods Usage', 'icon': 'flaticon-statistics' },
+            monthly_bestseller: { 'title': 'Monthly Bestseller Items', 'icon': 'flaticon-statistics' },
+            monthly_lowestseller: { 'title': 'Monthly Lowestseller Items', 'icon': 'flaticon-statistics' },
+            failedreasons: { 'title': 'Failed Documents Reaosns', 'icon': 'flaticon-warning' },
+            invalidreasons: { 'title': 'Invalid Documents Reasons', 'icon': 'flaticon-warning' },
+            user: { 'title': 'System Users', 'icon': 'flaticon-users' },
+            role: { 'title': 'System Roles', 'icon': 'flaticon-lock' },
+            businessgroup: { 'title': 'System Business Groups', 'icon': 'flaticon-users' },
+            new_document: { 'title': 'New Document', 'icon': 'flaticon-add' },
+            edit_document: { 'title': 'Edit Document', 'icon': 'flaticon-edit-1' },
+            codeslist: { 'title': 'ERP Codes', 'icon': 'flaticon-menu-1' },
+            taxpayer_details: { 'title': 'Taxpayer Information', 'icon': 'flaticon-information' },
+            appsetting: { 'title': 'System Settings', 'icon': 'flaticon-settings' }
+        };
 
         var KTAppSettings = {
             "breakpoints": {
@@ -812,6 +818,7 @@
             "font-family": "Poppins"
         };
         jQuery(document).ready(function () {
+            HandlingHeaderTitles();
             HandlingSideNavActivity();
             LoadDraft();
             LoadSent();
@@ -911,6 +918,15 @@
             }
 
             $('.' + _currentPage).addClass('menu-item-active');
+        }
+
+        function HandlingHeaderTitles() {
+            debugger;
+            var lastsegement = window.location.pathname.split('?')[0].split('/').filter(function (i) { return i !== "" }).slice(-1)[0] ?? 'v1';
+            var _currentPage = lastsegement.toLocaleLowerCase();
+
+            $("#header-title").html(pages[_currentPage]?.title);
+            $("#header-flaticon").addClass(pages[_currentPage]?.icon);
         }
     </script>
     <script src="~/Content/assets/plugins/custom/uppy/uppy.bundle_shared.js?v=7.0.6"></script>

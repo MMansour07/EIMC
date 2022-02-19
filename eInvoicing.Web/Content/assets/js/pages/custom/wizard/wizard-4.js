@@ -61,7 +61,7 @@ var KTWizard4 = function () {
 						}
 						else {
 							swal.fire({
-								text: "please fill the required fields before going to the next step.",
+								text: "Please fill the required fields before going to the next step.",
 								icon: "warning",
 								buttonsstyling: false,
 								confirmbuttontext: "ok, got it!",

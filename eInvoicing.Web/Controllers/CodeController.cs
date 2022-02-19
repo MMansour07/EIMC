@@ -80,5 +80,74 @@ namespace eInvoicing.Web.Controllers
                 return Json(new genericResponse() { Message = "Internal Error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
             }
         }
+
+        [HttpPost]
+        [ActionName("SearchPublishedCodes")]
+        public ActionResult SearchPublishedCodes()
+        {
+            try
+            {
+                var req = new SearchPublishedCodesRequestDTO()
+                {
+                    pn = Convert.ToInt32(Request["pagination[page]"]),
+                    ps = Convert.ToInt32(Request["pagination[perpage]"]),
+                    codeName = Request["codeName"],
+                    codeLookupValue = Request["itemCode"],
+                    codeType = Request["CodeType"],
+                };
+                string url = "api/code/SearchPublishedCodes/";
+                var response = _httpClient.POST(url, req);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var Content = JsonConvert.DeserializeObject<SearchPublishedCodesResponseDTO>(response.Info);
+                    return Json(new SearchEGSPublishedCodeResponse()
+                    {
+                        data = PagedList<SearchPublishedCodesResultDTO>.Create(Content?.result, Convert.ToInt32(Request["pagination[page]"]),
+                        Convert.ToInt32(Request["pagination[perpage]"]), Content?.metadata?.totalCount),
+                        meta = new Meta()
+                        {
+                            page = Convert.ToInt32(Request["pagination[page]"]),
+                            perpage = Convert.ToInt32(Request["pagination[perpage]"]),
+                            pages = Content?.metadata?.totalPages,
+                            total = Content?.metadata?.totalCount
+                        }
+                    }, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new genericResponse() { Message = response.HttpResponseMessage.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new genericResponse() { Message = "Internal Error! --> [" + ex.Message.ToString() + "]" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        [ActionName("SearchPublishedCodesByKey")]
+        public ActionResult SearchPublishedCodesBykey(string searchKey,  string searchValue, string codeType)
+        {
+            try
+            {
+                var req = new SearchPublishedCodesRequestDTO()
+                {
+                    pn = 1,
+                    ps = 10,
+                    codeName = searchKey == "CodeName" ? searchValue : "",
+                    codeLookupValue = searchKey != "CodeName" ? searchValue : "",
+                    codeType = codeType,
+                };
+                string url = "api/code/SearchPublishedCodes/";
+                var response = _httpClient.POST(url, req);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var Content = JsonConvert.DeserializeObject<SearchPublishedCodesResponseDTO>(response.Info);
+                    return Json(Content?.result, JsonRequestBehavior.AllowGet);
+                }
+                return Json(new genericResponse() { Message = response.HttpResponseMessage.ToString() }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new genericResponse() { Message = ex.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

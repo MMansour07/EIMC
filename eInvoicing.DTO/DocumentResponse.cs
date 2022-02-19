@@ -43,4 +43,10 @@ namespace eInvoicing.DTO
         public Meta meta { get; set; }
         public PagedList<SearchEGSCodeResultDTO> data { get; set; }
     }
+
+    public class SearchEGSPublishedCodeResponse
+    {
+        public Meta meta { get; set; }
+        public PagedList<SearchPublishedCodesResultDTO> data { get; set; }
+    }
 }

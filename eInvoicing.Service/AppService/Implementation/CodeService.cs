@@ -160,30 +160,34 @@ namespace eInvoicing.Service.AppService.Implementation
             }
         }
 
-        public SearchPublishedCodesResponseDTO SearchPublishedCodes(SearchPublishedCodesRequestDTO obj, string Token, string URL)
+        public SearchPublishedCodesResponseDTO SearchPublishedCodes(SearchPublishedCodesRequestDTO obj, string Key, string URL)
         {
             try
             {
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Token);
+                    client.Timeout = TimeSpan.FromMinutes(60);
+                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Key);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                    URL += "codetypes/:"+obj.codeType+"/codes?ParentLevelName="+obj.parentLevelName+"&OnlyActive="+obj.onlyActive+"&ActiveFrom="+obj.activeFrom+"&Ps="+obj.ps+"&Pn="+obj.pn+"&OrdDir="+obj.orderDirections+"&CodeTypeLevelNumber="+obj.codeTypeLevelNumber;
+                    URL += "codetypes/" + obj.codeType + "/codes?CodeLookupValue="+(obj.codeLookupValue ?? "")+ "&CodeName" + (obj.codeName ?? "") +"&OnlyActive=true&Ps=" + Convert.ToInt32(obj.ps) +
+                        "&Pn=" + Convert.ToInt32(obj.pn) + "&OrdDir=Descending&ParentLevelName=GPC Level 4 Code - Brick&CodeTypeLevelNumber=5"; 
                     client.BaseAddress = new Uri(URL);
                     var postTask = client.GetAsync(URL);
                     postTask.Wait();
                     var result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
-                        return JsonConvert.DeserializeObject<SearchPublishedCodesResponseDTO>(result.Content.ReadAsStringAsync().Result);
+                        var res = JsonConvert.DeserializeObject<SearchPublishedCodesResponseDTO>(result.Content.ReadAsStringAsync().Result);
+                        res.StatusCode = HttpStatusCode.OK;
+                        return res;
                     }
-                    return new SearchPublishedCodesResponseDTO() { /*Response = result */};
+                    return new SearchPublishedCodesResponseDTO() { StatusCode = result.StatusCode };
                 }
             }
             catch (Exception ex)
             {
-                return new SearchPublishedCodesResponseDTO() { /*ErrorMessage = ex.Message.ToString()*/ };
+                throw ex;
             }
         }
 

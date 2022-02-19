@@ -5,424 +5,545 @@
     .submitdoc {
         cursor: pointer !important;
     }
+
     .dropdown-menu.dropdown-menu-sm {
         transform: translate3d(-195px, 46px, 0px) !important;
         width: 230px !important;
     }
-</style>
-<div class="container-fluid mt-65">
-    <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
-            <div class="d-flex align-items-center flex-wrap mr-1">
 
-                <!--begin::Page Heading-->
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <i class="flaticon-menu-1 header-icon"></i>
-                    <!--begin::Page Title-->
-                    <h3 class="text-white icon-title">
-                        ERP Codes
-                    </h3>
-                    <!--end::Page Title-->
-                    <!--begin::Breadcrumb-->
-                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Master")" class="text-white">
-                                Home
+    #myUL {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        margin-left: 19%;
+    }
+
+        #myUL li a {
+            /*border: 1px solid #ddd;*/
+            margin-top: -1px; /* Prevent double borders */
+            background-color: #f6f6f6;
+            /*padding: 12px;*/
+            /* //text-decoration: none;
+            //font-size: 18px;
+            //color: black;*/
+            display: block
+        }
+
+            #myUL li a:hover:not(.header) {
+                background-color: #eee;
+            }
+</style>
+
+<div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-10">
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Master")" class="text-white">
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("pending", "code")" class="text-white">
+                            Codes
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="d-flex align-items-center">
+            <a href="#" class="btn btn-white font-weight-bolder btn-sm">
+                Actions
+            </a>
+            <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Quick actions">
+                <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="svg-icon svg-icon-white svg-icon-2x">
+                        <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                <polygon points="0 0 24 0 24 24 0 24"></polygon>
+                                <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
+                                <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000"></path>
+                            </g>
+                        </svg><!--end::Svg Icon-->
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right p-0 m-0">
+                    <!--begin::Navigation-->
+                    <ul class="navi navi-hover">
+                        <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
+                            Choose an action:
+                        </li>
+                        <li class="navi-item">
+                            <a href="#" class="navi-link">
+                                <span class="navi-icon"><i class="flaticon-add"></i></span>
+                                <span class="navi-text">Bulk Registration</span>
                             </a>
                         </li>
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("pending", "code")" class="text-white">
-                                Codes
+                        <li class="navi-item">
+                            <a href="#" class="navi-link" data-toggle="modal" data-target="#register_code">
+                                <span class="navi-icon"><i class="flaticon2-add-1"></i></span>
+                                <span class="navi-text">Register Code Usage</span>
                             </a>
                         </li>
                     </ul>
-                    <!--end::Breadcrumb-->
+                    <!--end::Navigation-->
                 </div>
-                <!--end::Page Heading-->
+
             </div>
-            <!--end::Info-->
+            <!--end::Dropdown-->
         </div>
 
-        <div class="topbar-item topbar-custom">
-            @using System.Security.Claims;
-            @using Microsoft.AspNet.Identity;
-            @if (Request.IsAuthenticated)
-            {
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
-                        <div class="d-flex flex-column text-right pr-3">
-                            <span class="text-white font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
-                        </div>
-                        <span class="symbol symbol-lg-35 symbol-25 symbol-white">
-                            <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
-                        <a class="dropdown-item" href="@Url.Action("myprofile", "user")">
-                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"></rect>
-                                        <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
-                                        <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
-                                    </g>
-                                </svg>
-                            </span>
-                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
-                        </a>
-                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
-                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
-                                        <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
-                                        <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
-                                    </g>
-                                </svg>
-                            </span>
-                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
-                        </a>
-                    </div>
-                }
-
-            }
-        </div>
     </div>
-    <!--end::Subheader-->
+</div>
+<div class="d-flex flex-column-fluid">
+    <div class="container-fluid mt-65">
+        <!--begin::Subheader-->
+        <!--<div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
+            <div class=" container  d-flex align-items-center justify-content-between  flex-wrap flex-sm-nowrap">-->
+                <!--begin::Info-->
+                <!--<div class="d-flex align-items-center flex-wrap mr-1">-->
 
-    <div class="row mb-2">
-        <div class="col-lg-11">
+                    <!--begin::Page Heading-->
+                    <!--<div class="d-flex align-items-baseline flex-wrap mr-5">
+                        <i class="flaticon-menu-1 header-icon"></i>-->
+                        <!--begin::Page Title-->
+                        <!--<h3 class="text-white icon-title">
+                            ERP Codes
+                        </h3>-->
+                        <!--end::Page Title-->
+                        <!--begin::Breadcrumb-->
+                        <!--<ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                            <li class="breadcrumb-item">
+                                <a href="@Url.Action("Index", "Master")" class="text-white">
+                                    Home
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item">
+                                <a href="@Url.Action("pending", "code")" class="text-white">
+                                    Codes
+                                </a>
+                            </li>
+                        </ul>-->
+                        <!--end::Breadcrumb-->
+                    <!--</div>-->
+                    <!--end::Page Heading-->
+                <!--</div>-->
+                <!--end::Info-->
+            <!--</div>
+        </div>-->
+        <!--end::Subheader-->
+        <div class="card card-custom gutter-b">
+            <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title">
+                    <h3 class="card-label">
+                        Codes Usage
+                        <span class="d-block text-primary pt-2 font-size-sm">Search my EGS code usage requests API is responsible for retrieving list of requests that were submitted.</span>
+                    </h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <ul class="nav nav-tabs nav-tabs-line mb-5">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" id="tab_1" href="#kt_tab_pane_1">All Usage</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" id="tab_2" href="#kt_tab_pane_2">Appoval Details</a>
+                    </li>
+                </ul>
+                <div class="tab-content mt-5" id="myTabContent">
+                    <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
+                        <div class="mb-7">
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active From: </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="Active From">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
 
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active To: </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="Active To">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Status:</label>
+                                            <div class="d-flex align-items-center">
+                                                <select class="form-control" id="status">
+                                                    <option value="">All</option>
+                                                    <option value="Submitted">Submitted</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Code:</label>
+                                            <input type="text" class="form-control" placeholder="Item Code" id="itemCode" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active:</label>
+                                            <div class="d-flex align-items-center">
+                                                <select class="form-control" id="active">
+                                                    <option value="">All</option>
+                                                    <option value="Yes">Yes</option>
+                                                    <option value="No">No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Name:</label>
+                                            <input type="text" class="form-control" placeholder="Item Name" id="codeName" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Description:</label>
+                                            <input type="text" class="form-control" placeholder="Item Description" id="codeDescription" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-lg-12">
+                                    <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold" style="float:right;">
+                                        Find
+                                        <i class="flaticon-search ml-1"></i>
+                                    </a>
+                                    <a href="#" id="_clear" class="btn btn btn-sm btn-light font-weight-bold mr-2" style="float:right;">
+                                        Clear Filters
+                                        <i class="flaticon-close ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable2"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
+                        <div class="mb-7">
+                            <div class="row mb-2">
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active From: </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="Active From">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active To: </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="Active To">
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">
+                                                        <i class="la la-calendar"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Status:</label>
+                                            <div class="d-flex align-items-center">
+                                                <select class="form-control" id="status">
+                                                    <option value="">All</option>
+                                                    <option value="Submitted">Submitted</option>
+                                                    <option value="Approved">Approved</option>
+                                                    <option value="Rejected">Rejected</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Code:</label>
+                                            <input type="text" class="form-control" placeholder="Item Code" id="itemCode" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Active:</label>
+                                            <div class="d-flex align-items-center">
+                                                <select class="form-control" id="active">
+                                                    <option value="">All</option>
+                                                    <option value=true>Yes</option>
+                                                    <option value=false>No</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Name:</label>
+                                            <input type="text" class="form-control" placeholder="Item Name" id="codeName" />
+                                        </div>
+                                    </div>
+                                    <div class="row mb-2">
+                                        <div class="col-md-12">
+                                            <label>Item Description:</label>
+                                            <input type="text" class="form-control" placeholder="Item Description" id="codeDescription" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-lg-12">
+                                    <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold" style="float:right;">
+                                        Find
+                                        <i class="flaticon-search ml-1"></i>
+                                    </a>
+                                    <a href="#" id="_clear" class="btn btn btn-light font-weight-bold mr-2" style="float:right;">
+                                        Clear Filters
+                                        <i class="flaticon-close ml-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="col-lg-1">
-            <div class="d-flex align-items-center">
-                <a href="#" class="btn btn-primary font-weight-bolder btn-sm">
-                    Actions
-                </a>
-                <div class="dropdown dropdown-inline" data-toggle="tooltip" title="" data-placement="left" data-original-title="Quick actions">
-                    <a href="#" class="btn btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="svg-icon svg-icon-primary svg-icon-2x">
-                            <!--begin::Svg Icon | path:assets/media/svg/icons/Files/File-plus.svg--><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                    <polygon points="0 0 24 0 24 24 0 24"></polygon>
-                                    <path d="M5.85714286,2 L13.7364114,2 C14.0910962,2 14.4343066,2.12568431 14.7051108,2.35473959 L19.4686994,6.3839416 C19.8056532,6.66894833 20,7.08787823 20,7.52920201 L20,20.0833333 C20,21.8738751 19.9795521,22 18.1428571,22 L5.85714286,22 C4.02044787,22 4,21.8738751 4,20.0833333 L4,3.91666667 C4,2.12612489 4.02044787,2 5.85714286,2 Z" fill="#000000" fill-rule="nonzero" opacity="0.3"></path>
-                                    <path d="M11,14 L9,14 C8.44771525,14 8,13.5522847 8,13 C8,12.4477153 8.44771525,12 9,12 L11,12 L11,10 C11,9.44771525 11.4477153,9 12,9 C12.5522847,9 13,9.44771525 13,10 L13,12 L15,12 C15.5522847,12 16,12.4477153 16,13 C16,13.5522847 15.5522847,14 15,14 L13,14 L13,16 C13,16.5522847 12.5522847,17 12,17 C11.4477153,17 11,16.5522847 11,16 L11,14 Z" fill="#000000"></path>
-                                </g>
-                            </svg><!--end::Svg Icon-->
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right p-0 m-0">
-                        <!--begin::Navigation-->
-                        <ul class="navi navi-hover">
-                            <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">
-                                Choose an action:
+        <div class="modal fade" id="register_code" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="modal-title" id="register_codelbl"><i class="flaticon2-add-1 mr-1"></i> Register Code Usage</h3>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <i aria-hidden="true" class="ki ki-close"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs nav-tabs-line mb-5">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#kt_tab_pane_3">Registration (I have one)</a>
                             </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link">
-                                    <span class="navi-icon"><i class="flaticon-add"></i></span>
-                                    <span class="navi-text">Bulk Registration</span>
-                                </a>
-                            </li>
-                            <li class="navi-item">
-                                <a href="#" class="navi-link" data-toggle="modal" data-target="#register_code">
-                                    <span class="navi-icon"><i class="flaticon2-add-1"></i></span>
-                                    <span class="navi-text">Register Code Usage</span>
-                                </a>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab_4" data-toggle="tab" href="#kt_tab_pane_4">GS1 & EGS Codes (Pick one)</a>
                             </li>
                         </ul>
-                        <!--end::Navigation-->
-                    </div>
-
-                </div>
-                <!--end::Dropdown-->
-            </div>
-            <!--end::Toolbar-->
-        </div>
-    </div>
-    <div class="card card-custom gutter-b">
-        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">
-                    Codes Usage
-                    <span class="d-block text-primary pt-2 font-size-sm">Search my EGS code usage requests API is responsible for retrieving list of requests that were submitted.</span>
-                </h3>
-            </div>
-        </div>
-        <div class="card-body">
-            <ul class="nav nav-tabs nav-tabs-line mb-5">
-                <li class="nav-item">
-                    <a class="nav-link active" data-toggle="tab" id="tab_1" href="#kt_tab_pane_1">All Usage</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="tab" id="tab_2" href="#kt_tab_pane_2">Appoval Details</a>
-                </li>
-            </ul>
-            <div class="tab-content mt-5" id="myTabContent">
-                <div class="tab-pane fade show active" id="kt_tab_pane_1" role="tabpanel" aria-labelledby="kt_tab_pane_1">
-                    <div class="mb-7">
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                <div class="row mb-2">
+                        <div class="tab-content mt-5" id="myTabContent">
+                            <div class="tab-pane fade show active" id="kt_tab_pane_3" role="tabpanel" aria-labelledby="kt_tab_pane_3" data-scroll="true" data-height="400" style="padding: 20px;">
+                                <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label>Active From: </label>
-                                        <div class="input-group date">
-                                            <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="Active From">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i class="la la-calendar"></i>
-                                                </span>
+                                        <div class="input-group input-group-sm search">
+                                            <div class="input-group-prepend">
+                                                <select class="form-control select-cust" id="codeType">
+                                                    <option selected value="GS1">GS1</option>
+                                                    <option value="EGS">EGS</option>
+                                                </select>
                                             </div>
+                                            <input type="text" class="form-control" id="searchValue" placeholder="Item Code" aria-describedby="basic-addon2">
+                                            @*<div class="input-group-append"><span class="input-group-text text-hover-white bg-hover-primary submitdoc"><i class="la la-filter"></i></span></div>*@
+                                            <div class="input-group-append" id="searchBtn"><span class="input-group-text bg-hover-primary text-hover-white submitdoc" id="spanSearch">Find<i class="ml-1 la la-search"></i></span></div>
                                         </div>
-                                    </div>
 
+                                    </div>
                                 </div>
-                                <div class="row mb-2">
+                                <div class="form-group row">
                                     <div class="col-md-12">
-                                        <label>Active To: </label>
-                                        <div class="input-group date">
-                                            <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="Active To">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i class="la la-calendar"></i>
-                                                </span>
+                                        <table style="background-color: #f9f9f9; width: 100%" id="selectedCodeInfo">
+                                            <tbody>
+                                                <tr>
+                                                    <td style="padding: 20px;">
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Item Code</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="itemCode"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Code Name</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="codeName"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Code Name (AR)</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="codeNameAr"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Description</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="description"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Description (AR)</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="descriptionAR"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">
+                                                                    Category
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="category"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">Activity</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="activity"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">net_content</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="net_content"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">brand</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="brand"></label>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                        <div class="row">
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label">net_content_arabic</label>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <label class="col-form-label" id="net_content_arabic"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="kt_tab_pane_4" role="tabpanel" aria-labelledby="kt_tab_pane_4" data-scroll="true" data-height="400" style="padding: 20px;">
+                                <div class="row mb-3">
+
+                                    <div class="col-md-12">
+                                        <div class="input-group input-group-sm search">
+                                            <div class="input-group-prepend">
+                                                <select class="form-control select-cust" id="codeType">
+                                                    <option selected value="GS1">GS1</option>
+                                                    <option value="EGS">EGS</option>
+                                                </select>
                                             </div>
+                                            <input type="text" class="form-control" id="itemCode" placeholder="Item Code" aria-describedby="basic-addon2">
+                                            <input type="text" class="form-control" id="codeName" placeholder="Code Name" aria-describedby="basic-addon2">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Status:</label>
-                                        <div class="d-flex align-items-center">
-                                            <select class="form-control" id="status">
-                                                <option value="">All</option>
-                                                <option value="Submitted">Submitted</option>
-                                                <option value="Approved">Approved</option>
-                                                <option value="Rejected">Rejected</option>
-                                            </select>
-                                        </div>
+                                    <div class="col-lg-12">
+                                        <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold" style="float:right;">
+                                            Find
+                                            <i class="flaticon-search ml-1"></i>
+                                        </a>
+                                        <a href="#" id="_clear" class="btn btn btn-sm btn-light font-weight-bold mr-2" style="float:right;">
+                                            Clear Filters
+                                            <i class="flaticon-close ml-1"></i>
+                                        </a>
                                     </div>
                                 </div>
-
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row mb-2">
+                                <hr />
+                                <div class="row">
                                     <div class="col-md-12">
-                                        <label>Item Code:</label>
-                                        <input type="text" class="form-control" placeholder="Item Code" id="itemCode" />
+                                        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable3"></div>
                                     </div>
                                 </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Active:</label>
-                                        <div class="d-flex align-items-center">
-                                            <select class="form-control" id="active">
-                                                <option value="">All</option>
-                                                <option value="Yes">Yes</option>
-                                                <option value="No">No</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Item Name:</label>
-                                        <input type="text" class="form-control" placeholder="Item Name" id="codeName" />
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Item Description:</label>
-                                        <input type="text" class="form-control" placeholder="Item Description" id="codeDescription" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-lg-12">
-                                <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold" style="float:right;">
-                                    Find
-                                    <i class="flaticon-search ml-1"></i>
-                                </a>
-                                <a href="#" id="_clear" class="btn btn btn-light font-weight-bold mr-2" style="float:right;">
-                                    Clear Filters
-                                    <i class="flaticon-close ml-1"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable2"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="kt_tab_pane_2" role="tabpanel" aria-labelledby="kt_tab_pane_2">
-                    <div class="mb-7">
-                        <div class="row mb-2">
-                            <div class="col-md-4">
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Active From: </label>
-                                        <div class="input-group date">
-                                            <input type="text" class="form-control" id="pending_fromDate" readonly="readonly" placeholder="Active From">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i class="la la-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Active To: </label>
-                                        <div class="input-group date">
-                                            <input type="text" class="form-control" id="pending_toDate" readonly="readonly" placeholder="Active To">
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">
-                                                    <i class="la la-calendar"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Status:</label>
-                                        <div class="d-flex align-items-center">
-                                            <select class="form-control" id="status">
-                                                <option value="">All</option>
-                                                <option value="Submitted">Submitted</option>
-                                                <option value="Approved">Approved</option>
-                                                <option value="Rejected">Rejected</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Item Code:</label>
-                                        <input type="text" class="form-control" placeholder="Item Code" id="itemCode" />
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Active:</label>
-                                        <div class="d-flex align-items-center">
-                                            <select class="form-control" id="active">
-                                                <option value="">All</option>
-                                                <option value=true>Yes</option>
-                                                <option value=false>No</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Item Name:</label>
-                                        <input type="text" class="form-control" placeholder="Item Name" id="codeName" />
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-md-12">
-                                        <label>Item Description:</label>
-                                        <input type="text" class="form-control" placeholder="Item Description" id="codeDescription" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-2">
-                            <div class="col-lg-12">
-                                <a href="#" id="_find" class="btn btn btn-sm btn-primary font-weight-bold" style="float:right;">
-                                    Find
-                                    <i class="flaticon-search ml-1"></i>
-                                </a>
-                                <a href="#" id="_clear" class="btn btn btn-light font-weight-bold mr-2" style="float:right;">
-                                    Clear Filters
-                                    <i class="flaticon-close ml-1"></i>
-                                </a>
                             </div>
                         </div>
                     </div>
-                    <hr />
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" id="close_code" class="btn btn-sm btn-square btn-light-primary font-weight-bold" data-dismiss="modal">Close</button>
+                        <button type="button" id="add_code" class="btn btn-sm btn-square btn-primary font-weight-bold"><i class="flaticon2-add-1"></i> Add</button>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--begin::Modal-->
-    <div id="kt_datatable_modal" class="modal fade" role="dialog" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content" style="min-height: 400px;">
-                <div class="modal-header bg-warning" py-5">
-                    <h5 class="modal-title" style="color: #3F4254 !important">
-                        Errors
-                        <span style="color: #3F4254 !important" class="d-block text-muted font-size-sm">The reasons why this code didn't be sent.</span>
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <!--begin: Datatable-->
-                    <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable_sub"></div>
-                    <!--end: Datatable-->
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--end::Modal-->
-    <div class="modal fade" id="register_code" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <i class="flaticon2-add-1"></i>
-                    <h3 class="modal-title" id="register_codelbl">Register Code Usage</h3>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <h5>Popover in a modal</h5>
-                    <p>
-                        This <a href="#" role="button" class="btn btn-secondary" data-toggle="popover" title="Popover title" data-content="Popover body content is set in this attribute.">button</a> triggers a popover on click.
-                    </p>
-                    <hr>
-
-                    <h5>Tooltips in a modal</h5>
-                    <p>
-                        <a href="#" title="Tooltip" data-toggle="tooltip">This link</a> and
-                        <a href="#" title="Tooltip" data-toggle="tooltip">that link</a> have tooltips on hover.
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary font-weight-bold"><i class="flaticon2-add-1"></i> Add</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 <script src="~/Content/assets/js/pages/crud/ktdatatable/advanced/codeslist.js?v=7.0.6"></script>
 <script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>
 <script src="~/Content/assets/plugins/custom/fullcalendar/fullcalendar.bundle-codeslist.js?v=7.0.6"></script>

@@ -87,6 +87,11 @@ body {
     transform: translate3d(-107px, 54px, 0px);
 }
 
+.title-header {
+    text-align: right;
+    margin-right: 6px;
+}
+
 [tabindex="-1"]:focus:not(:focus-visible) {
     outline: 0 !important;
 }
@@ -3540,7 +3545,6 @@ input[type="button"].btn-block {
     white-space: nowrap;
     background-color: #f9f9f9;
     border: 1px solid #E4E6EF;
-    border-radius: 0.42rem;
 }
   .input-group-text input[type="radio"],
   .input-group-text input[type="checkbox"] {
@@ -3595,8 +3599,8 @@ input[type="button"].btn-block {
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-top-right-radius: 0.42rem;
+  border-bottom-right-radius: 0.42rem; }
 
 .custom-control {
   position: relative;

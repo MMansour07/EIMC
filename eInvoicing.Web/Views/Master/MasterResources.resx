@@ -147,6 +147,9 @@
   <data name="DescriptionLbl" xml:space="preserve">
     <value>Description</value>
   </data>
+  <data name="EGP" xml:space="preserve">
+    <value> EGP</value>
+  </data>
   <data name="EnglishLbl" xml:space="preserve">
     <value>English</value>
   </data>

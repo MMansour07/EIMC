@@ -151,6 +151,15 @@ namespace eInvoicing.Web.Views.Master {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to  EGP.
+        /// </summary>
+        public static string EGP {
+            get {
+                return ResourceManager.GetString("EGP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public static string EnglishLbl {

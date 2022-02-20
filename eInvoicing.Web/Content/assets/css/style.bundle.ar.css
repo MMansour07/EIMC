@@ -73,9 +73,6 @@ body {
     border-left: 3px solid #f9f9f9;
 }
 
-.language-item-label {
-    margin-left: 0px;
-}
 
 .language-dropdown {
     position: absolute;
@@ -83,6 +80,11 @@ body {
     top: 0px;
     left: -11px;
     transform: translate3d(-107px, 54px, 0px);
+}
+
+.title-header {
+    text-align: left;
+    margin-left: 6px;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -137,18 +139,6 @@ ul ol {
 
 dt {
   font-weight: 500; }
-
-.subheader-custom{
-    position: absolute;
-    top: 4px;
-    left: 0;
-}
-
-.topbar-custom {
-    position: absolute;
-    top: 0;
-    right: 15px;
-}
 
 dd {
     margin-bottom: .5rem;
@@ -2119,7 +2109,7 @@ pre {
 .form-control:focus {
     color: #333;
     background-color: #ffffff;
-    border-color: #02bda1;
+    border-color: #E4E6EF;
     outline: 0;
 }
   .form-control::-webkit-input-placeholder {
@@ -3471,8 +3461,8 @@ input[type="button"].btn-block {
     z-index: 4; }
   .input-group > .form-control:not(:last-child),
   .input-group > .custom-select:not(:last-child) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0; }
+    border-top-right-radius: 0.42rem;
+    border-bottom-right-radius: 0.42rem; }
   .input-group > .form-control:not(:first-child),
   .input-group > .custom-select:not(:first-child) {
     border-top-left-radius: 0;
@@ -3537,7 +3527,6 @@ input[type="button"].btn-block {
     white-space: nowrap;
     background-color: #f9f9f9;
     border: 1px solid #E4E6EF;
-    border-radius: 0.42rem;
 }
   .input-group-text input[type="radio"],
   .input-group-text input[type="checkbox"] {
@@ -3592,8 +3581,8 @@ input[type="button"].btn-block {
 .input-group > .input-group-prepend:not(:first-child) > .input-group-text,
 .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
 .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0; }
+  border-top-left-radius: 0.42rem;
+  border-bottom-left-radius: 0.42rem; }
 
 .custom-control {
   position: relative;
@@ -7438,7 +7427,7 @@ button.bg-white:focus {
 
 .mr-1,
 .mx-1 {
-  margin-right: 0.25rem !important; }
+  margin-left: 0.25rem !important; }
 
 .mb-1,
 .my-1 {
@@ -7613,7 +7602,7 @@ button.bg-white:focus {
 
 .mr-10,
 .mx-10 {
-  margin-right: 2.5rem !important; }
+  margin-left: 2.5rem !important; }
 
 .mb-10,
 .my-10 {
@@ -18399,16 +18388,15 @@ button.bg-white:focus {
   text-overflow: ellipsis;
   white-space: nowrap; }
 
-.text-left {
-  text-align: left !important; }
+.text-right {
+  text-align: right !important; }
 
 
 .text-overview {
     text-align: right !important;
 }
-
-.text-right {
-    text-align: right !important;
+.icon-title {
+    margin-right : 5px;
 }
 
 .text-center {
@@ -27555,8 +27543,8 @@ a.text-white:hover, a.text-white:focus {
 .border-bottom-info {
   border-bottom-color: #31d2f2 !important; }
 
-.border-left-info {
-  border-left-color: #31d2f2 !important; }
+.border-right-info {
+  border-right-color: #0dcaf0 !important; }
 
 .border-warning {
   border-color: #ffc107 !important; }
@@ -36266,9 +36254,9 @@ button {
       color: #7337EE; }
     .alert.alert-custom.alert-light-info.alert-notice {
       border: 0;
-      border-left: 4px solid #31d2f2;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0; }
+      border-right: 4px solid #0dcaf0;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0; }
   .alert.alert-custom.alert-outline-info {
     background-color: transparent;
     border-color: #31d2f2; }
@@ -36519,19 +36507,12 @@ button {
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
       transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease; }
-
-.brand-toggle:not(:disabled):not(.disabled):active:not(.brand-toggle-text), .brand-toggle:not(:disabled):not(.disabled).active,
-.show > .brand-toggle.dropdown-toggle {
-    padding-right:85px;
-}
-    .btn:not(:disabled):not(.disabled):active:not(.btn-text), .btn:not(:disabled):not(.disabled).active,
-    .show > .btn.dropdown-toggle {
-        /*padding-right:85px;*/
-        -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
-        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
-        transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease;
-    }
+  .btn:not(:disabled):not(.disabled):active:not(.btn-text), .btn:not(:disabled):not(.disabled).active,
+  .show > .btn.dropdown-toggle {
+    -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, -webkit-box-shadow 0.15s ease; }
     .btn:not(:disabled):not(.disabled):active:not(.btn-text) i, .btn:not(:disabled):not(.disabled).active i,
     .show > .btn.dropdown-toggle i {
       -webkit-transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, -webkit-box-shadow 0.15s ease;
@@ -36661,8 +36642,8 @@ button {
   position: relative; }
 
 .dropdown-toggle.nav-link:after, .dropdown-toggle.btn:after {
-  /*margin-left: 0.5rem*//*rtl:ignore*//*;*/
-  font-family: 'ki';
+  margin-right: 0.5rem/*rtl:ignore*/;
+  font-family: madaregular;
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -56617,8 +56598,8 @@ font-family: DroidArabicKufi;
       font-size: 1.1rem; }
       .fc-unthemed .fc-toolbar .fc-button .fc-icon:after {
         display: none; }
-      .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-left-single-arrow {
-        font-family: DroidArabicKufi;
+      .fc-unthemed .fc-toolbar .fc-button .fc-icon.fc-icon-right-single-arrow {
+        font-family: madaregular;
         font-style: normal;
         font-weight: normal;
         font-variant: normal;
@@ -59323,7 +59304,7 @@ body.swal2-height-auto {
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 html {
-  font-family: DroidArabicKufi;
+  font-family: sans-serif;
   -moz-text-size-adjust: 100%;
   text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
@@ -61600,24 +61581,21 @@ body {
 }
 
 .brand {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    /*padding: 0 25px;*/
-    height: 65px;
-    border-bottom: 1px solid #f9f9f9;
-    padding: 26px;
-}
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0 25px;
+  height: 65px; }
   .brand .brand-logo {
     display: -webkit-box;
     display: -ms-flexbox;

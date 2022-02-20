@@ -16,7 +16,7 @@ var KTAppsUsersListDatatable = function () {
                 source: {
                     read: {
                         method: "GET",
-                        url: "/v1/BusinessGroup/GetBusinessGroups",
+                        url: "/efatorty/v1/BusinessGroup/GetBusinessGroups",
                     },
                 },
                 //pageSize: 10, // display 10 records per page
@@ -148,7 +148,7 @@ function deleteGroup(id, GroupName) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/v1/BusinessGroup/deletegroup?id=" + id + "&GrpName=" + GroupName,
+                url: "/efatorty/v1/BusinessGroup/deletegroup?id=" + id + "&GrpName=" + GroupName,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -205,7 +205,7 @@ function deleteGroup(id, GroupName) {
 function editGroup(id) {
     KTApp.blockPage();
     $.ajax({
-        url: "/v1/BusinessGroup/editpartial?id=" + id,
+        url: "/efatorty/v1/BusinessGroup/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -314,7 +314,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_frm").serialize();
                 $.ajax({
-                    url: "/v1/BusinessGroup/creategroup",
+                    url: "/efatorty/v1/BusinessGroup/creategroup",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -406,7 +406,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_editFrm").serialize();
                 $.ajax({
-                    url: "/v1/BusinessGroup/editgroup",
+                    url: "/efatorty/v1/BusinessGroup/editgroup",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

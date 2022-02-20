@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                    method: 'POST',
-                   url: '/v1/document/ajax_invalidandfailed',
+                   url: '/efatorty/v1/document/ajax_invalidandfailed',
                    map: function (raw) {
                         // 
                         // sample data mapping
@@ -69,7 +69,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 sortable: false,
                 width: 200,
                 template: function (row) {
-                    return "<a href='/v1/document/details/" + row.internalID +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
+                    return "<a href='/efatorty/v1/document/details/" + row.internalID +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
             },
             },
             {
@@ -166,7 +166,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                         Choose an action:\
                                     </li>\
                                     <li class='navi-item'>\
-                                        <a href='/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
+                                        <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                             <span class='navi-icon'><i class='la la-eye'></i></span>\
                                             <span class='navi-text'>View</span>\
                                         </a>\
@@ -200,7 +200,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
+                                    <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                         <span class='navi-icon'><i class='la la-eye'></i></span>\
                                         <span class='navi-text'>View</span>\
                                     </a>\
@@ -243,7 +243,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 Choose an action:\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a href='/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
+                                                <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                                     <span class='navi-icon'><i class='la la-eye'></i></span>\
                                                     <span class='navi-text'>View</span>\
                                                 </a>\
@@ -278,7 +278,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 Choose an action:\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a href='/v1/document/details/"+ row.internalID+"' class='navi-link submitdoc'>\
+                                                <a href='/efatorty/v1/document/details/"+ row.internalID+"' class='navi-link submitdoc'>\
                                                     <span class='navi-icon'><i class='la la-eye'></i></span>\
                                                     <span class='navi-text'>View</span>\
                                                 </a>\
@@ -406,7 +406,7 @@ jQuery(document).ready(function () {
         var btn = KTUtil.getById("kt_datatable_fetch_modal");
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Resyncing...");
 
-        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: ids },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -480,7 +480,7 @@ jQuery(document).ready(function () {
         // Ajax Call to Submit documnets Web Contoller
         //var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
 
-        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: ids },
             function (returnedData) {
             KTUtil.btnRelease(btn);
             $('#kt_datatable_group_action_form').collapse('hide');
@@ -547,7 +547,7 @@ jQuery(document).ready(function () {
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Resyncing...");
         // Ajax Call to Submit documnets Web Contoller
 
-        $.post('/v1/document/ResyncAllDocuments',
+        $.post('/efatorty/v1/document/ResyncAllDocuments',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -620,7 +620,7 @@ jQuery(document).ready(function () {
         var btn = KTUtil.getById("kt_datatable_fetch_modal_recallAll");
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
 
-        $.post('/v1/document/RecallDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/RecallDocuments', { DocumentIds: ids },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -689,7 +689,7 @@ jQuery(document).ready(function () {
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
 
 
-        $.post('/v1/document/RecallDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/RecallDocuments', { DocumentIds: ids },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -754,7 +754,7 @@ jQuery(document).ready(function () {
         KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Recalling...");
         // Ajax Call to Submit documnets Web Contoller
 
-        $.post('/v1/document/RecallAllDocuments',
+        $.post('/efatorty/v1/document/RecallAllDocuments',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
@@ -849,7 +849,7 @@ function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/efatorty/v1/document/edit_document?InternalId=" + InternalId;
 }
 
 function UpdateDocumentByInternalId(InternalId) {
@@ -858,7 +858,7 @@ function UpdateDocumentByInternalId(InternalId) {
         state: 'primary'
     });
     $.ajax({
-        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        url: "/efatorty/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -875,7 +875,7 @@ function UpdateDocumentByInternalId(InternalId) {
                     }
                 }).then(function () {
                     KTUtil.scrollTop();
-                    window.location.href = "/v1/document/pending";
+                    window.location.href = "/efatorty/v1/document/pending";
                 });
             }
             else {
@@ -920,7 +920,7 @@ function Resync(id) {
             message: 'Please wait as this may take a few seconds'
         });
 
-        $.post('/v1/document/ResyncDocuments', { DocumentIds: [id] },
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: [id] },
             function (returnedData) {
                 KTApp.unblockPage();
                 if (returnedData != -1) {

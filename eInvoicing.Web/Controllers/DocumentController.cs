@@ -677,9 +677,9 @@ namespace eInvoicing.Web.Controllers
                 var response = _httpClient.POST("api/document/ResyncInvalidandFailedDocuments", DocumentIds);
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
+                    return Json(JsonConvert.DeserializeObject<int>(response.Info), JsonRequestBehavior.AllowGet);
                 }
-                return null;
+                return Json(-1, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -694,6 +694,45 @@ namespace eInvoicing.Web.Controllers
             try
             {
                 var response = _httpClient.GET("api/document/ResyncAllInvalidandFailedDocuments");
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json(JsonConvert.DeserializeObject<int>(response.Info), JsonRequestBehavior.AllowGet);
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+        [HttpPost]
+        [ActionName("RecallDocuments")]
+        public ActionResult RecallDocuments(List<string> DocumentIds)
+        {
+            try
+            {
+                var response = _httpClient.POST("api/document/RecallInvalidandFailedDocuments", DocumentIds);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);
+                }
+                return Json(-1, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        [HttpPost]
+        [ActionName("RecallAllDocuments")]
+        public ActionResult RecallAllDocuments()
+        {
+            try
+            {
+                var response = _httpClient.GET("api/document/RecallAllInvalidandFailedDocuments");
                 if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
                 {
                     return Json(JsonConvert.DeserializeObject<bool>(response.Info), JsonRequestBehavior.AllowGet);

@@ -11,6 +11,8 @@ namespace eInvoicing.Service.AppService.Contract.Base
 {
     public interface IDocumentService
     {
+        bool UpdateBulkDocumentsByStatus();
+        bool UpdateBulkDocumentsByIds(List<string> Documentsids);
         List<string> GetAllInvalidandFailedDocumentsIds();
         bool DeleteDocument(string Id);
         void CreateNewDocumentWithOldId(NewDocumentVM obj);

@@ -67,7 +67,7 @@ var initTable1 = function () {
 			customScrollbar: true
 		},
 		ajax: {
-			url: '/v1/report/AjaxGetSubmittedDocumentsStats',
+			url: '/efatorty/v1/report/AjaxGetSubmittedDocumentsStats',
 			type: 'POST',
 			data: function (post) {
 				post.fromDate = ModifyDate(fromDate);

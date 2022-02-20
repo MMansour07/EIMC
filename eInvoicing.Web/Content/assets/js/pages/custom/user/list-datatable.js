@@ -16,7 +16,7 @@ var KTAppsUsersListDatatable = function () {
                 source: {
                     read: {
                         method: "GET",
-                        url: "/v1/user/getusers",
+                        url: "/efatorty/v1/user/getusers",
                     },
                 },
                 //pageSize: 10, // display 10 records per page
@@ -146,7 +146,7 @@ var KTAppsUsersListDatatable = function () {
 function editUser(id) {
     KTApp.blockPage();
     $.ajax({
-        url: "/v1/user/editpartial?id=" + id,
+        url: "/efatorty/v1/user/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -170,7 +170,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_frm").serialize();
                 $.ajax({
-                    url: "/v1/user/createuser",
+                    url: "/efatorty/v1/user/createuser",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -259,7 +259,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_editFrm").serialize();
                 $.ajax({
-                    url: "/v1/user/edituser",
+                    url: "/efatorty/v1/user/edituser",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

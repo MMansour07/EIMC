@@ -11,213 +11,156 @@
         width: 408px !important;
     }
 </style>
-<div class="container-fluid">
-    <!--begin::Subheader-->
-    <div class="subheader py-2 py-lg-6  subheader-transparent " id="kt_subheader">
-        <div class=" container  d-flex align-items-center subheader-custom mt-3 justify-content-between  flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
-            <div class="d-flex align-items-center flex-wrap mr-1">
-
-                <!--begin::Page Heading-->
-                <div class="d-flex align-items-baseline flex-wrap mr-5">
-                    <i class="flaticon-lock header-icon"></i>
-                    <h3 class="text-white icon-title">
-
+<div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline flex-wrap mr-5">
+                <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
+                    <li class="breadcrumb-item">
+                        <a href="@Url.Action("Index", "Master")" class="text-white">
+                            Home
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="javascript:window.location.reload();" class="text-white">
+                            Roles
+                        </a>
+                    </li>
+                </ul>
+                <!--end::Breadcrumb-->
+            </div>
+        </div>
+    </div>
+</div>
+<div class="d-flex flex-column-fluid">
+    <div class="container-fluid mt-65">
+        <!--begin::Card-->
+        <div class="card card-custom">
+            <!--begin::Header-->
+            <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
+                <div class="card-title">
+                    <h3 class="card-label">
                         System Roles
+                        <span class="d-block text-primary pt-2 font-size-sm">The system role determines which set of permissions apply to the system user.</span>
                     </h3>
-                    <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
-                        <li class="breadcrumb-item">
-                            <a href="@Url.Action("Index", "Master")" class="text-white">
-                                Home
-                            </a>
-                        </li>
-                        <li class="breadcrumb-item">
-                            <a href="javascript:window.location.reload();" class="text-white">
-                                Roles
-                            </a>
-                        </li>
-                    </ul>
-                    <!--end::Breadcrumb-->
                 </div>
-                <!--end::Page Heading-->
-            </div>
-            <!--end::Info-->
-        </div>
-        <div class="topbar-item topbar-custom">
-            @using System.Security.Claims;
-            @using Microsoft.AspNet.Identity;
-            @if (Request.IsAuthenticated)
-            {
-                using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-                {
-                    @Html.AntiForgeryToken()
-                    <a class="btn btn-icon btn-icon-mobile w-auto d-flex align-items-center btn-lg px-2" data-toggle="dropdown" role="button" id="kt_quick_user_toggle">
-                        <div class="d-flex flex-column text-right pr-3">
-                            <span class="text-white font-weight-bold font-size-base d-none d-md-inline mr-1">@User.Identity.GetUserName()</span>
-                            <span class="text-white font-weight-bolder font-size-sm d-none d-md-inline" style="text-align: left !important;">@Html.DisplayName(((ClaimsPrincipal)HttpContext.Current.User).FindFirst("Title")?.Value)</span>
-                        </div>
-                        <span class="symbol symbol-lg-35 symbol-25 symbol-white">
-                            <span class="symbol-label font-size-h5 font-weight-bold">@User.Identity.GetUserName().ToUpper().FirstOrDefault()</span>
+                <div class="card-toolbar">
+                    <a href="#RoleEditModal" id="editBtn" data-toggle="modal" hidden class="btn btn-primary font-weight-bolder">
+                        <span class="svg-icon svg-icon-light svg-icon-2x">
+                            <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/Communication/Add-user.svg-->
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                    <polygon points="0 0 24 0 24 24 0 24" />
+                                    <path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
+                                    <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
+                                </g>
+                            </svg>
+                            <!--end::Svg Icon-->
                         </span>
+                        New Role
                     </a>
-                    <div class="dropdown-menu dropdown-menu-left dropdown-menu-icon-list" style="width: 10.5% !important; font-size:smaller !important; top: 3px !important; margin-left: -40px !important;">
-                        <a class="dropdown-item" href="@Url.Action("myprofile", "user")">
-                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24"></rect>
-                                        <path d="M13.2070325,4 C13.0721672,4.47683179 13,4.97998812 13,5.5 C13,8.53756612 15.4624339,11 18.5,11 C19.0200119,11 19.5231682,10.9278328 20,10.7929675 L20,17 C20,18.6568542 18.6568542,20 17,20 L7,20 C5.34314575,20 4,18.6568542 4,17 L4,7 C4,5.34314575 5.34314575,4 7,4 L13.2070325,4 Z" fill="#000000"></path>
-                                        <circle fill="#000000" opacity="0.3" cx="18.5" cy="5.5" r="2.5"></circle>
-                                    </g>
-                                </svg>
-                            </span>
-                            <span class="menu-text" style="padding-top: 3px;">My Profile</span>
-                        </a>
-                        <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
-                            <span class="svg-icon svg-icon-primary svg-icon" style="padding-right:inherit">
-                                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                                    <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <rect x="0" y="0" width="24" height="24" />
-                                        <path d="M14.0069431,7.00607258 C13.4546584,7.00607258 13.0069431,6.55855153 13.0069431,6.00650634 C13.0069431,5.45446114 13.4546584,5.00694009 14.0069431,5.00694009 L15.0069431,5.00694009 C17.2160821,5.00694009 19.0069431,6.7970243 19.0069431,9.00520507 L19.0069431,15.001735 C19.0069431,17.2099158 17.2160821,19 15.0069431,19 L3.00694311,19 C0.797804106,19 -0.993056895,17.2099158 -0.993056895,15.001735 L-0.993056895,8.99826498 C-0.993056895,6.7900842 0.797804106,5 3.00694311,5 L4.00694793,5 C4.55923268,5 5.00694793,5.44752105 5.00694793,5.99956624 C5.00694793,6.55161144 4.55923268,6.99913249 4.00694793,6.99913249 L3.00694311,6.99913249 C1.90237361,6.99913249 1.00694311,7.89417459 1.00694311,8.99826498 L1.00694311,15.001735 C1.00694311,16.1058254 1.90237361,17.0008675 3.00694311,17.0008675 L15.0069431,17.0008675 C16.1115126,17.0008675 17.0069431,16.1058254 17.0069431,15.001735 L17.0069431,9.00520507 C17.0069431,7.90111468 16.1115126,7.00607258 15.0069431,7.00607258 L14.0069431,7.00607258 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" transform="translate(9.006943, 12.000000) scale(-1, 1) rotate(-90.000000) translate(-9.006943, -12.000000) " />
-                                        <rect fill="#000000" opacity="0.3" transform="translate(14.000000, 12.000000) rotate(-270.000000) translate(-14.000000, -12.000000) " x="13" y="6" width="2" height="12" rx="1" />
-                                        <path d="M21.7928932,9.79289322 C22.1834175,9.40236893 22.8165825,9.40236893 23.2071068,9.79289322 C23.5976311,10.1834175 23.5976311,10.8165825 23.2071068,11.2071068 L20.2071068,14.2071068 C19.8165825,14.5976311 19.1834175,14.5976311 18.7928932,14.2071068 L15.7928932,11.2071068 C15.4023689,10.8165825 15.4023689,10.1834175 15.7928932,9.79289322 C16.1834175,9.40236893 16.8165825,9.40236893 17.2071068,9.79289322 L19.5,12.0857864 L21.7928932,9.79289322 Z" fill="#000000" fill-rule="nonzero" transform="translate(19.500000, 12.000000) rotate(-90.000000) translate(-19.500000, -12.000000) " />
-                                    </g>
-                                </svg>
-                            </span>
-                            <span class="menu-text" style="padding-top: 3px;">Sign Out</span>
-                        </a>
-                    </div>
-                }
-
-            }
-        </div>
-    </div>
-    <!--end::Subheader-->
-    <!--begin::Card-->
-    <div class="card card-custom">
-        <!--begin::Header-->
-        <div class="card-header bg-light flex-wrap border-0 pt-6 pb-0">
-            <div class="card-title">
-                <h3 class="card-label">
-                    System Roles
-                    <span class="d-block text-primary pt-2 font-size-sm">The system role determines which set of permissions apply to the system user.</span>
-                </h3>
-            </div>
-            <div class="card-toolbar">
-                <a href="#RoleEditModal" id="editBtn" data-toggle="modal" hidden class="btn btn-primary font-weight-bolder">
-                    <span class="svg-icon svg-icon-light svg-icon-2x">
-                        <!--begin::Svg Icon | path:/var/www/preview.keenthemes.com/metronic/releases/2021-05-14-112058/theme/html/demo9/dist/../src/media/svg/icons/Communication/Add-user.svg-->
-                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
-                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                <polygon points="0 0 24 0 24 24 0 24" />
-                                <path d="M18,8 L16,8 C15.4477153,8 15,7.55228475 15,7 C15,6.44771525 15.4477153,6 16,6 L18,6 L18,4 C18,3.44771525 18.4477153,3 19,3 C19.5522847,3 20,3.44771525 20,4 L20,6 L22,6 C22.5522847,6 23,6.44771525 23,7 C23,7.55228475 22.5522847,8 22,8 L20,8 L20,10 C20,10.5522847 19.5522847,11 19,11 C18.4477153,11 18,10.5522847 18,10 L18,8 Z M9,11 C6.790861,11 5,9.209139 5,7 C5,4.790861 6.790861,3 9,3 C11.209139,3 13,4.790861 13,7 C13,9.209139 11.209139,11 9,11 Z" fill="#000000" fill-rule="nonzero" opacity="0.3" />
-                                <path d="M0.00065168429,20.1992055 C0.388258525,15.4265159 4.26191235,13 8.98334134,13 C13.7712164,13 17.7048837,15.2931929 17.9979143,20.2 C18.0095879,20.3954741 17.9979143,21 17.2466999,21 C13.541124,21 8.03472472,21 0.727502227,21 C0.476712155,21 -0.0204617505,20.45918 0.00065168429,20.1992055 Z" fill="#000000" fill-rule="nonzero" />
-                            </g>
-                        </svg>
-                        <!--end::Svg Icon-->
-                    </span>
-                    New Role
-                </a>
-                <!--end::Button-->
-            </div>
-        </div>
-        <!--end::Header-->
-        <!--begin::Body-->
-    <div class="card-body">
-        <div class="mb-7">
-            <div class="row align-items-center">
-                <div class="col-md-10 my-2 my-md-0">
-                    <a href="#RoleCreation" data-toggle="modal" class="btn btn-sm btn-primary font-weight-bold btn-square">
-                        <i class="flaticon2-add-1"></i>
-                        Add Role
-                    </a>
+                    <!--end::Button-->
                 </div>
-                <div class="col-md-2 my-2 my-md-0">
-                    <div class="input-icon">
-                        <input type="text" class="form-control" placeholder="Search..." id="kt_subheader_search_form">
-                        <span><i class="flaticon2-search-1 text-muted"></i></span>
+            </div>
+            <!--end::Header-->
+            <!--begin::Body-->
+            <div class="card-body">
+                <div class="mb-7">
+                    <div class="row align-items-center">
+                        <div class="col-md-10 my-2 my-md-0">
+                            <a href="#RoleCreation" data-toggle="modal" class="btn btn-sm btn-primary font-weight-bold btn-square">
+                                <i class="flaticon2-add-1"></i>
+                                Add Role
+                            </a>
+                        </div>
+                        <div class="col-md-2 my-2 my-md-0">
+                            <div class="input-icon">
+                                <input type="text" class="form-control" placeholder="Search..." id="kt_subheader_search_form">
+                                <span><i class="flaticon2-search-1 text-muted"></i></span>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
+                <!--begin: Datatable-->
+                <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
+                <!--end: Datatable-->
+            </div>
 
+            <!--end::Body-->
+        </div>
+        <!--end::Card-->
+
+        <div class="modal fade modal-sticky-lg" id="RoleCreation" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
+                    @using (Html.BeginForm("createrole", "role", FormMethod.Post, new { @class = "", role = "form", id = "_roleFrm" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="modal-header">
+                            <h5 class="modal-title"><i class="flaticon-lock"></i> New Role</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <i aria-hidden="true" class="ki ki-close"></i>
+                            </button>
+                        </div>
+                        <div class="modal-body" style="padding: 0 !important; height: 300px;">
+                            <!--begin::Form-->
+                            <!--begin::Wizard Form-->
+                            <div class="card-body">
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label>Role Name *</label>
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name", @name = "Name" })
+                                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label>Role Description *</label>
+                                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5", @name = "Description" })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-md-12">
+                                        <label>Permissions *</label>
+                                        @Html.ListBoxFor(model => model.Permissions, (List<SelectListItem>)ViewBag.Permissions, new { @class = "form-control select2", @id = "kt_select2_4", @multiple = "multiple", @name = "Permissions" })
+                                        @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <!--end::Group-->
+                            </div>
+                            <!--end::Form-->
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModal" data-dismiss="modal">Close</button>
+                            <button type="button" id="RoleSubmission" class="btn btn-sm btn-primary font-weight-bold">Submit</button>
+                        </div>
+                    }
+                </div>
             </div>
         </div>
-        <!--begin: Datatable-->
-        <div class="datatable datatable-bordered datatable-head-custom" id="kt_datatable"></div>
-        <!--end: Datatable-->
-    </div>
-
-        <!--end::Body-->
-    </div>
-    <!--end::Card-->
-
-    <div class="modal fade modal-sticky-lg" id="RoleCreation" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                @using (Html.BeginForm("createrole", "role", FormMethod.Post, new { @class = "", role = "form", id = "_roleFrm" }))
-                {
-                    @Html.AntiForgeryToken()
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="modal fade" id="RoleEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered centered modal-dialog-scrollable" role="document">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title"><i class="flaticon-lock"></i> New Role</h5>
+                        <h5 class="modal-title"><i class="flaticon-lock"></i> Edit Role</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <i aria-hidden="true" class="ki ki-close"></i>
                         </button>
                     </div>
-                    <div class="modal-body" style="padding: 0 !important; height: 300px;">
-                        <!--begin::Form-->
-                        <!--begin::Wizard Form-->
-                        <div class="card-body">
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label>Role Name *</label>
-                                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control", @placeholder = "Role Name", @name = "Name" })
-                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label>Role Description *</label>
-                                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @placeholder = "Role Description", @rows = "5", @name = "Description" })
-                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label>Permissions *</label>
-                                    @Html.ListBoxFor(model => model.Permissions, (List<SelectListItem>)ViewBag.Permissions, new { @class = "form-control select2", @id = "kt_select2_4", @multiple = "multiple", @name = "Permissions" })
-                                    @Html.ValidationMessageFor(model => model.Permissions, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-                            <!--end::Group-->
-                        </div>
-                        <!--end::Form-->
+                    <div class="modal-body" style="padding: 0 !important; height:300px" id="RoleEdit">
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModal" data-dismiss="modal">Close</button>
-                        <button type="button" id="RoleSubmission" class="btn btn-sm btn-primary font-weight-bold">Submit</button>
+                        <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModalEdit" data-dismiss="modal">Close</button>
+                        <button type="button" id="roleEdition" class="btn btn-sm btn-primary font-weight-bold">Save</button>
                     </div>
-                }
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="RoleEditModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdrop" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered centered modal-dialog-scrollable" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"><i class="flaticon-lock"></i> Edit Role</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <i aria-hidden="true" class="ki ki-close"></i>
-                    </button>
-                </div>
-                <div class="modal-body" style="padding: 0 !important; height:300px" id="RoleEdit">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-light-primary font-weight-bold" id="closeRoleModalEdit" data-dismiss="modal">Close</button>
-                    <button type="button" id="roleEdition" class="btn btn-sm btn-primary font-weight-bold">Save</button>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 <script src="~/Content/assets/js/pages/crud/forms/widgets/select2.js"></script>
 <script src="~/Content/assets/js/pages/custom/user/list-datatable-roles.js"></script>

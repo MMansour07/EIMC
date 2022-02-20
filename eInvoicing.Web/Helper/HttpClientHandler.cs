@@ -23,8 +23,8 @@ namespace eInvoicing.Web.Helper
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Clear();
-                    client.Timeout = TimeSpan.FromMinutes(60);
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    client.Timeout = TimeSpan.FromMinutes(60);
                     client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue(Media?? "application/json"));
                     client.BaseAddress = new Uri(_userSession.URL+url);
                     var postTask = Task.Run(() => client.GetAsync(_userSession.URL + url)).Result;
@@ -59,6 +59,7 @@ namespace eInvoicing.Web.Helper
                 {
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _userSession.BearerToken);
+                    client.Timeout = TimeSpan.FromMinutes(60);
                     client.BaseAddress = new Uri(_userSession.URL + url);
                     var postTask = Task.Run(() => client.PostAsJsonAsync(_userSession.URL + url, Content)).Result;
                     response.HttpStatusCode = postTask.StatusCode;

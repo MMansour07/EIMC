@@ -3,6 +3,7 @@ using eInvoicing.Persistence;
 using eInvoicing.Repository.Contract;
 using eInvoicing.Repository.Implementation.Base;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace eInvoicing.Repository.Implementation
@@ -24,5 +25,49 @@ namespace eInvoicing.Repository.Implementation
                 throw ex;
             }
         }
+        public bool UpdateBulkDocumentsByIds(List<string> Documentsids)
+        {
+            try
+            {
+                var docs = Context.Documents.Where(d => Documentsids.Contains(d.Id)).ToList();
+                docs.ForEach(a =>
+                {
+                    a.Status = "New";
+                    a.uuid = null;
+                    a.submissionId = null;
+                    a.longId = null;
+                });
+                Context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return false;
+            }
+        }
+
+        public bool UpdateBulkDocumentsByStatus()
+        {
+            try
+            {
+                var docs = Context.Documents.Where(d => (d.Status.ToLower() == "invalid" || d.Status.ToLower() == "failed")).ToList();
+                docs.ForEach(a =>
+                {
+                    a.Status = "New";
+                    a.uuid = null;
+                    a.submissionId = null;
+                    a.longId = null;
+                });
+                Context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //throw ex;
+                return false;
+            }
+        }
+
     }
 }

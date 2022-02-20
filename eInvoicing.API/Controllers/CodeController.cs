@@ -33,6 +33,31 @@ namespace eInvoicing.API.Controllers
                 var result = _codeService.SearchMyEGSCodeUsageRequests(req, auth.access_token, _userSession.submissionurl);
                 if (result != null && result.StatusCode == HttpStatusCode.OK)
                     return Ok(result);
+                else if (result != null && result.StatusCode == HttpStatusCode.Unauthorized)
+                    return Unauthorized();
+                else
+                    return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+        }
+
+
+        [HttpPost]
+        [Route("api/code/SearchPublishedCodes")]
+        public IHttpActionResult SearchPublishedCodes(SearchPublishedCodesRequestDTO req)
+        {
+            try
+            {
+                _userSession.GetBusinessGroupId(this.GetBusinessGroupId());
+                var auth = _auth.token(_userSession.loginUrl, "client_credentials", _userSession.client_id, _userSession.client_secret, "InvoicingAPI");
+                var result = _codeService.SearchPublishedCodes(req, auth.access_token, _userSession.submissionurl);
+                if (result != null && result.StatusCode == HttpStatusCode.OK)
+                    return Ok(result);
+                else if (result != null && result.StatusCode == HttpStatusCode.Unauthorized)
+                    return Unauthorized();
                 else
                     return NotFound();
             }

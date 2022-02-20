@@ -11,5 +11,7 @@ namespace eInvoicing.Repository.Contract
     public interface IDocumentRepository: IRepository<Document>
     {
         Document GetDocumentByuuid(string uuid);
+        bool UpdateBulkDocumentsByIds(List<string> Documentsids);
+        bool UpdateBulkDocumentsByStatus();
     }
 }

@@ -1,9 +1,6 @@
 ﻿using eInvoicing.DTO.Base;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
 
 namespace eInvoicing.DTO
 {
@@ -11,5 +8,6 @@ namespace eInvoicing.DTO
     {
         public List<SearchPublishedCodesResultDTO> result { get; set; }
         public MetaDataDTO metadata { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
     }
 }

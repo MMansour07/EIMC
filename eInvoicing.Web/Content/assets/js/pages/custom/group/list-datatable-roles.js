@@ -14,7 +14,7 @@ var KTAppsUsersListDatatable = function() {
 				source: {
 					read: {
 						method : "GET",
-						url: "/v1/role/getroles"
+						url: "/efatorty/v1/role/getroles"
 					},
 				},
 				pageSize: 10 // display 10 records per page
@@ -137,7 +137,7 @@ function deleteRole(id, name) {
         if (result.value) {
             KTApp.blockPage();
             $.ajax({
-                url: "/v1/role/deleterole?id=" + id,
+                url: "/efatorty/v1/role/deleterole?id=" + id,
                 type: "POST",
                 dataType: 'json',
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -195,7 +195,7 @@ function deleteRole(id, name) {
 
 function editRole(id) {
     $.ajax({
-        url: "/v1/role/editpartial?id=" + id,
+        url: "/efatorty/v1/role/editpartial?id=" + id,
         type: "GET",
         data: {},
         success: function (response) {
@@ -254,7 +254,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_roleFrm").serialize();
                 $.ajax({
-                    url: "/v1/role/createrole",
+                    url: "/efatorty/v1/role/createrole",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
@@ -319,7 +319,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#_editRoleFrm").serialize();
                 $.ajax({
-                    url: "/v1/role/editrole",
+                    url: "/efatorty/v1/role/editrole",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

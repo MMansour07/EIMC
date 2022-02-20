@@ -18,7 +18,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 source: {
                     read: {
                         method: 'POST',
-                        url: '/v1/document/ajax_submitted',
+                        url: '/efatorty/v1/document/ajax_submitted',
                         map: function (raw) {
                             // 
                             // sample data mapping
@@ -75,9 +75,10 @@ var KTDatatableRecordSelectionDemo = function() {
                 {
                     field: 'internalID',
                     title: 'ID/Internal ID',
+                    sortable: false,
                     width:270,
                     template: function (row) {
-                        return "<a href='/v1/document/raw?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
+                        return "<a href='/efatorty/v1/document/raw?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
                                 <span class='navi-text' style= 'float:left; clear:left;'>" + row.internalID + "</span>";
                     }
                 },
@@ -193,13 +194,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
@@ -211,19 +212,19 @@ var KTDatatableRecordSelectionDemo = function() {
                                                         </a>\
                                                     </li>-->\
                                                     <!--<li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-link'></i></span>\
                                                             <span class='navi-text'>Get Public Link</span>\
                                                         </a>\
                                                     </li>\-->\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                                             <span class='navi-text'>Debit Note</span>\
                                                         </a>\
                                                     </li>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                                             <span class='navi-text'>Credit Note</span>\
                                                         </a>\
@@ -248,25 +249,25 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
                                                     </li>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                                             <span class='navi-text'>Debit Note</span>\
                                                         </a>\
                                                     </li>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                                             <span class='navi-text'>Credit Note</span>\
                                                         </a>\
@@ -292,13 +293,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
@@ -310,19 +311,19 @@ var KTDatatableRecordSelectionDemo = function() {
                                                         </a>\
                                                     </li>\
                                                     <!--<li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-link'></i></span>\
                                                             <span class='navi-text'>Get Public Link</span>\
                                                         </a>\
                                                     </li>\-->\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                                             <span class='navi-text'>Debit Note</span>\
                                                         </a>\
                                                     </li>\
                                                     <li class='navi-item'>\
-                                                        <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                                        <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                                             <span class='navi-text'>Credit Note</span>\
                                                         </a>\
@@ -351,37 +352,37 @@ var KTDatatableRecordSelectionDemo = function() {
                                 <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                     <ul class='navi flex-column navi-hover py-2'>\
                                         <li class='navi-item'>\
-                                            <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                            <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                 <span class='navi-icon'><i class='la la-download'></i></span>\
                                                 <span class='navi-text'>Download</span>\
                                             </a>\
                                         </li>\
                                         <li class='navi-item'>\
-                                            <a href='/v1/document/print?uuid='"+ row.uuid + "' class='navi-link' target='_blank'>\
+                                            <a href='/efatorty/v1/document/print?uuid='"+ row.uuid + "' class='navi-link' target='_blank'>\
                                                 <span class='navi-icon'><i class='la la-print'></i></span>\
                                                 <span class='navi-text'>Print</span>\
                                             </a>\
                                         </li>\
                                         <li class='navi-item'>\
                                             <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                <span class='navi-icon'><i class='la la-undo-alt'></i></span>\
                                                 <span class='navi-text'>Recall</span>\
                                             </a>\
                                         </li>\
                                         <!--<li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
+                                            <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
                                                 <span class='navi-icon'><i class='la la-link'></i></span>\
                                                 <span class='navi-text'>Get Public Link</span>\
                                             </a>\
                                         </li>\-->\
                                         <li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
+                                            <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "' class='navi-link'>\
                                                 <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                                 <span class='navi-text'>Debit Note</span>\
                                             </a>\
                                         </li>\
                                         <li class='navi-item'>\
-                                            <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                            <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                                 <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                                 <span class='navi-text'>Credit Note</span>\
                                             </a>\
@@ -412,13 +413,13 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                             <ul class='navi flex-column navi-hover py-2'>\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                    <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-download'></i></span>\
                                         <span class='navi-text'>Download</span>\
                                     </a>\
                                 </li>\
                                     <li class='navi-item'>\
-                                    <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                    <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
                                     </a>\
@@ -430,19 +431,19 @@ var KTDatatableRecordSelectionDemo = function() {
                                     </a>\
                                 </li>\
                                 <!--<li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-link'></i></span>\
                                         <span class='navi-text'>Get Public Link</span>\
                                     </a>\
                                 </li>\-->\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                         <span class='navi-text'>Debit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                         <span class='navi-text'>Credit Note</span>\
                                     </a>\
@@ -470,37 +471,37 @@ var KTDatatableRecordSelectionDemo = function() {
                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
                                     <ul class="navi flex-column navi-hover py-2">\
                                         <li class="navi-item">\
-                                            <a href="/v1/document/printout?uuid='+ row.uuid + '" onclick="ShowSpinner()" class="navi-link">\
+                                            <a href="/efatorty/v1/document/printout?uuid='+ row.uuid + '" onclick="ShowSpinner()" class="navi-link">\
                                                 <span class="navi-icon"><i class="la la-download"></i></span>\
                                                 <span class="navi-text">Download</span>\
                                             </a>\
                                         </li>\
                                         <li class="navi-item">\
-                                            <a href="/v1/document/print?uuid='+ row.uuid + '" class="navi-link" target="_blank">\
+                                            <a href="/efatorty/v1/document/print?uuid='+ row.uuid + '" class="navi-link" target="_blank">\
                                                 <span class="navi-icon"><i class="la la-print"></i></span>\
                                                 <span class="navi-text">Print</span>\
                                             </a>\
                                         </li>\
                                         <li class="navi-item">\
                                             <a href="#" onclick="UpdateDocumentByInternalId(' + row.internalID + ')" class="navi-link">\
-                                                <span class="navi-icon"><i class="la la-undo"></i></span>\
+                                                <span class="navi-icon"><i class="la la-undo-alt"></i></span>\
                                                 <span class="navi-text">Recall</span>\
                                             </a>\
                                         </li>\
                                         <!--<li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                            <a href="/efatorty/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                                 <span class="navi-icon"><i class="la la-link"></i></span>\
                                                 <span class="navi-text">Get Public Link</span>\
                                             </a>\
                                         </li>\-->\
                                         <li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                            <a href="/efatorty/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                                 <span class="navi-icon"><i class="la la-plus-circle"></i></span>\
                                                 <span class="navi-text">Debit Note</span>\
                                             </a>\
                                         </li>\
                                         <li class="navi-item">\
-                                            <a href="/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
+                                            <a href="/efatorty/v1/document/raw?uuid='+ row.uuid + '  "class="navi-link">\
                                                 <span class="navi-icon"><i class="la la-minus-circle"></i></span>\
                                                 <span class="navi-text">Credit Note</span>\
                                             </a>\
@@ -525,13 +526,13 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                             <ul class='navi flex-column navi-hover py-2'>\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                    <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-download'></i></span>\
                                         <span class='navi-text'>Download</span>\
                                     </a>\
                                 </li>\
                                     <li class='navi-item'>\
-                                    <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                    <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
                                     </a>\
@@ -543,19 +544,19 @@ var KTDatatableRecordSelectionDemo = function() {
                                     </a>\
                                 </li>\
                                <!--<li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-link'></i></span>\
                                         <span class='navi-text'>Get Public Link</span>\
                                     </a>\
                                 </li>\-->\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-plus-circle'></i></span>\
                                         <span class='navi-text'>Debit Note</span>\
                                     </a>\
                                 </li>\
                                 <li class='navi-item'>\
-                                    <a href='/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
+                                    <a href='/efatorty/v1/document/raw?uuid="+ row.uuid + "  'class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-minus-circle'></i></span>\
                                         <span class='navi-text'>Credit Note</span>\
                                     </a>\
@@ -733,7 +734,7 @@ function UpdateDocumentByInternalId(InternalId) {
         state: 'primary'
     });
     $.ajax({
-        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        url: "/efatorty/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -750,7 +751,7 @@ function UpdateDocumentByInternalId(InternalId) {
                     }
                 }).then(function () {
                     KTUtil.scrollTop();
-                    window.location.href = "/v1/document/pending";
+                    window.location.href = "/efatorty/v1/document/pending";
                 });
             }
             else {
@@ -792,11 +793,11 @@ function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/efatorty/v1/document/edit_document?InternalId=" + InternalId;
 }
 
 function ViewDocument(uuid) {
-    window.location.href = "/v1/document/raw?uuid=" + uuid;
+    window.location.href = "/efatorty/v1/document/raw?uuid=" + uuid;
 }
 
 function CancelDocumentByUUID(uuid) {
@@ -806,7 +807,7 @@ function CancelDocumentByUUID(uuid) {
         state: 'primary'
     });
     $.ajax({
-        url: "/v1/document/canceldocument?uuid=" + uuid,
+        url: "/efatorty/v1/document/canceldocument?uuid=" + uuid,
         type: "get", //send it through get method
         data: {},
         success: function (response) {

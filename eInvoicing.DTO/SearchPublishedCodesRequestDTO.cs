@@ -18,13 +18,12 @@ namespace eInvoicing.DTO
         public int ParentCodeID { get; set; }
         public string codeName { get; set; }
         public string codeDescription { get; set; }
-        public Boolean onlyActive { get; set; }
+        public string onlyActive { get; set; }
         public DateTime activeFrom { get; set; }
         public DateTime activeTo { get; set; }
-        public string ps { get; set; }
-        public string pn { get; set; }
+        public int ps { get; set; }
+        public int pn { get; set; }
         public int codeTypeLevelNumber { get; set; }
         public string orderDirections { get; set; }
-
     }
 }

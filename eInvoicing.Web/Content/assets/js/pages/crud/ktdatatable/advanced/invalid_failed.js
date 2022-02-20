@@ -13,7 +13,7 @@ var KTDatatableRecordSelectionDemo = function () {
            source: {
                 read: {
                    method: 'POST',
-                   url: '/v1/document/ajax_invalidandfailed',
+                   url: '/efatorty/v1/document/ajax_invalidandfailed',
                    map: function (raw) {
                         // 
                         // sample data mapping
@@ -69,7 +69,7 @@ var KTDatatableRecordSelectionDemo = function () {
                 sortable: false,
                 width: 200,
                 template: function (row) {
-                    return "<a href='#' onclick='ViewDocument_NewTab(\"" + row.internalID + "\")' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
+                    return "<a href='/efatorty/v1/document/details/" + row.internalID +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.internalID + "</a>";
             },
             },
             {
@@ -166,7 +166,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                         Choose an action:\
                                     </li>\
                                     <li class='navi-item'>\
-                                        <a onclick='ViewDocument(\"" + row.internalID + "\")' class='navi-link submitdoc'>\
+                                        <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                             <span class='navi-icon'><i class='la la-eye'></i></span>\
                                             <span class='navi-text'>View</span>\
                                         </a>\
@@ -200,14 +200,14 @@ var KTDatatableRecordSelectionDemo = function () {
                                     Choose an action:\
                                 </li>\
                                 <li class='navi-item'>\
-                                    <a onclick='ViewDocument(\"" + row.internalID + "\")' class='navi-link submitdoc'>\
+                                    <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                         <span class='navi-icon'><i class='la la-eye'></i></span>\
                                         <span class='navi-text'>View</span>\
                                     </a>\
                                 </li>\
                                 <li class='navi-item'>\
                                             <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
-                                                <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                <span class='navi-icon'><i class='la la-undo-alt'></i></span>\
                                                 <span class='navi-text'>Recall</span>\
                                             </a>\
                                 </li>\
@@ -243,7 +243,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 Choose an action:\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a onclick='ViewDocument(\"" + row.internalID + "\")' class='navi-link submitdoc'>\
+                                                <a href='/efatorty/v1/document/details/"+ row.internalID +"' class='navi-link submitdoc'>\
                                                     <span class='navi-icon'><i class='la la-eye'></i></span>\
                                                     <span class='navi-text'>View</span>\
                                                 </a>\
@@ -278,7 +278,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                                 Choose an action:\
                                             </li>\
                                             <li class='navi-item'>\
-                                                <a onclick='ViewDocument(\"" + row.internalID + "\")' class='navi-link submitdoc'>\
+                                                <a href='/efatorty/v1/document/details/"+ row.internalID+"' class='navi-link submitdoc'>\
                                                     <span class='navi-icon'><i class='la la-eye'></i></span>\
                                                     <span class='navi-text'>View</span>\
                                                 </a>\
@@ -291,7 +291,7 @@ var KTDatatableRecordSelectionDemo = function () {
                                             </li>\
                                          <li class='navi-item'>\
                                                         <a href='#' onclick='UpdateDocumentByInternalId(\"" + row.internalID + "\")' class='navi-link'>\
-                                                            <span class='navi-icon'><i class='la la-undo'></i></span>\
+                                                            <span class='navi-icon'><i class='la la-undo-alt'></i></span>\
                                                             <span class='navi-text'>Recall</span>\
                                                         </a>\
                                             </li>\
@@ -332,22 +332,31 @@ var KTDatatableRecordSelectionDemo = function () {
                 var checkedNodes = datatable.rows('.datatable-row-active').nodes();
                 var count = checkedNodes.length; 
                 $('#kt_datatable_selected_records').html(count);
-                $('#kt_datatable_fetch_modal').html("Sync Top " + count + " <i class='flaticon-paper-plane-1'></i>");
+            $('#kt_datatable_fetch_modal').html("Resync Top " + count + " <i class='flaticon-refresh'></i>");
+                $('#kt_datatable_fetch_modal_recallAll').html("Recall Top " + count + " <i class='flaticon2-refresh-arrow'></i>");
 
                 if (count !== options.data.pageSize && count !== 1 && 1 > count > options.data.pageSize) {
-                    $("#kt_datatable_sync").hide(); 
+                    $("#kt_datatable_sync").hide();
                     $("#kt_datatable_syncAll").hide();
+                    $("#kt_datatable_Recall").hide();
+                    $("#kt_datatable_recallAll").hide();
                 }
                 else if (count === 1 || count < options.data.pageSize)
                 {
                     $("#kt_datatable_syncAll").hide();
                     $("#kt_datatable_fetch_modal").hide();
+                    $("#kt_datatable_recallAll").hide();
+                    $("#kt_datatable_fetch_modal_recallAll").hide();
                     $("#kt_datatable_sync").show(); 
+                    $("#kt_datatable_Recall").show(); 
                 }
                 else {
                     $("#kt_datatable_sync").hide(); 
+                    $("#kt_datatable_Recall").hide(); 
                     $("#kt_datatable_syncAll").show();
+                    $("#kt_datatable_recallAll").show();
                     $("#kt_datatable_fetch_modal").show();
+                    $("#kt_datatable_fetch_modal_recallAll").show();
                 }
                 if (count > 0)
                 {
@@ -395,16 +404,18 @@ jQuery(document).ready(function () {
 
 
         var btn = KTUtil.getById("kt_datatable_fetch_modal");
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "syncing...");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Resyncing...");
 
-        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: ids },
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
                 KTApp.unblockPage();
-                if (returnedData) {
+                if (returnedData != -1) {
                     Swal.fire({
-                        text: 'Documents have been resynced successfullt.',
+                        title: 'The documents have been resynced successfully with the below results.',
+                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
+                               <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -416,11 +427,12 @@ jQuery(document).ready(function () {
                     });
                     datatable.reload();
                     LoadDraft();
-                    LoadSent();
+                    LoadInvalidandFailed();
                 }
                 else  {
                     Swal.fire({
-                        text: "Sorry, something went wrong, please try again.",
+                        title: "Sorry, something went wrong, please try again.",
+                        text:  "No connection could be made because the target machine actively refused it",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -435,7 +447,8 @@ jQuery(document).ready(function () {
                 KTUtil.btnRelease(btn);
                 KTApp.unblockPage();
                 Swal.fire({
-                    text: "Sorry, something went wrong, please try again.",
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -461,20 +474,22 @@ jQuery(document).ready(function () {
 
         var btn = KTUtil.getById("kt_datatable_sync");
 
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "syncing...");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Resyncing...");
 
         //Result = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
         // Ajax Call to Submit documnets Web Contoller
         //var FilteredDocuments = Result.filter(doc => ids.indexOf(doc.internalID) != -1);
 
-        $.post('/v1/document/ResyncDocuments', { DocumentIds: ids },
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: ids },
             function (returnedData) {
             KTUtil.btnRelease(btn);
             $('#kt_datatable_group_action_form').collapse('hide');
             KTApp.unblockPage();
-                if (returnedData) {
+                if (returnedData != -1) {
                     Swal.fire({
-                        text: 'Documents have been resynced successfullt.',
+                        title: 'The documents have been resynced successfully with the below results.',
+                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
+                               <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -486,11 +501,12 @@ jQuery(document).ready(function () {
                     });
                     datatable.reload();
                     LoadDraft();
-                    LoadSent();
+                    LoadInvalidandFailed();
                 }
                 else {
                     Swal.fire({
-                        text: "Sorry, something went wrong, please try again.",
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -505,7 +521,8 @@ jQuery(document).ready(function () {
             KTUtil.btnRelease(btn);
             KTApp.unblockPage();
             Swal.fire({
-                text: "Sorry, something went wrong, please try again.",
+                title: "Sorry, something went wrong, please try again.",
+                text: "No connection could be made because the target machine actively refused it",
                 icon: "error",
                 buttonsStyling: false,
                 confirmButtonText: "Ok, got it!",
@@ -527,17 +544,19 @@ jQuery(document).ready(function () {
 
         var btn = KTUtil.getById("kt_datatable_syncAll");
 
-        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "syncing...");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Resyncing...");
         // Ajax Call to Submit documnets Web Contoller
 
-        $.post('/v1/document/ResyncAllDocuments',
+        $.post('/efatorty/v1/document/ResyncAllDocuments',
             function (returnedData) {
                 KTUtil.btnRelease(btn);
                 $('#kt_datatable_group_action_form').collapse('hide');
                 KTApp.unblockPage();
-                if (returnedData) {
+                if (returnedData != -1) {
                     Swal.fire({
-                        text: 'Documents have been resynced successfullt.',
+                        title: 'The documents have been resynced successfully with the below results.',
+                        html: '<span class="navi-text mb-1" style= "float:left; clear:left;">Resynced Documents:  [' + returnedData + ']</span>\
+                               <span class="navi-text" style= "float:left; clear:left;">Non-exist Documents: ['+ (ids.length - returnedData) + ']</span>',
                         icon: "success",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -549,11 +568,83 @@ jQuery(document).ready(function () {
                     });
                     datatable.reload();
                     LoadDraft();
-                    LoadSent();
+                    LoadInvalidandFailed();
                 }
                 else {
                     Swal.fire({
-                        text: "Sorry, something went wrong, please try again.",
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+
+    $('#kt_datatable_fetch_modal_recallAll').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var ids = datatable.rows('.datatable-row-active').
+            nodes().
+            find('.checkbox > [type="checkbox"]').
+            map(function (i, chk) {
+                return $(chk).val();
+            }).toArray();
+
+
+        var btn = KTUtil.getById("kt_datatable_fetch_modal_recallAll");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
+
+        $.post('/efatorty/v1/document/RecallDocuments', { DocumentIds: ids },
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        title: 'The documents have been recalled successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
                         icon: "error",
                         buttonsStyling: false,
                         confirmButtonText: "Ok, got it!",
@@ -568,7 +659,141 @@ jQuery(document).ready(function () {
                 KTUtil.btnRelease(btn);
                 KTApp.unblockPage();
                 Swal.fire({
-                    text: "Sorry, something went wrong, please try again.",
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $('#kt_datatable_Recall').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var ids = datatable.rows('.datatable-row-active').nodes().find('.checkbox > [type="checkbox"]').map(function (i, chk) {
+            return $(chk).val();
+        }).toArray();
+
+        var btn = KTUtil.getById("kt_datatable_Recall");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15", "Recalling...");
+
+
+        $.post('/efatorty/v1/document/RecallDocuments', { DocumentIds: ids },
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        text: 'The documents have been recalled successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
+    });
+
+    $('#kt_datatable_recallAll').on('click', function (e) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        var btn = KTUtil.getById("kt_datatable_recallAll");
+
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15", "Recalling...");
+        // Ajax Call to Submit documnets Web Contoller
+
+        $.post('/efatorty/v1/document/RecallAllDocuments',
+            function (returnedData) {
+                KTUtil.btnRelease(btn);
+                $('#kt_datatable_group_action_form').collapse('hide');
+                KTApp.unblockPage();
+                if (returnedData) {
+                    Swal.fire({
+                        text: 'The documents have been recalled successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
                     icon: "error",
                     buttonsStyling: false,
                     confirmButtonText: "Ok, got it!",
@@ -620,26 +845,11 @@ function searchData() {
     KTDatatableRecordSelectionDemo.init();
 }
 
-function ViewDocument(DocumentId) {
-    var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-    var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
-    sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/v1/document/details/" + DocumentId;
-}
-
-function ViewDocument_NewTab(DocumentId) {
-    var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
-    var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
-    sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.open("/v1/document/details/" + DocumentId, "_self");
-    //window.location.href = "/v1/document/details/" + DocumentId;
-}
-
 function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/efatorty/v1/document/edit_document?InternalId=" + InternalId;
 }
 
 function UpdateDocumentByInternalId(InternalId) {
@@ -648,7 +858,7 @@ function UpdateDocumentByInternalId(InternalId) {
         state: 'primary'
     });
     $.ajax({
-        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        url: "/efatorty/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -665,7 +875,7 @@ function UpdateDocumentByInternalId(InternalId) {
                     }
                 }).then(function () {
                     KTUtil.scrollTop();
-                    window.location.href = "/v1/document/pending";
+                    window.location.href = "/efatorty/v1/document/pending";
                 });
             }
             else {
@@ -701,4 +911,62 @@ function UpdateDocumentByInternalId(InternalId) {
             });
         }
     });
+}
+
+function Resync(id) {
+        KTApp.blockPage({
+            overlayColor: '#000000',
+            state: 'primary',
+            message: 'Please wait as this may take a few seconds'
+        });
+
+        $.post('/efatorty/v1/document/ResyncDocuments', { DocumentIds: [id] },
+            function (returnedData) {
+                KTApp.unblockPage();
+                if (returnedData != -1) {
+                    Swal.fire({
+                        text: 'The document has been resynced successfully.',
+                        icon: "success",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                    datatable.reload();
+                    LoadDraft();
+                    LoadInvalidandFailed();
+                }
+                else {
+                    Swal.fire({
+                        title: "Sorry, something went wrong, please try again.",
+                        text: "No connection could be made because the target machine actively refused it",
+                        icon: "error",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn font-weight-bold btn-light-primary"
+                        }
+                    }).then(function () {
+                        KTUtil.scrollTop();
+                    });
+                }
+            }).fail(function () {
+                KTUtil.btnRelease(btn);
+                KTApp.unblockPage();
+                Swal.fire({
+                    title: "Sorry, something went wrong, please try again.",
+                    text: "No connection could be made because the target machine actively refused it",
+                    icon: "error",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn font-weight-bold btn-light-primary"
+                    }
+                }).then(function () {
+                    KTUtil.scrollTop();
+                });
+            });
 }

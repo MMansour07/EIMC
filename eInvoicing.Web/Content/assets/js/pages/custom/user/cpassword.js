@@ -44,7 +44,7 @@ jQuery(document).ready(function () {
                 KTApp.blockPage();
                 var valdata = $("#CpasswordForm").serialize();
                 $.ajax({
-                    url: "/efatorty/v1/account/changepassword",
+                    url: "/v1/account/changepassword",
                     type: "POST",
                     dataType: 'json',
                     contentType: 'application/x-www-form-urlencoded; charset=UTF-8',

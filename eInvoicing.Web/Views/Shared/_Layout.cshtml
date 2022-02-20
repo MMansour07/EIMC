@@ -850,7 +850,7 @@
         });
         function LoadDraft() {
             $.ajax({
-                url: "/efatorty/v1/master/DraftCount",
+                url: "/v1/master/DraftCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
@@ -863,7 +863,7 @@
         }
         function LoadSent() {
             $.ajax({
-                url: "/efatorty/v1/master/SentCount",
+                url: "/v1/master/SentCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
@@ -877,7 +877,7 @@
 
         function LoadReceived() {
             $.ajax({
-                url: "/efatorty/v1/master/ReceivedCount",
+                url: "/v1/master/ReceivedCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {
@@ -891,7 +891,7 @@
 
         function LoadInvalidandFailed() {
             $.ajax({
-                url: "/efatorty/v1/master/InvalidandFailedCount",
+                url: "/v1/master/InvalidandFailedCount",
                 type: "get", //send it through get method
                 data: {},
                 success: function (response) {

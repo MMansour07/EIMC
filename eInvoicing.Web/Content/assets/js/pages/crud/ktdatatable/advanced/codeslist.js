@@ -17,7 +17,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'POST',
-                    url: '/efatorty/v1/code/ajax_SearchMyEGSCodeUsageRequests',
+                    url: '/v1/code/ajax_SearchMyEGSCodeUsageRequests',
                     map: function (raw) {
                         // 
                         // sample data mapping
@@ -69,7 +69,7 @@ var KTDatatableRecordSelectionDemo = function () {
             sortable: false,
             width: 220,
             template: function (row) {
-                return "<a href='/efatorty/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
+                return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
             },
         },
         {
@@ -301,7 +301,7 @@ var KTDatatableRecordSelectionDemo2 = function () {
             source: {
                 read: {
                     method: 'POST',
-                    url: '/efatorty/v1/code/ajax_SearchMyEGSCodeUsageRequests',
+                    url: '/v1/code/ajax_SearchMyEGSCodeUsageRequests',
                     map: function (raw) {
                         // 
                         // sample data mapping
@@ -353,7 +353,7 @@ var KTDatatableRecordSelectionDemo2 = function () {
             sortable: false,
             width: 220,
             template: function (row) {
-                return "<a href='/efatorty/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
+                return "<a href='/v1/document/details/' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.itemCode + "</a>";
             },
         },
         {
@@ -447,7 +447,7 @@ function getPublishedCodes() {
     var btn = KTUtil.getById("spanSearch");
     KTUtil.btnWait(btn, "spinner spinner-left spinner-light-success pl-15");
     $.ajax({
-        url: "/efatorty/v1/code/SearchPublishedCodesByKey?searchKey=" + $("#searchKey").val() +"&searchvalue=" + $("#searchValue").val() + "&codeType=" + $("#codeType").val(),
+        url: "/v1/code/SearchPublishedCodesByKey?searchKey=" + $("#searchKey").val() +"&searchvalue=" + $("#searchValue").val() + "&codeType=" + $("#codeType").val(),
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -521,7 +521,7 @@ var KTDatatableRecordSelectionDemo3 = function () {
             source: {
                 read: {
                     method: 'POST',
-                    url: '/efatorty/v1/code/SearchPublishedCodes',
+                    url: '/v1/code/SearchPublishedCodes',
                     map: function (raw) {
                         // 
                         // sample data mapping

@@ -50,7 +50,7 @@ var initTable1 = function () {
         searchDelay: 500,
         serverSide: true,
         ajax: {
-            url: '/efatorty/v1/report/AjaxInvalidReasons',
+            url: '/v1/report/AjaxInvalidReasons',
             type: 'POST',
             data: function (post) {
                 post.fromDate = ModifyDate(fromDate);

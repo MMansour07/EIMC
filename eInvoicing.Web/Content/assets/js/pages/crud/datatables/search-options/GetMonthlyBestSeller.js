@@ -63,7 +63,7 @@ var initTable1 = function () {
 		searchDelay: 500,
 		serverSide: true,
 		ajax: {
-			url: '/efatorty/v1/report/AjaxgetMonthlyBestSeller',
+			url: '/v1/report/AjaxgetMonthlyBestSeller',
 			type: 'POST',
 			data: function (post) {
 				post.specificDate = specificDate;

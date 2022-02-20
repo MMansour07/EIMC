@@ -12,7 +12,7 @@ var KTDatatableRecordSelectionDemo = function () {
             source: {
                 read: {
                     method: 'GET',
-                    url: '/efatorty/v1/document/submitted_items?uuid=' + getParameterByName("uuid")
+                    url: '/v1/document/submitted_items?uuid=' + getParameterByName("uuid")
                 },
             },
             pageSize: 10,
@@ -254,7 +254,7 @@ function CancelDocumentByUUID(uuid) {
         state: 'primary'
     });
     $.ajax({
-        url: "/efatorty/v1/document/canceldocument?uuid=" + uuid,
+        url: "/v1/document/canceldocument?uuid=" + uuid,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -323,7 +323,7 @@ function UpdateDocumentByInternalId(InternalId) {
         state: 'primary'
     });
     $.ajax({
-        url: "/efatorty/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -340,7 +340,7 @@ function UpdateDocumentByInternalId(InternalId) {
                     }
                 }).then(function () {
                     KTUtil.scrollTop();
-                    window.location.href = "/efatorty/v1/document/pending";
+                    window.location.href = "/v1/document/pending";
                 });
             }
             else {
@@ -382,5 +382,5 @@ function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/efatorty/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
 }

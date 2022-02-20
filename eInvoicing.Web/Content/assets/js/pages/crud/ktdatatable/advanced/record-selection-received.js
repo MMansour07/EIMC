@@ -18,7 +18,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 source: {
                     read: {
                         method: 'POST',
-                        url: '/efatorty/v1/document/ajax_received',
+                        url: '/v1/document/ajax_received',
                         map: function (raw) {
                             // 
                             // sample data mapping
@@ -77,7 +77,7 @@ var KTDatatableRecordSelectionDemo = function() {
                     title: 'ID/Internal ID',
                     width:270,
                     template: function (row) {
-                        return "<a href='/efatorty/v1/document/raw_received?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
+                        return "<a href='/v1/document/raw_received?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
                                 <span class='navi-text' style= 'float:left; clear:left;'>" + row.internalID + "</span>";
                     }
                 },
@@ -193,13 +193,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
@@ -224,13 +224,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
@@ -256,13 +256,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                             <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                                 <ul class='navi flex-column navi-hover py-2'>\
                                                     <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                                        <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                             <span class='navi-icon'><i class='la la-download'></i></span>\
                                                             <span class='navi-text'>Download</span>\
                                                         </a>\
                                                     </li>\
                                                         <li class='navi-item'>\
-                                                        <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                                        <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                                             <span class='navi-icon'><i class='la la-print'></i></span>\
                                                             <span class='navi-text'>Print</span>\
                                                         </a>\
@@ -291,13 +291,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                 <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                                     <ul class='navi flex-column navi-hover py-2'>\
                                         <li class='navi-item'>\
-                                            <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                            <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                                 <span class='navi-icon'><i class='la la-download'></i></span>\
                                                 <span class='navi-text'>Download</span>\
                                             </a>\
                                         </li>\
                                         <li class='navi-item'>\
-                                            <a href='/efatorty/v1/document/print?uuid='"+ row.uuid + "' class='navi-link' target='_blank'>\
+                                            <a href='/v1/document/print?uuid='"+ row.uuid + "' class='navi-link' target='_blank'>\
                                                 <span class='navi-icon'><i class='la la-print'></i></span>\
                                                 <span class='navi-text'>Print</span>\
                                             </a>\
@@ -322,13 +322,13 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                             <ul class='navi flex-column navi-hover py-2'>\
                                 <li class='navi-item'>\
-                                    <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                    <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-download'></i></span>\
                                         <span class='navi-text'>Download</span>\
                                     </a>\
                                 </li>\
                                     <li class='navi-item'>\
-                                    <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                    <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
                                     </a>\
@@ -356,13 +356,13 @@ var KTDatatableRecordSelectionDemo = function() {
                                 <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
                                     <ul class="navi flex-column navi-hover py-2">\
                                         <li class="navi-item">\
-                                            <a href="/efatorty/v1/document/printout?uuid='+ row.uuid + '" onclick="ShowSpinner()" class="navi-link">\
+                                            <a href="/v1/document/printout?uuid='+ row.uuid + '" onclick="ShowSpinner()" class="navi-link">\
                                                 <span class="navi-icon"><i class="la la-download"></i></span>\
                                                 <span class="navi-text">Download</span>\
                                             </a>\
                                         </li>\
                                         <li class="navi-item">\
-                                            <a href="/efatorty/v1/document/print?uuid='+ row.uuid + '" class="navi-link" target="_blank">\
+                                            <a href="/v1/document/print?uuid='+ row.uuid + '" class="navi-link" target="_blank">\
                                                 <span class="navi-icon"><i class="la la-print"></i></span>\
                                                 <span class="navi-text">Print</span>\
                                             </a>\
@@ -387,13 +387,13 @@ var KTDatatableRecordSelectionDemo = function() {
                         <div class='dropdown-menu dropdown-menu-sm dropdown-menu-right'>\
                             <ul class='navi flex-column navi-hover py-2'>\
                                 <li class='navi-item'>\
-                                    <a href='/efatorty/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
+                                    <a href='/v1/document/printout?uuid="+ row.uuid + "' onclick='ShowSpinner()' class='navi-link'>\
                                         <span class='navi-icon'><i class='la la-download'></i></span>\
                                         <span class='navi-text'>Download</span>\
                                     </a>\
                                 </li>\
                                     <li class='navi-item'>\
-                                    <a href='/efatorty/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
+                                    <a href='/v1/document/print?uuid="+ row.uuid + "' class='navi-link' target='_blank'>\
                                         <span class='navi-icon'><i class='la la-print'></i></span>\
                                         <span class='navi-text'>Print</span>\
                                     </a>\
@@ -571,7 +571,7 @@ function UpdateDocumentByInternalId(InternalId) {
         state: 'primary'
     });
     $.ajax({
-        url: "/efatorty/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
+        url: "/v1/document/UpdateDocumentByInternalId?InternalId=" + InternalId,
         type: "get", //send it through get method
         data: {},
         success: function (response) {
@@ -588,7 +588,7 @@ function UpdateDocumentByInternalId(InternalId) {
                     }
                 }).then(function () {
                     KTUtil.scrollTop();
-                    window.location.href = "/efatorty/v1/document/pending";
+                    window.location.href = "/v1/document/pending";
                 });
             }
             else {
@@ -630,11 +630,11 @@ function EditDocument(InternalId) {
     //var AllDocs = datatable.rows().data().KTDatatable.dataSet.map(o => ({ ...o, dateTimeIssued: new Date(parseInt(o.dateTimeIssued.substr(6))).toISOString() }));
     //var TargetedDoc = AllDocs.filter(doc => doc.internalID == DocumentId);
     //sessionStorage.setItem("PendingDocs", JSON.stringify(TargetedDoc));
-    window.location.href = "/efatorty/v1/document/edit_document?InternalId=" + InternalId;
+    window.location.href = "/v1/document/edit_document?InternalId=" + InternalId;
 }
 
 function ViewDocument(uuid) {
-    window.location.href = "/efatorty/v1/document/raw_received?uuid=" + uuid;
+    window.location.href = "/v1/document/raw_received?uuid=" + uuid;
 }
 
 function CancelDocumentByUUID(uuid) {
@@ -644,7 +644,7 @@ function CancelDocumentByUUID(uuid) {
         state: 'primary'
     });
     $.ajax({
-        url: "/efatorty/v1/document/canceldocument?uuid=" + uuid,
+        url: "/v1/document/canceldocument?uuid=" + uuid,
         type: "get", //send it through get method
         data: {},
         success: function (response) {

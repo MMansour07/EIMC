@@ -8,7 +8,7 @@
 //	KTApp.block('#Card8');
 //	KTApp.block('#Card9');
 //    $.ajax({
-//        url: "/efatorty/v1/master/renderer?_date=" + ModifyDate(new Date()),
+//        url: "/v1/master/renderer?_date=" + ModifyDate(new Date()),
 //        type: "get", //send it through get method
 //        data: {},
 //		success: function (response) {
@@ -28,10 +28,10 @@
 //					}
 //				}).then(function (result) {
 //					if (result.value) {
-//						window.location.href = "/efatorty/v1/";
+//						window.location.href = "/v1/";
 //						KTUtil.scrollTop();
 //					} else if (result.dismiss === "cancel") {
-//						window.location.href = "/efatorty/v1/appsetting";
+//						window.location.href = "/v1/appsetting";
 //					}
 //				});
 //			}
@@ -107,10 +107,10 @@
 //				}
 //			}).then(function (result) {
 //				if (result.value) {
-//					window.location.href = "/efatorty/v1/";
+//					window.location.href = "/v1/";
 //					KTUtil.scrollTop();
 //				} else if (result.dismiss === "cancel") {
-//					window.location.href = "/efatorty/v1/appsetting";
+//					window.location.href = "/v1/appsetting";
 //				}
 //			});
 //        }
@@ -124,7 +124,7 @@
 //		KTApp.block('#Card8');
 //		KTApp.block('#Card9');
 //        $.ajax({
-//            url: "/efatorty/v1/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
+//            url: "/v1/master/renderer?_date=" + ModifyDate(new Date($("#kt_datepicker_2").val())),
 //            type: "get", //send it through get method
 //            data: {},
 //			success: function (response) {
@@ -198,7 +198,7 @@
 //						window.location.href = "/ETA.Hub/einvoicing/v0";
 //						KTUtil.scrollTop();
 //					} else if (result.dismiss === "cancel") {
-//						window.location.href = "/efatorty/v1/appsetting";
+//						window.location.href = "/v1/appsetting";
 //					}
 //				});
 //			}

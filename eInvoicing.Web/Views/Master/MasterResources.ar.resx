@@ -147,6 +147,9 @@
   <data name="DescriptionLbl" xml:space="preserve">
     <value>التفصيل</value>
   </data>
+  <data name="EGP" xml:space="preserve">
+    <value> جم</value>
+  </data>
   <data name="EnglishLbl" xml:space="preserve">
     <value>الإنجليزية</value>
   </data>
@@ -202,7 +205,7 @@
     <value>الكمية الكلية</value>
   </data>
   <data name="TotalTaxLbl" xml:space="preserve">
-    <value>الضريبة الكلية(ضريبة القيمة المضافة)</value>
+    <value>القيمة المضافة</value>
   </data>
   <data name="TryAgainBtn" xml:space="preserve">
     <value>حاول مرة أخرى</value>

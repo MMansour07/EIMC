@@ -1,4 +1,5 @@
-﻿@model eInvoicing.DTO.DocumentVM
+﻿@using eInvoicing.Web.Views.Document
+@model eInvoicing.DTO.DocumentVM
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -8,7 +9,7 @@
             <div class="d-flex align-items-baseline flex-wrap mr-5">
                 <i class="flaticon-information header-icon"></i>
                 <h3 class="text-white icon-title">
-                   Details
+                   @DocumentResource.Details
                 </h3>
                 <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                     <li class="breadcrumb-item">

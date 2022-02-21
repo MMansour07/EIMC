@@ -128,7 +128,7 @@ var KTDatatableChildRemoteDataDemo = function() {
 	                            </a>\
 	                            <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">\
 	                                <ul class="navi flex-column navi-hover py-2">\
-	                                    <li class="navi-header font-weight-bolder text-uppercase font-size-xs text-primary pb-2">\
+	                                    <li class="navi-header font-weight-bolder text-uppercase font-size-lg text-primary pb-2">\
 	                                        Choose an action:\
 	                                    </li>\
 	                                    <li class="navi-item">\

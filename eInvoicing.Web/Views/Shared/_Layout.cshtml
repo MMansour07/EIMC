@@ -898,9 +898,20 @@
         function HandlingHeaderTitles() {
             var lastsegement = window.location.pathname.split('?')[0].split('/').filter(function (i) { return i !== "" }).slice(-1)[0] ?? 'v1';
             var _currentPage = lastsegement.toLocaleLowerCase();
+            debugger;
 
-            $("#header-title").html(pages[_currentPage]?.title);
-            $("#header-flaticon").addClass(pages[_currentPage]?.icon);
+            if (!pages[_currentPage]?.title)
+            {
+                var lastsegement = window.location.pathname.split('?')[0].split('/').filter(function (i) { return i !== "" }).slice(-2)[0] ?? 'v1';
+                var _currentPage = lastsegement.toLocaleLowerCase();
+                $("#header-title").html(pages[_currentPage]?.title);
+                $("#header-flaticon").addClass(pages[_currentPage]?.icon);
+            }
+            else
+            {
+                $("#header-title").html(pages[_currentPage]?.title);
+                $("#header-flaticon").addClass(pages[_currentPage]?.icon);
+            }
         }
     </script>
     <script src="~/Content/assets/plugins/custom/uppy/uppy.bundle_shared.js?v=7.0.6"></script>

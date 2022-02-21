@@ -75,7 +75,7 @@ var KTDatatableRecordSelectionDemo = function() {
                 {
                     field: 'internalID',
                     title: 'ID/Internal ID',
-                    width:270,
+                    width:300,
                     template: function (row) {
                         return "<a href='/v1/document/raw_received?uuid=" + row.uuid +"' class='btn btn-link no-hover' style='padding-left: 0;text-decoration: underline;'>" + row.uuid +"</a>\
                                 <span class='navi-text' style= 'float:left; clear:left;'>" + row.internalID + "</span>";

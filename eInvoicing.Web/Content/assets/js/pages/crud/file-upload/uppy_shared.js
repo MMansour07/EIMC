@@ -385,7 +385,7 @@ var KTUppy = function () {
     return {
         // public functions
         init: function () {
-            if (window.location.pathname.split("/")[3]?.toString().toLowerCase() === "taxpayer_details")
+            if (window.location.pathname.split("/")[4]?.toString().toLowerCase() === "taxpayer_details")
             {
                 initUppy5();
             }
@@ -397,7 +397,7 @@ var KTUppy = function () {
 KTUtil.ready(function () {
     KTUppy.init();
      
-    if (window.location.pathname.split("/")[3]?.toString().toLowerCase() === "taxpayer_details") {
+    if (window.location.pathname.split("/")[4]?.toString().toLowerCase() === "taxpayer_details") {
         resetForm();
     }
 });

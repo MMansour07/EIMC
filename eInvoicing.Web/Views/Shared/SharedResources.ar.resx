@@ -153,6 +153,9 @@
   <data name="General" xml:space="preserve">
     <value>عام</value>
   </data>
+  <data name="HiLbl" xml:space="preserve">
+    <value>مرحبا,</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>الرئيسية</value>
   </data>

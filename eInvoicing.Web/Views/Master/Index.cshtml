@@ -1,15 +1,6 @@
 ﻿@using eInvoicing.Web.Views.Master
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
-    string LanguageImgSrc;
-    if (Request.Cookies["Language"].Value == "en")
-    {
-        LanguageImgSrc = "/Content/images/226-united-states.svg";
-    }
-    else
-    {
-        LanguageImgSrc = "/Content/images/158-egypt.svg";
-    }
 }
 
 <div class="subheader py-2 py-lg-6  subheader-transparent" id="kt_subheader">
@@ -478,7 +469,7 @@
                                 </div>
                                 <div class="pt-8">
                                     <div class="d-flex align-items-center justify-content-between mb-3">
-                                        <div class="text-info font-weight-bold mr-2">Submitted</div>
+                                        <div class="text-info font-weight-bold mr-2">@MasterResources.SubmittedLbl</div>
                                         <div class="text-info font-weight-bold" id="SubmittedDocumentsCount"></div>
                                     </div>
                                     <div class="progress bg-light-info progress-xs">

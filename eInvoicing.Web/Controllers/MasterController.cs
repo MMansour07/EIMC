@@ -42,16 +42,18 @@ namespace eInvoicing.Web.Controllers
             {
                 HttpCookie cookie = new HttpCookie("Language");
                 cookie.Value = "en";
+                cookie.Expires = DateTime.Now.AddDays(1.0);
                 Response.Cookies.Add(cookie);
             }
             return View();
         }
-        public ActionResult ChangeLanguage(string language)
+        public ActionResult ChangeLanguage(string language,string ReturnURL)
         {
             Request.Cookies["Language"].Value = language;
+            Request.Cookies["Language"].Expires = DateTime.Now.AddDays(1.0);
             Thread.CurrentThread.CurrentUICulture = new CultureInfo(language);
             Response.Cookies.Add(Request.Cookies["Language"]);
-            return View("Index");
+            return Redirect(ReturnURL);
         }
         [HttpGet]
         [ActionName("renderer")]

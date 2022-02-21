@@ -150,6 +150,9 @@
   <data name="General" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="HiLbl" xml:space="preserve">
+    <value>Welcome,</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>

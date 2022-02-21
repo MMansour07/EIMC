@@ -142,7 +142,7 @@
     <value>لوحة التحكم</value>
   </data>
   <data name="DebitNoteLbl" xml:space="preserve">
-    <value>اشعار الخصم</value>
+    <value>اشعار المدين</value>
   </data>
   <data name="DescriptionLbl" xml:space="preserve">
     <value>التفصيل</value>

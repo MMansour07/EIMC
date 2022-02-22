@@ -2460,7 +2460,6 @@
     <Content Include="Content\images\default-user-icon.jpg" />
     <Content Include="Content\images\drag-copy.png" />
     <Content Include="Content\images\drag-move.png" />
-    <Content Include="Content\images\E-Hub_logo.png" />
     <Content Include="Content\images\E-Hub_logo_transparent.png" />
     <Content Include="Content\images\efatorty_logo.png" />
     <Content Include="Content\images\faces\face1.jpg" />

@@ -238,8 +238,12 @@ jQuery(document).ready(function () {
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             data: valdata,
             success: function (response) {
+                debugger;
                 if (response.success) {
-                    window.location.href = response.returnUrl;
+                    if (response.returnUrl)
+                        window.location.href = response.returnUrl;
+                    else
+                        window.location.href = /v1/;
                 }
                 else {
                     KTUtil.btnRelease(btn);

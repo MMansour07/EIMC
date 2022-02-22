@@ -893,8 +893,6 @@
         function HandlingHeaderTitles() {
             var lastsegement = window.location.pathname.split('?')[0].split('/').filter(function (i) { return i !== "" }).slice(-1)[0] ?? 'v1';
             var _currentPage = lastsegement.toLocaleLowerCase();
-            debugger;
-
             if (!pages[_currentPage]?.title)
             {
                 var lastsegement = window.location.pathname.split('?')[0].split('/').filter(function (i) { return i !== "" }).slice(-2)[0] ?? 'v1';

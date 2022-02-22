@@ -281,7 +281,7 @@ jQuery(document).ready(function () {
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.success("Data has been saved successfully!");
+                            toastr.success("Saved successfully!");
                         }
                         else {
                             toastr.options = {

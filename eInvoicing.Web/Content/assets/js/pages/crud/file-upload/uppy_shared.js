@@ -192,7 +192,7 @@ var KTUppy = function () {
                                 var text = "";
                                 text = (result.IsInserted  && result.UpdatesStatus == -1)  ? "Data has been saved successfully, but there are some non-existing records, the following ids:" :
                                        (!result.IsInserted && result.UpdatesStatus == -1)  ? "There are some non-existing records, the following ids:" :
-                                       (result.IsInserted  || result.UpdatesStatus > 0)   ? "Data has been saved successfully!" : "No available invoices to be uploaded, Data already exits.";
+                                       (result.IsInserted  || result.UpdatesStatus > 0)   ? "Saved successfully!" : "No available invoices to be uploaded, Data already exits.";
 
 
 

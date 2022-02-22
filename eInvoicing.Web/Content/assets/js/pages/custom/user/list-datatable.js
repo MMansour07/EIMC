@@ -198,7 +198,7 @@ jQuery(document).ready(function () {
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.success("Data has been saved successfully!");
+                            toastr.success("Saved successfully!");
                         }
                         else {
                             if (response.message == "400") {
@@ -286,7 +286,7 @@ jQuery(document).ready(function () {
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.success("Data has been saved successfully!");
+                            toastr.success("Saved successfully!");
                         }
                         else {
                             toastr.options = {

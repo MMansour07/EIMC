@@ -342,7 +342,7 @@ jQuery(document).ready(function () {
                             };
                             setTimeout(function () {
                                 KTApp.unblockPage();
-                                toastr.success("Data has been saved successfully!");
+                                toastr.success("Saved successfully!");
                             }, 3000);
                             //$('#_frm').trigger("reset");
                         }
@@ -433,7 +433,7 @@ jQuery(document).ready(function () {
                                 "showMethod": "fadeIn",
                                 "hideMethod": "fadeOut"
                             };
-                            toastr.success("Data has been saved successfully!");
+                            toastr.success("Saved successfully!");
                         }
                         else {
                             toastr.options = {

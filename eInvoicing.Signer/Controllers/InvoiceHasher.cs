@@ -44,6 +44,7 @@ namespace eInvoicing.Signer.Controllers
         [HttpPost]
         public DocumentSubmissionDTO Documentsubmissions(SubmitInput paramaters)
         {
+            HttpResponseMessage result = new HttpResponseMessage(); 
             try
             {
                 TokenPin = paramaters.pin;
@@ -63,7 +64,7 @@ namespace eInvoicing.Signer.Controllers
                     var stringContent = new StringContent(SignedDocuments, Encoding.UTF8, "application/json");
                      var postTask = client.PostAsync(paramaters.url, stringContent);
                     postTask.Wait();
-                    var result = postTask.Result;
+                    result = postTask.Result;
                     if (result.IsSuccessStatusCode)
                     {
                         var responseX = result.Content.ReadAsStringAsync().Result;
@@ -77,6 +78,7 @@ namespace eInvoicing.Signer.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogWarning("Exception: The response data  from ETA ---> " + JsonConvert.SerializeObject(result.Content.ReadAsStringAsync().Result));
                 _logger.LogWarning("Exception: Failed due to the following exception ---> " +  ex.Message.ToString());
                 return new DocumentSubmissionDTO() { statusCode = ex.Message.ToString() };
             }

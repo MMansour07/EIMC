@@ -462,7 +462,7 @@ jQuery(document).ready(function () {
 							"showMethod": "fadeIn",
 							"hideMethod": "fadeOut"
 						};
-						toastr.success("Data has been saved successfully!");
+						toastr.success("Saved successfully!");
 						setTimeout(function () { window.location.href = '/v1/document/pending'; }, 500);
 					}
 					else {

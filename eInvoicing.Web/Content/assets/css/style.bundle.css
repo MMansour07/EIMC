@@ -2102,7 +2102,7 @@ pre {
     color: #3F4254;
     background-color: #ffffff;
     background-clip: padding-box;
-    border: 1px solid #E4E6EF;
+    border: 1px solid #ccc;
     border-radius: 0.42rem;
     -webkit-box-shadow: none;
     box-shadow: none;
@@ -3544,7 +3544,7 @@ input[type="button"].btn-block {
     text-align: center;
     white-space: nowrap;
     background-color: #f9f9f9;
-    border: 1px solid #E4E6EF;
+    border: 1px solid #ccc;
 }
   .input-group-text input[type="radio"],
   .input-group-text input[type="checkbox"] {

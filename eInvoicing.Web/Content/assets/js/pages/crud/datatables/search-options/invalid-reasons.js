@@ -49,6 +49,9 @@ var initTable1 = function () {
         },
         searchDelay: 500,
         serverSide: true,
+        order: [
+            [0, "desc"]
+        ],
         ajax: {
             url: '/v1/report/AjaxInvalidReasons',
             type: 'POST',

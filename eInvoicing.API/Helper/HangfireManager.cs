@@ -167,7 +167,7 @@ namespace eInvoicing.API.Helper
             try
             {
                 string commandText = "IF DB_ID('Hangfire') IS NULL CREATE DATABASE Hangfire";
-                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["Identity_CS"]?.ConnectionString))
+                using (SqlConnection connection = new SqlConnection(ConfigurationManager.ConnectionStrings["master"]?.ConnectionString))
                 {
                     try
                     {

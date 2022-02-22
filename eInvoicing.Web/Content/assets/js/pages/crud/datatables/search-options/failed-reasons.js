@@ -49,7 +49,7 @@ var initTable1 = function () {
         searchDelay: 500,
         serverSide: true,
         order: [
-            [2, "desc"]
+            [1, "desc"]
         ],
         ajax: {
             url: '/v1/report/AjaxFailedReasons',

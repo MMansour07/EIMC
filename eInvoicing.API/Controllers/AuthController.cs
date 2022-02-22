@@ -47,7 +47,7 @@ namespace eInvoicing.API.Controllers
         {
             try
             {
-                var temp = _auth.Login(model.UserName.ToLower(), model.Password);
+                var temp = _auth.Login(model?.UserName?.ToLower(), model?.Password);
                 return Ok(temp);
             }
             catch (Exception ex)

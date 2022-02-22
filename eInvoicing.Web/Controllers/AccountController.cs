@@ -42,19 +42,14 @@ namespace eInvoicing.Web.Controllers
             return View();
         }
 
-        //
-        // POST: /Account/Login
-        [HttpPost]
         [AllowAnonymous]
+        [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(AccountVM model, string returnUrl)
+        [ActionName("login")]
+        public ActionResult Login(LoginViewModel model)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
                 using (HttpClient client = new HttpClient())
                 {
                     IUserSession _userSession = new UserSession();
@@ -62,12 +57,8 @@ namespace eInvoicing.Web.Controllers
                     client.Timeout = TimeSpan.FromHours(2);
                     var url = _userSession.URL + "api/auth/login";
                     client.BaseAddress = new Uri(url);
-                    var postTask = Task.Run(() => client.PostAsJsonAsync(url, model.LoginViewModel)).Result;
+                    var postTask = Task.Run(() => client.PostAsJsonAsync(url, model)).Result;
                     logger.Info(postTask.IsSuccessStatusCode);
-
-                    //logger.Error("This is an error message");
-                    //logger.Error("Exception --> [Date Time] = " + DateTime.Now.ToString() + "[Date Time (UTC)] = " + DateTime.UtcNow.ToString());
-                    //logger.Error("Exception --> [Date Time] = " + DateTime.Now.ToString());
                     if (postTask.IsSuccessStatusCode)
                     {
                         var response = JsonConvert.DeserializeObject<UserDTO>(postTask.Content.ReadAsStringAsync().Result);
@@ -87,34 +78,22 @@ namespace eInvoicing.Web.Controllers
                             claims.Add(new Claim("Token", response?.Token));
                             claims.Add(new Claim("SRN", response?.SRN));
                             claims.Add(new Claim("IsDBSync", response?.IsDBSync.ToString()));
-                            //claims.Add(new Claim("RIN", response?.RIN));
                             foreach (var item in response?.stringfiedRoles)
                             {
                                 claims.Add(new Claim("Role", item));
                             }
-                            //foreach (var item in response?.stringfiedPermissions)
-                            //{
-                            //    claims.Add(new Claim("Permission", item));
-                            //}
                             var identity = new ClaimsIdentity(claims, "ApplicationCookie");
                             Request.GetOwinContext().Authentication.SignIn(options, identity);
-                            return RedirectToLocal(returnUrl);
+                            return Json(new { success = true, returnUrl = model.ReturnUrl }, JsonRequestBehavior.AllowGet);
                         }
                     }
-                    //else if (postTask.StatusCode == HttpStatusCode.Unauthorized)
-                    //{
-                    //    ModelState.AddModelError("", "The license has been expired or doesn't belong to this client. Back to the product owner.");
-                    //    return View(model);
-                    //}
-                    ModelState.AddModelError("", "The user name or password you entered isn't correct. Try entering it again.");
-                    return View(model);
+                    return Json(new { success = false, status = "0" }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch (Exception ex)
             {
                 logger.Error("Exception --> " + ex.Message.ToString() + "[Date Time] = " + DateTime.Now.ToString() + "[Date Time (UTC)] = " + DateTime.UtcNow.ToString());
-                //ModelState.AddModelError("", );
-                return View(model);
+                return Json(new { success = false, status = "-1" }, JsonRequestBehavior.AllowGet);
             }
         }
 

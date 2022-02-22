@@ -61,7 +61,7 @@ var initTable1 = function () {
 		searchDelay: 500,
 		serverSide: true,
 		order: [
-			[7, "desc"]
+			[8, "desc"]
 		],
 		layout: {
 			customScrollbar: true

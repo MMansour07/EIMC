@@ -51,33 +51,17 @@ var KTLogin = function() {
 			}
 		);
         
-        $('#kt_login_signin_submit').on('click', function (e) {
-            e.preventDefault();
-            var btn = KTUtil.getById("kt_login_signin_submit");
-            KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15");
-            validation.validate().then(function(status) {
-                if (status == 'Valid') {
-                    var preview = document.getElementById("kt_login_signin_form");
-                    preview.setAttribute('login', 'account');
-                    preview.submit(); 
-                } else {
-                    KTUtil.btnRelease(btn);
-				}
-            });
-            
-        });
+        //// Handle forgot button
+        //$('#kt_login_forgot').on('click', function (e) {
+        //    e.preventDefault();
+        //    _showForm('forgot');
+        //});
 
-        // Handle forgot button
-        $('#kt_login_forgot').on('click', function (e) {
-            e.preventDefault();
-            _showForm('forgot');
-        });
-
-        // Handle signup
-        $('#kt_login_signup').on('click', function (e) {
-            e.preventDefault();
-            _showForm('signup');
-        });
+        //// Handle signup
+        //$('#kt_login_signup').on('click', function (e) {
+        //    e.preventDefault();
+        //    _showForm('signup');
+        //});
     }
 
     var _handleSignUpForm = function(e) {
@@ -232,20 +216,90 @@ var KTLogin = function() {
         });
     }
 
-    // Public Functions
     return {
         // public functions
         init: function() {
             _login = $('#kt_login');
-
-            _handleSignInForm();
-            _handleSignUpForm();
-            _handleForgotForm();
         }
     };
 }();
 
 // Class Initialization
-jQuery(document).ready(function() {
-    KTLogin.init();
+jQuery(document).ready(function () {
+    $("#kt_login_signin_submit").click(function (e) {
+        e.preventDefault();
+        var btn = KTUtil.getById("kt_login_signin_submit");
+        KTUtil.btnWait(btn, "spinner spinner-left spinner-light-primary pl-15");
+        var valdata = $("#kt_login_signin_form").serialize();
+        $.ajax({
+            url: "/v1/account/login",
+            type: "POST",
+            dataType: 'json',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            data: valdata,
+            success: function (response) {
+                if (response.success) {
+                    window.location.href = response.returnUrl;
+                }
+                else {
+                    KTUtil.btnRelease(btn);
+                    toastr.options = {
+                        "closeButton": false,
+                        "debug": false,
+                        "newestOnTop": true,
+                        "progressBar": false,
+                        "positionClass": "toast-top-right",
+                        "preventDuplicates": false,
+                        "onclick": null,
+                        "showDuration": "300",
+                        "hideDuration": "1000",
+                        "timeOut": "5000",
+                        "extendedTimeOut": "1000",
+                        "showEasing": "swing",
+                        "hideEasing": "linear",
+                        "showMethod": "fadeIn",
+                        "hideMethod": "fadeOut"
+                    };
+                    if (response.status == "0") 
+                        toastr.error("Invalid username or password!");
+                    else
+                        toastr.error("No Connection!");
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                KTUtil.btnRelease(btn);
+                toastr.options = {
+                    "closeButton": false,
+                    "debug": false,
+                    "newestOnTop": true,
+                    "progressBar": false,
+                    "positionClass": "toast-top-right",
+                    "preventDuplicates": false,
+                    "onclick": null,
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "extendedTimeOut": "1000",
+                    "showEasing": "swing",
+                    "hideEasing": "linear",
+                    "showMethod": "fadeIn",
+                    "hideMethod": "fadeOut"
+                };
+                toastr.error("Something went wrong!");
+            }
+        });
+    });
+
+    $("#username").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $("#kt_login_signin_submit").click();
+        }
+    });
+    $("#password").keypress(function (event) {
+        if (event.which == 13) {
+            event.preventDefault();
+            $("#kt_login_signin_submit").click();
+        }
+    });
 });

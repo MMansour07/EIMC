@@ -1,5 +1,5 @@
 ﻿@using eInvoicing.Web.Models
-@model AccountVM
+@model LoginViewModel
 @{
     Layout = null;
 }
@@ -8,7 +8,6 @@
     <title>E فاتورتي</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <link href="~/Content/assets/css/pages/login/classic/login-4.css?v=7.0.6" rel="stylesheet" type="text/css" />
-    <link href="~/Content/assets/plugins/global/fonts/webfontkit-20220214-154516/stylesheet.css" rel="stylesheet" />
     <link href="~/Content/assets/plugins/global/fonts/webfontkit-20220214-155632/stylesheet_reg.css" rel="stylesheet" />
     <link href="~/Content/assets/plugins/global/plugins.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
     <link href="~/Content/assets/plugins/custom/prismjs/prismjs.bundle.css?v=7.0.6" rel="stylesheet" type="text/css" />
@@ -18,122 +17,101 @@
         .validation-summary-errors li {
             display: block !important;
         }
+        .login-pg {
+            background-color: #f0f2f5;
+        }
+        .login-signin {
+            
+           
+        }
+        .login-form {
+            background-color: #ffffff;
+            border-bottom: 3px solid #f9f9f9;
+            width: 500px;
+            height: 460px;
+           /* margin: 130px auto;
+            box-shadow: 0px 2px 3px 0px rgb(0 0 0 / 20%);
+            border-radius: 3px;*/
+
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 10%), 0 8px 16px rgb(0 0 0 / 10%);
+            margin: auto;
+            padding: 0 0 14px 0;
+        }
+        ._9axz {
+            text-align: center;
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+        .login-input {
+            font-size: 0.8rem !important;
+            border-radius: 0.2rem !important;
+            /*border: 1px solid #ccc !important;*/
+        }
     </style>
 </head>
-<!--end::Head-->
-<!--begin::Body-->
 <body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled page-loading">
-
-    <!--begin::Main-->
     <div class="d-flex flex-column flex-root">
-        <!--begin::Login-->
         <div class="login login-4 login-signin-on d-flex flex-row-fluid" id="kt_login">
-            <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat" style="background-image: url('/Content/assets/media/bg/bg-3.jpg');">
+            <div class="d-flex flex-center flex-row-fluid bgi-size-cover bgi-position-top bgi-no-repeat login-pg">
                 <div class="login-form text-center p-7 position-relative overflow-hidden">
-                    <!--begin::Login Header-->
-                    <div class="d-flex flex-center mb-10">
+                    <div class="d-flex flex-center mb-5">
                         <a href="#">
-                            <img alt="Logo" src="~/Content/images/E-Hub_logo.png"/>
+                            <img alt="Logo" src="~/Content/images/efatorty_logo.png" />
                         </a>
                     </div>
-                    <!--end::Login Header-->
-                    <!--begin::Login Sign in form-->
+                    <hr />
+                    <div class="d-flex flex-center mb-5">
+                        <div><b>Log in to Efatorty </b></div>
+                    </div>
                     <div class="login-signin">
                         @using (Html.BeginForm("login", "account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "kt_login_signin_form" }))
                         {
                             @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.LoginViewModel.Username, new { @class = "form-control-solid h-auto form-control py-4 px-8", @type = "text", @placeholder = "Username", @name = "username", @autocomplete = "off", @id = "username" })
+                            <div class="form-group">
+                                @Html.HiddenFor(m => m.ReturnUrl, new
+                                {
+                                    @value = "@ViewBag['ReturnUrl']"
+                                })
                             </div>
-                            <div class="form-group mb-5">
-                                @Html.PasswordFor(m => m.LoginViewModel.Password, new { @class = "form-control-solid h-auto form-control py-4 px-8", @type = "password", @placeholder = "Password", @autocomplete = "off", @name = "password", @id = "password" })
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.Username, new
+                                {
+                                    @class = "form-control h-auto form-control py-4 px-8 login-input",
+                                    @type = "text",
+                                    @placeholder = "Username",
+                                    @name = "username",
+                                    @autocomplete = "off",
+                                    @id = "username"
+                                })
                             </div>
-                            <!--<div class="form-group d-flex flex-wrap justify-content-between align-items-center">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox m-0 text-muted"> 
-                                        <input type="checkbox" name="remember" />
-                                        <span></span>
-                                        Remember me
-                                    </label>
-                                </div>-->
-                                @*<a href="javascript:;" id="kt_login_forgot" class="text-muted text-hover-primary">Forget Password ?</a>*@
-                            <!--</div>-->
-                            <button id="kt_login_signin_submit" class="btn btn-sm btn-primary font-weight-bold">Login <i class="fa fa-sign-in-alt ml-1"></i></button>
-                        }
-                        @*<div class="mt-10">
-                            <span class="opacity-70 mr-4">
-                                Don't have an account yet?
-                            </span>
-                            <a href="javascript:;" id="kt_login_signup" class="text-muted text-hover-primary font-weight-bold">Sign Up!</a>
-                        </div>*@
-                    </div>
-                    <!--end::Login Sign in form-->
-                    <!--begin::Login Sign up form-->
-                    <div class="login-signup">
-                        <div class="mb-20">
-                            <h3>Sign Up</h3>
-                            <div class="text-muted font-weight-bold">Enter your details to create your account</div>
-                        </div>
-                        @using (Html.BeginForm("register", "account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @id = "kt_login_signup_form" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.RegisterViewModel.FullName, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "text", @placeholder = "Fullname", @name = "fullname", @autocomplete = "off", @id = "fullname" })
+                            <div class="form-group">
+                                @Html.PasswordFor(m => m.Password, new
+                                {
+                                    @class = "form-control h-auto form-control py-4 px-8 login-input",
+                                    @type = "password",
+                                    @placeholder = "Password",
+                                    @autocomplete = "off",
+                                    @name = "password",
+                                    @id = "password"
+                                })
                             </div>
-                            <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "text", @placeholder = "Email", @name = "email", @autocomplete = "off", @id = "email" })
-                            </div>
-                            <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.RegisterViewModel.Password, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "password", @placeholder = "Password", @name = "password", @autocomplete = "off", @id = "Regpassword" })
-                            </div>
-                            <div class="form-group mb-5">
-                                @Html.TextBoxFor(m => m.RegisterViewModel.ConfirmPassword, new { @class = "form-control h-auto form-control-solid py-4 px-8", @type = "password", @placeholder = "Confirm Password", @name = "cpassword", @autocomplete = "off", @id = "cpassword" })
-                            </div>
-                            <div class="form-group mb-5 text-left">
-                                <div class="checkbox-inline">
-                                    <label class="checkbox m-0">
-                                        <input type="checkbox" name="agree" />
-                                        <span></span>
-                                        I Agree the <a href="#" class="font-weight-bold ml-1">terms and conditions</a>.
-                                    </label>
-                                </div>
-                                <div class="form-text text-muted text-center"></div>
-                            </div>
-                            <div class="form-group d-flex flex-wrap flex-center mt-10">
-                                <button id="kt_login_signup_submit" type="button" class="btn btn-sm btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Sign Up</button>
-                                <button id="kt_login_signup_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
-                            </div>
+                            <button id="kt_login_signin_submit" type="button" class="btn btn-primary font-weight-bold">Login <i class="fa fa-sign-in-alt ml-1"></i></button>
                         }
                     </div>
-                    <!--end::Login Sign up form-->
-                    <!--begin::Login forgot password form-->
-                    <div class="login-forgot">
-                        <div class="mb-20">
-                            <h3>Forgotten Password ?</h3>
-                            <div class="text-muted font-weight-bold">Enter your email to reset your password</div>
-                        </div>
-                        <form class="form" id="kt_login_forgot_form">
-                            <div class="form-group mb-10">
-                                <input class="form-control form-control-solid h-auto py-4 px-8" type="text" placeholder="Email" name="email" autocomplete="off" />
-                            </div>
-                            <div class="form-group d-flex flex-wrap flex-center mt-10">
-                                <button id="kt_login_forgot_submit" class="btn btn-sm btn-primary font-weight-bold px-9 py-4 my-3 mx-2">Request</button>
-                                <button id="kt_login_forgot_cancel" class="btn btn-light-primary font-weight-bold px-9 py-4 my-3 mx-2">Cancel</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!--end::Login forgot password form-->
                 </div>
             </div>
         </div>
-        <!--end::Login-->
+        <div class="footer bg-white py-4 d-flex flex-lg-column " id="kt_footer">
+            <div class="container  d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <div class="text-dark order-2 order-md-1">
+                    <span class="text-muted font-weight-bold mr-2">&copy; @DateTime.Now.Year</span>
+                    <a href="javascript:void(0);" target="_blank" class="text-dark-50 text-hover-primary">Accelerate, Inc.</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <!--end::Main-->
-
-
-    <script>var HOST_URL = "https://preview.keenthemes.com/metronic/theme/html/tools/preview";</script>
-    <!--begin::Global Config(global config for global JS scripts)-->
     <script>
         var KTAppSettings = {
             "breakpoints": {
@@ -146,7 +124,7 @@
             "colors": {
                 "theme": {
                     "base": {
-                        "white": "#ffffff",
+                        "white": "hsl(210, 20%, 98%)",
                         "primary": "#0BB783",
                         "secondary": "#E5EAEE",
                         "success": "#1BC5BD",
@@ -157,7 +135,7 @@
                         "dark": "#212121"
                     },
                     "light": {
-                        "white": "#ffffff",
+                        "white": "hsl(210, 20%, 98%)",
                         "primary": "#D7F9EF",
                         "secondary": "#ECF0F3",
                         "success": "#C9F7F5",
@@ -193,17 +171,11 @@
             },
             "font-family": "Poppins"
         };
+
     </script>
-    <!--end::Global Config-->
-    <!--begin::Global Theme Bundle(used by all pages)-->
     <script src="~/Content/assets/plugins/global/plugins.bundle.js?v=7.0.6"></script>
     <script src="~/Content/assets/plugins/custom/prismjs/prismjs.bundle.js?v=7.0.6"></script>
     <script src="~/Content/assets/js/scripts.bundle.js?v=7.0.6"></script>
-    <!--end::Global Theme Bundle-->
-    <!--begin::Page Scripts(used by this page)-->
     <script src="~/Content/assets/js/pages/custom/login/login-general.js?v=7.0.6"></script>
     <script src="~/Content/assets/js/pages/features/custom/spinners.js"></script>
-
-    <!--end::Page Scripts-->
 </body>
-<!--end::Body-->
